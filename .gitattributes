@@ -2,3 +2,4 @@
 *.pbxproj binary -merge=union
 *.m       text diff=objc
 ObjectivePGP.framework/* linguist-vendored
+docs/* linguist-vendored

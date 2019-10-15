@@ -21,7 +21,7 @@ You are welcome to contribute. Please create a [Pull Request]().
 
 ## Changelog
 
-See [CHANGELOG](./CHANGELOG.md) file.
+See [CHANGELOG](https://pgpro.app/changelog/) file.
 
 ## License
 
