@@ -8,7 +8,7 @@ devices([
    "iPhone Xs Max",
    "iPhone Xʀ",
    "iPhone 11",
-#   "iPhone 11 Pro",
+   "iPhone 11 Pro",
    "iPhone 11 Pro Max"
 ])
 
