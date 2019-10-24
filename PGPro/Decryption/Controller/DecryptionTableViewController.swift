@@ -24,7 +24,7 @@ class DecryptionTableViewController: UITableViewController {
     @IBOutlet weak var passphraseTextField: UITextField!
     @IBOutlet weak var textView: UITextView!
     
-    static var decryptionContact: Contact? = nil
+    static var decryptionContact: Contact?
     var decryptionKey: Key? {
         return DecryptionTableViewController.decryptionContact?.key
     }
@@ -34,8 +34,6 @@ class DecryptionTableViewController: UITableViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,11 +61,11 @@ class DecryptionTableViewController: UITableViewController {
     
     @objc
     func update(){
-        var t = "Select Private Key..."
-        if (DecryptionTableViewController.decryptionContact != nil){
-            t = DecryptionTableViewController.decryptionContact!.userID
+        var label = "Select Private Key..."
+        if (DecryptionTableViewController.self.decryptionContact != nil) {
+            label = DecryptionTableViewController.self.decryptionContact!.userID
         }
-        titleLabel.text = t
+        titleLabel.text = label
         
         keyRequiresPassphrase = decryptionKey?.isEncryptedWithPassword ?? false
         
@@ -88,7 +86,7 @@ class DecryptionTableViewController: UITableViewController {
                 let passphrase = passphraseTextField.text
                 var decryptedMessage = Data()
                 
-                if (decryptionKey == nil){
+                if (decryptionKey == nil) {
                     alert(text: "No Private Key Selected!")
                     return
                 }
@@ -99,7 +97,7 @@ class DecryptionTableViewController: UITableViewController {
                 }
                 
                 do {
-                    if (keyRequiresPassphrase){
+                    if (keyRequiresPassphrase) {
                         decryptedMessage = try ObjectivePGP.decrypt(encryptedMessageData,
                                                                         andVerifySignature: false,
                                                                         using: [decryptionKey!],
@@ -112,7 +110,8 @@ class DecryptionTableViewController: UITableViewController {
                                                                         passphraseForKey: nil)
                     }
                     
-                    performSegue(withIdentifier: "showDecryptedMessage", sender: String(decoding: decryptedMessage, as: UTF8.self))
+                    performSegue(withIdentifier: "showDecryptedMessage",
+                                 sender: String(decoding: decryptedMessage, as: UTF8.self))
                 } catch {
                     alert(text: "Decryption Failed!")
                 }
@@ -140,7 +139,7 @@ class DecryptionTableViewController: UITableViewController {
     
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 0){
+        if (indexPath.row == 0) {
             
             /* Private Key Selection */
             performSegue(withIdentifier: "showPrivateKeys", sender: nil)
@@ -186,4 +185,3 @@ class DecryptionTableViewController: UITableViewController {
     }
 
 }
-

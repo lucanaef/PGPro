@@ -81,31 +81,38 @@ class AddContactTableViewController: UITableViewController {
     }
     
     func validateInput() -> Bool {
-        if (inputName.text == nil || inputName.text == "") {
+        
+        guard (inputName.text != nil && inputName.text != "") else {
             alert(text: "Name Can't Be Empty!")
             return false
         }
-        if (inputEmail.text == nil || inputEmail.text == "") {
+        
+        guard (inputEmail.text != nil && inputEmail.text != "") else {
             alert(text: "Email Address Can't Be Empty!")
             return false
         }
-        if (!inputEmail.text!.isValidEmail()){
+        
+        
+        guard inputEmail.text!.isValidEmail() else {
             alert(text: "Email Address Not Valid!")
             return false
         }
+        
         return true
     }
     
     
-    @objc func addContactDone(sender: UIBarButtonItem) {
+    @objc
+    func addContactDone(sender: UIBarButtonItem) {
         if validateInput() {
             
             var publicKey = Key(secretKey: nil, publicKey: nil).publicKey
             var privateKey = Key(secretKey: nil, publicKey: nil).secretKey
             
             if (publicKeySwitch.isOn) {
+                guard let asciiKeyData = publicKeyTextView.text.data(using: .utf8) else { return }
                 do {
-                    let readKeys = try ObjectivePGP.readKeys(from: publicKeyTextView.text.data(using: .utf8)!)
+                    let readKeys = try ObjectivePGP.readKeys(from: asciiKeyData)
                     if (readKeys.isEmpty) {
                         alert(text: "Public Key Import Failed!")
                         return
@@ -119,8 +126,9 @@ class AddContactTableViewController: UITableViewController {
             }
 
             if (privateKeySwitch.isOn) {
+                guard let asciiKeyData = privateKeyTextView.text.data(using: .utf8) else { return }
                 do {
-                    let readKeys = try ObjectivePGP.readKeys(from: privateKeyTextView.text.data(using: .utf8)!)
+                    let readKeys = try ObjectivePGP.readKeys(from: asciiKeyData)
                     if (readKeys.isEmpty) {
                         alert(text: "Private Key Import Failed!")
                         return
@@ -134,8 +142,11 @@ class AddContactTableViewController: UITableViewController {
             }
             
             let key = Key(secretKey: privateKey, publicKey: publicKey)
+
             
-            if !ContactListService.addContact(name: inputName!.text!, email: inputEmail!.text!, key: key) {
+            if !ContactListService.addContact(name: inputName!.text!,
+                                              email: inputEmail!.text!,
+                                              key: key) {
                 alert(text: "Contact Already Exists!")
             } else {
                 dismiss(animated: true, completion: nil)
@@ -145,7 +156,8 @@ class AddContactTableViewController: UITableViewController {
     }
     
     
-    @objc func addContactCancel(sender: UIBarButtonItem) {
+    @objc
+    func addContactCancel(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -163,7 +175,7 @@ class AddContactTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.section == 2 && indexPath.row == 1 && !publicKeySwitch.isOn){
+        if (indexPath.section == 2 && indexPath.row == 1 && !publicKeySwitch.isOn) {
             return 0
         }
         return super.tableView(tableView, heightForRowAt: indexPath)

@@ -24,7 +24,7 @@ class KeySelectionTableViewCell: UITableViewCell {
     @IBOutlet weak var cellSubtitle: UILabel!
     
     
-    func setContact(contact: Contact){
+    func setContact(contact: Contact) {
         cellTitle.text = contact.name
         cellSubtitle.text = contact.email
     }

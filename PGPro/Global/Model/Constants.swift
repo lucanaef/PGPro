@@ -23,11 +23,16 @@ enum Constants {
     public enum PGPro {
         static var appID = "1481696997"
         static var version: String {
-            return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+            let vrsn = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
+            if let vrsn = vrsn as? String {
+                return vrsn
+            } else {
+                return ""
+            }
         }
         
     }
-    
+
     /* Notification Names */
     public enum NotificationNames {
         
@@ -36,8 +41,4 @@ enum Constants {
         static var privateKeySelectionChange = Notification.Name(rawValue: "pgpro.privateKeySelectionChange")
         
     }
-    
-    
-    
-    
 }

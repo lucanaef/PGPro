@@ -25,7 +25,7 @@ class PersistenceService {
     static var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
-    
+
     // Core Data stack
     static var persistentContainer: NSPersistentContainer = {
         /*
@@ -53,7 +53,7 @@ class PersistenceService {
         })
         return container
     }()
-    
+
     // Core Data Saving support
     static func save() {
         let context = persistentContainer.viewContext

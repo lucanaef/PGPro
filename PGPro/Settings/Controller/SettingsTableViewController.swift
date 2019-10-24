@@ -54,7 +54,7 @@ class SettingsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.section == 0){
+        if (indexPath.section == 0) {
             
             activityIndicator.startAnimating()
 
@@ -79,20 +79,25 @@ class SettingsTableViewController: UITableViewController {
                     self?.activityIndicator.stopAnimating()
                 }
             }
-    
-            
-        } else if (indexPath.section == 1){
+
+        } else if (indexPath.section == 1) {
             
             switch indexPath.row {
             case 0: // Send Feedback
                 url = URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%5D%20Feedback")
-                UIApplication.shared.open(url!)
+                if let url = url {
+                    UIApplication.shared.open(url)
+                }
             case 1: // contribute
                 url = URL(string: "https://github.com/lucanaef/PGPro")
-                UIApplication.shared.open(url!)
+                if let url = url {
+                    UIApplication.shared.open(url)
+                }
             case 2: // Rate PGPro
                 url = URL(string: "https://itunes.apple.com/app/id" + Constants.PGPro.appID + "?action=write-review")
-                UIApplication.shared.open(url!)
+                if let url = url {
+                    UIApplication.shared.open(url)
+                }
             case 3: // Software Licenses
                 url = Bundle.main.url(forResource: "licenses", withExtension: "html")!
                 performSegue(withIdentifier: "goToWebView", sender: nil)
@@ -100,7 +105,7 @@ class SettingsTableViewController: UITableViewController {
                 return
             }
             
-        } else if (indexPath.section == 2){ // Case: Delete All Data
+        } else if (indexPath.section == 2) { // Case: Delete All Data
             
             let dialogMessage = UIAlertController(title: "Are you sure you want to delete all keys?", message: "", preferredStyle: .alert)
             

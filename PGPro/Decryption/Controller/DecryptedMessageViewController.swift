@@ -28,8 +28,6 @@ class DecryptedMessageViewController: UIViewController {
         
         if let text = message {
             textView.text = text
-        } else {
-            print("Failed to receive decrypted message.")
         }
         
         self.navigationController?.navigationBar.prefersLargeTitles = false
@@ -43,7 +41,6 @@ class DecryptedMessageViewController: UIViewController {
             target: self,
             action: #selector(share(sender:))
         )
-        
     }
     
     @objc
@@ -64,11 +61,18 @@ class DecryptedMessageViewController: UIViewController {
 extension DecryptedMessageViewController: UIActivityItemSource {
     
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        return message!
+        if let message = message {
+            return message
+        } else {
+            return ""
+        }
     }
     
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        return message!
+        if let message = message {
+            return message
+        } else {
+            return ""
+        }
     }
-    
 }

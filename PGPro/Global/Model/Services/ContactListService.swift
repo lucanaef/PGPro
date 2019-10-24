@@ -25,8 +25,6 @@ class ContactListService {
     
     private static var contactList: [Contact] = []
     
-    
-    
     /**
          Loads the persistent data into in-memory datastructure
     */
@@ -43,18 +41,14 @@ class ContactListService {
         }
     }
     
-    
-    
     /**
          Sorts the in-memory contact list alphabetically by name
     */
-    static func sort(){
-        contactList.sort { (a, b) -> Bool in
-            a.name < b.name
+    static func sort() {
+        contactList.sort { (cntctA, cntctB) -> Bool in
+            cntctA.name < cntctB.name
         }
     }
-    
-    
     
     /**
          - Returns: Array of contacts
@@ -62,8 +56,6 @@ class ContactListService {
     static func getContacts() -> [Contact] {
         return ContactListService.contactList
     }
-    
-    
     
     /**
         - Parameters:
@@ -75,37 +67,27 @@ class ContactListService {
         return ContactListService.contactList[index]
     }
     
-    
-    
     /**
          - Returns: Array of contacts with a public key
     */
     static func getPublicKeyContacts() -> [Contact] {
-        var cs: [Contact] = []
-        for c in ContactListService.contactList {
-            if c.key.isPublic {
-                cs.append(c)
-            }
+        var cntcts: [Contact] = []
+        for cntct in ContactListService.contactList where cntct.key.isPublic {
+            cntcts.append(cntct)
         }
-        return cs
+        return cntcts
     }
-    
-    
     
     /**
          - Returns: Array of contacts with a private key
     */
     static func getPrivateKeyContacts() -> [Contact] {
-        var cs: [Contact] = []
-        for c in ContactListService.contactList {
-            if c.key.isSecret {
-                cs.append(c)
-            }
+        var cntcts: [Contact] = []
+        for cntct in ContactListService.contactList where cntct.key.isSecret {
+            cntcts.append(cntct)
         }
-        return cs
+        return cntcts
     }
-    
-    
     
     /**
          Adds a contact to persistent and in-memory storage
@@ -117,12 +99,10 @@ class ContactListService {
 
          - Returns: True, if successful
     */
-    static func addContact(name: String, email: String, key: Key) -> Bool{
+    static func addContact(name: String, email: String, key: Key) -> Bool {
         /* Check if contact with this email address already exists */
-        for c in ContactListService.contactList {
-            if (c.email == email){
+        for cntct in ContactListService.contactList where (cntct.email == email) {
                 return false
-            }
         }
         
         /* Create new contact instance */
@@ -148,8 +128,6 @@ class ContactListService {
         return true
     }
     
-    
-    
     /**
          Adds a contact to persistent and in-memory storage
 
@@ -167,9 +145,7 @@ class ContactListService {
                                key: Key(secretKey: privateKey, publicKey: publicKey)
         )
     }
-    
 
-    
     /**
          Tries to find a suitable key on keyserver and adds contact to persistent and in-memory storage if successful
 
@@ -194,9 +170,7 @@ class ContactListService {
             return false
         }
     }
-    
-    
-    
+
     /**
          Tries to find a suitable key on keyserver and adds contact to persistent and in-memory storage if successful
 
@@ -219,26 +193,22 @@ class ContactListService {
                                         object: nil
         )
     }
-    
-    
-    
+
     /**
          - Returns: Number of stored contacts
     */
     static func numberOfContacts() -> Int {
         return ContactListService.contactList.count
     }
-    
-    
-    
+
     /**
          Deletes all persistent and in-memory data
     */
     static func deleteAllData() {
         
         /* Delete in-memory and persistent data */
-        for c in contactList {
-            PersistenceService.context.delete(c)
+        for cntct in contactList {
+            PersistenceService.context.delete(cntct)
         }
         PersistenceService.save()
         self.contactList = []
@@ -255,5 +225,4 @@ class ContactListService {
         NotificationCenter.default.post(name: Constants.NotificationNames.privateKeySelectionChange,
         object: nil)
     }
-    
 }

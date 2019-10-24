@@ -21,24 +21,22 @@ import WebKit
 class WebViewController: UIViewController {
 
     @IBOutlet weak var webView: WKWebView!
-    
+
     var urlRequest: URLRequest?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        webView.load(urlRequest!)
+        if let urlRequest = urlRequest {
+            webView.load(urlRequest)
+        }
     }
-    
-    
-    
+
     override func viewWillAppear(_ animated: Bool) {
         /* Hide AppLabel & Name from View */
         for subview in self.navigationController!.view.subviews.filter({$0 is UILabel}) {
             subview.isHidden = true
         }
     }
-    
 
     override func viewWillDisappear(_ animated: Bool) {
         /* Un-hide AppLabel & Name from View */
@@ -46,6 +44,4 @@ class WebViewController: UIViewController {
             subview.isHidden = false
         }
     }
-
-
 }

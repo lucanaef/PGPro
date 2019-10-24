@@ -22,6 +22,5 @@ class EncryptionTableView: UITableView {
     override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
         /* Do Nothing */
     }
-    
 
 }

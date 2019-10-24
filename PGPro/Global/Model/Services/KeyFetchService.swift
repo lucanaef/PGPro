@@ -34,20 +34,25 @@ class KeyFetchService {
     static func requestKey(email: String) -> Key? {
         
         let encodedEmail = email.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        guard encodedEmail != nil else { return nil }
         
         let urlString = "https://pgp.circl.lu/pks/lookup?search=" + encodedEmail! + "&op=get"
-        
         guard let url = URL(string: urlString) else { return nil }
         
         do {
             let contents = try String(contentsOf: url)
             
-            if let range = contents.range(of: #"-----BEGIN PGP PUBLIC KEY BLOCK-----(.|\n)*-----END PGP PUBLIC KEY BLOCK-----"#, options: .regularExpression) {
+            if let range = contents.range(of: #"-----BEGIN PGP PUBLIC KEY BLOCK-----(.|\n)*-----END PGP PUBLIC KEY BLOCK-----"#,
+                                          options: .regularExpression) {
                 /* Key found */
                 let asciikey = String(contents[range])
+                guard let asciiKeyData = asciikey.data(using: .utf8) else { return nil }
+                
                 do {
-                    let keys = try ObjectivePGP.readKeys(from: asciikey.data(using: .utf8)!)
+                    let keys = try ObjectivePGP.readKeys(from: asciiKeyData)
+                    guard (!keys.isEmpty) else { return nil }
                     return keys[0]
+                    
                 } catch {
                     return nil
                 }

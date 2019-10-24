@@ -56,8 +56,10 @@ extension UIAlertController {
     ///   - textFieldConfiguration: Use this to configure the text field (e.g. set placeholder text).
     ///   - onCompletion: Called when the user closes the alert view. The argument tells you whether
     ///     the user tapped the Close or the OK button (in which case this delivers the entered text).
-    public convenience init(title: String, message: String? = nil,
-                            cancelButtonTitle: String, okButtonTitle: String,
+    public convenience init(title: String,
+                            message: String? = nil,
+                            cancelButtonTitle: String,
+                            okButtonTitle: String,
                             validate validationRule: TextValidationRule = .noRestriction,
                             textFieldConfiguration: ((UITextField) -> Void)? = nil,
                             onCompletion: @escaping (TextInputResult) -> Void) {
@@ -77,7 +79,8 @@ extension UIAlertController {
                 textField.addTarget(self, action: #selector(TextFieldObserver.textFieldValueChanged(sender:)), for: .editingChanged)
             }
             
-            @objc func textFieldValueChanged(sender: UITextField) {
+            @objc
+            func textFieldValueChanged(sender: UITextField) {
                 textFieldValueChanged(sender)
             }
             

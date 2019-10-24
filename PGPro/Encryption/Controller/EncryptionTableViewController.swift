@@ -53,36 +53,34 @@ class EncryptionTableViewController: UITableViewController {
         )
     }
 
-    
     @objc
     func update() {
-        var t = "Select Public Keys..."
+        var label = "Select Public Keys..."
         let count = EncryptionTableViewController.encryptionContacts.count
         
         if (count == 1) {
-            t = EncryptionTableViewController.encryptionContacts[0].userID
+            label = EncryptionTableViewController.encryptionContacts[0].userID
         } else if (count > 0) {
-            t = EncryptionTableViewController.encryptionContacts[0].name
+            label = EncryptionTableViewController.encryptionContacts[0].name
             
             let tail = EncryptionTableViewController.encryptionContacts.dropFirst()
-            for c in tail {
-                t.append(", " + c.name)
+            for ctct in tail {
+                label.append(", " + ctct.name)
             }
         }
         
-        keySelectionLabel.text = t
+        keySelectionLabel.text = label
     }
-    
     
     @objc
     func encrypt() {
         if let text = textView.text {
-            if (textView.text == ""){
+            if (textView.text == "") {
                 alert(text: "Enter Message to Encrypt!")
                 return
             }
             
-            if (!EncryptionTableViewController.encryptionContacts.isEmpty){
+            if (!EncryptionTableViewController.encryptionContacts.isEmpty) {
                 do {
                     
                     var encryptionKeys = [Key]()
@@ -115,14 +113,12 @@ class EncryptionTableViewController: UITableViewController {
 
     }
     
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 0){
+        if (indexPath.row == 0) {
             performSegue(withIdentifier: "showPublicKeys", sender: nil)
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }
-    
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.row == 1) {
@@ -137,5 +133,4 @@ class EncryptionTableViewController: UITableViewController {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
-    
 }

@@ -27,10 +27,11 @@ class ContactDetailTableViewController: UITableViewController {
     @IBOutlet weak var type: UILabel!
     @IBOutlet weak var expires: UILabel!
     @IBOutlet weak var fingerprint: UILabel!
-    
-    
+
+
     var contact: Contact?
     var noKey = true
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,10 +78,8 @@ class ContactDetailTableViewController: UITableViewController {
         }
         
     }
-    
-    
-    
-    
+
+
     @objc
     func setShare(sender: UIBarButtonItem) {
         if (contact!.key.isSecret) {
@@ -116,17 +115,16 @@ class ContactDetailTableViewController: UITableViewController {
         }
     
     }
-    
+
+
     func share(activityItems: [Any]) {
         let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         activityVC.popoverPresentationController?.sourceView = self.view
         
         self.present(activityVC, animated: true, completion: nil)
     }
-    
-    
-    
-    
+
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         if (noKey) {
             return 1
@@ -134,21 +132,24 @@ class ContactDetailTableViewController: UITableViewController {
             return super.numberOfSections(in: tableView)
         }
     }
-    
+
+
     override func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
+
     override func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
         if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
             return true
         }
         return false
     }
-    
+
+
     override func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
         let cell = tableView.cellForRow(at: indexPath)
         UIPasteboard.general.string = cell!.detailTextLabel?.text
     }
-    
+
 }
