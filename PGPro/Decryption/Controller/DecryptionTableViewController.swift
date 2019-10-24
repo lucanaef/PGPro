@@ -20,9 +20,9 @@ import ObjectivePGP
 
 class DecryptionTableViewController: UITableViewController {
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var passphraseTextField: UITextField!
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var passphraseTextField: UITextField!
+    @IBOutlet weak private var textView: UITextView!
     
     static var decryptionContact: Contact?
     var decryptionKey: Key? {
@@ -57,22 +57,20 @@ class DecryptionTableViewController: UITableViewController {
         )
     }
     
-    
-    
     @objc
-    func update(){
+    func update() {
         var label = "Select Private Key..."
-        if (DecryptionTableViewController.self.decryptionContact != nil) {
-            label = DecryptionTableViewController.self.decryptionContact!.userID
+        
+        if let decryptionContact = DecryptionTableViewController.decryptionContact {
+            label = decryptionContact.userID
         }
+        
         titleLabel.text = label
         
         keyRequiresPassphrase = decryptionKey?.isEncryptedWithPassword ?? false
         
         tableView.reloadData()
     }
-    
-    
     
     @objc
     func decrypt() {
@@ -96,18 +94,23 @@ class DecryptionTableViewController: UITableViewController {
                     return
                 }
                 
+                guard let decryptionKey = decryptionKey else {
+                    alert(text: "Decryption Failed!")
+                    return
+                }
+                
                 do {
                     if (keyRequiresPassphrase) {
                         decryptedMessage = try ObjectivePGP.decrypt(encryptedMessageData,
-                                                                        andVerifySignature: false,
-                                                                        using: [decryptionKey!],
-                                                                        passphraseForKey: {(_) -> (String?) in return passphrase})
+                                                                    andVerifySignature: false,
+                                                                    using: [decryptionKey],
+                                                                    passphraseForKey: {(_) -> (String?) in return passphrase})
                         
                     } else {
                         decryptedMessage = try ObjectivePGP.decrypt(encryptedMessageData,
-                                                                        andVerifySignature: false,
-                                                                        using: [decryptionKey!],
-                                                                        passphraseForKey: nil)
+                                                                    andVerifySignature: false,
+                                                                    using: [decryptionKey],
+                                                                    passphraseForKey: nil)
                     }
                     
                     performSegue(withIdentifier: "showDecryptedMessage",
@@ -122,21 +125,17 @@ class DecryptionTableViewController: UITableViewController {
             alert(text: "Failed to Retrieve Encrypted Message!")
         }
     }
-    
-    
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         /* Give decrypted message to subview */
         if (segue.identifier == "showDecryptedMessage") {
-            let destinationNavigationController = segue.destination as! UINavigationController
-            let targetController = destinationNavigationController.topViewController as! DecryptedMessageViewController
+            guard let destinationNC = segue.destination as? UINavigationController else { return }
+            guard let targetController = destinationNC.topViewController as? DecryptedMessageViewController else { return }
             targetController.message = sender as? String
         }
         
     }
-    
-    
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.row == 0) {
@@ -152,18 +151,16 @@ class DecryptionTableViewController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }
-    
-    
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
+
         /* Hide passphrase field if not required */
         if (!keyRequiresPassphrase) {
             if (indexPath.row == 1) {
                 return 0
             }
         }
-        
+
         if (indexPath.row == 3) {
             
             /* (Full-height) Message Row */
@@ -176,12 +173,11 @@ class DecryptionTableViewController: UITableViewController {
             height -= (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0)
             height -= (self.navigationController?.navigationBar.frame.height ?? 0.0)
             height -= (self.tabBarController?.tabBar.frame.size.height ?? 0.0)
-            
+
             return height
-            
+
         } else {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
-
 }

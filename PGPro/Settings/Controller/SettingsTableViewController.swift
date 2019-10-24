@@ -20,7 +20,7 @@ import StoreKit
 
 class SettingsTableViewController: UITableViewController {
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     
     var url = URL(string: "")
 
@@ -36,9 +36,8 @@ class SettingsTableViewController: UITableViewController {
         appLabel.text = "PGPro " + Constants.PGPro.version
         appLabel.textAlignment = .center
         appLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
-        appLabel.textColor = UIColor(red:0.24, green:0.24, blue:0.26, alpha:1.0)
+        appLabel.textColor = UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 1.0)
         self.navigationController?.view.addSubview(appLabel)
-        
         
         let authorLabel = UILabel(frame: CGRect(x: 0,
                                                 y: self.view.frame.height - 130,
@@ -63,7 +62,7 @@ class SettingsTableViewController: UITableViewController {
                 let addedContacts = ContactImportService.importContacts()
                 
                 DispatchQueue.main.async { [weak self] in
-                    if (addedContacts == -1){
+                    if (addedContacts == -1) {
                         self?.alert(text: "Import Requires an Internet Connection!")
                     } else if (addedContacts == 0) {
                         self?.alert(text: "No New Contacts Added!")
@@ -99,7 +98,8 @@ class SettingsTableViewController: UITableViewController {
                     UIApplication.shared.open(url)
                 }
             case 3: // Software Licenses
-                url = Bundle.main.url(forResource: "licenses", withExtension: "html")!
+                url = Bundle.main.url(forResource: "licenses", withExtension: "html")
+                guard url != nil else { return }
                 performSegue(withIdentifier: "goToWebView", sender: nil)
             default:
                 return
@@ -107,25 +107,27 @@ class SettingsTableViewController: UITableViewController {
             
         } else if (indexPath.section == 2) { // Case: Delete All Data
             
-            let dialogMessage = UIAlertController(title: "Are you sure you want to delete all keys?", message: "", preferredStyle: .alert)
+            let dialogMessage = UIAlertController(title: "Are you sure you want to delete all keys?",
+                                                  message: "",
+                                                  preferredStyle: .alert)
             
             // Create OK button with action handler
-            let ok = UIAlertAction(title: "Confirm", style: .destructive, handler: { (action) -> Void in
+            let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
                 ContactListService.deleteAllData()
             })
             
             // Create Cancel button with action handlder
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) -> Void in
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) -> Void in
                 return
             }
             
-            //Add OK and Cancel button to dialog message
-            dialogMessage.addAction(ok)
+            // Add Confirm and Cancel button to dialog message
+            dialogMessage.addAction(confirm)
             dialogMessage.addAction(cancel)
             
             // Present dialog message to user
             self.present(dialogMessage, animated: true, completion: nil)
-            
+        
             return
         }
         
@@ -133,8 +135,9 @@ class SettingsTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destVC = segue.destination as! WebViewController
-        destVC.urlRequest = URLRequest(url: url!)
+        guard let destVC = segue.destination as? WebViewController else { return }
+        guard let url = url else { return }
+        destVC.urlRequest = URLRequest(url: url)
     }
 
 }

@@ -21,12 +21,12 @@ import ObjectivePGP
 
 class AddContactTableViewController: UITableViewController {
     
-    @IBOutlet var addContactTableView: UITableView!
+    @IBOutlet private var addContactTableView: UITableView!
     
-    @IBOutlet weak var inputName: UITextField!
-    @IBOutlet weak var inputEmail: UITextField!
+    @IBOutlet private weak var inputName: UITextField!
+    @IBOutlet private weak var inputEmail: UITextField!
     
-    @IBAction func lookupButtonTapped(_ sender: UIButton) {
+    @IBAction private func lookupButtonTapped(_ sender: UIButton) {
         if let name = inputName.text {
             if let email = inputEmail.text {
                 
@@ -44,19 +44,19 @@ class AddContactTableViewController: UITableViewController {
     }
     
     
-    @IBOutlet weak var publicKeySwitch: UISwitch!
-    @IBAction func publicKeyToggleAction(_ sender: Any) {
+    @IBOutlet weak private var publicKeySwitch: UISwitch!
+    @IBAction private func publicKeyToggleAction(_ sender: Any) {
         addContactTableView.reloadData()
     }
     
-    @IBOutlet weak var publicKeyTextView: UITextView!
+    @IBOutlet weak private var publicKeyTextView: UITextView!
     
-    @IBOutlet weak var privateKeySwitch: UISwitch!
-    @IBAction func privateKeyToggleAction(_ sender: Any) {
+    @IBOutlet weak private var privateKeySwitch: UISwitch!
+    @IBAction private func privateKeyToggleAction(_ sender: Any) {
         addContactTableView.reloadData()
     }
     
-    @IBOutlet weak var privateKeyTextView: UITextView!
+    @IBOutlet weak private var privateKeyTextView: UITextView!
     
 
     override func viewDidLoad() {
@@ -82,18 +82,20 @@ class AddContactTableViewController: UITableViewController {
     
     func validateInput() -> Bool {
         
-        guard (inputName.text != nil && inputName.text != "") else {
+        guard let name = inputName.text else { return false }
+        guard let email = inputEmail.text else { return false }
+        
+        guard (name != "") else {
             alert(text: "Name Can't Be Empty!")
             return false
         }
         
-        guard (inputEmail.text != nil && inputEmail.text != "") else {
+        guard (email != "") else {
             alert(text: "Email Address Can't Be Empty!")
             return false
         }
         
-        
-        guard inputEmail.text!.isValidEmail() else {
+        guard email.isValidEmail() else {
             alert(text: "Email Address Not Valid!")
             return false
         }
@@ -143,10 +145,10 @@ class AddContactTableViewController: UITableViewController {
             
             let key = Key(secretKey: privateKey, publicKey: publicKey)
 
+            guard let name = inputName.text else { return }
+            guard let email = inputEmail.text else { return }
             
-            if !ContactListService.addContact(name: inputName!.text!,
-                                              email: inputEmail!.text!,
-                                              key: key) {
+            if !ContactListService.addContact(name: name, email: email, key: key) {
                 alert(text: "Contact Already Exists!")
             } else {
                 dismiss(animated: true, completion: nil)
@@ -155,12 +157,10 @@ class AddContactTableViewController: UITableViewController {
         }
     }
     
-    
     @objc
     func addContactCancel(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 2 {
@@ -180,5 +180,4 @@ class AddContactTableViewController: UITableViewController {
         }
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
-    
 }

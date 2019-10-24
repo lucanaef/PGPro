@@ -19,7 +19,7 @@ import UIKit
 
 class PrivateKeySelectionTableViewController: UITableViewController {
 
-    @IBOutlet var keySelectionTableView: UITableView!
+    @IBOutlet private var KeySelectionTV: UITableView!
     
     let contactList = ContactListService.getPrivateKeyContacts()
     static var selectedRow = -1
@@ -27,12 +27,14 @@ class PrivateKeySelectionTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        keySelectionTableView.reloadData()
+        KeySelectionTV.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let c = contactList[indexPath.row]
-        let cell = keySelectionTableView.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as! KeySelectionTableViewCell
+        let cntct = contactList[indexPath.row]
+        guard let cell = KeySelectionTV.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as? KeySelectionTableViewCell else {
+            return super.tableView(tableView, cellForRowAt: indexPath)
+        }
         
         if (indexPath.row == PrivateKeySelectionTableViewController.selectedRow) {
             cell.accessoryType = UITableViewCell.AccessoryType.checkmark
@@ -40,7 +42,7 @@ class PrivateKeySelectionTableViewController: UITableViewController {
             cell.accessoryType = UITableViewCell.AccessoryType.none
         }
         
-        cell.setContact(contact: c)
+        cell.setContact(contact: cntct)
         
         return cell
     }
@@ -52,11 +54,10 @@ class PrivateKeySelectionTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         PrivateKeySelectionTableViewController.selectedRow = indexPath.row
         DecryptionTableViewController.decryptionContact = contactList[indexPath.row]
-        keySelectionTableView.reloadData()
+        KeySelectionTV.reloadData()
         
         // Notify observers about changed key selection
         NotificationCenter.default.post(name: Constants.NotificationNames.privateKeySelectionChange,
                                         object: nil)
     }
-    
 }

@@ -18,21 +18,23 @@
 import UIKit
 
 class PublicKeySelectionTableViewController: UITableViewController {
-    
-    @IBOutlet var keySelectionTableView: UITableView!
-    
+
+    @IBOutlet private var KeySelectionTV: UITableView!
+
     let contactList = ContactListService.getPublicKeyContacts()
     static var selectedRows = [Int]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        keySelectionTableView.reloadData()
+        KeySelectionTV.reloadData()
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let c = contactList[indexPath.row]
-        let cell = keySelectionTableView.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as! KeySelectionTableViewCell
+        let cntct = contactList[indexPath.row]
+        
+        guard let cell = KeySelectionTV.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as? KeySelectionTableViewCell else { return super.tableView(tableView, cellForRowAt: indexPath)
+        }
         
         if (PublicKeySelectionTableViewController.selectedRows.contains(indexPath.row)) {
             cell.accessoryType = UITableViewCell.AccessoryType.checkmark
@@ -40,29 +42,38 @@ class PublicKeySelectionTableViewController: UITableViewController {
             cell.accessoryType = UITableViewCell.AccessoryType.none
         }
         
-        cell.setContact(contact: c)
+        cell.setContact(contact: cntct)
         
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contactList.count
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         if (PublicKeySelectionTableViewController.selectedRows.contains(indexPath.row)) {
-            PublicKeySelectionTableViewController.selectedRows.remove(at: PublicKeySelectionTableViewController.selectedRows.firstIndex(of: indexPath.row)!)
-            EncryptionTableViewController.encryptionContacts.remove(at: EncryptionTableViewController.encryptionContacts.firstIndex(of: contactList[indexPath.row])!)
+            
+            guard let PKSTVFirstIndex = PublicKeySelectionTableViewController.selectedRows.firstIndex(of: indexPath.row) else {
+                return
+            }
+            PublicKeySelectionTableViewController.selectedRows.remove(at: PKSTVFirstIndex)
+            
+            guard let ETVFirstIndex = EncryptionTableViewController.encryptionContacts.firstIndex(of: contactList[indexPath.row]) else {
+                return
+            }
+            EncryptionTableViewController.encryptionContacts.remove(at: ETVFirstIndex)
+            
         } else {
             PublicKeySelectionTableViewController.selectedRows.append(indexPath.row)
             EncryptionTableViewController.encryptionContacts.append(contactList[indexPath.row])
         }
-        
-        keySelectionTableView.reloadData()
-        
+
+        KeySelectionTV.reloadData()
+
         // Notify observers about changed key selection
         NotificationCenter.default.post(name: Constants.NotificationNames.publicKeySelectionChange,
                                         object: nil)
     }
-
 }

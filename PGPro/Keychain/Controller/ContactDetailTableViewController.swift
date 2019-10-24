@@ -20,18 +20,16 @@ import ObjectivePGP
 
 class ContactDetailTableViewController: UITableViewController {
     
-    @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var email: UILabel!
+    @IBOutlet weak private var name: UILabel!
+    @IBOutlet weak private var email: UILabel!
     
-    @IBOutlet weak var id: UILabel!
-    @IBOutlet weak var type: UILabel!
-    @IBOutlet weak var expires: UILabel!
-    @IBOutlet weak var fingerprint: UILabel!
-
+    @IBOutlet weak private var id: UILabel!
+    @IBOutlet weak private var type: UILabel!
+    @IBOutlet weak private var expires: UILabel!
+    @IBOutlet weak private var fingerprint: UILabel!
 
     var contact: Contact?
     var noKey = true
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,47 +42,55 @@ class ContactDetailTableViewController: UITableViewController {
             action: #selector(setShare(sender:))
         )
         
-        self.name.text = contact?.name
-        self.email.text = contact?.email
+        setLabel()
+    }
+    
+    func setLabel() {
+        guard let contact = contact else { return }
         
-        if let key = contact?.key {
-            self.id.text = key.keyID.shortIdentifier.insertSeparator(" ", atEvery: 4)
-            
-            self.type.text = "None"
-            if (key.isPublic && key.isSecret) {
-                self.type.text = "Public & Private"
-                noKey = false
-            } else if (key.isPublic) {
-                self.type.text = "Public"
-                noKey = false
-            } else if (key.isSecret) {
-                self.type.text = "Private"
-                noKey = false
-            }
-            
-            self.expires.text = "Never"
-            if let expirationDate = key.expirationDate {
-                self.expires.text = expirationDate.toString()
-            }
-            
-            self.fingerprint.text = ""
-            if let fp = key.publicKey {
-                self.fingerprint.text = fp.fingerprint.description().insertSeparator(" ", atEvery: 4)
-            }
-            if let fp = key.secretKey {
-                self.fingerprint.text = fp.fingerprint.description().insertSeparator(" ", atEvery: 4)
-            }
-            
+        name.text = contact.name
+        email.text = contact.email
+        
+        let key = contact.key
+        
+        id.text = key.keyID.shortIdentifier.insertSeparator(" ", atEvery: 4)
+        
+        type.text = "None"
+        if (key.isPublic && key.isSecret) {
+            type.text = "Public & Private"
+            noKey = false
+        } else if (key.isPublic) {
+            type.text = "Public"
+            noKey = false
+        } else if (key.isSecret) {
+            type.text = "Private"
+            noKey = false
         }
         
+        expires.text = "Never"
+        if let expirationDate = key.expirationDate {
+            expires.text = expirationDate.toString()
+        }
+        
+        fingerprint.text = ""
+        if let pubKey = key.publicKey {
+            fingerprint.text = pubKey.fingerprint.description().insertSeparator(" ", atEvery: 4)
+        }
+        if let secKey = key.secretKey {
+            fingerprint.text = secKey.fingerprint.description().insertSeparator(" ", atEvery: 4)
+        }
     }
-
 
     @objc
     func setShare(sender: UIBarButtonItem) {
-        if (contact!.key.isSecret) {
-            var activityItem = try! Armor.armored(contact!.key.export(), as: .publicKey)
-            
+        guard let contact = contact else { return }
+        
+        var activityItem = ""
+        do {
+            activityItem = try Armor.armored(contact.key.export(), as: .publicKey)
+        } catch { }
+        
+        if (contact.key.isSecret) {
             let optionMenu = UIAlertController(title: nil,
                                                message: "Select Key to Share",
                                                preferredStyle: .actionSheet)
@@ -96,7 +102,9 @@ class ContactDetailTableViewController: UITableViewController {
             optionMenu.addAction(sharePublicKey)
             
             let sharePrivateKey = UIAlertAction(title: "Private Key", style: .destructive) { action -> Void in
-                activityItem = try! Armor.armored(self.contact!.key.export(), as: .secretKey)
+                do {
+                    activityItem = try Armor.armored(contact.key.export(), as: .secretKey)
+                } catch { }
                 optionMenu.dismiss(animated: true, completion: nil)
                 self.share(activityItems: [activityItem])
             }
@@ -108,22 +116,19 @@ class ContactDetailTableViewController: UITableViewController {
             }
             optionMenu.addAction(cancelAction)
             
-            self.present(optionMenu, animated: true, completion: nil)
-        } else if (contact!.key.isPublic) {
-            let activityItem = try! Armor.armored(contact!.key.export(), as: .publicKey)
+            present(optionMenu, animated: true, completion: nil)
+        } else {
             self.share(activityItems: [activityItem])
         }
     
     }
 
-
     func share(activityItems: [Any]) {
         let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         activityVC.popoverPresentationController?.sourceView = self.view
         
-        self.present(activityVC, animated: true, completion: nil)
+        present(activityVC, animated: true, completion: nil)
     }
-
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         if (noKey) {
@@ -133,23 +138,26 @@ class ContactDetailTableViewController: UITableViewController {
         }
     }
 
-
     override func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-
-    override func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+    override func tableView(_ tableView: UITableView,
+                            canPerformAction action: Selector,
+                            forRowAt indexPath: IndexPath,
+                            withSender sender: Any?) -> Bool {
         if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
             return true
         }
         return false
     }
 
-
-    override func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
-        let cell = tableView.cellForRow(at: indexPath)
-        UIPasteboard.general.string = cell!.detailTextLabel?.text
+    override func tableView(_ tableView: UITableView,
+                            performAction action: Selector,
+                            forRowAt indexPath: IndexPath,
+                            withSender sender: Any?) {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            UIPasteboard.general.string = cell.detailTextLabel?.text
+        }
     }
-
 }
