@@ -17,6 +17,7 @@
 
 import Foundation
 import UIKit
+import MessageUI
 import ObjectivePGP
 
 class EncryptionTableViewController: UITableViewController {
@@ -95,10 +96,28 @@ class EncryptionTableViewController: UITableViewController {
                     
                     let armoredMessage = Armor.armored(encryptedBin, as: .message)
                     
-                    let activityVC = UIActivityViewController(activityItems: [armoredMessage], applicationActivities: nil)
-                    activityVC.popoverPresentationController?.sourceView = self.view
                     
-                    self.present(activityVC, animated: true, completion: nil)
+                    if !MFMailComposeViewController.canSendMail() {
+                        let activityVC = UIActivityViewController(activityItems: [armoredMessage], applicationActivities: nil)
+                        activityVC.popoverPresentationController?.sourceView = self.view
+                        
+                        self.present(activityVC, animated: true, completion: nil)
+                        return
+                    } else {
+                        let mailComposeViewController = MFMailComposeViewController()
+                        
+                        var addresses: [String] = []
+                        for cntct in EncryptionTableViewController.encryptionContacts {
+                            addresses.append(cntct.email)
+                        }
+                        mailComposeViewController.mailComposeDelegate = self as MFMailComposeViewControllerDelegate
+                        mailComposeViewController.setToRecipients(addresses)
+                        mailComposeViewController.setMessageBody(armoredMessage, isHTML: false)
+                    
+                        present(mailComposeViewController, animated: true, completion: nil)
+                    }
+
+                    
                 } catch {
                     alert(text: "Encryption Failed!")
                     return
@@ -112,6 +131,8 @@ class EncryptionTableViewController: UITableViewController {
         }
 
     }
+    
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.row == 0) {
@@ -133,4 +154,13 @@ class EncryptionTableViewController: UITableViewController {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
+    
+}
+
+extension EncryptionTableViewController: MFMailComposeViewControllerDelegate {
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
+    
 }
