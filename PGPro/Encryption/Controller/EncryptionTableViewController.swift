@@ -111,6 +111,7 @@ class EncryptionTableViewController: UITableViewController {
                             addresses.append(cntct.email)
                         }
                         mailComposeViewController.mailComposeDelegate = self as MFMailComposeViewControllerDelegate
+                        mailComposeViewController.delegate = self as UINavigationControllerDelegate
                         mailComposeViewController.setToRecipients(addresses)
                         mailComposeViewController.setMessageBody(armoredMessage, isHTML: false)
                     
@@ -157,7 +158,7 @@ class EncryptionTableViewController: UITableViewController {
     
 }
 
-extension EncryptionTableViewController: MFMailComposeViewControllerDelegate {
+extension EncryptionTableViewController: MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
