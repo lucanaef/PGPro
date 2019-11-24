@@ -1,5 +1,3 @@
-# Uncomment the lines below you want to change by removing the # in the beginning
-
 # A list of devices you want to take the screenshots from
 devices([
    "iPhone 8",
@@ -22,11 +20,7 @@ scheme("FastlaneSnapshot")
 # Where should the resulting screenshots be stored?
 output_directory("./fastlane/screenshots")
 
-# remove the '#' to clear all previously generated screenshots before creating new ones
+reinstall_app(true)
+app_identifier("app.pgpro")
+dark_mode(true)
 clear_previous_screenshots(true)
-
-# Arguments to pass to the app on launch. See https://docs.fastlane.tools/actions/snapshot/#launch-arguments
-# launch_arguments(["-favColor red"])
-
-# For more information about all available options run
-# fastlane action snapshot

@@ -26,16 +26,16 @@ class FastlaneSnapshot: XCTestCase {
         
         snapshot("1-EncryptionView")
         
-        XCUIApplication().tabBars.buttons["lock.open.fill"].tap()
+        app.tabBars.buttons["Decryption"].tap()
         
         snapshot("2-DecryptionView")
         
-        XCUIApplication().tabBars.buttons["person.2.fill"].tap()
+        app.tabBars.buttons["Keychain"].tap()
         
         snapshot("3-KeychainView")
         
-        app.tables.containing(.cell, identifier:"Emmanuel Goldstein, e.goldstein@pgpro.app").element.tap()
-        
+        app.tables.firstMatch.cells.firstMatch.tap()
+                
         snapshot("4-DetailView")
     }
 
