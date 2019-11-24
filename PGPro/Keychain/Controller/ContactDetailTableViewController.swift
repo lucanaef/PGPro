@@ -20,8 +20,8 @@ import ObjectivePGP
 
 class ContactDetailTableViewController: UITableViewController {
     
-    @IBOutlet weak private var name: UILabel!
-    @IBOutlet weak private var email: UILabel!
+    @IBOutlet weak private var name: UITextField!
+    @IBOutlet weak private var email: UITextField!
     
     @IBOutlet weak private var id: UILabel!
     @IBOutlet weak private var type: UILabel!
@@ -35,12 +35,6 @@ class ContactDetailTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.title = contact?.name
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .action,
-            target: self,
-            action: #selector(setShare(sender:))
-        )
         
         setLabel()
     }
@@ -81,8 +75,7 @@ class ContactDetailTableViewController: UITableViewController {
         }
     }
 
-    @objc
-    func setShare(sender: UIBarButtonItem) {
+    func setShare() {
         guard let contact = contact else { return }
         
         var activityItem = ""
@@ -132,7 +125,7 @@ class ContactDetailTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         if (noKey) {
-            return 1
+            return super.numberOfSections(in: tableView) - 1
         } else {
             return super.numberOfSections(in: tableView)
         }
@@ -146,7 +139,9 @@ class ContactDetailTableViewController: UITableViewController {
                             canPerformAction action: Selector,
                             forRowAt indexPath: IndexPath,
                             withSender sender: Any?) -> Bool {
-        if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
+        if (indexPath.section == 2) {
+            return false
+        } else if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
             return true
         }
         return false
@@ -158,6 +153,12 @@ class ContactDetailTableViewController: UITableViewController {
                             withSender sender: Any?) {
         if let cell = tableView.cellForRow(at: indexPath) {
             UIPasteboard.general.string = cell.detailTextLabel?.text
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (indexPath.section == 2) {
+            setShare()
         }
     }
 }
