@@ -150,14 +150,14 @@ class ContactListService {
 
          - Returns: True, if successful
     */
-    static func editContact(cntct: Contact, newName: String, newEmail: String) -> Bool {
+    static func editContact(contact: Contact, newName: String, newEmail: String) -> Bool {
         /* Check if contact with this email address already exists */
-        for cntct in ContactListService.contactList where (cntct.email == newEmail) {
+        for cntct in ContactListService.contactList where (cntct.email == newEmail && contact.email != newEmail) {
             return false
         }
         
-        let cntctIdx = self.getIndex(contact: cntct)
-        let oldKey = cntct.key
+        let cntctIdx = self.getIndex(contact: contact)
+        let oldKey = contact.key
         self.removeContact(index: cntctIdx)
         return self.addContact(name: newName, email: newEmail, key: oldKey)
     }

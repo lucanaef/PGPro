@@ -85,7 +85,7 @@ class ContactDetailTableViewController: UITableViewController {
                 let newName = name.text ?? ""
                 let newEmail = email.text ?? ""
                 
-                if !ContactListService.editContact(cntct: contact, newName: newName, newEmail: newEmail) {
+                if !ContactListService.editContact(contact: contact, newName: newName, newEmail: newEmail) {
                     alert(text: "Contact with this Email Address Already Exists!")
                 }
             } else {
