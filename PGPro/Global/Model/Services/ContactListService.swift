@@ -68,6 +68,18 @@ class ContactListService {
     }
     
     /**
+        - Parameters:
+            - contact: Contact
+        
+         - Returns: Array index of contact, -1 if not successful
+    */
+    static func getIndex(contact: Contact) -> Int {
+        return ContactListService.contactList.firstIndex { (cntct) -> Bool in
+            cntct.email == contact.email
+            } ?? -1
+    }
+    
+    /**
          - Returns: Array of contacts with a public key
     */
     static func getPublicKeyContacts() -> [Contact] {
@@ -102,7 +114,7 @@ class ContactListService {
     static func addContact(name: String, email: String, key: Key) -> Bool {
         /* Check if contact with this email address already exists */
         for cntct in ContactListService.contactList where (cntct.email == email) {
-                return false
+            return false
         }
         
         /* Create new contact instance */
@@ -127,6 +139,29 @@ class ContactListService {
         
         return true
     }
+    
+    /**
+         Naive approach to editing a contact
+
+         - Parameters:
+            - cntct: Contact
+            - newName: New name of the contact
+            - newEmail: New email address of the contact
+
+         - Returns: True, if successful
+    */
+    static func editContact(cntct: Contact, newName: String, newEmail: String) -> Bool {
+        /* Check if contact with this email address already exists */
+        for cntct in ContactListService.contactList where (cntct.email == newEmail) {
+            return false
+        }
+        
+        let cntctIdx = self.getIndex(contact: cntct)
+        let oldKey = cntct.key
+        self.removeContact(index: cntctIdx)
+        return self.addContact(name: newName, email: newEmail, key: oldKey)
+    }
+    
     
     /**
          Adds a contact to persistent and in-memory storage

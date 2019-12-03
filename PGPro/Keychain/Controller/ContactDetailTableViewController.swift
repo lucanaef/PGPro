@@ -21,22 +21,78 @@ import ObjectivePGP
 class ContactDetailTableViewController: UITableViewController {
     
     @IBOutlet weak private var name: UITextField!
+    @IBAction func nameEditingChanged(_ sender: Any) {
+        addSaveButton()
+    }
     @IBOutlet weak private var email: UITextField!
+    @IBAction func emailValueChanged(_ sender: Any) {
+        addSaveButton()
+    }
     
     @IBOutlet weak private var id: UILabel!
     @IBOutlet weak private var type: UILabel!
     @IBOutlet weak private var expires: UILabel!
     @IBOutlet weak private var fingerprint: UILabel!
 
+    var saveButtonAdded = false
+    
     var contact: Contact?
     var noKey = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.title = contact?.name
-        
         setLabel()
+    }
+    
+    func addSaveButton() {
+        if !saveButtonAdded {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonItem.SystemItem.save,
+                                                                          target: self,
+                                                                          action: #selector(saveChangedContact)
+            )
+            saveButtonAdded = true
+        }
+    }
+    
+    func validateInput() -> Bool {
+        
+        guard let name = name.text else { return false }
+        guard let email = email.text else { return false }
+        
+        guard (name != "") else {
+            alert(text: "Name Can't Be Empty!")
+            return false
+        }
+        
+        guard (email != "") else {
+            alert(text: "Email Address Can't Be Empty!")
+            return false
+        }
+        
+        guard email.isValidEmail() else {
+            alert(text: "Email Address Not Valid!")
+            return false
+        }
+        
+        return true
+    }
+    
+    @objc
+    func saveChangedContact () {
+        if validateInput() {
+            if let contact = contact {
+                let newName = name.text ?? ""
+                let newEmail = email.text ?? ""
+                
+                if !ContactListService.editContact(cntct: contact, newName: newName, newEmail: newEmail) {
+                    alert(text: "Contact with this Email Address Already Exists!")
+                }
+            } else {
+                print("[ContactDetailTVC] Contact Object Missing!")
+            }
+            _ = navigationController?.popViewController(animated: true)
+        }
     }
     
     func setLabel() {
@@ -122,7 +178,7 @@ class ContactDetailTableViewController: UITableViewController {
         
         present(activityVC, animated: true, completion: nil)
     }
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         if (noKey) {
             return super.numberOfSections(in: tableView) - 1

@@ -149,7 +149,7 @@ class AddContactTableViewController: UITableViewController {
             guard let email = inputEmail.text else { return }
             
             if !ContactListService.addContact(name: name, email: email, key: key) {
-                alert(text: "Contact Already Exists!")
+                alert(text: "Contact with this Email Address Already Exists!")
             } else {
                 dismiss(animated: true, completion: nil)
             }

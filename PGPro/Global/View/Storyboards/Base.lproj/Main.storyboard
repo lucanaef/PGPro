@@ -610,6 +610,9 @@
                                                     <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <textInputTraits key="textInputTraits" textContentType="name"/>
+                                                    <connections>
+                                                        <action selector="nameEditingChanged:" destination="CDs-aQ-Lb0" eventType="editingChanged" id="faf-i5-85u"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -646,6 +649,9 @@
                                                     <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <textInputTraits key="textInputTraits" textContentType="name"/>
+                                                    <connections>
+                                                        <action selector="emailValueChanged:" destination="CDs-aQ-Lb0" eventType="editingChanged" id="3j9-bq-Xhx"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
