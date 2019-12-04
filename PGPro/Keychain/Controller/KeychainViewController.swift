@@ -26,7 +26,6 @@ class KeychainViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,7 +46,6 @@ class KeychainViewController: UIViewController {
         )
     }
     
-    
     @objc
     func reloadData() {
         DispatchQueue.main.async {
@@ -55,24 +53,19 @@ class KeychainViewController: UIViewController {
         }
     }
 
-    
     @objc
     func plus(sender: UIBarButtonItem) {
         performSegue(withIdentifier: "goToAddContact", sender: nil)
     }
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "showContactDetail") {
-            let destVC = segue.destination as! ContactDetailTableViewController
-            destVC.contact = sender as? Contact
-            
+            if let destVC = segue.destination as? ContactDetailTableViewController {
+                destVC.contact = sender as? Contact
+            }
         }
     }
-    
-
 }
-
 
 extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -82,15 +75,19 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let c = ContactListService.getContact(index: indexPath.row)
-        let cell = keychainTableView.dequeueReusableCell(withIdentifier: "KeychainTableViewCell") as! KeychainTableViewCell
-        
-        cell.setContact(contact: c)
-        
-        return cell
+        if let cell = keychainTableView.dequeueReusableCell(withIdentifier: "KeychainTableViewCell") as? KeychainTableViewCell {
+            cell.setContact(contact: c)
+            return cell
+        } else {
+            // Dummy return value
+            return UITableViewCell()
+        }
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == . delete) {
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
             // Remove from Storage
             ContactListService.removeContact(index: indexPath.row)
             // Remove from View
@@ -99,9 +96,7 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let c = ContactListService.getContact(index: indexPath.row)
-        performSegue(withIdentifier: "showContactDetail", sender: c)
+        let cntct = ContactListService.getContact(index: indexPath.row)
+        performSegue(withIdentifier: "showContactDetail", sender: cntct)
     }
-    
-    
 }

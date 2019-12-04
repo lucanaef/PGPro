@@ -85,8 +85,8 @@ class EncryptionTableViewController: UITableViewController {
                 do {
                     
                     var encryptionKeys = [Key]()
-                    for c in EncryptionTableViewController.encryptionContacts {
-                        encryptionKeys.append(c.key)
+                    for cntct in EncryptionTableViewController.encryptionContacts {
+                        encryptionKeys.append(cntct.key)
                     }
                     
                     let encryptedBin = try ObjectivePGP.encrypt(text.data(using: .utf8)!,
@@ -94,11 +94,11 @@ class EncryptionTableViewController: UITableViewController {
                                                                 using: encryptionKeys)
 
                     
-                    let armoredMessage = Armor.armored(encryptedBin, as: .message)
+                    let armoredMsg = Armor.armored(encryptedBin, as: .message)
                     
                     
                     if !MFMailComposeViewController.canSendMail() {
-                        let activityVC = UIActivityViewController(activityItems: [armoredMessage], applicationActivities: nil)
+                        let activityVC = UIActivityViewController(activityItems: [armoredMsg], applicationActivities: nil)
                         activityVC.popoverPresentationController?.sourceView = self.view
                         
                         self.present(activityVC, animated: true, completion: nil)
@@ -113,7 +113,7 @@ class EncryptionTableViewController: UITableViewController {
                         mailComposeViewController.mailComposeDelegate = self as MFMailComposeViewControllerDelegate
                         mailComposeViewController.delegate = self as UINavigationControllerDelegate
                         mailComposeViewController.setToRecipients(addresses)
-                        mailComposeViewController.setMessageBody(armoredMessage, isHTML: false)
+                        mailComposeViewController.setMessageBody(armoredMsg, isHTML: false)
                     
                         present(mailComposeViewController, animated: true, completion: nil)
                     }
@@ -132,8 +132,6 @@ class EncryptionTableViewController: UITableViewController {
         }
 
     }
-    
-    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.row == 0) {
@@ -160,7 +158,9 @@ class EncryptionTableViewController: UITableViewController {
 
 extension EncryptionTableViewController: MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
     
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+    func mailComposeController(_ controller: MFMailComposeViewController,
+                               didFinishWith result: MFMailComposeResult,
+                               error: Error?) {
         controller.dismiss(animated: true)
     }
     

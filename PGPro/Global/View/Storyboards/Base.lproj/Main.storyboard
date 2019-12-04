@@ -128,7 +128,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="KeySelectionTV" destination="0pp-zu-x20" id="4Ty-av-GUB"/>
+                        <outlet property="keySelectionTV" destination="0pp-zu-x20" id="4Ty-av-GUB"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BwT-sj-2vs" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -19,7 +19,7 @@ import UIKit
 
 class PublicKeySelectionTableViewController: UITableViewController {
 
-    @IBOutlet private var KeySelectionTV: UITableView!
+    @IBOutlet private var keySelectionTV: UITableView!
 
     let contactList = ContactListService.getPublicKeyContacts()
     static var selectedRows = [Int]()
@@ -27,13 +27,13 @@ class PublicKeySelectionTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        KeySelectionTV.reloadData()
+        keySelectionTV.reloadData()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cntct = contactList[indexPath.row]
         
-        guard let cell = KeySelectionTV.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as? KeySelectionTableViewCell else {
+        guard let cell = keySelectionTV.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as? KeySelectionTableViewCell else {
             return super.tableView(tableView, cellForRowAt: indexPath)
         }
         
@@ -71,7 +71,7 @@ class PublicKeySelectionTableViewController: UITableViewController {
             EncryptionTableViewController.encryptionContacts.append(contactList[indexPath.row])
         }
 
-        KeySelectionTV.reloadData()
+        keySelectionTV.reloadData()
 
         // Notify observers about changed key selection
         NotificationCenter.default.post(name: Constants.NotificationNames.publicKeySelectionChange,
