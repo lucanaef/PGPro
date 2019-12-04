@@ -21,15 +21,15 @@ import ObjectivePGP
 class ContactDetailTableViewController: UITableViewController {
     
     @IBOutlet weak private var name: UITextField!
-    @IBAction func nameEditingChanged(_ sender: Any) {
+    @IBAction private func nameEditingChanged(_ sender: Any) {
         addSaveButton()
     }
     @IBOutlet weak private var email: UITextField!
-    @IBAction func emailValueChanged(_ sender: Any) {
+    @IBAction private func emailValueChanged(_ sender: Any) {
         addSaveButton()
     }
     
-    @IBOutlet weak private var id: UILabel!
+    @IBOutlet weak private var keyid: UILabel!
     @IBOutlet weak private var type: UILabel!
     @IBOutlet weak private var expires: UILabel!
     @IBOutlet weak private var fingerprint: UILabel!
@@ -47,9 +47,9 @@ class ContactDetailTableViewController: UITableViewController {
     
     func addSaveButton() {
         if !saveButtonAdded {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonItem.SystemItem.save,
-                                                                          target: self,
-                                                                          action: #selector(saveChangedContact)
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save,
+                                                                     target: self,
+                                                                     action: #selector(saveChangedContact)
             )
             saveButtonAdded = true
         }
@@ -101,7 +101,7 @@ class ContactDetailTableViewController: UITableViewController {
         
         let key = contact.key
         
-        id.text = key.keyID.shortIdentifier.insertSeparator(" ", atEvery: 4)
+        keyid.text = key.keyID.shortIdentifier.insertSeparator(" ", atEvery: 4)
         
         type.text = "None"
         if (key.isPublic && key.isSecret) {
@@ -142,13 +142,13 @@ class ContactDetailTableViewController: UITableViewController {
                                                message: "Select Key to Share",
                                                preferredStyle: .actionSheet)
             
-            let sharePublicKey = UIAlertAction(title: "Public Key", style: .default) { action -> Void in
+            let sharePublicKey = UIAlertAction(title: "Public Key", style: .default) { _ -> Void in
                 optionMenu.dismiss(animated: true, completion: nil)
                 self.share(activityItems: [activityItem])
             }
             optionMenu.addAction(sharePublicKey)
             
-            let sharePrivateKey = UIAlertAction(title: "Private Key", style: .destructive) { action -> Void in
+            let sharePrivateKey = UIAlertAction(title: "Private Key", style: .destructive) { _ -> Void in
                 do {
                     activityItem = try Armor.armored(contact.key.export(), as: .secretKey)
                 } catch { }
@@ -157,7 +157,7 @@ class ContactDetailTableViewController: UITableViewController {
             }
             optionMenu.addAction(sharePrivateKey)
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ -> Void in
                 optionMenu.dismiss(animated: true, completion: nil)
                 return
             }
@@ -209,7 +209,7 @@ class ContactDetailTableViewController: UITableViewController {
             UIPasteboard.general.string = cell.detailTextLabel?.text
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.section == 2) {
             setShare()
