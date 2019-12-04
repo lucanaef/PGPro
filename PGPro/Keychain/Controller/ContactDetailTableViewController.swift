@@ -88,8 +88,6 @@ class ContactDetailTableViewController: UITableViewController {
                 if !ContactListService.editContact(contact: contact, newName: newName, newEmail: newEmail) {
                     alert(text: "Contact with this Email Address Already Exists!")
                 }
-            } else {
-                print("[ContactDetailTVC] Contact Object Missing!")
             }
             _ = navigationController?.popViewController(animated: true)
         }
