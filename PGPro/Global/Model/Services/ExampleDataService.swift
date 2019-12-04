@@ -42,30 +42,30 @@ class ExampleDataService {
                              publicKey: nilKey.publicKey,
                              privateKey: keyGen.generate(for: "obiren@pgpro.app",
                                                          passphrase: nil).secretKey))
-        
+
         assert(ContactListService.addContact(name: "Julia",
                             email: "julia@pgpro.app",
                             key: keyGen.generate(for: "julia@pgpro.app",
                                                  passphrase: "jules")))
-        
+
         assert(ContactListService.addContact(name: "Mr. Charrington",
                                   email: "mr.charrington@pgpro.app",
                                   publicKey: keyGen.generate(for: "mr.charrington@pgpro.app",
                                                              passphrase: nil).publicKey,
                                   privateKey: nilKey.secretKey))
-        
+
         assert(ContactListService.addContact(name: "Syme",
                            email: "syme@pgpro.app",
                            publicKey: keyGen.generate(for: "syme@pgpro.app",
                                                       passphrase: nil).publicKey,
                            privateKey: nilKey.secretKey))
-        
+
         assert(ContactListService.addContact(name: "Parsons",
                               email: "parsons@pgpro.app",
                               publicKey: keyGen.generate(for: "parsons@pgpro.app",
                                                          passphrase: nil).publicKey,
                               privateKey: nilKey.secretKey))
-        
+
         assert(ContactListService.addContact(name: "Emmanuel Goldstein",
                                email: "e.goldstein@pgpro.app",
                                publicKey: keyGen.generate(for: "e.goldstein@pgpro.app",
@@ -77,8 +77,10 @@ class ExampleDataService {
     static func generateLargeInput() {
         for iteration in 1...25 {
             _ = ContactListService.addContact(name: String(iteration),
-                                              email: "test-" + String(iteration) + "@pgpro.app",
-                                              key: KeyGenerator().generate(for: "test-" + String(iteration) + "@pgpro.app", passphrase: nil))
+                                              email: String(iteration) + "@pgpro.app",
+                                              key: KeyGenerator().generate(for: String(iteration) + "@pgpro.app",
+                                                                           passphrase: nil)
+            )
         }
     }
 

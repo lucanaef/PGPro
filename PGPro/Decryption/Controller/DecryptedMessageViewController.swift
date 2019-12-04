@@ -20,16 +20,16 @@ import UIKit
 class DecryptedMessageViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
-    
+
     var message: String?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         if let text = message {
             textView.text = text
         }
-        
+
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,
@@ -42,24 +42,23 @@ class DecryptedMessageViewController: UIViewController {
             action: #selector(share(sender:))
         )
     }
-    
+
     @objc
     func cancel(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     @objc
     func share(sender: UIBarButtonItem) {
         let activityVC = UIActivityViewController(activityItems: [self], applicationActivities: nil)
         activityVC.popoverPresentationController?.sourceView = self.view
-        
         self.present(activityVC, animated: true, completion: nil)
     }
 
 }
 
 extension DecryptedMessageViewController: UIActivityItemSource {
-    
+
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
         if let message = message {
             return message
@@ -67,8 +66,10 @@ extension DecryptedMessageViewController: UIActivityItemSource {
             return ""
         }
     }
-    
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+
+    func activityViewController(_ activityViewController: UIActivityViewController,
+                                itemForActivityType activityType: UIActivity.ActivityType?
+    ) -> Any? {
         if let message = message {
             return message
         } else {

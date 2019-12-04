@@ -21,14 +21,15 @@ import ObjectivePGP
 
 extension Contact {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Contact> {
+    @nonobjc
+    public class func fetchRequest() -> NSFetchRequest<Contact> {
         return NSFetchRequest<Contact>(entityName: "Contact")
     }
 
     @NSManaged public var email: String
     @NSManaged public var keyData: NSData
     @NSManaged public var name: String
-    
+
     public var key: Key {
         do {
             let keys = try ObjectivePGP.readKeys(from: keyData as Data)
@@ -37,7 +38,7 @@ extension Contact {
             return Key(secretKey: nil, publicKey: nil)
         }
     }
-    
+
     public var userID: String {
         let userid = self.name + " <" + self.email + ">"
         return userid

@@ -19,7 +19,7 @@ import UIKit
 
 class PrivateKeySelectionTableViewController: UITableViewController {
 
-    @IBOutlet private var KeySelectionTV: UITableView!
+    @IBOutlet private var keySelectionTV: UITableView!
     
     let contactList = ContactListService.getPrivateKeyContacts()
     static var selectedRow = -1
@@ -27,12 +27,12 @@ class PrivateKeySelectionTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        KeySelectionTV.reloadData()
+        keySelectionTV.reloadData()
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cntct = contactList[indexPath.row]
-        guard let cell = KeySelectionTV.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as? KeySelectionTableViewCell else {
+        guard let cell = keySelectionTV.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as? KeySelectionTableViewCell else {
             return super.tableView(tableView, cellForRowAt: indexPath)
         }
         
@@ -46,16 +46,16 @@ class PrivateKeySelectionTableViewController: UITableViewController {
         
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contactList.count
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         PrivateKeySelectionTableViewController.selectedRow = indexPath.row
         DecryptionTableViewController.decryptionContact = contactList[indexPath.row]
-        KeySelectionTV.reloadData()
-        
+        keySelectionTV.reloadData()
+
         // Notify observers about changed key selection
         NotificationCenter.default.post(name: Constants.NotificationNames.privateKeySelectionChange,
                                         object: nil)

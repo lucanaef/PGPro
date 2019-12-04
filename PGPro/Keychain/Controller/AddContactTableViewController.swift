@@ -102,8 +102,7 @@ class AddContactTableViewController: UITableViewController {
         
         return true
     }
-    
-    
+
     @objc
     func addContactDone(sender: UIBarButtonItem) {
         if validateInput() {
@@ -156,12 +155,12 @@ class AddContactTableViewController: UITableViewController {
             
         }
     }
-    
+
     @objc
     func addContactCancel(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 2 {
             var count = 3

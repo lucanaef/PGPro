@@ -23,23 +23,25 @@ import ObjectivePGP
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+
         window?.tintColor = UIColor.label
-        
+
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if !launchedBefore {
-            
+
             // If in simulator, create example dataset
             #if targetEnvironment(simulator)
             ExampleDataService.createExampleDataset()
             #endif
-            
+
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         } else {
             ContactListService.loadPersistentData()
         }
-        
+
         return true
     }
 

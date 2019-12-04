@@ -176,7 +176,7 @@ class ContactDetailTableViewController: UITableViewController {
         
         present(activityVC, animated: true, completion: nil)
     }
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         if (noKey) {
             return super.numberOfSections(in: tableView) - 1

@@ -159,7 +159,19 @@ class ContactListService {
         let cntctIdx = self.getIndex(contact: contact)
         let oldKey = contact.key
         self.removeContact(index: cntctIdx)
-        return self.addContact(name: newName, email: newEmail, key: oldKey)
+        
+        let success = self.addContact(name: newName, email: newEmail, key: oldKey)
+        
+        /* Delete temporary data (selected keys) */
+        EncryptionTableViewController.encryptionContacts = [Contact]()
+        NotificationCenter.default.post(name: Constants.NotificationNames.publicKeySelectionChange,
+                                        object: nil)
+
+        DecryptionTableViewController.decryptionContact = nil
+        NotificationCenter.default.post(name: Constants.NotificationNames.privateKeySelectionChange,
+        object: nil)
+        
+        return success
     }
     
     
@@ -240,7 +252,7 @@ class ContactListService {
          Deletes all persistent and in-memory data
     */
     static func deleteAllData() {
-        
+
         /* Delete in-memory and persistent data */
         for cntct in contactList {
             PersistenceService.context.delete(cntct)
@@ -249,13 +261,12 @@ class ContactListService {
         self.contactList = []
         NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange,
         object: nil)
-        
+
         /* Delete temporary data (selected keys) */
         EncryptionTableViewController.encryptionContacts = [Contact]()
         NotificationCenter.default.post(name: Constants.NotificationNames.publicKeySelectionChange,
                                         object: nil)
-        
-        
+
         DecryptionTableViewController.decryptionContact = nil
         NotificationCenter.default.post(name: Constants.NotificationNames.privateKeySelectionChange,
         object: nil)

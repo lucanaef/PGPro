@@ -1168,7 +1168,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="KeySelectionTV" destination="4Rj-Xt-kdH" id="bQS-UT-tjV"/>
+                        <outlet property="keySelectionTV" destination="4Rj-Xt-kdH" id="bQS-UT-tjV"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cYu-KZ-gvr" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -33,7 +33,8 @@ class PublicKeySelectionTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cntct = contactList[indexPath.row]
         
-        guard let cell = KeySelectionTV.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as? KeySelectionTableViewCell else { return super.tableView(tableView, cellForRowAt: indexPath)
+        guard let cell = KeySelectionTV.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as? KeySelectionTableViewCell else {
+            return super.tableView(tableView, cellForRowAt: indexPath)
         }
         
         if (PublicKeySelectionTableViewController.selectedRows.contains(indexPath.row)) {

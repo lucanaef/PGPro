@@ -40,8 +40,10 @@ class WebViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         /* Un-hide AppLabel & Name from View */
-        for subview in self.navigationController!.view.subviews.filter({$0 is UILabel}) {
-            subview.isHidden = false
+        if let navigationController = self.navigationController {
+            for subview in navigationController.view.subviews.filter({$0 is UILabel}) {
+                subview.isHidden = false
+            }
         }
     }
 }

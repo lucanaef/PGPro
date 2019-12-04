@@ -18,7 +18,7 @@
 import Foundation
 
 enum Constants {
-    
+
     /* Global PGPro Constants */
     public enum PGPro {
         static var appID = "1481696997"
@@ -35,10 +35,10 @@ enum Constants {
 
     /* Notification Names */
     public enum NotificationNames {
-        
+
         static var contactListChange = Notification.Name(rawValue: "pgpro.contactListChange")
         static var publicKeySelectionChange = Notification.Name(rawValue: "pgpro.publicKeySelectionChange")
         static var privateKeySelectionChange = Notification.Name(rawValue: "pgpro.privateKeySelectionChange")
-        
+
     }
 }
