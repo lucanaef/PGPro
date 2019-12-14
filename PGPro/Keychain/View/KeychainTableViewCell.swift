@@ -18,12 +18,21 @@
 import UIKit
 
 class KeychainTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak private var cellTitle: UILabel!
     @IBOutlet weak private var cellSubtitle: UILabel!
 
     func setContact(contact: Contact) {
         cellTitle.text = contact.name
         cellSubtitle.text = contact.email
+        
+        let currentDate = Date()
+        let keyExpirationDate = contact.key.expirationDate ?? currentDate
+        
+        var icon = UIImage(systemName: "lock.shield.fill")
+        if (keyExpirationDate < currentDate) { // Key expired
+            icon = UIImage(systemName: "shield.slash")
+        }
+        self.imageView?.image = icon
     }
 }

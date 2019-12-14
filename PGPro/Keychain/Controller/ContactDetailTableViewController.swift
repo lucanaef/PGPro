@@ -118,6 +118,11 @@ class ContactDetailTableViewController: UITableViewController {
         expires.text = "Never"
         if let expirationDate = key.expirationDate {
             expires.text = expirationDate.toString()
+            
+            if (expirationDate < Date()){
+                expires.textColor = UIColor.red
+            }
+            
         }
         
         fingerprint.text = ""

@@ -19,7 +19,7 @@ import UIKit
 import ObjectivePGP
 
 class KeySelectionTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak private var cellTitle: UILabel!
     @IBOutlet weak private var cellSubtitle: UILabel!
 
