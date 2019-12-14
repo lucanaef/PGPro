@@ -119,7 +119,7 @@ class ContactDetailTableViewController: UITableViewController {
         if let expirationDate = key.expirationDate {
             expires.text = expirationDate.toString()
             
-            if (expirationDate < Date()){
+            if (expirationDate < Date()) {
                 expires.textColor = UIColor.red
             }
             
