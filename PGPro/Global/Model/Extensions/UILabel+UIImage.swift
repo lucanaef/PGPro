@@ -52,7 +52,6 @@ extension UILabel {
             self.attributedText = mutableAttachmentString
         }
     }
-    
 
     func removeImage() {
         let text = self.text
