@@ -29,10 +29,12 @@ class KeychainTableViewCell: UITableViewCell {
         let currentDate = Date()
         let keyExpirationDate = contact.key.expirationDate ?? currentDate
         
-        var icon = UIImage(systemName: "lock.shield.fill")
         if (keyExpirationDate < currentDate) { // Key expired
-            icon = UIImage(systemName: "shield.slash")
+            // Add Spacing
+            cellTitle.text!.append(" ")
+            // Add Symbol
+            guard let symbol = UIImage(systemName: "exclamationmark.triangle") else { return }
+            cellTitle.addImage(img: symbol.withTintColor(UIColor.red), behindText: true)
         }
-        self.imageView?.image = icon
     }
 }
