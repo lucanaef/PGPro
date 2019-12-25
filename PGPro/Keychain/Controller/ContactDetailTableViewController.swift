@@ -198,9 +198,7 @@ class ContactDetailTableViewController: UITableViewController {
                             canPerformAction action: Selector,
                             forRowAt indexPath: IndexPath,
                             withSender sender: Any?) -> Bool {
-        if (indexPath.section == 2) {
-            return false
-        } else if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
+        if (indexPath.section == 1 && action == #selector(UIResponderStandardEditActions.copy(_:))) {
             return true
         }
         return false
