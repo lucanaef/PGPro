@@ -182,10 +182,10 @@ open class Snapshot: NSObject {
                 let range = NSRange(location: 0, length: simulator.count)
                 simulator = regex.stringByReplacingMatches(in: simulator, range: range, withTemplate: "")
 
-                let path = screenshotsDir.appendingPathComponent("\(simulator)-\(name).png")
+                let path = screenshotsDir.appendingPathComponent("\(simulator)-\(inputName).png")
                 try screenshot.pngRepresentation.write(to: path)
             } catch let error {
-                NSLog("Problem writing screenshot: \(name) to \(screenshotsDir)/\(simulator)-\(name).png")
+                NSLog("Problem writing screenshot: \(inputName) to \(screenshotsDir)/\(simulator)-\(inputName).png")
                 NSLog(error.localizedDescription)
             }
         #endif

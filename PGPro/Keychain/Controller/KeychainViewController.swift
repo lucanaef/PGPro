@@ -55,7 +55,23 @@ class KeychainViewController: UIViewController {
 
     @objc
     func plus(sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "goToAddContact", sender: nil)
+        let optionMenu = UIAlertController(title: nil,
+                                           message: nil,
+                                           preferredStyle: .actionSheet)
+        
+        let addManually = UIAlertAction(title: "Add Key Manually", style: .default) { _ -> Void in
+            optionMenu.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "goToAddContact", sender: nil)
+        }
+        optionMenu.addAction(addManually)
+        
+        let generateKey = UIAlertAction(title: "Generate Key", style: .default) { _ -> Void in
+            optionMenu.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "goToGenerateKey", sender: nil)
+        }
+        optionMenu.addAction(generateKey)
+        
+        present(optionMenu, animated: true, completion: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
