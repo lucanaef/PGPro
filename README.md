@@ -1,9 +1,8 @@
 ![](https://pgpro.naef.lu/pgpro_banner.png)
 
 [![License](https://img.shields.io/github/license/lucanaef/PGPro?style=flat)](https://github.com/lucanaef/PGPro/blob/master/LICENSE)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/lucanaef/PGPro?style=flat)
 ![Swift](https://img.shields.io/badge/language-swift-orange?style=flat)
-[![iTunes App Store](https://img.shields.io/itunes/v/1481696997?label=App%20Store%20Version&style=flat)](https://apps.apple.com/app/pgpro/id1481696997)
+[![Donate Bitcoin](https://img.shields.io/badge/Donate%20BTC-3K6U863fR8TqTkE5AE1AzcxVFN7dhP6Ljc-orange?style=flat)](https://pgpro.app/donate)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a27e0963b0384739bad90cde28cb08b8)](https://www.codacy.com/manual/lucanaef/PGPro?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lucanaef/PGPro&amp;utm_campaign=Badge_Grade)
 
 PGPro can encrypt and decrypt messages as well as manage all your PGP keys. It is free, simple and lightweight. Everything stays on your device. PGPro is made in Switzerland.
@@ -22,7 +21,7 @@ You are welcome to contribute. Please create a [Pull Request]().
 
 ## Changelog
 
-See [CHANGELOG](https://pgpro.app/changelog/).
+See [https://pgpro.app/changelog/](https://pgpro.app/changelog/).
 
 ## License
 
