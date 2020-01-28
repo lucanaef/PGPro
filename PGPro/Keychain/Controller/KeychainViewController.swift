@@ -58,19 +58,24 @@ class KeychainViewController: UIViewController {
         let optionMenu = UIAlertController(title: nil,
                                            message: nil,
                                            preferredStyle: .actionSheet)
-        
-        let addManually = UIAlertAction(title: "Add Key Manually", style: .default) { _ -> Void in
+
+        let addManually = UIAlertAction(title: "Add Existing Key", style: .default) { _ -> Void in
             optionMenu.dismiss(animated: true, completion: nil)
             self.performSegue(withIdentifier: "goToAddContact", sender: nil)
         }
         optionMenu.addAction(addManually)
-        
-        let generateKey = UIAlertAction(title: "Generate Key", style: .default) { _ -> Void in
+
+        let generateKey = UIAlertAction(title: "Generate New Key", style: .default) { _ -> Void in
             optionMenu.dismiss(animated: true, completion: nil)
             self.performSegue(withIdentifier: "goToGenerateKey", sender: nil)
         }
         optionMenu.addAction(generateKey)
-        
+
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ -> Void in
+            optionMenu.dismiss(animated: true, completion: nil)
+        }
+        optionMenu.addAction(cancel)
+
         present(optionMenu, animated: true, completion: nil)
     }
     
