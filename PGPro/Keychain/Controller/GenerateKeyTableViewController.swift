@@ -20,9 +20,11 @@ import ObjectivePGP
 
 class GenerateKeyTableViewController: UITableViewController {
     
-    @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var email: UITextField!
-    @IBOutlet weak var passphrase: UITextField!
+    @IBOutlet weak private var name: UITextField!
+    @IBOutlet weak private var email: UITextField!
+    @IBOutlet weak private var passphrase: UITextField!
+    @IBOutlet weak private var passphraseConfirmation: UITextField!
+    @IBOutlet weak private var strengthIndicator: UIProgressView!
     
     
     override func viewDidLoad() {
@@ -71,6 +73,9 @@ class GenerateKeyTableViewController: UITableViewController {
         
         guard let name = name.text else { return false }
         guard let email = email.text else { return false }
+
+        guard let passphrase1 = passphrase.text else { return false }
+        guard let passphrase2 = passphraseConfirmation.text else { return false }
         
         guard (name != "") else {
             alert(text: "Name Can't Be Empty!")
@@ -84,6 +89,11 @@ class GenerateKeyTableViewController: UITableViewController {
         
         guard email.isValidEmail() else {
             alert(text: "Email Address Not Valid!")
+            return false
+        }
+
+        guard (passphrase1 == passphrase2) else {
+            alert(text: "Passphrases don't match!")
             return false
         }
         
