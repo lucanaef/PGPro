@@ -22,6 +22,12 @@ class GenerateKeyTableViewController: UITableViewController {
     
     @IBOutlet weak private var name: UITextField!
     @IBOutlet weak private var email: UITextField!
+    @IBAction func passphraseValueChanged(_ sender: Any) {
+        updateStrengthIndicator()
+    }
+    @IBAction func passphraseChanged(_ sender: Any) {
+        updateStrengthIndicator()
+    }
     @IBOutlet weak private var passphrase: UITextField!
     @IBOutlet weak private var passphraseConfirmation: UITextField!
     @IBOutlet weak private var strengthIndicator: UIProgressView!
@@ -29,7 +35,9 @@ class GenerateKeyTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        strengthIndicator.setProgress(0, animated:  false)
+
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,
             target: self,
@@ -67,6 +75,32 @@ class GenerateKeyTableViewController: UITableViewController {
     @objc
     func addContactCancel(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+
+    func updateStrengthIndicator() {
+
+        let currentPassphrase = passphrase.text ?? ""
+        let passphraseEntropy = Navajo.entropy(of: currentPassphrase)
+        // Normalized estimated passphrase strength value
+        let strengthVal = min(128.0, passphraseEntropy) / 128.0
+        let strength = Navajo.passwordStrength(forEntropy: passphraseEntropy)
+
+        strengthIndicator.setProgress(strengthVal, animated: true)
+
+        var strengthColour = UIColor(red:0.75, green:0.22, blue:0.17, alpha:1.0)
+        switch strength {
+            case .veryWeak:
+                strengthColour = UIColor(red:0.75, green:0.22, blue:0.17, alpha:1.0)
+            case .weak:
+                strengthColour = UIColor(red:0.90, green:0.49, blue:0.13, alpha:1.0)
+            case .reasonable:
+                strengthColour = UIColor(red:1.00, green:0.75, blue:0.28, alpha:1.0)
+            case .strong:
+                strengthColour = UIColor(red:0.13, green:0.81, blue:0.44, alpha:1.0)
+            case .veryStrong:
+                strengthColour = UIColor(red:0.03, green:0.68, blue:0.38, alpha:1.0)
+        }
+        strengthIndicator.progressTintColor = strengthColour
     }
     
     func validateInput() -> Bool {
