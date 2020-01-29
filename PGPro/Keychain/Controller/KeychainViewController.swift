@@ -17,6 +17,7 @@
 
 import UIKit
 import ObjectivePGP
+import MobileCoreServices
 
 class KeychainViewController: UIViewController {
     
@@ -65,7 +66,13 @@ class KeychainViewController: UIViewController {
         }
         optionMenu.addAction(addManually)
 
-        let generateKey = UIAlertAction(title: "Generate New Key", style: .default) { _ -> Void in
+        let importKey = UIAlertAction(title: "Import Key from File", style: .default) { _ -> Void in
+            self.importKeys()
+            optionMenu.dismiss(animated: true, completion: nil)
+        }
+        optionMenu.addAction(importKey)
+
+        let generateKey = UIAlertAction(title: "Generate New Key Pair", style: .default) { _ -> Void in
             optionMenu.dismiss(animated: true, completion: nil)
             self.performSegue(withIdentifier: "goToGenerateKey", sender: nil)
         }
@@ -78,7 +85,7 @@ class KeychainViewController: UIViewController {
 
         present(optionMenu, animated: true, completion: nil)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "showContactDetail") {
             if let destVC = segue.destination as? ContactDetailTableViewController {
@@ -86,7 +93,53 @@ class KeychainViewController: UIViewController {
             }
         }
     }
+
+    func importKeys() {
+        let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeData as String], in: .import)
+        documentPicker.delegate = self
+        documentPicker.allowsMultipleSelection = false
+        present(documentPicker, animated: true, completion: nil)
+    }
+
 }
+
+
+extension KeychainViewController: UIDocumentPickerDelegate {
+
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+
+        guard let selectedFileURL = urls.first else { return }
+        do {
+            let fileData = try String(contentsOf: selectedFileURL, encoding: .utf8)
+            do {
+                guard let asciiKeyData = fileData.data(using: .utf8) else { return }
+                let importedKey = try ObjectivePGP.readKeys(from: asciiKeyData)
+
+                guard let key = importedKey.first else { return }
+                let userID = key.publicKey?.primaryUser?.userID
+                let components = userID?.components(separatedBy: "<")
+                if let components = components {
+                    let name = String(components[0].dropLast())
+                    let email = String(components[1].dropLast())
+
+                    if !ContactListService.addContact(name: name, email: email, key: key) {
+                        alert(text: "Contact with this Email Address Already Exists!")
+                    }
+
+                } else { return }
+            } catch {
+                print("Error info: \(error)")
+                return
+            }
+        } catch {
+            print("Error info: \(error)")
+            return
+        }
+
+    }
+
+}
+
 
 extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
