@@ -146,6 +146,8 @@ extension KeychainViewController: UIDocumentPickerDelegate {
             }
         }
 
+        count -= ContactListService.cleanUp()
+
         if (count == 0) {
             alert(text: "No new keys imported")
         } else if (count == 1) {

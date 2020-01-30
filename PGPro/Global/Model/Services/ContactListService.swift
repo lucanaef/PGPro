@@ -274,4 +274,15 @@ class ContactListService {
         NotificationCenter.default.post(name: Constants.NotificationNames.privateKeySelectionChange,
         object: nil)
     }
+
+
+    static func cleanUp() -> Int{
+        var count = 0
+        for cntct in ContactListService.contactList where (!cntct.key.isPublic && !cntct.key.isSecret) {
+            let cntctIdx = self.getIndex(contact: cntct)
+            self.removeContact(index: cntctIdx)
+            count += 1
+        }
+        return count
+    }
 }
