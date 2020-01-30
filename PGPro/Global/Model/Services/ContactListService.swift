@@ -122,9 +122,12 @@ class ContactListService {
         contact.name = name
         contact.email = email
         do {
-            contact.keyData = try key.export() as NSData
+            let keyData = try key.export() as NSData
+            guard (keyData.length > 0) else { return false }
+            contact.keyData = keyData
         } catch {
             print("Failed to save Key as Data!")
+            return false
         }
             
         /* Add contact to in-memory and persistent data storage */

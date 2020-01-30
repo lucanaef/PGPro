@@ -97,7 +97,7 @@ class KeychainViewController: UIViewController {
     func importKeys() {
         let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeData as String], in: .import)
         documentPicker.delegate = self
-        documentPicker.allowsMultipleSelection = false
+        documentPicker.allowsMultipleSelection = true
         present(documentPicker, animated: true, completion: nil)
     }
 
@@ -107,33 +107,51 @@ class KeychainViewController: UIViewController {
 extension KeychainViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        var count = 0
 
-        guard let selectedFileURL = urls.first else { return }
-        do {
-            let fileData = try String(contentsOf: selectedFileURL, encoding: .utf8)
+        for selectedFileURL in urls {
             do {
-                guard let asciiKeyData = fileData.data(using: .utf8) else { return }
-                let importedKey = try ObjectivePGP.readKeys(from: asciiKeyData)
+                let fileData = try String(contentsOf: selectedFileURL, encoding: .utf8)
+                guard let asciiFileData = fileData.data(using: .utf8) else { continue }
+                do {
+                    let importedKeys = try ObjectivePGP.readKeys(from: asciiFileData)
+                    for key in importedKeys {
 
-                guard let key = importedKey.first else { return }
-                let userID = key.publicKey?.primaryUser?.userID
-                let components = userID?.components(separatedBy: "<")
-                if let components = components {
-                    let name = String(components[0].dropLast())
-                    let email = String(components[1].dropLast())
+                        guard let publicKey = key.publicKey else { continue }
+                        guard let primaryUser = publicKey.primaryUser else {  continue }
 
-                    if !ContactListService.addContact(name: name, email: email, key: key) {
-                        alert(text: "Contact with this Email Address Already Exists!")
+                        let components = primaryUser.userID.components(separatedBy: "<")
+                        if (components.count == 2) {
+                            let name = String(components[0].dropLast())
+                            let email = String(components[1].dropLast())
+                            if ContactListService.addContact(name: name, email: email, key: key) {
+                                count += 1
+                            }
+                        } else if (components.count == 1 && components[0].isValidEmail()){
+                            let name = components[0]
+                            let email = components[0]
+                            if ContactListService.addContact(name: name, email: email, key: key) {
+                                count += 1
+                            }
+                        }
                     }
 
-                } else { return }
-            } catch {
+                } catch let error {
+                    print("Error info: \(error)")
+                    continue
+                }
+            } catch let error {
                 print("Error info: \(error)")
-                return
+                continue
             }
-        } catch {
-            print("Error info: \(error)")
-            return
+        }
+
+        if (count == 0) {
+            alert(text: "No new keys imported")
+        } else if (count == 1) {
+            alert(text: "1 new key imported")
+        } else {
+            alert(text: "\(count) new keys imported")
         }
 
     }

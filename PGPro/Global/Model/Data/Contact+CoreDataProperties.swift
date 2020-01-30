@@ -18,6 +18,7 @@
 import Foundation
 import CoreData
 import ObjectivePGP
+import SwiftTryCatch
 
 extension Contact {
 
@@ -31,12 +32,19 @@ extension Contact {
     @NSManaged public var name: String
 
     public var key: Key {
-        do {
-            let keys = try ObjectivePGP.readKeys(from: keyData as Data)
-            return keys[0]
-        } catch {
-            return Key(secretKey: nil, publicKey: nil)
-        }
+        var keys = [Key(secretKey: nil, publicKey: nil)]
+
+        // Hacky solution to recover from https://github.com/krzyzanowskim/ObjectivePGP/issues/168
+        SwiftTryCatch.try({
+            do {
+                keys = try ObjectivePGP.readKeys(from: self.keyData as Data)
+            } catch {  }
+        }, catch: { (error) in
+                return
+            }, finallyBlock: {
+        })
+
+        return keys[0]
     }
 
     public var userID: String {
