@@ -22,10 +22,10 @@ class GenerateKeyTableViewController: UITableViewController {
     
     @IBOutlet weak private var name: UITextField!
     @IBOutlet weak private var email: UITextField!
-    @IBAction func passphraseValueChanged(_ sender: Any) {
+    @IBAction private func passphraseValueChanged(_ sender: Any) {
         updateStrengthIndicator()
     }
-    @IBAction func passphraseChanged(_ sender: Any) {
+    @IBAction private func passphraseChanged(_ sender: Any) {
         updateStrengthIndicator()
     }
     @IBOutlet weak private var passphrase: UITextField!
@@ -35,7 +35,7 @@ class GenerateKeyTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        strengthIndicator.setProgress(0, animated:  false)
+        strengthIndicator.setProgress(0, animated: false)
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,
@@ -86,18 +86,18 @@ class GenerateKeyTableViewController: UITableViewController {
 
         strengthIndicator.setProgress(strengthVal, animated: true)
 
-        var strengthColour = UIColor(red:0.75, green:0.22, blue:0.17, alpha:1.0)
+        var strengthColour = UIColor(red: 0.75, green: 0.22, blue: 0.17, alpha: 1.0)
         switch strength {
-            case .veryWeak:
-                strengthColour = UIColor(red:0.75, green:0.22, blue:0.17, alpha:1.0)
-            case .weak:
-                strengthColour = UIColor(red:0.90, green:0.49, blue:0.13, alpha:1.0)
-            case .reasonable:
-                strengthColour = UIColor(red:1.00, green:0.75, blue:0.28, alpha:1.0)
-            case .strong:
-                strengthColour = UIColor(red:0.13, green:0.81, blue:0.44, alpha:1.0)
-            case .veryStrong:
-                strengthColour = UIColor(red:0.03, green:0.68, blue:0.38, alpha:1.0)
+        case .veryWeak:
+            strengthColour = UIColor(red: 0.75, green: 0.22, blue: 0.17, alpha: 1.0)
+        case .weak:
+            strengthColour = UIColor(red: 0.90, green: 0.49, blue: 0.13, alpha: 1.0)
+        case .reasonable:
+            strengthColour = UIColor(red: 1.00, green: 0.75, blue: 0.28, alpha: 1.0)
+        case .strong:
+            strengthColour = UIColor(red: 0.13, green: 0.81, blue: 0.44, alpha: 1.0)
+        case .veryStrong:
+            strengthColour = UIColor(red: 0.03, green: 0.68, blue: 0.38, alpha: 1.0)
         }
         strengthIndicator.progressTintColor = strengthColour
     }
