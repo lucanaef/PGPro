@@ -28,30 +28,7 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        
-        let appLabel = UILabel(frame: CGRect(origin: CGPoint(x: 0,
-                                                             y: self.view.frame.height - 150),
-                                             size: CGSize(width: self.view.frame.width, height: 20))
-        )
-        appLabel.text = "PGPro " + Constants.PGPro.version
-        appLabel.textAlignment = .center
-        appLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
-        appLabel.textColor = UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 1.0)
-        self.navigationController?.view.addSubview(appLabel)
-        
-        let authorLabel = UILabel(frame: CGRect(x: 0,
-                                                y: self.view.frame.height - 130,
-                                                width: self.view.frame.width,
-                                                height: 20)
-        )
-        authorLabel.text = "by Luca Näf"
-        authorLabel.textAlignment = .center
-        authorLabel.font = UIFont.systemFont(ofSize: 14.0)
-        authorLabel.textColor = UIColor(red:0.24, green:0.24, blue:0.26, alpha:1.0)
-        self.navigationController?.view.addSubview(authorLabel)
-        
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -127,7 +104,7 @@ class SettingsTableViewController: UITableViewController {
             
             switch indexPath.row {
             case 0: // Send Feedback
-                url = URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%5D%20Feedback")
+                url = URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version)%5D%20Feedback")
                 if let url = url {
                     UIApplication.shared.open(url)
                 }
