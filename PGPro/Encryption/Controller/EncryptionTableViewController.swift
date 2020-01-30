@@ -37,7 +37,7 @@ class EncryptionTableViewController: UITableViewController {
         self.hideKeyboardWhenTappedAround()
         
         update()
-        textView.placeholder = "Enter Message to Encrypt..."
+        textView.placeholder = "Type Message to Encrypt..."
         
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(

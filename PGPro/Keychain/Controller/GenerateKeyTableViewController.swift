@@ -31,8 +31,7 @@ class GenerateKeyTableViewController: UITableViewController {
     @IBOutlet weak private var passphrase: UITextField!
     @IBOutlet weak private var passphraseConfirmation: UITextField!
     @IBOutlet weak private var strengthIndicator: UIProgressView!
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
