@@ -66,7 +66,7 @@ class KeychainViewController: UIViewController {
         }
         optionMenu.addAction(addManually)
 
-        let importKey = UIAlertAction(title: "Import Key from File", style: .default) { _ -> Void in
+        let importKey = UIAlertAction(title: "Import Keys from File", style: .default) { _ -> Void in
             self.importKeys()
             optionMenu.dismiss(animated: true, completion: nil)
         }

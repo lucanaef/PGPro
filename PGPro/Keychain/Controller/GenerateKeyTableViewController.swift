@@ -66,6 +66,7 @@ class GenerateKeyTableViewController: UITableViewController {
             if !ContactListService.addContact(name: name, email: email, key: key) {
                 alert(text: "Contact with this Email Address Already Exists!")
             } else {
+                AppStoreReviewService.incrementReviewWorthyActionCount()
                 dismiss(animated: true, completion: nil)
             }
         }

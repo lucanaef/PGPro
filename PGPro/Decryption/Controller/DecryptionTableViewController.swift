@@ -127,13 +127,17 @@ class DecryptionTableViewController: UITableViewController {
                                  sender: String(decoding: decryptedMessage, as: UTF8.self))
                 } catch {
                     alert(text: "Decryption Failed!")
+                    return
                 }
             } else {
                 alert(text: "Message Decoding Failed!")
+                return
             }
         } else {
             alert(text: "Failed to Retrieve Encrypted Message!")
+            return
         }
+        AppStoreReviewService.incrementReviewWorthyActionCount()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

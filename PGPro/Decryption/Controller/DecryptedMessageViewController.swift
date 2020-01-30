@@ -45,6 +45,11 @@ class DecryptedMessageViewController: UIViewController {
 
     @objc
     func cancel(sender: UIBarButtonItem) {
+
+        let twoSecondsFromNow = DispatchTime.now() + 2.0
+        DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
+            AppStoreReviewService.requestReviewIfAppropriate()
+        }
         dismiss(animated: true, completion: nil)
     }
 

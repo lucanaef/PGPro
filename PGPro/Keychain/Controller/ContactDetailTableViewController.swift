@@ -176,6 +176,8 @@ class ContactDetailTableViewController: UITableViewController {
     }
 
     func share(activityItems: [Any]) {
+        AppStoreReviewService.incrementReviewWorthyActionCount()
+
         let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         activityVC.popoverPresentationController?.sourceView = self.view
         

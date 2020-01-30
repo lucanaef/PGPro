@@ -130,7 +130,7 @@ class EncryptionTableViewController: UITableViewController {
             }
             
         }
-
+        AppStoreReviewService.incrementReviewWorthyActionCount()
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
