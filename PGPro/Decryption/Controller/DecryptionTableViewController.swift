@@ -93,10 +93,20 @@ class DecryptionTableViewController: UITableViewController {
                     alert(text: "Key Requires Passphrase!")
                     return
                 }
-                
+
                 guard let decryptionKey = decryptionKey else {
-                    alert(text: "Decryption Failed!")
+                    alert(text: "Select Decryption Key!")
                     return
+                }
+
+                // Check if passphrase is correct
+                if (keyRequiresPassphrase) {
+                    do {
+                        _ = try decryptionKey.decrypted(withPassphrase: passphrase!)
+                    } catch {
+                        alert(text: "Wrong Passphrase!")
+                        return
+                    }
                 }
                 
                 do {
