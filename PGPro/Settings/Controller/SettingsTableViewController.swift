@@ -17,11 +17,13 @@
 
 import UIKit
 import StoreKit
+import ObjectivePGP
 
 class SettingsTableViewController: UITableViewController {
     
-    @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
-    
+    @IBOutlet weak private var importActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var exportActivityIndicator: UIActivityIndicatorView!
+
     var url = URL(string: "")
 
     override func viewDidLoad() {
@@ -53,9 +55,9 @@ class SettingsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.section == 0) {
+        if (indexPath.section == 0) { // Case: Import Contacts
             
-            activityIndicator.startAnimating()
+            importActivityIndicator.startAnimating()
 
             DispatchQueue.global(qos: .default).async {
 
@@ -75,11 +77,53 @@ class SettingsTableViewController: UITableViewController {
                 
                DispatchQueue.main.async { [weak self] in
                     // UI updates must be on main thread
-                    self?.activityIndicator.stopAnimating()
+                    self?.importActivityIndicator.stopAnimating()
                 }
             }
 
-        } else if (indexPath.section == 1) {
+        } else if (indexPath.section == 1) { // Case: Export Keychain
+
+            exportActivityIndicator.startAnimating()
+
+            DispatchQueue.global(qos: .default).async {
+
+                let keyring = Keyring()
+                var keys: [Key] = []
+                for cntct in ContactListService.getContacts() {
+                    keys.append(cntct.key)
+                }
+                keyring.import(keys: keys)
+
+                DispatchQueue.main.async { [weak self] in
+
+                    let file = "\(Date().toString())-keychain.gpg"
+                    if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                        let fileURL = dir.appendingPathComponent(file)
+                        do {
+                            try keyring.export().write(to: fileURL)
+                        } catch {
+                            self?.alert(text: "Export failed!")
+                        }
+
+                        // Share file
+                        var filesToShare = [Any]()
+                        filesToShare.append(fileURL)
+                        let activityViewController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
+                        self?.present(activityViewController, animated: true, completion: nil)
+
+                    } else {
+                        self?.alert(text: "Export failed!")
+                    }
+                }
+
+               DispatchQueue.main.async { [weak self] in
+                    // UI updates must be on main thread
+                    self?.exportActivityIndicator.stopAnimating()
+                }
+            }
+
+
+        } else if (indexPath.section == 2) { // Case: Send Feedback to Licenses
             
             switch indexPath.row {
             case 0: // Send Feedback
@@ -105,7 +149,7 @@ class SettingsTableViewController: UITableViewController {
                 return
             }
             
-        } else if (indexPath.section == 2) { // Case: Delete All Data
+        } else if (indexPath.section == 3) { // Case: Delete All Data
             
             let dialogMessage = UIAlertController(title: "Are you sure you want to delete all keys?",
                                                   message: "",
