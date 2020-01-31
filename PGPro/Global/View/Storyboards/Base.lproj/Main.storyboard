@@ -1322,7 +1322,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="KeySelectionTableViewCell" textLabel="tyZ-LA-7P1" detailTextLabel="exw-1W-p8f" rowHeight="75" style="IBUITableViewCellStyleSubtitle" id="Xkb-0B-9XC" customClass="KeySelectionTableViewCell" customModule="PGPro" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="KeySelectionTableViewCell" textLabel="tyZ-LA-7P1" detailTextLabel="exw-1W-p8f" rowHeight="75" style="IBUITableViewCellStyleSubtitle" id="Xkb-0B-9XC" customClass="KeySelectionTableViewCell" customModule="PGPro" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Xkb-0B-9XC" id="Hil-fl-vmy">
@@ -1359,7 +1359,7 @@
                             <outlet property="delegate" destination="NDe-27-QH2" id="83z-Ii-dE3"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="nOc-1d-Ydu"/>
+                    <navigationItem key="navigationItem" title="Select Private Key" id="nOc-1d-Ydu"/>
                     <connections>
                         <outlet property="keySelectionTV" destination="4Rj-Xt-kdH" id="bQS-UT-tjV"/>
                     </connections>
