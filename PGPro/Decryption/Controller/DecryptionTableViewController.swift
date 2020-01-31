@@ -22,7 +22,7 @@ class DecryptionTableViewController: UITableViewController {
     
     @IBOutlet weak private var titleLabel: UILabel!
     @IBOutlet weak private var passphraseTextField: UITextField!
-    @IBOutlet weak private var textView: UITextView!
+    @IBOutlet weak var textView: UITextView!
     
     static var decryptionContact: Contact?
     var decryptionKey: Key? {
@@ -39,7 +39,7 @@ class DecryptionTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
         self.hideKeyboardWhenTappedAround()
-        
+
         update()
         
         self.navigationController?.navigationBar.prefersLargeTitles = true

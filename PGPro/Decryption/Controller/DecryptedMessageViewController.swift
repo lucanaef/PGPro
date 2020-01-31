@@ -26,8 +26,8 @@ class DecryptedMessageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let text = message {
-            textView.text = text
+        if let message = message {
+            textView.text = message
         }
 
         self.navigationController?.navigationBar.prefersLargeTitles = false
@@ -46,6 +46,7 @@ class DecryptedMessageViewController: UIViewController {
     @objc
     func cancel(sender: UIBarButtonItem) {
 
+        // Ask for review after decryption
         let twoSecondsFromNow = DispatchTime.now() + 2.0
         DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
             AppStoreReviewService.requestReviewIfAppropriate()

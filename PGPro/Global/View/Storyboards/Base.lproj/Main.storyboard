@@ -1359,6 +1359,7 @@
                             <outlet property="delegate" destination="NDe-27-QH2" id="83z-Ii-dE3"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="nOc-1d-Ydu"/>
                     <connections>
                         <outlet property="keySelectionTV" destination="4Rj-Xt-kdH" id="bQS-UT-tjV"/>
                     </connections>
@@ -1372,6 +1373,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="M6T-de-Sph" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="G5c-98-eHd"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eqy-8c-RbP">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
