@@ -7,6 +7,20 @@ include_in_header: true
 
 # Changelog
 
+## **Version 2020.1**
+
+Thanks for using PGPro!
+This release includes the following changes:
+
+- New: Generate PGP keys directly from within PGPro
+- New: Import keys from files
+- New: Export keychain as GPG keyring file
+- New: Send .asc files directly to PGPro
+- Fixed: Some PGP keys caused PGPro to crash
+
+as well as various small improvements.
+If you have feedback or suggestions, please reach out to me at [dev@pgpro.app](mailto:dev@pgpro.app).
+
 ## **Version 2019.4**
 
 Thanks for using PGPro!

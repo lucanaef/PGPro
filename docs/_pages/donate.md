@@ -4,16 +4,20 @@ title: Donate
 include_in_header: true
 ---
 
+# Support PGPro
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://blockchain.info/Resources/js/pay-now-button.js"></script>
 
-<a href="https://www.paypal.me/pgproapp">
-  <img src="https://pgpro.app/assets/paypal-donate-button.png" alt="Donate with PayPal" style="width: 300px;"/>
-</a>
+<div style="display: inline-block">
+  <a href="https://www.paypal.me/pgproapp">
+    <img src="https://pgpro.app/assets/paypal-donate-button.png" alt="Donate with PayPal" style="width: 250px;"/>
+  </a>
+</div>
 <div style="display: inline-block">
   <div class="blockchain-btn" data-address="3K6U863fR8TqTkE5AE1AzcxVFN7dhP6Ljc" data-shared="false">
     <div class="blockchain stage-begin">
-        <img src="https://pgpro.app/assets/bitcoin-donate-button.png" alt="Donate with Bitcoin" style="width: 300px;"/>
+        <img src="https://pgpro.app/assets/bitcoin-donate-button.png" alt="Donate with Bitcoin" style="width: 250px;"/>
     </div>
     <div class="blockchain stage-loading" style="text-align:center">
         <img src="https://blockchain.info/Resources/loading-large.gif"/>
