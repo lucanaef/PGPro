@@ -19,6 +19,7 @@ This release includes the following changes:
 - Fixed: Some PGP keys caused PGPro to crash
 
 as well as various small improvements.
+
 If you have feedback or suggestions, please reach out to me at [dev@pgpro.app](mailto:dev@pgpro.app).
 
 ## **Version 2019.4**
