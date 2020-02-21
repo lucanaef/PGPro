@@ -49,14 +49,19 @@ class ContactListService {
             cntctA.name < cntctB.name
         }
     }
-    
+
+
+    static func numberOfContacts() -> Int {
+        return ContactListService.contactList.count
+    }
+
     /**
          - Returns: Array of contacts
     */
     static func getContacts() -> [Contact] {
         return ContactListService.contactList
     }
-    
+
     /**
         - Parameters:
             - index: Index of the contact
@@ -66,18 +71,7 @@ class ContactListService {
     static func getContact(index: Int) -> Contact {
         return ContactListService.contactList[index]
     }
-    
-    /**
-        - Parameters:
-            - contact: Contact
-        
-         - Returns: Array index of contact, -1 if not successful
-    */
-    static func getIndex(contact: Contact) -> Int {
-        return ContactListService.contactList.firstIndex { (cntct) -> Bool in
-            cntct.email == contact.email
-            } ?? -1
-    }
+
     
     /**
          - Returns: Array of contacts with a public key
@@ -100,7 +94,21 @@ class ContactListService {
         }
         return cntcts
     }
-    
+
+
+    /**
+        - Parameters:
+            - contact: Contact
+
+         - Returns: Array index of contact, -1 if not successful
+    */
+    static func getIndex(contact: Contact) -> Int {
+        return ContactListService.contactList.firstIndex { (cntct) -> Bool in
+            cntct.email == contact.email
+            } ?? -1
+    }
+
+
     /**
          Adds a contact to persistent and in-memory storage
 
@@ -142,7 +150,8 @@ class ContactListService {
         
         return true
     }
-    
+
+
     /**
          Naive approach to editing a contact
 
@@ -176,60 +185,8 @@ class ContactListService {
         
         return success
     }
-    
-    
-    /**
-         Adds a contact to persistent and in-memory storage
 
-         - Parameters:
-            - name: Name of the contact
-            - email: Unique and valid email address
-            - publicKey: Public PGP key
-            - privateKey: Private PGP key
 
-         - Returns: True, if successful
-    */
-    static func addContact(name: String, email: String, publicKey: PartialKey?, privateKey: PartialKey?) -> Bool {
-        return self.addContact(name: name,
-                               email: email,
-                               key: Key(secretKey: privateKey, publicKey: publicKey)
-        )
-    }
-
-    /**
-         Tries to find a suitable key on keyserver and adds contact to persistent and in-memory storage if successful
-
-         - Parameters:
-            - name: Name of the contact
-            - email: Unique and valid email address
-
-         - Returns: True, if successful
-    */
-    static func addContactFromKeyserver(name: String, email: String) -> Bool {
-        
-        if let key = KeyFetchService.requestKey(email: email) {
-            if ContactListService.addContact(name: name, email: email, key: key) {
-                /* Success! Key added to contact list */
-                return true
-            } else {
-                /* Failed to add contact to list */
-                return false
-            }
-            
-        } else {
-            return false
-        }
-    }
-
-    /**
-         Tries to find a suitable key on keyserver and adds contact to persistent and in-memory storage if successful
-
-         - Parameters:
-            - name: Name of the contact
-            - email: Unique and valid email address
-
-         - Returns: True, if successful
-    */
     static func removeContact(index: Int) {
         /* Delete contact from persistent data */
         PersistenceService.context.delete(contactList[index])
@@ -244,12 +201,6 @@ class ContactListService {
         )
     }
 
-    /**
-         - Returns: Number of stored contacts
-    */
-    static func numberOfContacts() -> Int {
-        return ContactListService.contactList.count
-    }
 
     /**
          Deletes all persistent and in-memory data
@@ -276,6 +227,9 @@ class ContactListService {
     }
 
 
+    /**
+         Removes contacts with PGP keys that are not supported
+    */
     static func cleanUp() -> Int{
         var count = 0
         for cntct in ContactListService.contactList where (!cntct.key.isPublic && !cntct.key.isSecret) {

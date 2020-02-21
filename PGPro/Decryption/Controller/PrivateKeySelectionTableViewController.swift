@@ -52,8 +52,17 @@ class PrivateKeySelectionTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        PrivateKeySelectionTableViewController.selectedRow = indexPath.row
-        DecryptionTableViewController.decryptionContact = contactList[indexPath.row]
+
+        if (indexPath.row != PrivateKeySelectionTableViewController.selectedRow) {
+            // Select action
+            PrivateKeySelectionTableViewController.selectedRow = indexPath.row
+            DecryptionTableViewController.decryptionContact = contactList[indexPath.row]
+        } else {
+            // De-select action
+            PrivateKeySelectionTableViewController.selectedRow = -1
+            DecryptionTableViewController.decryptionContact = nil
+        }
+
         keySelectionTV.reloadData()
 
         // Notify observers about changed key selection

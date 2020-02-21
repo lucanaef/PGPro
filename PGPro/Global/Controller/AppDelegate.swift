@@ -34,7 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             // If in simulator, create example dataset
             #if targetEnvironment(simulator)
-            ExampleDataService.createExampleDataset()
+                ExampleDataService.createExampleDataset()
+                // ExampleDataService.generateLargeInput(numberOfContacts: 10)
             #endif
 
             UserDefaults.standard.set(true, forKey: "launchedBefore")

@@ -31,12 +31,12 @@ class KeyFetchService {
 
          - Returns: PGP Public Key, if successful, nil otherwise
     */
-    static func requestKey(email: String) -> Key? {
+    static func lookupKeyLegacy(email: String, serverURL: String = "https://pgp.circl.lu/pks/lookup?search=") -> Key? {
         
         let encodedEmail = email.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         guard encodedEmail != nil else { return nil }
         
-        let urlString = "https://pgp.circl.lu/pks/lookup?search=" + encodedEmail! + "&op=get"
+        let urlString = serverURL + encodedEmail! + "&op=get"
         guard let url = URL(string: urlString) else { return nil }
         
         do {

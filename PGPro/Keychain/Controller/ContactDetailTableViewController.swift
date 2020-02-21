@@ -172,7 +172,6 @@ class ContactDetailTableViewController: UITableViewController {
         } else {
             self.share(activityItems: [activityItem])
         }
-    
     }
 
     func share(activityItems: [Any]) {

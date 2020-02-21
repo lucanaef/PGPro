@@ -28,58 +28,50 @@ class ExampleDataService {
     
     static func createExampleDataset() {
         
-        let nilKey = Key(secretKey: nil, publicKey: nil)
-        
         let keyGen = KeyGenerator()
                 
-        assert(ContactListService.addContact(name: "Winston Smith",
-                              email: "winston.smith@pgpro.app",
-                              key: keyGen.generate(for: "winston.smith@pgpro.app",
-                                                   passphrase: nil)))
+        assert(ContactListService.addContact(name:  "Winston Smith",
+                                             email: "winston.smith@pgpro.app",
+                                             key:   keyGen.generate(for: "winston.smith@pgpro.app",passphrase: nil))
+        )
         
-        assert(ContactListService.addContact(name: "O'Brien",
-                             email: "obiren@pgpro.app",
-                             publicKey: nilKey.publicKey,
-                             privateKey: keyGen.generate(for: "obiren@pgpro.app",
-                                                         passphrase: nil).secretKey))
+        assert(ContactListService.addContact(name:  "O'Brien",
+                                             email: "obiren@pgpro.app",
+                                             key:   Key(secretKey: keyGen.generate(for: "obiren@pgpro.app", passphrase: nil).secretKey, publicKey: nil))
+        )
 
-        assert(ContactListService.addContact(name: "Julia",
-                            email: "julia@pgpro.app",
-                            key: keyGen.generate(for: "julia@pgpro.app",
-                                                 passphrase: "jules")))
+        assert(ContactListService.addContact(name:  "Julia",
+                                             email: "julia@pgpro.app",
+                                             key:   keyGen.generate(for: "julia@pgpro.app", passphrase: "jules"))
+        )
 
-        assert(ContactListService.addContact(name: "Mr. Charrington",
-                                  email: "mr.charrington@pgpro.app",
-                                  publicKey: keyGen.generate(for: "mr.charrington@pgpro.app",
-                                                             passphrase: nil).publicKey,
-                                  privateKey: nilKey.secretKey))
+        assert(ContactListService.addContact(name:  "Mr. Charrington",
+                                             email: "mr.charrington@pgpro.app",
+                                             key:   Key(secretKey: nil, publicKey: keyGen.generate(for: "mr.charrington@pgpro.app", passphrase: nil).publicKey))
+        )
 
-        assert(ContactListService.addContact(name: "Syme",
-                           email: "syme@pgpro.app",
-                           publicKey: keyGen.generate(for: "syme@pgpro.app",
-                                                      passphrase: nil).publicKey,
-                           privateKey: nilKey.secretKey))
+        assert(ContactListService.addContact(name:  "Syme",
+                                             email: "syme@pgpro.app",
+                                             key:   Key(secretKey: nil, publicKey: keyGen.generate(for: "syme@pgpro.app", passphrase: nil).publicKey))
+        )
 
-        assert(ContactListService.addContact(name: "Parsons",
-                              email: "parsons@pgpro.app",
-                              publicKey: keyGen.generate(for: "parsons@pgpro.app",
-                                                         passphrase: nil).publicKey,
-                              privateKey: nilKey.secretKey))
+        assert(ContactListService.addContact(name:  "Parsons",
+                                             email: "parsons@pgpro.app",
+                                             key:   Key(secretKey: nil, publicKey: keyGen.generate(for: "parsons@pgpro.app", passphrase: nil).publicKey))
+        )
 
-        assert(ContactListService.addContact(name: "Emmanuel Goldstein",
-                               email: "e.goldstein@pgpro.app",
-                               publicKey: keyGen.generate(for: "e.goldstein@pgpro.app",
-                                                          passphrase: nil).publicKey,
-                               privateKey: nilKey.secretKey))
+        assert(ContactListService.addContact(name:  "Emmanuel Goldstein",
+                                             email: "e.goldstein@pgpro.app",
+                                             key:   Key(secretKey: nil, publicKey: keyGen.generate(for: "e.goldstein@pgpro.app", passphrase: nil).publicKey))
+        )
     }
 
 
-    static func generateLargeInput() {
-        for iteration in 1...25 {
-            _ = ContactListService.addContact(name: String(iteration),
-                                              email: String(iteration) + "@pgpro.app",
-                                              key: KeyGenerator().generate(for: String(iteration) + "@pgpro.app",
-                                                                           passphrase: nil)
+    static func generateLargeInput(numberOfContacts: Int) {
+        for iteration in 1...numberOfContacts {
+            _ = ContactListService.addContact(name: "PGPro User " + String(iteration),
+                                              email: "user" + String(iteration) + "@pgpro.app",
+                                              key: KeyGenerator().generate(for: String(iteration) + "@pgpro.app", passphrase: nil)
             )
         }
     }

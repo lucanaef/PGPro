@@ -37,8 +37,6 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
-	<key>NSContactsUsageDescription</key>
-	<string>PGPro needs access to your contacts to automatically import their keys.</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

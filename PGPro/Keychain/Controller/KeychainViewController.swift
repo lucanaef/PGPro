@@ -60,12 +60,6 @@ class KeychainViewController: UIViewController {
                                            message: nil,
                                            preferredStyle: .actionSheet)
 
-        let addManually = UIAlertAction(title: "Add Existing Key", style: .default) { _ -> Void in
-            optionMenu.dismiss(animated: true, completion: nil)
-            self.performSegue(withIdentifier: "goToAddContact", sender: nil)
-        }
-        optionMenu.addAction(addManually)
-
         let importKey = UIAlertAction(title: "Import Keys from File", style: .default) { _ -> Void in
             self.importKeys()
             optionMenu.dismiss(animated: true, completion: nil)
