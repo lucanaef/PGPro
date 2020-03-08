@@ -18,6 +18,7 @@
 import UIKit
 import ObjectivePGP
 import MobileCoreServices
+import SwiftTryCatch
 
 class KeychainViewController: UIViewController {
     
@@ -107,32 +108,37 @@ extension KeychainViewController: UIDocumentPickerDelegate {
             do {
                 let fileData = try String(contentsOf: selectedFileURL, encoding: .utf8)
                 guard let asciiFileData = fileData.data(using: .utf8) else { continue }
-                do {
-                    let importedKeys = try ObjectivePGP.readKeys(from: asciiFileData)
-                    for key in importedKeys {
 
-                        guard let publicKey = key.publicKey else { continue }
-                        guard let primaryUser = publicKey.primaryUser else {  continue }
+                var importedKeys: [Key] = []
+                SwiftTryCatch.try({
+                    do {
+                        importedKeys = try ObjectivePGP.readKeys(from: asciiFileData)
+                    } catch let error {
+                        print("Error info: \(error)")
+                    }
+                }, catch: { (error) in
+                        return
+                    }, finallyBlock: {
+                })
+                for key in importedKeys {
 
-                        let components = primaryUser.userID.components(separatedBy: "<")
-                        if (components.count == 2) {
-                            let name = String(components[0].dropLast())
-                            let email = String(components[1].dropLast())
-                            if ContactListService.addContact(name: name, email: email, key: key) {
-                                count += 1
-                            }
-                        } else if (components.count == 1 && components[0].isValidEmail()){
-                            let name = components[0]
-                            let email = components[0]
-                            if ContactListService.addContact(name: name, email: email, key: key) {
-                                count += 1
-                            }
+                    guard let publicKey = key.publicKey else { continue }
+                    guard let primaryUser = publicKey.primaryUser else { continue }
+
+                    let components = primaryUser.userID.components(separatedBy: "<")
+                    if (components.count == 2) {
+                        let name = String(components[0].dropLast())
+                        let email = String(components[1].dropLast())
+                        if ContactListService.addContact(name: name, email: email, key: key) {
+                            count += 1
+                        }
+                    } else if (components.count == 1 && components[0].isValidEmail()){
+                        let name = components[0]
+                        let email = components[0]
+                        if ContactListService.addContact(name: name, email: email, key: key) {
+                            count += 1
                         }
                     }
-
-                } catch let error {
-                    print("Error info: \(error)")
-                    continue
                 }
             } catch let error {
                 print("Error info: \(error)")

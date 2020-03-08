@@ -124,7 +124,7 @@ class DecryptionTableViewController: UITableViewController {
                     }
                     
                     performSegue(withIdentifier: "showDecryptedMessage",
-                                 sender: String(decoding: decryptedMessage, as: UTF8.self))
+                                 sender: String(data: decryptedMessage, encoding: .utf8))
                 } catch {
                     alert(text: "Decryption Failed!")
                     return

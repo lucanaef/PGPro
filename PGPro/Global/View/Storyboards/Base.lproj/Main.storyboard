@@ -404,7 +404,7 @@
                                                         <constraint firstAttribute="height" constant="44" id="9x6-gq-9wW"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
