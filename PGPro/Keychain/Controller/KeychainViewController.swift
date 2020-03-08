@@ -61,6 +61,12 @@ class KeychainViewController: UIViewController {
                                            message: nil,
                                            preferredStyle: .actionSheet)
 
+        let addKeyFromClipboard = UIAlertAction(title: "Add Key from Clipboard", style: .default) { _ -> Void in
+            self.addKeyFromClipboard()
+            optionMenu.dismiss(animated: true, completion: nil)
+        }
+        optionMenu.addAction(addKeyFromClipboard)
+
         let importKey = UIAlertAction(title: "Import Keys from File", style: .default) { _ -> Void in
             self.importKeys()
             optionMenu.dismiss(animated: true, completion: nil)
@@ -87,6 +93,69 @@ class KeychainViewController: UIViewController {
                 destVC.contact = sender as? Contact
             }
         }
+    }
+
+    func addKeyFromClipboard() {
+        guard let clipboardString = UIPasteboard.general.string else {
+            // Clipboard is empty
+            alert(text: "Clipboard is Empty!")
+            return
+        }
+        guard let asciiKeyData = clipboardString.data(using: .ascii) else {
+            // Clipboard doesn't contain valid data
+            alert(text: "Clipboard doesn't contain valid data!")
+            return
+        }
+        var readKeys: [Key] = []
+        SwiftTryCatch.try({
+            do {
+                readKeys = try ObjectivePGP.readKeys(from: asciiKeyData)
+            } catch let error {
+                print("Error info: \(error)")
+            }
+        }, catch: { (error) in
+            print("Error info: \(String(describing: error))")
+            }, finallyBlock: {
+        })
+
+        if (readKeys.isEmpty) {
+            // No key sucessfully imported
+            alert(text: "No new keys imported")
+            return
+        }
+
+        var count = 0
+        for key in readKeys {
+
+            guard let publicKey = key.publicKey else { continue }
+            guard let primaryUser = publicKey.primaryUser else { continue }
+
+            let components = primaryUser.userID.components(separatedBy: "<")
+            if (components.count == 2) {
+                let name = String(components[0].dropLast())
+                let email = String(components[1].dropLast())
+                if ContactListService.addContact(name: name, email: email, key: key) {
+                    count += 1
+                }
+            } else if (components.count == 1 && components[0].isValidEmail()){
+                let name = components[0]
+                let email = components[0]
+                if ContactListService.addContact(name: name, email: email, key: key) {
+                    count += 1
+                }
+            }
+        }
+        count -= ContactListService.cleanUp()
+
+        if (count == 0) {
+            alert(text: "No new keys imported")
+        } else if (count == 1) {
+            alert(text: "1 new key imported")
+        } else {
+            alert(text: "\(count) new keys imported")
+        }
+
+
     }
 
     func importKeys() {
@@ -117,7 +186,7 @@ extension KeychainViewController: UIDocumentPickerDelegate {
                         print("Error info: \(error)")
                     }
                 }, catch: { (error) in
-                        return
+                    print("Error info: \(String(describing: error))")
                     }, finallyBlock: {
                 })
                 for key in importedKeys {

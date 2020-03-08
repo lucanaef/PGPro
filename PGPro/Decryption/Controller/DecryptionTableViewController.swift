@@ -60,15 +60,11 @@ class DecryptionTableViewController: UITableViewController {
     @objc
     func update() {
         var label = "Select Private Key..."
-        
         if let decryptionContact = DecryptionTableViewController.decryptionContact {
             label = decryptionContact.userID
         }
-        
         titleLabel.text = label
-        
         keyRequiresPassphrase = decryptionKey?.isEncryptedWithPassword ?? false
-        
         tableView.reloadData()
     }
     
