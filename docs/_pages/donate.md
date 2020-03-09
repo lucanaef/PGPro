@@ -7,7 +7,7 @@ include_in_header: true
 # Support PGPro
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-<script type="text/javascript" src="https://blockchain.info/Resources/js/pay-now-button.js"></script>
+<script type="text/javascript" src="https://pgpro.app/assets/pay-now-button.js"></script>
 
 <div style="display: inline-block">
   <a href="https://www.paypal.me/pgproapp">
