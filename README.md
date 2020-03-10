@@ -10,10 +10,10 @@ PGPro can encrypt and decrypt messages as well as manage all your PGP keys. It i
 
 ## Screenshots
 <p float="left">
-  <img src="./screenshots/en-US/iPhone%2011%20Pro-1-EncryptionView.png" width="200">
-  <img src="./screenshots/en-US/iPhone%2011%20Pro-2-DecryptionView.png" width="200">
-  <img src="./screenshots/en-US/iPhone%2011%20Pro-3-KeychainView.png" width="200">
-  <img src="./screenshots/en-US/iPhone%2011%20Pro-4-DetailView.png" width="200">
+  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro-1-EncryptionView.png" width="200">
+  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro-2-DecryptionView.png" width="200">
+  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro-3-KeychainView.png" width="200">
+  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro-4-DetailView.png" width="200">
 </p>
 
 ## Contribution
