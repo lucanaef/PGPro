@@ -36,8 +36,8 @@ If you have feedback or suggestions, please reach out to me at [dev@pgpro.app](m
 
 ## **Version 2019.3** - Oct 16, 2019
 
-PGPro went Open Source!
-See for yourself on https://github.com/lucanaef/PGPro.
+PGPro went Open Source!  
+See for yourself on [https://github.com/lucanaef/PGPro](https://github.com/lucanaef/PGPro).
 
 ## **Version 2019.2** - Oct 8, 2019
 
