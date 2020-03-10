@@ -7,7 +7,7 @@ include_in_header: true
 
 # Changelog
 
-## **Version 2020.1**
+## **Version 2020.1** - Feb 4, 2020
 
 Thanks for using PGPro!
 This release includes the following changes:
@@ -22,7 +22,7 @@ as well as various small improvements.
 
 If you have feedback or suggestions, please reach out to me at [dev@pgpro.app](mailto:dev@pgpro.app).
 
-## **Version 2019.4**
+## **Version 2019.4** - Dec 27, 2019
 
 Thanks for using PGPro!
 This release includes the following changes:
@@ -34,14 +34,15 @@ This release includes the following changes:
 
 If you have feedback or suggestions, please reach out to me at [dev@pgpro.app](mailto:dev@pgpro.app).
 
-## **Version 2019.3**
+## **Version 2019.3** - Oct 16, 2019
 
 PGPro went Open Source!
+See for yourself on https://github.com/lucanaef/PGPro.
 
-## **Version 2019.2**
+## **Version 2019.2** - Oct 8, 2019
 
 Design Refinements
 
-## **Version 2019.1**
+## **Version 2019.1** - Oct 3, 2019
 
 Initial Release 🎉
