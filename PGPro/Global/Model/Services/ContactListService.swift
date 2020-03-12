@@ -230,7 +230,7 @@ class ContactListService {
     /**
          Removes contacts with PGP keys that are not supported
     */
-    static func cleanUp() -> Int{
+    static func cleanUp() -> Int {
         var count = 0
         for cntct in ContactListService.contactList where (!cntct.key.isPublic && !cntct.key.isSecret) {
             let cntctIdx = self.getIndex(contact: cntct)

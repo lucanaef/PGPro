@@ -32,7 +32,7 @@ class ExampleDataService {
                 
         assert(ContactListService.addContact(name:  "Winston Smith",
                                              email: "winston.smith@pgpro.app",
-                                             key:   keyGen.generate(for: "winston.smith@pgpro.app",passphrase: nil))
+                                             key:   keyGen.generate(for: "winston.smith@pgpro.app", passphrase: nil))
         )
         
         assert(ContactListService.addContact(name:  "O'Brien",

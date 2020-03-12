@@ -40,6 +40,7 @@ extension Contact {
                 keys = try ObjectivePGP.readKeys(from: self.keyData as Data)
             } catch {  }
         }, catch: { (error) in
+                print("Error info: \(String(describing: error))")
                 return
             }, finallyBlock: {
         })

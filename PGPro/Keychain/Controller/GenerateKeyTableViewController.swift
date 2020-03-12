@@ -51,8 +51,6 @@ class GenerateKeyTableViewController: UITableViewController {
     
     @objc
     func addContactDone(sender: UIBarButtonItem) {
-        
-        // Validate Input
         if validateInput() {
             guard let name = name.text else { return }
             guard let email = email.text else { return }

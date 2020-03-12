@@ -101,26 +101,12 @@ class KeychainViewController: UIViewController {
             alert(text: "Clipboard is Empty!")
             return
         }
-        guard let asciiKeyData = clipboardString.data(using: .ascii) else {
-            // Clipboard doesn't contain valid data
-            alert(text: "Clipboard doesn't contain valid data!")
-            return
-        }
-        var readKeys: [Key] = []
-        SwiftTryCatch.try({
-            do {
-                readKeys = try ObjectivePGP.readKeys(from: asciiKeyData)
-            } catch let error {
-                print("Error info: \(error)")
-            }
-        }, catch: { (error) in
-            print("Error info: \(String(describing: error))")
-            }, finallyBlock: {
-        })
 
-        if (readKeys.isEmpty) {
-            // No key sucessfully imported
-            alert(text: "No new keys imported")
+        var readKeys: [Key] = []
+        do {
+            readKeys = try KeyConstructionService.fromString(keyString: clipboardString)
+        } catch {
+            alert(text: "No Key found in Clipboard!")
             return
         }
 
@@ -146,6 +132,7 @@ class KeychainViewController: UIViewController {
             }
         }
         count -= ContactListService.cleanUp()
+        ContactListService.sort()
 
         if (count == 0) {
             alert(text: "No new keys imported")
@@ -175,21 +162,8 @@ extension KeychainViewController: UIDocumentPickerDelegate {
 
         for selectedFileURL in urls {
             do {
-                let fileData = try String(contentsOf: selectedFileURL, encoding: .utf8)
-                guard let asciiFileData = fileData.data(using: .utf8) else { continue }
-
-                var importedKeys: [Key] = []
-                SwiftTryCatch.try({
-                    do {
-                        importedKeys = try ObjectivePGP.readKeys(from: asciiFileData)
-                    } catch let error {
-                        print("Error info: \(error)")
-                    }
-                }, catch: { (error) in
-                    print("Error info: \(String(describing: error))")
-                    }, finallyBlock: {
-                })
-                for key in importedKeys {
+                let readKeys = try KeyConstructionService.fromFile(fileURL: selectedFileURL)
+                for key in readKeys {
 
                     guard let publicKey = key.publicKey else { continue }
                     guard let primaryUser = publicKey.primaryUser else { continue }
@@ -201,7 +175,7 @@ extension KeychainViewController: UIDocumentPickerDelegate {
                         if ContactListService.addContact(name: name, email: email, key: key) {
                             count += 1
                         }
-                    } else if (components.count == 1 && components[0].isValidEmail()){
+                    } else if (components.count == 1 && components[0].isValidEmail()) {
                         let name = components[0]
                         let email = components[0]
                         if ContactListService.addContact(name: name, email: email, key: key) {
