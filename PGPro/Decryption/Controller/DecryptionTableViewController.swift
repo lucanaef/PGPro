@@ -75,6 +75,16 @@ class DecryptionTableViewController: UITableViewController {
                 alert(text: "Paste Message to Decrypt!")
                 return
             }
+
+            // Trim to relevant section
+            guard let range = encryptedMessage.range(of: #"-----BEGIN PGP MESSAGE-----(.|\n)*-----END PGP MESSAGE-----"#, options: .regularExpression)
+                else {
+                    print()
+                    alert(text: "Invalid Message!")
+                    return
+            }
+
+            let encryptedMessage = String(encryptedMessage[range])
             if let encryptedMessageData = encryptedMessage.data(using: .ascii) {
                 
                 let passphrase = passphraseTextField.text
@@ -106,18 +116,10 @@ class DecryptionTableViewController: UITableViewController {
                 }
                 
                 do {
-                    if (keyRequiresPassphrase) {
-                        decryptedMessage = try ObjectivePGP.decrypt(encryptedMessageData,
-                                                                    andVerifySignature: false,
-                                                                    using: [decryptionKey],
-                                                                    passphraseForKey: {(_) -> (String?) in return passphrase})
-                        
-                    } else {
-                        decryptedMessage = try ObjectivePGP.decrypt(encryptedMessageData,
-                                                                    andVerifySignature: false,
-                                                                    using: [decryptionKey],
-                                                                    passphraseForKey: nil)
-                    }
+                    decryptedMessage = try ObjectivePGP.decrypt(encryptedMessageData,
+                                                                andVerifySignature: false,
+                                                                using: [decryptionKey],
+                                                                passphraseForKey: {(_) -> (String?) in return passphrase})
                     
                     performSegue(withIdentifier: "showDecryptedMessage",
                                  sender: String(data: decryptedMessage, encoding: .utf8))

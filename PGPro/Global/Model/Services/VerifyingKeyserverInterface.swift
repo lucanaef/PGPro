@@ -28,7 +28,6 @@ class VerifyingKeyserverInterface {
         guard encodedEmail != nil else { return }
 
         let urlString = "https://keys.openpgp.org/vks/v1/by-email/" + encodedEmail!
-        print(urlString)
 
         if let url = URL(string: urlString) {
 
