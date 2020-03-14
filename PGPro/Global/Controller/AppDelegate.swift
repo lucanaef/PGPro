@@ -41,7 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         } else {
             ContactListService.loadPersistentData()
-            _ = ContactListService.cleanUp()
         }
 
         return true

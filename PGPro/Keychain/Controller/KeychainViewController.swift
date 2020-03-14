@@ -61,23 +61,23 @@ class KeychainViewController: UIViewController {
                                            message: nil,
                                            preferredStyle: .actionSheet)
 
+        let generateKey = UIAlertAction(title: "Generate Key Pair", style: .default) { _ -> Void in
+            optionMenu.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "goToGenerateKey", sender: nil)
+        }
+        optionMenu.addAction(generateKey)
+
+        let importKeyFromFile = UIAlertAction(title: "Import Keys from File", style: .default) { _ -> Void in
+            self.importKeysFilePicker()
+            optionMenu.dismiss(animated: true, completion: nil)
+        }
+        optionMenu.addAction(importKeyFromFile)
+
         let addKeyFromClipboard = UIAlertAction(title: "Add Key from Clipboard", style: .default) { _ -> Void in
             self.addKeyFromClipboard()
             optionMenu.dismiss(animated: true, completion: nil)
         }
         optionMenu.addAction(addKeyFromClipboard)
-
-        let importKey = UIAlertAction(title: "Import Keys from File", style: .default) { _ -> Void in
-            self.importKeys()
-            optionMenu.dismiss(animated: true, completion: nil)
-        }
-        optionMenu.addAction(importKey)
-
-        let generateKey = UIAlertAction(title: "Generate New Key Pair", style: .default) { _ -> Void in
-            optionMenu.dismiss(animated: true, completion: nil)
-            self.performSegue(withIdentifier: "goToGenerateKey", sender: nil)
-        }
-        optionMenu.addAction(generateKey)
 
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ -> Void in
             optionMenu.dismiss(animated: true, completion: nil)
@@ -110,42 +110,21 @@ class KeychainViewController: UIViewController {
             return
         }
 
-        var count = 0
-        for key in readKeys {
+        var numOfImportedKeys = 0
+        numOfImportedKeys = ContactListService.importKeys(keys: readKeys)
 
-            guard let publicKey = key.publicKey else { continue }
-            guard let primaryUser = publicKey.primaryUser else { continue }
-
-            let components = primaryUser.userID.components(separatedBy: "<")
-            if (components.count == 2) {
-                let name = String(components[0].dropLast())
-                let email = String(components[1].dropLast())
-                if ContactListService.addContact(name: name, email: email, key: key) {
-                    count += 1
-                }
-            } else if (components.count == 1 && components[0].isValidEmail()){
-                let name = components[0]
-                let email = components[0]
-                if ContactListService.addContact(name: name, email: email, key: key) {
-                    count += 1
-                }
-            }
-        }
-        count -= ContactListService.cleanUp()
-        ContactListService.sort()
-
-        if (count == 0) {
+        if (numOfImportedKeys == 0) {
             alert(text: "No new keys imported")
-        } else if (count == 1) {
+        } else if (numOfImportedKeys == 1) {
             alert(text: "1 new key imported")
         } else {
-            alert(text: "\(count) new keys imported")
+            alert(text: "\(numOfImportedKeys) new keys imported")
         }
 
 
     }
 
-    func importKeys() {
+    func importKeysFilePicker() {
         let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeData as String], in: .import)
         documentPicker.delegate = self
         documentPicker.allowsMultipleSelection = true
@@ -158,45 +137,24 @@ class KeychainViewController: UIViewController {
 extension KeychainViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        var count = 0
+        var numOfImportedKeys = 0
 
         for selectedFileURL in urls {
             do {
                 let readKeys = try KeyConstructionService.fromFile(fileURL: selectedFileURL)
-                for key in readKeys {
-
-                    guard let publicKey = key.publicKey else { continue }
-                    guard let primaryUser = publicKey.primaryUser else { continue }
-
-                    let components = primaryUser.userID.components(separatedBy: "<")
-                    if (components.count == 2) {
-                        let name = String(components[0].dropLast())
-                        let email = String(components[1].dropLast())
-                        if ContactListService.addContact(name: name, email: email, key: key) {
-                            count += 1
-                        }
-                    } else if (components.count == 1 && components[0].isValidEmail()) {
-                        let name = components[0]
-                        let email = components[0]
-                        if ContactListService.addContact(name: name, email: email, key: key) {
-                            count += 1
-                        }
-                    }
-                }
+                numOfImportedKeys = ContactListService.importKeys(keys: readKeys)
             } catch let error {
                 print("Error info: \(error)")
                 continue
             }
         }
 
-        count -= ContactListService.cleanUp()
-
-        if (count == 0) {
+        if (numOfImportedKeys == 0) {
             alert(text: "No new keys imported")
-        } else if (count == 1) {
+        } else if (numOfImportedKeys == 1) {
             alert(text: "1 new key imported")
         } else {
-            alert(text: "\(count) new keys imported")
+            alert(text: "\(numOfImportedKeys) new keys imported")
         }
 
     }

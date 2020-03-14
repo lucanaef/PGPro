@@ -47,26 +47,18 @@ class KeyConstructionService {
     }
 
     static func fromFile(fileURL: URL) throws -> [Key] {
-        do {
-            let fileString = try String(contentsOf: fileURL, encoding: .utf8)
-            guard let fileData = fileString.data(using: .utf8) else { throw KeyConstructionError.invalidFormat }
-
-            var readKeys: [Key] = []
-            SwiftTryCatch.try({
-                do {
-                    readKeys = try ObjectivePGP.readKeys(from: fileData)
-                } catch let error {
-                    print("Error info: \(error)")
-                }
-            }, catch: { (error) in
-                print("Error info: \(String(describing: error))")
-                }, finallyBlock: {
-            })
-            return readKeys
-
-        } catch {
-            throw KeyConstructionError.invalidFormat
-        }
+        var readKeys: [Key] = []
+        SwiftTryCatch.try({
+            do {
+                readKeys = try ObjectivePGP.readKeys(fromPath: fileURL.path)
+            } catch let error {
+                print("Error info: \(error)")
+            }
+        }, catch: { (error) in
+            print("Error info: \(String(describing: error))")
+            }, finallyBlock: {
+        })
+        return readKeys
     }
 
 }

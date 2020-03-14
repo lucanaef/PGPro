@@ -32,60 +32,44 @@ class SettingsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.section == 0) { // Case: Import & Export
+        if (indexPath.section == 0) { // Case: Export Keychain
 
-            if (indexPath.row == 0) {
-                importActivityIndicator.startAnimating()
+            exportActivityIndicator.startAnimating()
 
-                DispatchQueue.global(qos: .default).async {
+            DispatchQueue.global(qos: .default).async {
 
-                    DispatchQueue.main.async {
-                        // TODO: Import GPG Keyring
-                    }
-
-                   DispatchQueue.main.async { [weak self] in
-                        // UI updates must be on main thread
-                        self?.importActivityIndicator.stopAnimating()
-                    }
+                let keyring = Keyring()
+                var keys: [Key] = []
+                for cntct in ContactListService.getContacts() {
+                    keys.append(cntct.key)
                 }
-            } else if (indexPath.row == 1) { // // Case: Export Keychain
-                exportActivityIndicator.startAnimating()
+                keyring.import(keys: keys)
 
-                DispatchQueue.global(qos: .default).async {
+                DispatchQueue.main.async { [weak self] in
 
-                    let keyring = Keyring()
-                    var keys: [Key] = []
-                    for cntct in ContactListService.getContacts() {
-                        keys.append(cntct.key)
-                    }
-                    keyring.import(keys: keys)
-
-                    DispatchQueue.main.async { [weak self] in
-
-                        let file = "\(Date().toString())-keychain.gpg"
-                        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                            let fileURL = dir.appendingPathComponent(file)
-                            do {
-                                try keyring.export().write(to: fileURL)
-                            } catch {
-                                self?.alert(text: "Export failed!")
-                            }
-
-                            // Share file
-                            var filesToShare = [Any]()
-                            filesToShare.append(fileURL)
-                            let activityViewController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
-                            self?.present(activityViewController, animated: true, completion: nil)
-
-                        } else {
+                    let file = "\(Date().toString())-keychain.gpg"
+                    if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                        let fileURL = dir.appendingPathComponent(file)
+                        do {
+                            try keyring.export().write(to: fileURL)
+                        } catch {
                             self?.alert(text: "Export failed!")
                         }
-                    }
 
-                   DispatchQueue.main.async { [weak self] in
-                        // UI updates must be on main thread
-                        self?.exportActivityIndicator.stopAnimating()
+                        // Share file
+                        var filesToShare = [Any]()
+                        filesToShare.append(fileURL)
+                        let activityViewController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
+                        self?.present(activityViewController, animated: true, completion: nil)
+
+                    } else {
+                        self?.alert(text: "Export failed!")
                     }
+                }
+
+               DispatchQueue.main.async { [weak self] in
+                    // UI updates must be on main thread
+                    self?.exportActivityIndicator.stopAnimating()
                 }
             }
 

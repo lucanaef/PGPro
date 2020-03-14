@@ -32,21 +32,13 @@ class ContactListService {
         let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
         do {
             self.contactList = try PersistenceService.context.fetch(fetchRequest)
-            ContactListService.sort()
+            _ = self.cleanUp()
+            self.sort()
             NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange,
                                             object: nil
             )
         } catch {
             print("Failed to Load Saved Data!")
-        }
-    }
-    
-    /**
-         Sorts the in-memory contact list alphabetically by name
-    */
-    static func sort() {
-        contactList.sort { (cntctA, cntctB) -> Bool in
-            cntctA.name < cntctB.name
         }
     }
 
@@ -103,9 +95,9 @@ class ContactListService {
          - Returns: Array index of contact, -1 if not successful
     */
     static func getIndex(contact: Contact) -> Int {
-        return ContactListService.contactList.firstIndex { (cntct) -> Bool in
-            cntct.email == contact.email
-            } ?? -1
+        return ContactListService.contactList.firstIndex {
+            (cntct) -> Bool in cntct.email == contact.email
+        } ?? -1
     }
 
 
@@ -149,6 +141,52 @@ class ContactListService {
         )
         
         return true
+    }
+
+    /**
+         Imports keys to Contact List
+
+         - Parameters:
+            - keys: List of Keys
+
+         - Returns: Number of successfully imported keys
+    */
+    static func importKeys(keys: [Key]) -> Int {
+        var importedKeys = 0
+
+        for key in keys {
+
+            var primaryUser: User?
+            if (key.isSecret) {
+                guard let privateKey = key.secretKey else { continue }
+                primaryUser = privateKey.primaryUser
+            } else {
+                guard let publicKey = key.publicKey else { continue }
+                primaryUser = publicKey.primaryUser
+            }
+
+            if let primaryUser = primaryUser {
+                let components = primaryUser.userID.components(separatedBy: "<")
+                if (components.count == 2) {
+                    let name = String(components[0].dropLast())
+                    let email = String(components[1].dropLast())
+                    if ContactListService.addContact(name: name, email: email, key: key) {
+                        importedKeys += 1
+                    }
+                } else if (components.count == 1 && components[0].isValidEmail()) {
+                    let name = components[0]
+                    let email = components[0]
+                    if ContactListService.addContact(name: name, email: email, key: key) {
+                        importedKeys += 1
+                    }
+                }
+            } else { continue }
+        }
+
+        importedKeys -= ContactListService.cleanUp()
+        ContactListService.sort()
+
+        return importedKeys
     }
 
 
@@ -228,9 +266,9 @@ class ContactListService {
 
 
     /**
-         Removes contacts with PGP keys that are not supported
+         Removes contacts with keys that are not supported
     */
-    static func cleanUp() -> Int {
+    private static func cleanUp() -> Int {
         var count = 0
         for cntct in ContactListService.contactList where (!cntct.key.isPublic && !cntct.key.isSecret) {
             let cntctIdx = self.getIndex(contact: cntct)
@@ -238,5 +276,14 @@ class ContactListService {
             count += 1
         }
         return count
+    }
+
+    /**
+         Sorts the in-memory contact list alphabetically by name
+    */
+    static func sort() {
+        contactList.sort { (cntctA, cntctB) -> Bool in
+            cntctA.name < cntctB.name
+        }
     }
 }
