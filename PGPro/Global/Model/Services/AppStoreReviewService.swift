@@ -20,6 +20,8 @@ import StoreKit
 
 class AppStoreReviewService {
 
+    private init() {}
+
     static var minimumReviewWorthyActionCount = 10
     static let reviewWorthyActionKey = "reviewWorthyActionCount"
 

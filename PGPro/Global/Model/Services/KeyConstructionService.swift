@@ -27,7 +27,7 @@ class KeyConstructionService {
         case noConnection
     }
 
-    private init () {}
+    private init() {}
 
     static func fromString(keyString: String) throws -> [Key] {
         guard let asciiKeyData = keyString.data(using: .ascii) else { throw KeyConstructionError.invalidFormat }

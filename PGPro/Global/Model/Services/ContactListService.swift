@@ -21,7 +21,7 @@ import ObjectivePGP
 
 class ContactListService {
     
-    private init () {}
+    private init() {}
     
     private static var contactList: [Contact] = []
     
