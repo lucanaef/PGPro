@@ -67,6 +67,12 @@ class KeychainViewController: UIViewController {
         }
         optionMenu.addAction(generateKey)
 
+        let searchKeyserver = UIAlertAction(title: "Search on Keyserver", style: .default) { _ -> Void in
+            optionMenu.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "goToSearchKeyserver", sender: nil)
+        }
+        optionMenu.addAction(searchKeyserver)
+
         let importKeyFromFile = UIAlertAction(title: "Import Keys from File", style: .default) { _ -> Void in
             self.importKeysFilePicker()
             optionMenu.dismiss(animated: true, completion: nil)
@@ -110,8 +116,7 @@ class KeychainViewController: UIViewController {
             return
         }
 
-        var numOfImportedKeys = 0
-        numOfImportedKeys = ContactListService.importKeys(keys: readKeys)
+        let numOfImportedKeys = ContactListService.importKeys(keys: readKeys)
 
         if (numOfImportedKeys == 0) {
             alert(text: "No new keys imported")

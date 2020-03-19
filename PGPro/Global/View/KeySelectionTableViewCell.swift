@@ -27,4 +27,9 @@ class KeySelectionTableViewCell: UITableViewCell {
         cellTitle.text = contact.name
         cellSubtitle.text = contact.email
     }
+
+    func setValues(name: String, email: String) {
+        cellTitle.text = name
+        cellSubtitle.text = email
+    }
 }

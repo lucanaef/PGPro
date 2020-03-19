@@ -350,7 +350,8 @@
                     <connections>
                         <outlet property="keychainTableView" destination="1yk-ai-KWv" id="Ehq-X6-2VD"/>
                         <segue destination="CDs-aQ-Lb0" kind="show" identifier="showContactDetail" id="8un-u4-Xkm"/>
-                        <segue destination="qpj-m0-cI1" kind="show" identifier="goToGenerateKey" id="UKM-GO-4m3"/>
+                        <segue destination="qpj-m0-cI1" kind="presentation" identifier="goToGenerateKey" id="UKM-GO-4m3"/>
+                        <segue destination="Qu2-2b-YI8" kind="presentation" identifier="goToSearchKeyserver" id="HAH-oI-njw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dcK-iv-PgH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -362,7 +363,7 @@
             <objects>
                 <tableViewController title="Generate Key" id="PTw-6j-CLQ" customClass="GenerateKeyTableViewController" customModule="PGPro" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="c5m-g0-9Io">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <sections>
@@ -505,7 +506,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Sq-wc-3cu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2705.7971014492755" y="2033.7053571428571"/>
+            <point key="canvasLocation" x="2593" y="2173"/>
         </scene>
         <!--Contact Detail View-->
         <scene sceneID="3qF-6u-FJx">
@@ -1142,7 +1143,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="1C1-fW-oBE"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="j2R-PZ-vpz">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1152,7 +1153,77 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fl4-sL-xrH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1812" y="2034"/>
+            <point key="canvasLocation" x="1880" y="2173"/>
+        </scene>
+        <!--Search on Keyserver-->
+        <scene sceneID="U0U-LR-085">
+            <objects>
+                <tableViewController id="g3a-0U-9Sv" customClass="SearchKeyserverTableViewController" customModule="PGPro" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Efh-u6-T0k">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" text="" placeholder="Enter Email Address" id="VJW-RB-WOV">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" smartDashesType="no" smartQuotesType="no" textContentType="email"/>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="KeyCell" textLabel="Ta4-3V-bnh" detailTextLabel="FeV-KD-ZRs" style="IBUITableViewCellStyleSubtitle" id="q3o-oB-xbW">
+                                <rect key="frame" x="0.0" y="84" width="414" height="55.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="q3o-oB-xbW" id="9nu-CX-kU9">
+                                    <rect key="frame" x="0.0" y="0.0" width="370" height="55.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ta4-3V-bnh">
+                                            <rect key="frame" x="20" y="10" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FeV-KD-ZRs">
+                                            <rect key="frame" x="20" y="31.5" width="33" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="g3a-0U-9Sv" id="4rZ-55-3kW"/>
+                            <outlet property="delegate" destination="g3a-0U-9Sv" id="vyL-IQ-a1M"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Search on Keyserver" id="CCM-1B-Tba"/>
+                    <connections>
+                        <outlet property="searchBar" destination="VJW-RB-WOV" id="G45-D4-rM5"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QfK-O7-RII" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2549" y="1434"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="lnC-Qw-OkN">
+            <objects>
+                <navigationController id="Qu2-2b-YI8" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="KzE-6s-fuW"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="t2C-G6-N3C">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="g3a-0U-9Sv" kind="relationship" relationship="rootViewController" id="VLX-rP-QzJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WJd-52-l1B" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1812" y="1434"/>
         </scene>
     </scenes>
     <resources>

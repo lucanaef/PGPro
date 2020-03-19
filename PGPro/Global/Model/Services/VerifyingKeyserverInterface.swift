@@ -17,29 +17,88 @@
 
 import Foundation
 import ObjectivePGP
+import SwiftTryCatch
 
 class VerifyingKeyserverInterface {
 
+    enum VKIError: Error {
+        case keyNotFound
+        case noConnection
+        case serverDatabaseMaintenance
+        case rateLimiting
+        case invalidFormat
+        case invalidResponse
+        case keyNotSupported
+    }
+
     private init() {}
 
-    static func getByEmail(email: String) {
+    static func getByEmail(email: String, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
 
         let encodedEmail = email.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        guard encodedEmail != nil else { return }
+        guard encodedEmail != nil else {
+            completion(.failure(.invalidFormat))
+            return
+        }
 
         let urlString = "https://keys.openpgp.org/vks/v1/by-email/" + encodedEmail!
-
-        if let url = URL(string: urlString) {
-
-            URLSession.shared.dataTask(with: url) { data, res, error in
-                if let data = data {
-                    do {
-                        let keys = try ObjectivePGP.readKeys(from: data)
-                        print(keys)
-                    } catch {}
-                }
-            }.resume()
+        guard let url = URL(string: urlString) else {
+            completion(.failure(.invalidFormat))
+            return
         }
+
+        URLSession.shared.dataTask(with: url) { data, res, error in
+            if (error != nil) {
+                completion(.failure(.noConnection))
+                return
+            }
+            guard let httpResponse = res as? HTTPURLResponse else {
+                completion(.failure(.invalidResponse))
+                return
+            }
+
+            /// Handle critical HTTP status codes
+            if (httpResponse.statusCode == 404) {
+                completion(.failure(.keyNotFound))
+                return
+            } else if (httpResponse.statusCode == 429) {
+                completion(.failure(.rateLimiting))
+                return
+            } else if (httpResponse.statusCode == 503) {
+                completion(.failure(.serverDatabaseMaintenance))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.invalidResponse))
+                return
+            }
+
+            /// Try to read keys from data
+            var readKeys: [Key] = []
+            SwiftTryCatch.try({
+                do {
+                    readKeys = try ObjectivePGP.readKeys(from: data)
+                } catch {
+                    completion(.failure(.invalidResponse))
+                    return
+                }
+            }, catch: { (error) in
+                completion(.failure(.keyNotSupported))
+                return
+                }, finallyBlock: {
+            })
+
+            if (readKeys.isEmpty) {
+                completion(.failure(.keyNotFound))
+                return
+            }
+
+            completion(.success(readKeys))
+
+        }.resume()
+
     }
+    
 
 }

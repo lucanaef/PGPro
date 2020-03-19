@@ -26,7 +26,6 @@ class PrivateKeySelectionTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         keySelectionTV.reloadData()
     }
 

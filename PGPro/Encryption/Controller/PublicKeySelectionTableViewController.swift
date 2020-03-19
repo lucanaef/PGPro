@@ -74,7 +74,6 @@ class PublicKeySelectionTableViewController: UITableViewController {
         keySelectionTV.reloadData()
 
         // Notify observers about changed key selection
-        NotificationCenter.default.post(name: Constants.NotificationNames.publicKeySelectionChange,
-                                        object: nil)
+        NotificationCenter.default.post(name: Constants.NotificationNames.publicKeySelectionChange, object: nil)
     }
 }
