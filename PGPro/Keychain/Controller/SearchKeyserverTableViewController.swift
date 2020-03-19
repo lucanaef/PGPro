@@ -128,11 +128,44 @@ extension SearchKeyserverTableViewController: UISearchBarDelegate {
         print("[SearchKeyserverTableViewController] Search Button clicked!")
 
         guard let searchBarText = searchBar.text else { return }
-        guard searchBarText.isValidEmail() else { return }
+        guard searchBarText.isValidEmail() else {
+            alert(text: "Invalid Email Address!")
+            return
+        }
         VerifyingKeyserverInterface.getByEmail(email: searchBarText) { result in
             switch result {
                 case .failure(let error):
                     print("[SearchKeyserverTableViewController] \(error)")
+                    switch error {
+                        case .invalidFormat:
+                            DispatchQueue.main.async {
+                                self.alert(text: "Invalid Format")
+                            }
+                        case .invalidResponse:
+                            DispatchQueue.main.async {
+                                self.alert(text: "Failed to get valid response from keyserver!")
+                            }
+                        case .keyNotFound:
+                            DispatchQueue.main.async {
+                                self.alert(text: "No key found!")
+                            }
+                        case .keyNotSupported:
+                            DispatchQueue.main.async {
+                                self.alert(text: "Found non-supported key!")
+                            }
+                        case .noConnection:
+                            DispatchQueue.main.async {
+                                self.alert(text: "No Connection to Keyserver!")
+                            }
+                        case .rateLimiting:
+                            DispatchQueue.main.async {
+                                self.alert(text: "Error due to Rate Limiting")
+                            }
+                        case .serverDatabaseMaintenance:
+                            DispatchQueue.main.async {
+                                self.alert(text: "Keyserver is under Database Maintenanc")
+                            }
+                    }
                 case .success(let keys):
                     print("[SearchKeyserverTableViewController] Found key!")
                     self.foundKeys = keys
