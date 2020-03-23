@@ -82,7 +82,7 @@ class SearchKeyserverTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: "KeyCell")
         if (cell == nil) {
-            cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle,  reuseIdentifier: "KeyCell")
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "KeyCell")
         }
 
         let key = foundKeys[indexPath.row]
@@ -124,9 +124,6 @@ class SearchKeyserverTableViewController: UITableViewController {
 extension SearchKeyserverTableViewController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-
-        print("[SearchKeyserverTableViewController] Search Button clicked!")
-
         guard let searchBarText = searchBar.text else { return }
         guard searchBarText.isValidEmail() else {
             alert(text: "Invalid Email Address!")
@@ -137,37 +134,36 @@ extension SearchKeyserverTableViewController: UISearchBarDelegate {
                 case .failure(let error):
                     print("[SearchKeyserverTableViewController] \(error)")
                     switch error {
-                        case .invalidFormat:
-                            DispatchQueue.main.async {
-                                self.alert(text: "Invalid Format")
-                            }
-                        case .invalidResponse:
-                            DispatchQueue.main.async {
-                                self.alert(text: "Failed to get valid response from keyserver!")
-                            }
-                        case .keyNotFound:
-                            DispatchQueue.main.async {
-                                self.alert(text: "No key found!")
-                            }
-                        case .keyNotSupported:
-                            DispatchQueue.main.async {
-                                self.alert(text: "Found non-supported key!")
-                            }
-                        case .noConnection:
-                            DispatchQueue.main.async {
-                                self.alert(text: "No Connection to Keyserver!")
-                            }
-                        case .rateLimiting:
-                            DispatchQueue.main.async {
-                                self.alert(text: "Error due to Rate Limiting")
-                            }
-                        case .serverDatabaseMaintenance:
-                            DispatchQueue.main.async {
-                                self.alert(text: "Keyserver is under Database Maintenanc")
-                            }
+                    case .invalidFormat:
+                        DispatchQueue.main.async {
+                            self.alert(text: "Invalid Format")
+                        }
+                    case .invalidResponse:
+                        DispatchQueue.main.async {
+                            self.alert(text: "Failed to get valid response from keyserver!")
+                        }
+                    case .keyNotFound:
+                        DispatchQueue.main.async {
+                            self.alert(text: "No key found!")
+                        }
+                    case .keyNotSupported:
+                        DispatchQueue.main.async {
+                            self.alert(text: "Found non-supported key!")
+                        }
+                    case .noConnection:
+                        DispatchQueue.main.async {
+                            self.alert(text: "No Connection to Keyserver!")
+                        }
+                    case .rateLimiting:
+                        DispatchQueue.main.async {
+                            self.alert(text: "Error due to Rate Limiting")
+                        }
+                    case .serverDatabaseMaintenance:
+                        DispatchQueue.main.async {
+                            self.alert(text: "Keyserver is under Database Maintenanc")
+                        }
                     }
                 case .success(let keys):
-                    print("[SearchKeyserverTableViewController] Found key!")
                     self.foundKeys = keys
             }
         }

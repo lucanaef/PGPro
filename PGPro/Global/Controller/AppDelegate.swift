@@ -46,36 +46,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-
-    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
 
         // Check if file type is valid
         let fileExtension = url.pathExtension
         guard (fileExtension == "asc") else {
-            let alertController = UIAlertController(title: "Filetype not supported!", message: nil, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            let alertController = UIAlertController(title: "Filetype not supported!",
+                                                    message: nil,
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss",
+                                                    style: .default))
             self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
             return false
         }
 
         // Treat file as PGP encrypted text
         var encryptedMessage = ""
+        guard let window = self.window else { return true }
         do {
             encryptedMessage = try String(contentsOf: url, encoding: .ascii)
-            if let tabBarController = self.window!.rootViewController as? UITabBarController {
+            if let tabBarController = window.rootViewController as? UITabBarController {
                 tabBarController.selectedIndex = 1
             }
         } catch {
             let alertController = UIAlertController(title: "File not supported!", message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+            window.rootViewController?.present(alertController, animated: true, completion: nil)
             return false
         }
 
         DispatchQueue.main.async {
-            let VC = self.window?.rootViewController?.children[1].children.first
-            while !(VC is DecryptionTableViewController) { }
-            let decryptionVC = VC as? DecryptionTableViewController
+            let actualVC = window.rootViewController?.children[1].children.first
+            while !(actualVC is DecryptionTableViewController) { }
+            let decryptionVC = actualVC as? DecryptionTableViewController
             if let decryptionVC = decryptionVC {
                 while (decryptionVC.viewIfLoaded == nil) {  }
                 decryptionVC.textView.text = encryptedMessage
