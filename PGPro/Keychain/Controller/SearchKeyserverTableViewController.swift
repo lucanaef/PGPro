@@ -36,6 +36,7 @@ class SearchKeyserverTableViewController: UITableViewController {
         super.viewDidLoad()
 
         searchBar.delegate = self
+        searchBar.backgroundColor = UINavigationBar.appearance().backgroundColor
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .cancel,
@@ -43,7 +44,8 @@ class SearchKeyserverTableViewController: UITableViewController {
                 action: #selector(addContactCancel(sender:))
             )
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done,
+            title: "Import",
+            style: .done,
             target: self,
             action: #selector(addContactDone(sender:))
         )

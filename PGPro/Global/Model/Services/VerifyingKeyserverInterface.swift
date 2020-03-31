@@ -33,19 +33,63 @@ class VerifyingKeyserverInterface {
 
     private init() {}
 
+    static private var baseURL = "https://keys.openpgp.org"
+
     static func getByEmail(email: String, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
 
-        let encodedEmail = email.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        guard encodedEmail != nil else {
+        guard let encodedEmail = email.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
             completion(.failure(.invalidFormat))
             return
         }
 
-        let urlString = "https://keys.openpgp.org/vks/v1/by-email/" + encodedEmail!
+        let urlString = baseURL + "/vks/v1/by-email/" + encodedEmail
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidFormat))
             return
         }
+
+        // Send GET request to keyserver and handle response
+        GET(url: url, completion: completion)
+    }
+
+    static func getByFingerprint(fingerprint: String, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
+
+        guard let fingerprintValue = UInt(fingerprint, radix: 16) else {
+            completion(.failure(.invalidFormat))
+            return
+        }
+
+        let formattedFingerprint = String(format: "%X", fingerprintValue)
+        let urlString = baseURL + "/vks/v1/by-fingerprint/" + formattedFingerprint
+        guard let url = URL(string: urlString) else {
+            completion(.failure(.invalidFormat))
+            return
+        }
+
+        // Send GET request to keyserver and handle response
+        GET(url: url, completion: completion)
+    }
+
+    static func getByKeyID(keyID: String, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
+
+        guard let keyIDValue = UInt(keyID, radix: 16) else {
+            completion(.failure(.invalidFormat))
+            return
+        }
+
+        let formattedKey = String(format: "%X", keyIDValue)
+        let urlString = baseURL + "/vks/v1/by-keyid/" + formattedKey
+        guard let url = URL(string: urlString) else {
+            completion(.failure(.invalidFormat))
+            return
+        }
+
+        // Send GET request to keyserver and handle response
+        GET(url: url, completion: completion)
+
+    }
+
+    static private func GET(url: URL, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
 
         URLSession.shared.dataTask(with: url) { data, res, error in
             if (error != nil) {
@@ -99,6 +143,4 @@ class VerifyingKeyserverInterface {
         }.resume()
 
     }
-    
-
 }
