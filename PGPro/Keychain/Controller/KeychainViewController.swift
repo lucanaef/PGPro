@@ -18,34 +18,71 @@
 import UIKit
 import ObjectivePGP
 import MobileCoreServices
-import SwiftTryCatch
 
 class KeychainViewController: UIViewController {
-    
-    @IBOutlet weak var keychainTableView: UITableView!
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+
+    var contacts = [Contact]()
+    var filteredContacts = [Contact]()
+
+    lazy var keychainTableView: UITableView = {
+        let tv = UITableView()
+
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.delegate = self
+        tv.dataSource = self
+        tv.register(KeychainTableViewCell.self, forCellReuseIdentifier: "KeychainTableViewCell")
+
+        return tv
+    }()
+
+    lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
+
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.placeholder = "Search Contacts..."
+        searchController.searchBar.searchBarStyle = .prominent
+        searchController.searchBar.delegate = self
+        searchController.searchBar.keyboardType = .emailAddress
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.autocorrectionType = .no
+
+        return searchController
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .add,
-            target: self,
-            action: #selector(plus(sender:))
-        )
-        
-        self.keychainTableView.delegate = self
-        self.keychainTableView.dataSource = self
-        
+        contacts = ContactListService.getContacts()
+
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.reloadData),
                                                name: Constants.NotificationNames.contactListChange,
                                                object: nil
         )
+
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.title = "Keychain"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(plus(sender:))
+        )
+
+        /// Add search bar to super view
+        navigationItem.searchController = searchController
+
+        /// Add table view to super view
+        view.addSubview(keychainTableView)
+        keychainTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        keychainTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        keychainTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        keychainTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
     
     @objc
@@ -136,6 +173,28 @@ class KeychainViewController: UIViewController {
         present(documentPicker, animated: true, completion: nil)
     }
 
+    func filterContactsforSearchText(searchText: String){
+        filteredContacts = contacts.filter({ (contact: Contact) -> Bool in
+            // return every contact if no search text speficied
+            if (searchController.searchBar.text?.isEmpty ?? true) {
+                return true
+            }
+
+            let matchesName = contact.name.lowercased().contains(searchText.lowercased())
+            let matchesEmail = contact.email.lowercased().contains(searchText.lowercased())
+
+            return (matchesName || matchesEmail)
+        })
+
+        // apply filter
+        keychainTableView.reloadData()
+    }
+
+    func isFiltering() -> Bool {
+        let searchBarNotEmpty = !(searchController.searchBar.text?.isEmpty ?? true)
+        return (searchController.isActive && searchBarNotEmpty)
+    }
+
 }
 
 
@@ -166,21 +225,26 @@ extension KeychainViewController: UIDocumentPickerDelegate {
 
 }
 
-
 extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ContactListService.numberOfContacts()
+        if isFiltering() {
+            return filteredContacts.count
+        } else {
+            return contacts.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let c = ContactListService.getContact(index: indexPath.row)
+        var cntct = contacts[indexPath.row]
+        if isFiltering() {
+            cntct = filteredContacts[indexPath.row]
+        }
         if let cell = keychainTableView.dequeueReusableCell(withIdentifier: "KeychainTableViewCell") as? KeychainTableViewCell {
-            cell.setContact(contact: c)
+            cell.setContact(contact: cntct)
             return cell
         } else {
-            // Dummy return value
-            return UITableViewCell()
+            return UITableViewCell() // Dummy return value
         }
     }
     
@@ -188,15 +252,48 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
-            // Remove from Storage
-            ContactListService.removeContact(index: indexPath.row)
-            // Remove from View
-            keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+            if isFiltering() {
+                let cntct = filteredContacts[indexPath.row]
+
+                filteredContacts.remove(at: indexPath.row)
+                keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+
+                let index = ContactListService.getIndex(contact: cntct)
+                ContactListService.removeContact(index: index)
+                contacts = ContactListService.getContacts()
+                
+            } else {
+                // Remove from storage and update local list
+                ContactListService.removeContact(index: indexPath.row)
+                contacts = ContactListService.getContacts()
+
+                // Remove from view and update view
+                keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cntct = ContactListService.getContact(index: indexPath.row)
+        var cntct = contacts[indexPath.row]
+        if isFiltering(){
+            cntct = filteredContacts[indexPath.row]
+        }
         performSegue(withIdentifier: "showContactDetail", sender: cntct)
     }
+}
+
+extension KeychainViewController: UISearchBarDelegate {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        filterContactsforSearchText(searchText: searchBar.text ?? "")
+    }
+
+}
+
+extension KeychainViewController: UISearchResultsUpdating {
+
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContactsforSearchText(searchText: searchController.searchBar.text ?? "")
+    }
+
 }

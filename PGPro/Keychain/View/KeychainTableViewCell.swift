@@ -18,23 +18,33 @@
 import UIKit
 
 class KeychainTableViewCell: UITableViewCell {
-    
-    @IBOutlet weak private var cellTitle: UILabel!
-    @IBOutlet weak private var cellSubtitle: UILabel!
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+
+        self.accessoryType = .disclosureIndicator
+        self.selectionStyle = .none
+        self.detailTextLabel?.textColor = .secondaryLabel
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     func setContact(contact: Contact) {
-        cellTitle.text = contact.name
-        cellSubtitle.text = contact.email
+
+        self.textLabel?.text = contact.name
+        self.detailTextLabel?.text = contact.email
         
         let currentDate = Date()
         let keyExpirationDate = contact.key.expirationDate ?? currentDate
         
         if (keyExpirationDate < currentDate) { // Key expired
             // Add Spacing
-            cellTitle.text!.append(" ")
+            self.textLabel?.text!.append(" ")
             // Add Symbol
             guard let symbol = UIImage(systemName: "exclamationmark.triangle") else { return }
-            cellTitle.addImage(img: symbol.withTintColor(UIColor.red), behindText: true)
+            self.textLabel?.addImage(img: symbol.withTintColor(UIColor.red), behindText: true)
         }
     }
 }

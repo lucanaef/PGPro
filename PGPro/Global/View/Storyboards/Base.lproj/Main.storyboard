@@ -285,70 +285,19 @@
             </objects>
             <point key="canvasLocation" x="0.0" y="1445.7589285714284"/>
         </scene>
-        <!--PGP Keychain-->
+        <!--Keychain View Controller-->
         <scene sceneID="Adh-Fw-NNk">
             <objects>
                 <viewController id="8xy-4U-kpV" customClass="KeychainViewController" customModule="PGPro" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cSF-qM-iPE">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1yk-ai-KWv">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="KeychainTableViewCell" textLabel="oua-dq-lu0" detailTextLabel="OvQ-yH-iVg" rowHeight="75" style="IBUITableViewCellStyleSubtitle" id="oqe-pN-xxZ" customClass="KeychainTableViewCell" customModule="PGPro" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="75"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oqe-pN-xxZ" id="4OB-De-yTh">
-                                            <rect key="frame" x="0.0" y="0.0" width="383" height="75"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oua-dq-lu0">
-                                                    <rect key="frame" x="20" y="17" width="33.5" height="20.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <attributedString key="attributedText">
-                                                        <fragment content="Title">
-                                                            <attributes>
-                                                                <font key="NSFont" metaFont="system" size="17"/>
-                                                            </attributes>
-                                                        </fragment>
-                                                    </attributedString>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OvQ-yH-iVg">
-                                                    <rect key="frame" x="20" y="40.5" width="44" height="14.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <accessibility key="accessibilityConfiguration">
-                                            <bool key="isElement" value="YES"/>
-                                        </accessibility>
-                                        <connections>
-                                            <outlet property="cellSubtitle" destination="OvQ-yH-iVg" id="lVK-JW-TYq"/>
-                                            <outlet property="cellTitle" destination="oua-dq-lu0" id="3zn-eq-kWf"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <constraints>
-                            <constraint firstItem="88E-n2-Jk2" firstAttribute="bottom" secondItem="1yk-ai-KWv" secondAttribute="bottom" id="AjF-nI-NT7"/>
-                            <constraint firstItem="1yk-ai-KWv" firstAttribute="top" secondItem="88E-n2-Jk2" secondAttribute="top" id="I6c-gE-Oeb"/>
-                            <constraint firstItem="1yk-ai-KWv" firstAttribute="leading" secondItem="88E-n2-Jk2" secondAttribute="leading" id="YnH-fe-u5E"/>
-                            <constraint firstItem="88E-n2-Jk2" firstAttribute="trailing" secondItem="1yk-ai-KWv" secondAttribute="trailing" id="y0B-h8-Qni"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="88E-n2-Jk2"/>
                     </view>
-                    <navigationItem key="navigationItem" title="PGP Keychain" largeTitleDisplayMode="always" id="9SZ-ZY-sGf"/>
+                    <navigationItem key="navigationItem" id="9SZ-ZY-sGf"/>
                     <connections>
-                        <outlet property="keychainTableView" destination="1yk-ai-KWv" id="Ehq-X6-2VD"/>
                         <segue destination="CDs-aQ-Lb0" kind="show" identifier="showContactDetail" id="8un-u4-Xkm"/>
                         <segue destination="qpj-m0-cI1" kind="presentation" identifier="goToGenerateKey" id="UKM-GO-4m3"/>
                         <segue destination="N94-q1-IW5" kind="presentation" identifier="goToSearchKeyserver" id="i4i-FI-w99"/>
