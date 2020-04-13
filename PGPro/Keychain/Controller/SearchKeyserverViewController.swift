@@ -47,6 +47,7 @@ class SearchKeyserverViewController: UIViewController {
         searchController.hidesNavigationBarDuringPresentation = false
 
         searchController.searchBar.placeholder = "Search Keys..."
+        searchController.searchBar.scopeButtonTitles = ["Email Address", "Fingerprint", "Key ID"]
         searchController.searchBar.sizeToFit()
         searchController.searchBar.searchBarStyle = .prominent
         searchController.searchBar.delegate = self
@@ -60,12 +61,15 @@ class SearchKeyserverViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = "OpenPGP Keyserver"
+
         /// Add buttons to navigation controller
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .cancel,
-                target: self,
-                action: #selector(addContactCancel(sender:))
-            )
+            title: "Close",
+            style: .plain,
+            target: self,
+            action: #selector(addContactCancel(sender:))
+        )
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "Import",
             style: .done,
@@ -163,53 +167,78 @@ extension SearchKeyserverViewController: UITableViewDelegate, UITableViewDataSou
 
 extension SearchKeyserverViewController: UISearchBarDelegate {
 
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let searchBarText = searchBar.text else { return }
-        guard searchBarText.isValidEmail() else {
-            alert(text: "Invalid Email Address!")
-            return
-        }
-        VerifyingKeyserverInterface.getByEmail(email: searchBarText) { result in
-            switch result {
-            case .failure(let error):
-                print("[SearchKeyserverTableViewController] \(error)")
-                switch error {
-                case .invalidFormat:
-                    DispatchQueue.main.async {
-                        self.alert(text: "Invalid Format")
-                    }
-                case .invalidResponse:
-                    DispatchQueue.main.async {
-                        self.alert(text: "Failed to get valid response from keyserver!")
-                    }
-                case .keyNotFound:
-                    DispatchQueue.main.async {
-                        self.alert(text: "No key found!")
-                    }
-                case .keyNotSupported:
-                    DispatchQueue.main.async {
-                        self.alert(text: "Found non-supported key!")
-                    }
-                case .noConnection:
-                    DispatchQueue.main.async {
-                        self.alert(text: "No Connection to Keyserver!")
-                    }
-                case .rateLimiting:
-                    DispatchQueue.main.async {
-                        self.alert(text: "Error due to Rate Limiting")
-                    }
-                case .serverDatabaseMaintenance:
-                    DispatchQueue.main.async {
-                        self.alert(text: "Keyserver is under Database Maintenanc")
-                    }
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        /// do nothing
+    }
+
+    func switchResult(result: Result<[Key], VerifyingKeyserverInterface.VKIError>) {
+        switch result {
+        case .failure(let error):
+            print("[SearchKeyserverViewController] \(error)")
+            switch error {
+            case .invalidFormat:
+                DispatchQueue.main.async {
+                    self.alert(text: "Invalid Format")
                 }
-            case .success(let keys):
-                self.foundKeys = keys
-                self.selectedRows = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.tableView.reloadData()
+            case .invalidResponse:
+                DispatchQueue.main.async {
+                    self.alert(text: "Failed to get valid response from keyserver!")
+                }
+            case .keyNotFound:
+                DispatchQueue.main.async {
+                    self.alert(text: "No key found!")
+                }
+            case .keyNotSupported:
+                DispatchQueue.main.async {
+                    self.alert(text: "Found non-supported key!")
+                }
+            case .noConnection:
+                DispatchQueue.main.async {
+                    self.alert(text: "No Connection to Keyserver!")
+                }
+            case .rateLimiting:
+                DispatchQueue.main.async {
+                    self.alert(text: "Error due to Rate Limiting")
+                }
+            case .serverDatabaseMaintenance:
+                DispatchQueue.main.async {
+                    self.alert(text: "Keyserver is under Database Maintenanc")
                 }
             }
+        case .success(let keys):
+            self.foundKeys = keys
+            self.selectedRows = []
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.tableView.reloadData()
+            }
+        }
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchBarText = searchBar.text else { return }
+
+        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        
+        switch scope {
+        case "Email Address":
+            guard searchBarText.isValidEmail() else {
+                alert(text: "Invalid Email Address!")
+                return
+            }
+            VerifyingKeyserverInterface.getByEmail(email: searchBarText) { result in
+                self.switchResult(result: result)
+            }
+        case "Fingerprint":
+            VerifyingKeyserverInterface.getByFingerprint(fingerprint: searchBarText) { (result) in
+                self.switchResult(result: result)
+            }
+        case "Key ID":
+            VerifyingKeyserverInterface.getByKeyID(keyID: searchBarText) { (result) in
+                self.switchResult(result: result)
+            }
+        default:
+            /// do nothing
+            print("[SearchKeyserverViewController] Scope not in bounds!")
         }
     }
 

@@ -41,7 +41,6 @@ class VerifyingKeyserverInterface {
             completion(.failure(.invalidFormat))
             return
         }
-
         let urlString = baseURL + "/vks/v1/by-email/" + encodedEmail
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidFormat))
@@ -54,11 +53,10 @@ class VerifyingKeyserverInterface {
 
     static func getByFingerprint(fingerprint: String, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
 
-        guard let fingerprintValue = UInt(fingerprint, radix: 16) else {
+        guard let fingerprintValue = UInt(fingerprint.trimmingCharacters(in: .whitespacesAndNewlines), radix: 16) else {
             completion(.failure(.invalidFormat))
             return
         }
-
         let formattedFingerprint = String(format: "%X", fingerprintValue)
         let urlString = baseURL + "/vks/v1/by-fingerprint/" + formattedFingerprint
         guard let url = URL(string: urlString) else {
@@ -72,11 +70,10 @@ class VerifyingKeyserverInterface {
 
     static func getByKeyID(keyID: String, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
 
-        guard let keyIDValue = UInt(keyID, radix: 16) else {
+        guard let keyIDValue = UInt(keyID.trimmingCharacters(in: .whitespacesAndNewlines), radix: 16) else {
             completion(.failure(.invalidFormat))
             return
         }
-
         let formattedKey = String(format: "%X", keyIDValue)
         let urlString = baseURL + "/vks/v1/by-keyid/" + formattedKey
         guard let url = URL(string: urlString) else {
