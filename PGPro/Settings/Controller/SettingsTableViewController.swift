@@ -130,6 +130,15 @@ class SettingsTableViewController: UITableViewController {
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath.section == 1 && indexPath.row == 2) { // Rate PGPro
+            let cell = super.tableView(tableView, cellForRowAt: indexPath)
+            cell.detailTextLabel!.text = "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED THIS VERSION"
+            return cell
+        }
+        return super.tableView(tableView, cellForRowAt: indexPath)
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let destVC = segue.destination as? WebViewController else { return }

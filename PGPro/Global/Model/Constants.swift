@@ -22,6 +22,7 @@ enum Constants {
     /* Global PGPro Constants */
     public enum PGPro {
         static var appID = "1481696997"
+
         static var version: String {
             let vrsn = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
             if let vrsn = vrsn as? String {
@@ -29,6 +30,25 @@ enum Constants {
             } else {
                 return ""
             }
+        }
+
+        static var numRatings: Int {
+            // try to get current number and update cached value
+            iTunesAPIInterface.requestJSON { result in
+                switch result {
+                    case .failure(let error):
+                        print(error)
+                    case .success(let data):
+                        if let data = data[0] as? [String: Any] {
+                            if let numRatings = data["userRatingCountForCurrentVersion"] {
+                                UserDefaults.standard.set(numRatings, forKey: "numRatings")
+                            }
+                        }
+                }
+            }
+
+            // return cached value
+            return UserDefaults.standard.integer(forKey: "numRatings")
         }
         
     }

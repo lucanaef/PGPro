@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             #endif
 
             UserDefaults.standard.set(true, forKey: "launchedBefore")
+            UserDefaults.standard.set(0, forKey: "numRatings")
         } else {
             ContactListService.loadPersistentData()
         }
