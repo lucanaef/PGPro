@@ -53,11 +53,8 @@ class VerifyingKeyserverInterface {
 
     static func getByFingerprint(fingerprint: String, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
 
-        guard let fingerprintValue = UInt(fingerprint.trimmingCharacters(in: .whitespacesAndNewlines), radix: 16) else {
-            completion(.failure(.invalidFormat))
-            return
-        }
-        let formattedFingerprint = String(format: "%X", fingerprintValue)
+        let formattedFingerprint = fingerprint.components(separatedBy: .whitespaces).joined()
+        print(formattedFingerprint)
         let urlString = baseURL + "/vks/v1/by-fingerprint/" + formattedFingerprint
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidFormat))
@@ -70,11 +67,7 @@ class VerifyingKeyserverInterface {
 
     static func getByKeyID(keyID: String, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
 
-        guard let keyIDValue = UInt(keyID.trimmingCharacters(in: .whitespacesAndNewlines), radix: 16) else {
-            completion(.failure(.invalidFormat))
-            return
-        }
-        let formattedKey = String(format: "%X", keyIDValue)
+        let formattedKey = keyID.components(separatedBy: .whitespaces).joined()
         let urlString = baseURL + "/vks/v1/by-keyid/" + formattedKey
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidFormat))
@@ -83,7 +76,6 @@ class VerifyingKeyserverInterface {
 
         // Send GET request to keyserver and handle response
         GET(url: url, completion: completion)
-
     }
 
     static private func GET(url: URL, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
