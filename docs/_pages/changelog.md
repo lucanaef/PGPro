@@ -7,6 +7,21 @@ include_in_header: true
 
 # Changelog
 
+## **Version 2020.1** - Apr 18, 2020
+
+Thanks for using PGPro! 
+This release includes the following changes:
+
+- New: Integration with OpenPGP Keyserver
+- New: Option to add key from clipboard
+- New: Option to import GPG Keyring files
+- New: Ability to search local keychain
+- Fixed: Some PGP keys caused PGPro to crash
+
+as well as various small improvements.
+
+If you have feedback or suggestions, please reach out to me at [dev@pgpro.app](mailto:dev@pgpro.app).
+
 ## **Version 2020.1** - Feb 4, 2020
 
 Thanks for using PGPro!
