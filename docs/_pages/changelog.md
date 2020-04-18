@@ -7,7 +7,7 @@ include_in_header: true
 
 # Changelog
 
-## **Version 2020.1** - Apr 18, 2020
+## **Version 2020.2** - Apr 18, 2020
 
 Thanks for using PGPro! 
 This release includes the following changes:
