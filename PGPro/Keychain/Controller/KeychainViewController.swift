@@ -61,7 +61,7 @@ class KeychainViewController: UIViewController {
         contacts = ContactListService.getContacts()
 
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.reloadData),
+                                               selector: #selector(reloadData),
                                                name: Constants.NotificationNames.contactListChange,
                                                object: nil
         )
@@ -88,6 +88,7 @@ class KeychainViewController: UIViewController {
     @objc
     func reloadData() {
         DispatchQueue.main.async {
+            self.contacts = ContactListService.getContacts()
             self.keychainTableView.reloadData()
         }
     }
