@@ -22,12 +22,15 @@ class PublicKeySelectionTableViewController: UITableViewController {
     @IBOutlet private var keySelectionTV: UITableView!
 
     let contactList = ContactListService.getPublicKeyContacts()
-    static var selectedRows = [Int]()
+    private static var selectedRows = [Int]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         keySelectionTV.reloadData()
+    }
+
+    public static func clearSelection() {
+        PublicKeySelectionTableViewController.selectedRows.removeAll()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

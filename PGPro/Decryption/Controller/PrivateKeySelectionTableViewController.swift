@@ -22,11 +22,16 @@ class PrivateKeySelectionTableViewController: UITableViewController {
     @IBOutlet private var keySelectionTV: UITableView!
     
     let contactList = ContactListService.getPrivateKeyContacts()
-    static var selectedRow = -1
+    private static var selectedRow = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         keySelectionTV.reloadData()
+    }
+
+    public static func clearView() {
+        PrivateKeySelectionTableViewController.selectedRow = -1
+        DecryptionTableViewController.decryptionContact = nil
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

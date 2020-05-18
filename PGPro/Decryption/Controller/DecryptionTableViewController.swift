@@ -43,12 +43,22 @@ class DecryptionTableViewController: UITableViewController {
         update()
         
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+
+        let decryptButton = UIBarButtonItem(
             image: UIImage(systemName: "envelope.open.fill")?.withTintColor(UIColor.label),
-            style: .plain,
+            style: .done,
             target: self,
             action: #selector(decrypt)
         )
+
+        let clearButton = UIBarButtonItem(
+            image: UIImage(systemName: "trash")?.withTintColor(UIColor.label),
+            style: .plain,
+            target: self,
+            action: #selector(clearView)
+        )
+
+        navigationItem.rightBarButtonItems = [clearButton, decryptButton]
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.update),
@@ -136,6 +146,32 @@ class DecryptionTableViewController: UITableViewController {
             return
         }
         AppStoreReviewService.incrementReviewWorthyActionCount()
+    }
+
+    @objc
+    func clearView() {
+        let dialogMessage = UIAlertController(title: "Delete this message",
+                                              message: "",
+                                              preferredStyle: .alert)
+
+        // Create OK button with action handler
+        let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
+            self.textView.text = ""
+            PrivateKeySelectionTableViewController.clearView()
+            self.update()
+        })
+
+        // Create Cancel button with action handlder
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) -> Void in
+            return
+        }
+
+        // Add Confirm and Cancel button to dialog message
+        dialogMessage.addAction(confirm)
+        dialogMessage.addAction(cancel)
+
+        // Present dialog message to user
+        self.present(dialogMessage, animated: true, completion: nil)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

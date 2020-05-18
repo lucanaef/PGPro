@@ -35,17 +35,24 @@ class EncryptionTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
         self.hideKeyboardWhenTappedAround()
-        
+
         update()
         textView.placeholder = "Type Message to Encrypt..."
-        
+
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+        let encryptButton = UIBarButtonItem(
             image: UIImage(systemName: "envelope.fill")?.withTintColor(UIColor.label),
-            style: .plain,
+            style: .done,
             target: self,
             action: #selector(encrypt)
         )
+        let clearButton = UIBarButtonItem(
+            image: UIImage(systemName: "trash")?.withTintColor(UIColor.label),
+            style: .plain,
+            target: self,
+            action: #selector(clearView)
+        )
+        navigationItem.rightBarButtonItems = [clearButton, encryptButton]
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.update),
@@ -71,6 +78,34 @@ class EncryptionTableViewController: UITableViewController {
         }
         
         keySelectionLabel.text = label
+    }
+
+    @objc
+    func clearView() {
+        let dialogMessage = UIAlertController(title: "Delete this message",
+                                              message: "",
+                                              preferredStyle: .alert)
+
+        // Create OK button with action handler
+        let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
+            EncryptionTableViewController.encryptionContacts.removeAll()
+            PublicKeySelectionTableViewController.clearSelection()
+            self.textView.text = ""
+            self.update()
+            self.tableView.reloadData()
+        })
+
+        // Create Cancel button with action handlder
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) -> Void in
+            return
+        }
+
+        // Add Confirm and Cancel button to dialog message
+        dialogMessage.addAction(confirm)
+        dialogMessage.addAction(cancel)
+
+        // Present dialog message to user
+        self.present(dialogMessage, animated: true, completion: nil)
     }
     
     @objc
