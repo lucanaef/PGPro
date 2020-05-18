@@ -20,8 +20,7 @@ import StoreKit
 import ObjectivePGP
 
 class SettingsTableViewController: UITableViewController {
-    
-    @IBOutlet weak private var importActivityIndicator: UIActivityIndicatorView!
+
     @IBOutlet weak private var exportActivityIndicator: UIActivityIndicatorView!
 
     var url = URL(string: "")
@@ -68,7 +67,6 @@ class SettingsTableViewController: UITableViewController {
                 }
 
                DispatchQueue.main.async { [weak self] in
-                    // UI updates must be on main thread
                     self?.exportActivityIndicator.stopAnimating()
                 }
             }

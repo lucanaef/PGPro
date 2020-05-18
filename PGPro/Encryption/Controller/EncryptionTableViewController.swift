@@ -34,7 +34,9 @@ class EncryptionTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+
         self.hideKeyboardWhenTappedAround()
+        self.textView.addDoneButton(title: "Done", target: self, selector: #selector(tapDone(sender:)))
 
         update()
         textView.placeholder = "Type Message to Encrypt..."
@@ -106,6 +108,10 @@ class EncryptionTableViewController: UITableViewController {
 
         // Present dialog message to user
         self.present(dialogMessage, animated: true, completion: nil)
+    }
+
+    @objc func tapDone(sender: Any) {
+        self.view.endEditing(true)
     }
     
     @objc
