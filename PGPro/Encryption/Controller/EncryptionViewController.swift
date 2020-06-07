@@ -20,9 +20,10 @@ import UIKit
 import MessageUI
 
 class EncryptionViewController: UIViewController {
-    
-    private var encryptionContacts = [Contact]()
 
+    private let cellIdentifier = "EncryptionTableViewCell"
+
+    private var encryptionContacts = [Contact]()
     private var selectionLabel = "Select Public Keys..."
 
     lazy private var tableView: UITableView = {
@@ -31,7 +32,7 @@ class EncryptionViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "EncryptionTableViewCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
 
         return tableView
@@ -83,10 +84,7 @@ class EncryptionViewController: UIViewController {
 
         // Add table view to super view
         view.addSubview(tableView)
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tableView.pinEdges(to: view)
     }
 
     @objc
@@ -117,7 +115,6 @@ class EncryptionViewController: UIViewController {
 
         // Create OK button with action handler
         let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
-            //self.textView.text = ""
             self.resetSelection()
             self.textView.text = ""
             self.tableView.reloadData()
@@ -166,10 +163,10 @@ class EncryptionViewController: UIViewController {
                 alert(text: "Message is invalid!")
             case CryptographyError.frameworkError(let frameworkError):
                 alert(text: "Encryption failed!")
-                Log.e("EncryptionTableViewController.encrypt(): \(frameworkError)")
+                Log.e(frameworkError)
             default:
                 alert(text: "Encryption failed!")
-                Log.e("EncryptionTableViewController.encrypt(): \(error)")
+                Log.e(error)
             }
             return
         }
@@ -205,9 +202,9 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         var cell: UITableViewCell!
-        cell = tableView.dequeueReusableCell(withIdentifier: "EncryptionTableViewCell")
+        cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
         if cell == nil {
-            cell = UITableViewCell(style: .default, reuseIdentifier: "EncryptionTableViewCell")
+            cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
         }
         cell.selectionStyle = .none
 
@@ -219,12 +216,7 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
         case messageRow:
             let cellView = cell.contentView
             cellView.addSubview(textView)
-
-            textView.topAnchor.constraint(equalTo: cellView.topAnchor).isActive = true
-            textView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor).isActive = true
-            textView.leftAnchor.constraint(equalTo: cellView.leftAnchor).isActive = true
-            textView.rightAnchor.constraint(equalTo: cellView.rightAnchor).isActive = true
-
+            textView.pinEdges(to: cellView)
             return cell
         default:
             Log.s("indexPath out of bounds!")

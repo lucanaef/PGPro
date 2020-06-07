@@ -53,7 +53,6 @@ enum Constants {
                         }
                 }
             }
-
             // return cached value
             return UserDefaults.standard.integer(forKey: "numRatings")
         }
