@@ -1,5 +1,5 @@
 //
-//  EncryptionTableViewController.swift
+//  EncryptionViewController.swift
 //  PGPro
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,32 @@ import MessageUI
 
 class EncryptionViewController: UIViewController {
     
-    @IBOutlet weak var keySelectionLabel: UILabel!
-    @IBOutlet weak var textView: UITextView!
-    
     private var encryptionContacts = [Contact]()
+
+    private var selectionLabel = "Select Public Keys..."
+
+    lazy private var tableView: UITableView = {
+        let tableView = UITableView()
+
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "EncryptionTableViewCell")
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+
+        return tableView
+    }()
+
+    lazy private var textView: UITextView = {
+        let textView = UITextView()
+
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        textView.font = UIFont.preferredFont(forTextStyle: .body)
+        textView.addDoneButton(title: "Done", target: self, selector: #selector(tapDone(sender:)))
+
+        return textView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,15 +58,15 @@ class EncryptionViewController: UIViewController {
         setupView()
     }
 
-    private func setupView() {
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-
-        keySelectionLabel.text = "Select Public Keys..."
-
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         textView.placeholder = "Type Message to Encrypt..."
-        textView.addDoneButton(title: "Done", target: self, selector: #selector(tapDone(sender:)))
+    }
 
-        navigationController?.navigationBar.prefersLargeTitles = true
+    private func setupView() {
+        self.tabBarItem.title = "Encryption"
+        self.navigationItem.title = "Encrypt Message"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         let encryptButton = UIBarButtonItem(
             image: UIImage(systemName: "envelope.fill")?.withTintColor(UIColor.label),
             style: .done,
@@ -57,7 +79,14 @@ class EncryptionViewController: UIViewController {
             target: self,
             action: #selector(clearView)
         )
-        navigationItem.rightBarButtonItems = [clearButton, encryptButton]
+        navigationItem.rightBarButtonItems = [encryptButton, clearButton]
+
+        // Add table view to super view
+        view.addSubview(tableView)
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
 
     @objc
@@ -76,7 +105,8 @@ class EncryptionViewController: UIViewController {
             }
         }
         
-        keySelectionLabel.text = label
+        selectionLabel = label
+        tableView.reloadData()
     }
 
     @objc
@@ -87,8 +117,9 @@ class EncryptionViewController: UIViewController {
 
         // Create OK button with action handler
         let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
-            self.textView.text = ""
+            //self.textView.text = ""
             self.resetSelection()
+            self.textView.text = ""
             self.tableView.reloadData()
         })
 
@@ -159,33 +190,79 @@ class EncryptionViewController: UIViewController {
             present(mailComposeViewController, animated: true, completion: nil)
         }
     }
+    
+}
 
+extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 0) {
+    private var selectionRow: Int { return 0 }
+    private var messageRow: Int { return 1 }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        var cell: UITableViewCell!
+        cell = tableView.dequeueReusableCell(withIdentifier: "EncryptionTableViewCell")
+        if cell == nil {
+            cell = UITableViewCell(style: .default, reuseIdentifier: "EncryptionTableViewCell")
+        }
+        cell.selectionStyle = .none
+
+        switch (indexPath.row) {
+        case selectionRow:
+            cell.textLabel?.text = selectionLabel
+            cell.accessoryType = .disclosureIndicator
+            return cell
+        case messageRow:
+            let cellView = cell.contentView
+            cellView.addSubview(textView)
+
+            textView.topAnchor.constraint(equalTo: cellView.topAnchor).isActive = true
+            textView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor).isActive = true
+            textView.leftAnchor.constraint(equalTo: cellView.leftAnchor).isActive = true
+            textView.rightAnchor.constraint(equalTo: cellView.rightAnchor).isActive = true
+
+            return cell
+        default:
+            Log.s("indexPath out of bounds!")
+            return cell
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch (indexPath.row) {
+        case selectionRow:
             let keySelectionViewController = KeySelectionViewController()
             keySelectionViewController.set(toType: .publicKey)
             keySelectionViewController.delegate = self
             navigationController?.pushViewController(keySelectionViewController, animated: true)
-        } else {
-            super.tableView(tableView, didSelectRowAt: indexPath)
+        case messageRow:
+            return
+        default:
+            Log.s("indexPath out of bounds!")
         }
     }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.row == 1) {
-            /* Message Row*/
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch (indexPath.row) {
+        case selectionRow:
+            return 44
+        case messageRow:
             var height = self.view.frame.height
-            height -= 44 // Key Selection Row Height
+            height -= 44
             height -= (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0)
             height -= (self.navigationController?.navigationBar.frame.height ?? 0.0)
             height -= (self.tabBarController?.tabBar.frame.size.height ?? 0.0)
             return height
-        } else {
-            return super.tableView(tableView, heightForRowAt: indexPath)
+        default:
+            Log.e("indexPath out of bounds!")
+            return 0
         }
     }
-    
+
 }
 
 extension EncryptionViewController: MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
