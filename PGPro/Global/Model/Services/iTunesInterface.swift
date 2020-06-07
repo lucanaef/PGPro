@@ -17,7 +17,7 @@
 
 import Foundation
 
-class iTunesAPIInterface {
+class iTunesInterface {
 
     private init() {}
 

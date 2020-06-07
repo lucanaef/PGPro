@@ -1,5 +1,5 @@
 //
-//  EncryptionTableView.swift
+//  KeySelectionView.swift
 //  PGPro
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -17,9 +17,12 @@
 
 import UIKit
 
-class EncryptionTableView: UITableView {
+class KeySelectionViewController: UIViewController {
 
-    override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
-        /* Do Nothing */
+    init(<#parameters#>) {
+        <#statements#>
     }
+
+    private var contacts: [Contact]
+
 }
