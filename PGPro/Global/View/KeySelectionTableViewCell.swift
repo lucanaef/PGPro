@@ -16,20 +16,28 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ObjectivePGP
 
 class KeySelectionTableViewCell: UITableViewCell {
     
-    @IBOutlet weak private var cellTitle: UILabel!
-    @IBOutlet weak private var cellSubtitle: UILabel!
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
-    func setContact(contact: Contact) {
-        cellTitle.text = contact.name
-        cellSubtitle.text = contact.email
+        self.accessoryType = .none
+        self.selectionStyle = .none
+        self.detailTextLabel?.textColor = .secondaryLabel
     }
 
-    func setValues(name: String, email: String) {
-        cellTitle.text = name
-        cellSubtitle.text = email
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func set(_ contact: Contact) {
+        self.textLabel?.text = contact.name
+        self.detailTextLabel?.text = contact.email
+    }
+
+    func set(name: String, email: String) {
+        self.textLabel?.text = name
+        self.detailTextLabel?.text = email
     }
 }

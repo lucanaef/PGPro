@@ -17,12 +17,133 @@
 
 import UIKit
 
+protocol KeySelectionDelegate {
+    func update(selected: [Contact])
+}
+
 class KeySelectionViewController: UIViewController {
 
-    init(<#parameters#>) {
-        <#statements#>
+    private var type: Constants.KeyType = .none {
+        didSet {
+            contacts = ContactListService.get(ofType: type)
+        }
+    }
+    private var contacts = [Contact]() {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
+    private var selectedContacts = [Contact]()
+
+    var delegate: KeySelectionDelegate?
+
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(KeySelectionTableViewCell.self, forCellReuseIdentifier: "KeySelectionTableViewCell")
+
+        return tableView
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reset),
+                                               name: Constants.NotificationNames.contactListChange,
+                                               object: nil
+        )
+
+        // Setup Navigation Bar
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+
+        // Add table view to super view
+        view.addSubview(tableView)
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
 
-    private var contacts: [Contact]
+    override func viewWillDisappear(_ animated: Bool) {
+        if (delegate != nil) { delegate?.update(selected: selectedContacts) }
+    }
+
+    func set(toType type: Constants.KeyType) {
+        self.type = type
+
+        switch type {
+        case .publicKey:
+            self.title = "Select Public Key"
+        case .privateKey:
+            self.title = "Select Private Keys"
+        default:
+            self.title = "Select Contacts"
+        }
+    }
+
+    @objc
+    private func reset() {
+        self.contacts = ContactListService.get(ofType: self.type)
+        self.selectedContacts = [Contact]()
+        self.tableView.reloadData()
+    }
+
+    private func select(_ contact: Contact) {
+        switch type {
+        case .publicKey, .both:
+            if isSelected(contact) {
+                    selectedContacts.remove(at: selectedContacts.firstIndex(of: contact)!)
+                } else {
+                    selectedContacts.append(contact)
+                }
+        case .privateKey:
+            selectedContacts = [contact]
+        case .none:
+            break
+        }
+        self.tableView.reloadData()
+    }
+
+    private func isSelected(_ contact: Contact) -> Bool {
+        selectedContacts.contains(contact)
+    }
 
 }
+
+extension KeySelectionViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        self.contacts.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let contact = contacts[indexPath.row]
+
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "KeySelectionTableViewCell") as? KeySelectionTableViewCell
+        else {
+            Log.e("Unable to deque reusable cell")
+            return UITableViewCell()
+        }
+
+        cell.set(contact)
+        if isSelected(contact) {
+            cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+        } else {
+            cell.accessoryType = UITableViewCell.AccessoryType.none
+        }
+
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        select(contacts[indexPath.row])
+    }
+
+}
+
+
