@@ -16,7 +16,6 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ObjectivePGP
 
 class ContactDetailTableViewController: UITableViewController {
     
@@ -34,10 +33,14 @@ class ContactDetailTableViewController: UITableViewController {
     @IBOutlet weak private var expires: UILabel!
     @IBOutlet weak private var fingerprint: UILabel!
 
-    var saveButtonAdded = false
+    private var saveButtonAdded = false
     
-    var contact: Contact?
-    var noKey = true
+    private var contact: Contact?
+    private var noKey: Bool {
+        let hasPublicKey = contact?.key.isPublic ?? false
+        let hasPrivateKey = contact?.key.isSecret ?? false
+        return (!hasPublicKey && !hasPrivateKey)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +88,7 @@ class ContactDetailTableViewController: UITableViewController {
                 let newName = name.text ?? ""
                 let newEmail = email.text ?? ""
                 
-                if !ContactListService.editContact(contact: contact, newName: newName, newEmail: newEmail) {
+                if !ContactListService.rename(contact, to: newName, withEmail: newEmail) {
                     alert(text: "Contact with this Email Address Already Exists!")
                 }
             }
@@ -106,13 +109,10 @@ class ContactDetailTableViewController: UITableViewController {
         type.text = "None"
         if (key.isPublic && key.isSecret) {
             type.text = "Public & Private"
-            noKey = false
         } else if (key.isPublic) {
             type.text = "Public"
-            noKey = false
         } else if (key.isSecret) {
             type.text = "Private"
-            noKey = false
         }
         
         expires.text = "Never"
@@ -136,11 +136,8 @@ class ContactDetailTableViewController: UITableViewController {
 
     func setShare() {
         guard let contact = contact else { return }
-        
-        var activityItem = ""
-        do {
-            activityItem = try Armor.armored(contact.key.export(), as: .publicKey)
-        } catch { }
+
+        var activityItem = contact.getArmoredKey(as: .publicKey) ?? ""
         
         if (contact.key.isSecret) {
             let optionMenu = UIAlertController(title: nil,
@@ -154,9 +151,7 @@ class ContactDetailTableViewController: UITableViewController {
             optionMenu.addAction(sharePublicKey)
             
             let sharePrivateKey = UIAlertAction(title: "Private Key", style: .destructive) { _ -> Void in
-                do {
-                    activityItem = try Armor.armored(contact.key.export(), as: .secretKey)
-                } catch { }
+                activityItem = contact.getArmoredKey(as: .secretKey) ?? ""
                 optionMenu.dismiss(animated: true, completion: nil)
                 self.share(activityItems: [activityItem])
             }
@@ -174,13 +169,17 @@ class ContactDetailTableViewController: UITableViewController {
         }
     }
 
-    func share(activityItems: [Any]) {
+    private func share(activityItems: [Any]) {
         AppStoreReviewService.incrementReviewWorthyActionCount()
 
         let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         activityVC.popoverPresentationController?.sourceView = self.view
         
         present(activityVC, animated: true, completion: nil)
+    }
+
+    func setContact(to contact: Contact) {
+        self.contact = contact
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

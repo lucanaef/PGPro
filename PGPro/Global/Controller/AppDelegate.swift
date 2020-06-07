@@ -24,8 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         window?.tintColor = UIColor.label
 
@@ -35,11 +34,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // If in simulator, create example dataset
             #if targetEnvironment(simulator)
                 ExampleDataService.createExampleDataset()
-                // ExampleDataService.generateLargeInput(numberOfContacts: 10)
             #endif
 
+            // Set default preferences
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             UserDefaults.standard.set(0, forKey: "numRatings")
+
+            // Get number of ratings
+            _ = Constants.PGPro.numRatings
         } else {
             ContactListService.loadPersistentData()
         }
@@ -52,37 +54,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Check if file type is valid
         let fileExtension = url.pathExtension
         guard (fileExtension == "asc") else {
-            let alertController = UIAlertController(title: "Filetype not supported!",
-                                                    message: nil,
-                                                    preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss",
-                                                    style: .default))
-            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+            let alertController = UIAlertController(title: "Filetype not supported!", message: nil, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            window?.rootViewController?.present(alertController, animated: true, completion: nil)
+            Log.i("Filetype \(fileExtension) not supported!")
             return false
         }
 
         // Treat file as PGP encrypted text
         var encryptedMessage = ""
-        guard let window = self.window else { return true }
         do {
             encryptedMessage = try String(contentsOf: url, encoding: .ascii)
-            if let tabBarController = window.rootViewController as? UITabBarController {
+            if let tabBarController = window?.rootViewController as? UITabBarController {
                 tabBarController.selectedIndex = 1
             }
         } catch {
             let alertController = UIAlertController(title: "File not supported!", message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-            window.rootViewController?.present(alertController, animated: true, completion: nil)
+            window?.rootViewController?.present(alertController, animated: true, completion: nil)
+            Log.i("File not supported!")
             return false
         }
 
         DispatchQueue.main.async {
-            let actualVC = window.rootViewController?.children[1].children.first
+            let actualVC = self.window?.rootViewController?.children[1].children.first
             while !(actualVC is DecryptionTableViewController) { }
             let decryptionVC = actualVC as? DecryptionTableViewController
             if let decryptionVC = decryptionVC {
                 while (decryptionVC.viewIfLoaded == nil) {  }
-                decryptionVC.textView.text = encryptedMessage
+                decryptionVC.setMessageField(to: encryptedMessage)
             }
         }
 

@@ -16,155 +16,131 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ObjectivePGP
 
 class DecryptionTableViewController: UITableViewController {
     
     @IBOutlet weak private var titleLabel: UILabel!
     @IBOutlet weak private var passphraseTextField: UITextField!
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak private var textView: UITextView!
     
-    static var decryptionContact: Contact?
-    var decryptionKey: Key? {
-        return DecryptionTableViewController.decryptionContact?.key
-    }
-    
-    var keyRequiresPassphrase = false
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+    private var decryptionContact: Contact?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-        self.hideKeyboardWhenTappedAround()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(resetSelection),
+                                               name: Constants.NotificationNames.contactListChange,
+                                               object: nil
+        )
+        setupView()
+    }
 
-        update()
-        
+    func setMessageField(to message: String?) {
+        textView.text = message
+    }
+    
+    @objc
+    private func updateView() {
+        var label = "Select Private Key..."
+        if let decryptionContact = decryptionContact {
+            label = decryptionContact.userID
+        }
+        titleLabel.text = label
+        tableView.reloadData()
+    }
+
+    private func setupView() {
+        // Navigation Bar:
         self.navigationController?.navigationBar.prefersLargeTitles = true
-
         let decryptButton = UIBarButtonItem(
             image: UIImage(systemName: "envelope.open.fill")?.withTintColor(UIColor.label),
             style: .done,
             target: self,
             action: #selector(decrypt)
         )
-
         let clearButton = UIBarButtonItem(
             image: UIImage(systemName: "trash")?.withTintColor(UIColor.label),
             style: .plain,
             target: self,
             action: #selector(clearView)
         )
+        navigationItem.rightBarButtonItems = [decryptButton, clearButton]
+        // Main Table View:
+        titleLabel.text = "Select Private Key..."
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+    }
 
-        navigationItem.rightBarButtonItems = [clearButton, decryptButton]
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.update),
-                                               name: Constants.NotificationNames.privateKeySelectionChange,
-                                               object: nil
-        )
+    @objc
+    private func resetSelection() {
+        decryptionContact = nil
+        updateView()
     }
     
     @objc
-    func update() {
-        var label = "Select Private Key..."
-        if let decryptionContact = DecryptionTableViewController.decryptionContact {
-            label = decryptionContact.userID
-        }
-        titleLabel.text = label
-        keyRequiresPassphrase = decryptionKey?.isEncryptedWithPassword ?? false
-        tableView.reloadData()
-    }
-    
-    @objc
-    func decrypt() {
-        if let encryptedMessage = textView.text {
-            if (encryptedMessage == "") {
-                alert(text: "Paste Message to Decrypt!")
-                return
-            }
-
-            // Trim to relevant section
-            guard let range = encryptedMessage.range(of: #"-----BEGIN PGP MESSAGE-----(.|\n)*-----END PGP MESSAGE-----"#, options: .regularExpression)
-                else {
-                    print()
-                    alert(text: "Invalid Message!")
-                    return
-            }
-
-            let encryptedMessage = String(encryptedMessage[range])
-            if let encryptedMessageData = encryptedMessage.data(using: .ascii) {
-                
-                let passphrase = passphraseTextField.text
-                var decryptedMessage = Data()
-                
-                if (decryptionKey == nil) {
-                    alert(text: "No Private Key Selected!")
-                    return
-                }
-                
-                if (keyRequiresPassphrase && passphrase == nil) {
-                    alert(text: "Key Requires Passphrase!")
-                    return
-                }
-
-                guard let decryptionKey = decryptionKey else {
-                    alert(text: "Select Decryption Key!")
-                    return
-                }
-
-                // Check if passphrase is correct
-                if (keyRequiresPassphrase) {
-                    do {
-                        _ = try decryptionKey.decrypted(withPassphrase: passphrase!)
-                    } catch {
-                        alert(text: "Wrong Passphrase!")
-                        return
-                    }
-                }
-                
-                do {
-                    decryptedMessage = try ObjectivePGP.decrypt(encryptedMessageData,
-                                                                andVerifySignature: false,
-                                                                using: [decryptionKey],
-                                                                passphraseForKey: {(_) -> (String?) in return passphrase})
-                    
-                    performSegue(withIdentifier: "showDecryptedMessage",
-                                 sender: String(data: decryptedMessage, encoding: .utf8))
-                } catch {
-                    alert(text: "Decryption Failed!")
-                    return
-                }
-            } else {
-                alert(text: "Message Decoding Failed!")
-                return
-            }
-        } else {
-            alert(text: "Failed to Retrieve Encrypted Message!")
+    private func decrypt() {
+        guard let encryptedMessage = textView.text else { return }
+        guard let decryptionContact = decryptionContact else {
+            alert(text: "No Private Key Selected!")
             return
         }
-        AppStoreReviewService.incrementReviewWorthyActionCount()
+
+        do {
+            let decryptedMessage = try CryptographyService.decrypt(message: encryptedMessage,
+                                                                   by: decryptionContact,
+                                                                   withPassphrase: passphraseTextField.text)
+            present(decryptedMessage)
+        } catch let error {
+            switch error {
+            case CryptographyError.emptyMessage:
+                alert(text: "Please enter message first!")
+            case CryptographyError.invalidMessage:
+                alert(text: "Message is invalid!")
+            case CryptographyError.requiresPassphrase:
+                alert(text: "Decryption requires passphrase!")
+            case CryptographyError.wrongPassphrase:
+                alert(text: "Wrong passphrase!")
+            case CryptographyError.frameworkError(let frameworkError):
+                alert(text: "Decryption failed!")
+                Log.e("DecryptionTableViewController.decrypt(): \(frameworkError)")
+            case CryptographyError.failedDecryption:
+                alert(text: "Decryption failed!")
+            default:
+                alert(text: "Decryption failed!")
+                Log.e("DecryptionTableViewController.decrypt(): \(error)")
+            }
+            return
+        }
+    }
+
+
+    private func present(_ message: String) {
+        let decryptedMessageViewController = DecryptedMessageViewController()
+        decryptedMessageViewController.show(message)
+
+        // Embed view in a new navigation controller as a
+        //  workaround to https://forums.developer.apple.com/thread/121861
+        let decryptedMessageNavigation = UINavigationController()
+        decryptedMessageNavigation.setViewControllers([decryptedMessageViewController], animated: false)
+        decryptedMessageNavigation.modalPresentationStyle = .automatic
+
+        self.present(decryptedMessageNavigation, animated: true, completion: nil)
     }
 
     @objc
-    func clearView() {
+    private func clearView() {
         let dialogMessage = UIAlertController(title: "Delete this message",
                                               message: "",
                                               preferredStyle: .alert)
 
         // Create OK button with action handler
         let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
+            self.decryptionContact = nil
             self.textView.text = ""
-            PrivateKeySelectionTableViewController.clearView()
-            self.update()
+            self.updateView()
         })
 
         // Create Cancel button with action handlder
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) -> Void in
-            return
-        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) -> Void in return }
 
         // Add Confirm and Cancel button to dialog message
         dialogMessage.addAction(confirm)
@@ -174,44 +150,26 @@ class DecryptionTableViewController: UITableViewController {
         self.present(dialogMessage, animated: true, completion: nil)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        /* Give decrypted message to subview */
-        if (segue.identifier == "showDecryptedMessage") {
-            guard let destinationNC = segue.destination as? UINavigationController else { return }
-            guard let targetController = destinationNC.topViewController as? DecryptedMessageViewController else { return }
-            targetController.message = sender as? String
-        }
-        
-    }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 0) {
-            
-            /* Private Key Selection */
-            performSegue(withIdentifier: "showPrivateKeys", sender: nil)
-            tableView.deselectRow(at: indexPath, animated: true)
-            
-        } else if (indexPath.row == 2) {
-            
-            /* Paste from Clipboard */
+        if (indexPath.row == 0) { // Private Key Selection
+            let keySelectionViewController = KeySelectionViewController()
+            keySelectionViewController.set(toType: .privateKey)
+            keySelectionViewController.delegate = self
+            navigationController?.pushViewController(keySelectionViewController, animated: true)
+        } else if (indexPath.row == 2) { // Paste from Clipboard
             textView.text = UIPasteboard.general.string
             tableView.deselectRow(at: indexPath, animated: true)
+        } else {
+            super.tableView(tableView, didSelectRowAt: indexPath)
         }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // Hide passphrase field if not required
+        let keyRequiresPassphrase = decryptionContact?.keyRequiresPassphrase ?? false
+        if !keyRequiresPassphrase, indexPath.row == 1 {  return 0 }
 
-        /* Hide passphrase field if not required */
-        if (!keyRequiresPassphrase) {
-            if (indexPath.row == 1) {
-                return 0
-            }
-        }
-
-        if (indexPath.row == 3) {
-            
-            /* (Full-height) Message Row */
+        if (indexPath.row == 3) { // (Full-height) Message Row
             var height = self.view.frame.height
             if (!keyRequiresPassphrase) {
                 height -= 88
@@ -228,4 +186,18 @@ class DecryptionTableViewController: UITableViewController {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
+}
+
+
+extension DecryptionTableViewController: KeySelectionDelegate {
+
+    func update(selected: [Contact]) {
+        if selected.isEmpty {
+            decryptionContact = nil
+        } else {
+            decryptionContact = selected[0]
+        }
+        self.updateView()
+    }
+
 }

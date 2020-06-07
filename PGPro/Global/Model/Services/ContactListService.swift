@@ -19,143 +19,79 @@ import Foundation
 import CoreData
 import ObjectivePGP
 
+
 class ContactListService {
-    
+
     private init() {}
-    
-    private static var contactList: [Contact] = []
-    
-    /**
-         Loads the persistent data into in-memory datastructure
-    */
-    static func loadPersistentData() {
+    private static var contactList: [Contact] = [] {
+        didSet {
+            NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange, object: nil)
+        }
+    }
+
+    /// Returns the number of contacts in the list
+    class var count: Int { contactList.count }
+
+    class func loadPersistentData() {
         let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
         do {
-            self.contactList = try PersistenceService.context.fetch(fetchRequest)
-            _ = self.cleanUp()
-            self.sort()
-            NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange,
-                                            object: nil
-            )
+            contactList = try PersistenceService.context.fetch(fetchRequest)
+            let removedContacts = cleanUp()
+            Log.i("Removed \(removedContacts) contacts after loading persistent data")
+            contactList.sort()
         } catch {
-            print("Failed to Load Saved Data!")
+            Log.s("Failed to Load Persistent Data!")
         }
     }
 
-
-    static func numberOfContacts() -> Int {
-        return ContactListService.contactList.count
-    }
-
-    /**
-         - Returns: Array of contacts
-    */
-    static func getContacts() -> [Contact] {
-        return ContactListService.contactList
-    }
-
-    /**
-        - Parameters:
-            - index: Index of the contact
-        
-         - Returns: Contact at given index
-    */
-    static func getContact(index: Int) -> Contact {
-        return ContactListService.contactList[index]
-    }
-
-    
-    /**
-         - Returns: Array of contacts with a public key
-    */
-    static func getPublicKeyContacts() -> [Contact] {
-        var cntcts: [Contact] = []
-        for cntct in ContactListService.contactList where cntct.key.isPublic {
-            cntcts.append(cntct)
+    class func get(ofType type: Constants.KeyType) -> [Contact] {
+        switch type {
+        case .publicKey:
+            return contactList.filter { $0.key.isPublic }
+        case .privateKey:
+            return contactList.filter { $0.key.isSecret }
+        case .both:
+            return contactList
+        case .none:
+            return [Contact]()
         }
-        return cntcts
-    }
-    
-    /**
-         - Returns: Array of contacts with a private key
-    */
-    static func getPrivateKeyContacts() -> [Contact] {
-        var cntcts: [Contact] = []
-        for cntct in ContactListService.contactList where cntct.key.isSecret {
-            cntcts.append(cntct)
-        }
-        return cntcts
     }
 
-
-    /**
-        - Parameters:
-            - contact: Contact
-
-         - Returns: Array index of contact, -1 if not successful
-    */
-    static func getIndex(contact: Contact) -> Int {
-        return ContactListService.contactList.firstIndex {
-            (cntct) -> Bool in cntct.email == contact.email
-        } ?? -1
-    }
-
-
-    /**
-         Adds a contact to persistent and in-memory storage
-
-         - Parameters:
-            - name: Name of the contact
-            - email: Unique and valid email address
-            - key: PGP (public and/or private) key
-
-         - Returns: True, if successful
-    */
-    static func addContact(name: String, email: String, key: Key) -> Bool {
-        /* Check if contact with this email address already exists */
-        for cntct in ContactListService.contactList where (cntct.email == email) {
-            return false
+    // MARK - Mutate List
+    class func add(name: String, email: String, key: Key) -> ContactListResult {
+        // Check that no contact with this email address already exists
+        guard !contactList.contains( where: {
+            (contact) -> Bool in contact.email == email
+        }) else {
+            return ContactListResult(successful: 0, unsupported: 0, duplicates: 1)
         }
         
-        /* Create new contact instance */
+        // Create new contact
         let contact = Contact(context: PersistenceService.context)
         contact.name = name
         contact.email = email
         do {
             let keyData = try key.export() as NSData
-            guard (keyData.length > 0) else { return false }
+            guard (keyData.length > 0) else {
+                return ContactListResult(successful: 0, unsupported: 1, duplicates: 0)
+            }
             contact.keyData = keyData
         } catch {
-            print("Failed to save Key as Data!")
-            return false
+            return ContactListResult(successful: 0, unsupported: 1, duplicates: 0)
         }
             
-        /* Add contact to in-memory and persistent data storage */
-        ContactListService.contactList.append(contact)
-        ContactListService.sort()
+        // Add contact to in-memory and persistent data storage
+        contactList.append(contact)
+        contactList.sort()
         PersistenceService.save()
         
-        /* Notify observers about change */
-        NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange,
-                                        object: nil
-        )
-        
-        return true
+        return ContactListResult(successful: 1, unsupported: 0, duplicates: 0)
     }
 
-    /**
-         Imports keys to Contact List
-
-         - Parameters:
-            - keys: List of Keys
-
-         - Returns: Number of successfully imported keys
-    */
-    static func importKeys(keys: [Key]) -> Int {
-        var importedKeys = 0
+    class func importFrom(_ keys: [Key]) -> ContactListResult {
+        var importResult = ContactListResult(successful: 0, unsupported: 0, duplicates: 0)
 
         for key in keys {
-
             var primaryUser: User?
             if (key.isSecret) {
                 guard let privateKey = key.secretKey else { continue }
@@ -167,123 +103,85 @@ class ContactListService {
 
             if let primaryUser = primaryUser {
                 let components = primaryUser.userID.components(separatedBy: "<")
+
+                var name: String
+                var email: String
+
                 if (components.count == 2) {
-                    let name = String(components[0].dropLast())
-                    let email = String(components[1].dropLast())
-                    if ContactListService.addContact(name: name, email: email, key: key) {
-                        importedKeys += 1
-                    }
+                    name = String(components[0].dropLast())
+                    email = String(components[1].dropLast())
                 } else if (components.count == 1 && components[0].isValidEmail()) {
-                    let name = components[0]
-                    let email = components[0]
-                    if ContactListService.addContact(name: name, email: email, key: key) {
-                        importedKeys += 1
-                    }
+                    name = components[0]
+                    email = components[0]
+                } else {
+                    break // skip if no name/email address can be inferred from data
                 }
+
+                let addResult = add(name: name, email: email, key: key)
+                importResult.successful += addResult.successful
+                importResult.duplicates += addResult.duplicates
+
             } else { continue }
         }
 
-        importedKeys -= ContactListService.cleanUp()
-        ContactListService.sort()
+        importResult.unsupported = cleanUp()
+        importResult.successful -= importResult.unsupported
 
-        return importedKeys
+        return importResult
     }
 
-
-    /**
-         Naive approach to editing a contact
-
-         - Parameters:
-            - cntct: Contact
-            - newName: New name of the contact
-            - newEmail: New email address of the contact
-
-         - Returns: True, if successful
-    */
-    static func editContact(contact: Contact, newName: String, newEmail: String) -> Bool {
-        /* Check if contact with this email address already exists */
+    class func rename(_ contact: Contact, to newName: String, withEmail newEmail: String) -> Bool {
+        // Check if contact with this email address already exists
         for cntct in ContactListService.contactList where (cntct.email == newEmail && contact.email != newEmail) {
             return false
         }
-        
-        let cntctIdx = self.getIndex(contact: contact)
-        let oldKey = contact.key
-        self.removeContact(index: cntctIdx)
-        
-        let success = self.addContact(name: newName, email: newEmail, key: oldKey)
-        
-        /* Delete temporary data (selected keys) */
-        EncryptionTableViewController.encryptionContacts = [Contact]()
-        NotificationCenter.default.post(name: Constants.NotificationNames.publicKeySelectionChange,
-                                        object: nil)
 
-        DecryptionTableViewController.decryptionContact = nil
-        NotificationCenter.default.post(name: Constants.NotificationNames.privateKeySelectionChange,
-        object: nil)
+        contact.name = newName
+        contact.email = newEmail
+
+        contactList.sort()
+
+        NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange, object: nil)
         
-        return success
+        return true
     }
 
-
-    static func removeContact(index: Int) {
-        /* Delete contact from persistent data */
-        PersistenceService.context.delete(contactList[index])
+    class func remove(_ contact: Contact) {
+        // Delete contact from persistent data
+        PersistenceService.context.delete(contact)
         PersistenceService.save()
-        
-        /* Delete contact from in-memory data */
-        ContactListService.contactList.remove(at: index)
-        
-        /* Notify observers about change */
-        NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange,
-                                        object: nil
-        )
+
+        // Delete contact from in-memory data
+        contactList = contactList.filter { $0 != contact}
+
+        // Notify observers about change
+        NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange, object: nil)
     }
 
-
-    /**
-         Deletes all persistent and in-memory data
-    */
-    static func deleteAllData() {
-
-        /* Delete in-memory and persistent data */
-        for cntct in contactList {
-            PersistenceService.context.delete(cntct)
-        }
-        PersistenceService.save()
-        self.contactList = []
-        NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange,
-        object: nil)
-
-        /* Delete temporary data (selected keys) */
-        EncryptionTableViewController.encryptionContacts = [Contact]()
-        NotificationCenter.default.post(name: Constants.NotificationNames.publicKeySelectionChange,
-                                        object: nil)
-
-        DecryptionTableViewController.decryptionContact = nil
-        NotificationCenter.default.post(name: Constants.NotificationNames.privateKeySelectionChange,
-        object: nil)
+    class func deleteAllData() {
+        // Delete in-memory and persistent data
+        PersistenceService.context.reset()
+        contactList = []
+        NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange, object: nil)
     }
 
-
-    /**
-         Removes contacts with keys that are not supported
-    */
-    private static func cleanUp() -> Int {
+    // MARK - Private Helper Functions
+    private class func cleanUp() -> Int {
         var count = 0
-        for cntct in ContactListService.contactList where (!cntct.key.isPublic && !cntct.key.isSecret) {
-            let cntctIdx = self.getIndex(contact: cntct)
-            self.removeContact(index: cntctIdx)
+        for contact in contactList where (!contact.key.isPublic && !contact.key.isSecret) {
+            remove(contact)
             count += 1
         }
         return count
     }
+}
 
-    /**
-         Sorts the in-memory contact list alphabetically by name
-    */
-    static func sort() {
-        contactList.sort { (cntctA, cntctB) -> Bool in
-            cntctA.name < cntctB.name
-        }
-    }
+/// Return type when adding keys to the contact list
+struct ContactListResult {
+    /// Number of successfuly added contacts
+    var successful: Int
+    /// Number omitted contacts due to unsupported keys
+    var unsupported: Int
+    /// Number omitted contacts due to duplicate email addresses
+    var duplicates: Int
 }

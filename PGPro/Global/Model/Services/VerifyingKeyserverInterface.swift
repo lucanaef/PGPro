@@ -54,7 +54,7 @@ class VerifyingKeyserverInterface {
     static func getByFingerprint(fingerprint: String, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
 
         let formattedFingerprint = fingerprint.components(separatedBy: .whitespaces).joined()
-        print(formattedFingerprint)
+        Log.d(formattedFingerprint)
         let urlString = baseURL + "/vks/v1/by-fingerprint/" + formattedFingerprint
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidFormat))

@@ -19,43 +19,52 @@ import UIKit
 
 class DecryptedMessageViewController: UIViewController {
 
-    @IBOutlet weak var textView: UITextView!
-
-    var message: String?
+    private var textView: UITextView?
+    private var message: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let message = message {
-            textView.text = message
-        }
-
-        self.navigationController?.navigationBar.prefersLargeTitles = false
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+        // Navigation bar
+        self.title = "Decrypted Message"
+        let leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancel(sender:))
         )
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+        let rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .action,
             target: self,
             action: #selector(share(sender:))
         )
+        self.navigationItem.setLeftBarButton(leftBarButtonItem, animated: false)
+        self.navigationItem.setRightBarButton(rightBarButtonItem, animated: false)
+
+        // Text view
+        textView = UITextView(frame: CGRect(x: 0, y: 56, width: view.frame.size.width, height: view.frame.size.height))
+        textView!.font = UIFont.systemFont(ofSize: 18.0)
+        textView!.text = message ?? "Test Message"
+        textView!.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        view.addSubview(textView!)
+    }
+
+    func show(_ message: String) {
+        self.message = message
     }
 
     @objc
-    func cancel(sender: UIBarButtonItem) {
-
+    private func cancel(sender: UIBarButtonItem) {
         // Ask for review after decryption
         let twoSecondsFromNow = DispatchTime.now() + 2.0
         DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
             AppStoreReviewService.requestReviewIfAppropriate()
         }
         dismiss(animated: true, completion: nil)
+        self.message = nil
     }
 
     @objc
-    func share(sender: UIBarButtonItem) {
+    private func share(sender: UIBarButtonItem) {
         let activityVC = UIActivityViewController(activityItems: [self], applicationActivities: nil)
         activityVC.popoverPresentationController?.sourceView = self.view
         self.present(activityVC, animated: true, completion: nil)
@@ -66,20 +75,11 @@ class DecryptedMessageViewController: UIViewController {
 extension DecryptedMessageViewController: UIActivityItemSource {
 
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        if let message = message {
-            return message
-        } else {
-            return ""
-        }
+        return message ?? ""
     }
 
     func activityViewController(_ activityViewController: UIActivityViewController,
-                                itemForActivityType activityType: UIActivity.ActivityType?
-    ) -> Any? {
-        if let message = message {
-            return message
-        } else {
-            return ""
-        }
+                                itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        return message ?? ""
     }
 }

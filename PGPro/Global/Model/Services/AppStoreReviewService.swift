@@ -22,8 +22,8 @@ class AppStoreReviewService {
 
     private init() {}
 
-    static var minimumReviewWorthyActionCount = 10
-    static let reviewWorthyActionKey = "reviewWorthyActionCount"
+    private static var minimumReviewWorthyActionCount = 10
+    private static let reviewWorthyActionKey = "reviewWorthyActionCount"
 
     static func incrementReviewWorthyActionCount() {
         let defaults = UserDefaults.standard

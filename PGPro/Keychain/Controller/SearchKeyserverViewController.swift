@@ -17,7 +17,7 @@
 
 import Foundation
 import UIKit
-import ObjectivePGP
+import ObjectivePGP // - should not be needed in view controller...
 
 class SearchKeyserverViewController: UIViewController {
 
@@ -97,13 +97,13 @@ class SearchKeyserverViewController: UIViewController {
             var selectedKeys: [Key] = []
             for row in selectedRows { selectedKeys.append(foundKeys[row]) }
 
-            let numOfImportedKeys = ContactListService.importKeys(keys: selectedKeys)
-            if (numOfImportedKeys == 0) {
+            let result: ContactListResult = ContactListService.importFrom(selectedKeys)
+            if (result.successful == 0) {
                 alert(text: "No new keys imported")
-            } else if (numOfImportedKeys == 1) {
+            } else if (result.successful == 1) {
                 alert(text: "1 new key imported")
             } else {
-                alert(text: "\(numOfImportedKeys) new keys imported")
+                alert(text: "\(result.successful) new keys imported")
             }
         }
         dismiss(animated: true, completion: nil)
@@ -174,7 +174,7 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
     func switchResult(result: Result<[Key], VerifyingKeyserverInterface.VKIError>) {
         switch result {
         case .failure(let error):
-            print("[SearchKeyserverViewController] \(error)")
+            Log.e(error)
             switch error {
             case .invalidFormat:
                 DispatchQueue.main.async {
@@ -238,7 +238,7 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
             }
         default:
             /// do nothing
-            print("[SearchKeyserverViewController] Scope not in bounds!")
+            Log.e("Scope not in bounds!")
         }
     }
 

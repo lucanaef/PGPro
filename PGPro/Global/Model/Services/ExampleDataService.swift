@@ -18,7 +18,6 @@
 import Foundation
 import ObjectivePGP
 
-
 /**
      Generate example entries for screenshots and debugging
 */
@@ -27,52 +26,35 @@ class ExampleDataService {
     private init() {}
     
     static func createExampleDataset() {
-        
         let keyGen = KeyGenerator()
-                
-        assert(ContactListService.addContact(name:  "Winston Smith",
-                                             email: "winston.smith@pgpro.app",
-                                             key:   keyGen.generate(for: "winston.smith@pgpro.app", passphrase: nil))
-        )
-        
-        assert(ContactListService.addContact(name:  "O'Brien",
-                                             email: "obrien@pgpro.app",
-                                             key:   Key(secretKey: keyGen.generate(for: "obrien@pgpro.app", passphrase: nil).secretKey, publicKey: nil))
-        )
+        let exampleContacts: [(String, String, String?, Bool, Bool)] = [
+        //   NAME                   EMAIL ADDRESS                 PASSPHRASE    HAS PUBLIC KEY      HAS PRIVATE KEY
+            ("Winston Smith",       "winston.smith@pgpro.app",    nil,          true,               true),
+            ("O'Brien",             "obrien@pgpro.app",           nil,          true,               false),
+            ("Julia",               "julia@pgpro.app",            "jules",      true,               true),
+            ("Mr. Charrington",     "mr.charrington@pgpro.app",   nil,          false,              true),
+            ("Syme",                "syme@pgpro.app",             nil,          false,              true),
+            ("Parsons",             "parsons@pgpro.app",          nil,          false,              true),
+            ("Emmanuel Goldstein",  "e.goldstein@pgpro.app",      nil,          false,              true),
+            ("Tillotson",           "tillotson@pgpro.app",        "",           true,               true)
+        ]
 
-        assert(ContactListService.addContact(name:  "Julia",
-                                             email: "julia@pgpro.app",
-                                             key:   keyGen.generate(for: "julia@pgpro.app", passphrase: "jules"))
-        )
-
-        assert(ContactListService.addContact(name:  "Mr. Charrington",
-                                             email: "mr.charrington@pgpro.app",
-                                             key:   Key(secretKey: nil, publicKey: keyGen.generate(for: "mr.charrington@pgpro.app", passphrase: nil).publicKey))
-        )
-
-        assert(ContactListService.addContact(name:  "Syme",
-                                             email: "syme@pgpro.app",
-                                             key:   Key(secretKey: nil, publicKey: keyGen.generate(for: "syme@pgpro.app", passphrase: nil).publicKey))
-        )
-
-        assert(ContactListService.addContact(name:  "Parsons",
-                                             email: "parsons@pgpro.app",
-                                             key:   Key(secretKey: nil, publicKey: keyGen.generate(for: "parsons@pgpro.app", passphrase: nil).publicKey))
-        )
-
-        assert(ContactListService.addContact(name:  "Emmanuel Goldstein",
-                                             email: "e.goldstein@pgpro.app",
-                                             key:   Key(secretKey: nil, publicKey: keyGen.generate(for: "e.goldstein@pgpro.app", passphrase: nil).publicKey))
-        )
+        for index in exampleContacts.indices {
+            let (name, email, passphrase, hasPublicKey, hasPrivateKey) = exampleContacts[index]
+            let genKey = keyGen.generate(for: email, passphrase: passphrase)
+            let publicKey = hasPublicKey ? genKey.publicKey : nil
+            let privateKey = hasPrivateKey ? genKey.secretKey : nil
+            let key = Key(secretKey: privateKey, publicKey: publicKey)
+            _ = ContactListService.add(name: name, email: email, key: key)
+        }
     }
 
-
-    static func generateLargeInput(numberOfContacts: Int) {
-        for iteration in 1...numberOfContacts {
-            _ = ContactListService.addContact(name: "PGPro User " + String(iteration),
-                                              email: "user" + String(iteration) + "@pgpro.app",
-                                              key: KeyGenerator().generate(for: String(iteration) + "@pgpro.app", passphrase: nil)
-            )
+    static func createLargeDataset(numberOfContacts: Int) {
+        for iteration in 0..<numberOfContacts {
+            let name = "PGPro User \(iteration)"
+            let email = "user\(iteration)@pgpro.app"
+            let key = KeyGenerator().generate(for: email, passphrase: nil)
+            _ = ContactListService.add(name: name, email: email, key: key)
         }
     }
 

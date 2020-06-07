@@ -27,30 +27,58 @@ extension Contact {
         return NSFetchRequest<Contact>(entityName: "Contact")
     }
 
+    @NSManaged public var name: String
     @NSManaged public var email: String
     @NSManaged public var keyData: NSData
-    @NSManaged public var name: String
 
-    public var key: Key {
+    var userID: String {
+        return "\(name) <\(email)>"
+    }
+
+    public override var description: String { userID }
+
+    var keyRequiresPassphrase: Bool {
+        return key.isEncryptedWithPassword
+    }
+
+    var key: Key {
         var keys = [Key(secretKey: nil, publicKey: nil)]
 
         // Hacky solution to recover from https://github.com/krzyzanowskim/ObjectivePGP/issues/168
         SwiftTryCatch.try({
             do {
                 keys = try ObjectivePGP.readKeys(from: self.keyData as Data)
-            } catch {  }
+            } catch {
+                Log.e(error)
+            }
         }, catch: { (error) in
-                print("Error info: \(String(describing: error))")
-                return
+            Log.e("Error info: \(String(describing: error))")
+            return
             }, finallyBlock: {
         })
 
         return keys[0]
     }
 
-    public var userID: String {
-        let userid = self.name + " <" + self.email + ">"
-        return userid
+    func getArmoredKey(as type: PGPArmorType) -> String? {
+        return try? Armor.armored(key.export(), as: .secretKey)
+    }
+
+}
+
+
+extension Contact: Comparable {
+
+    public static func == (lhs: Contact, rhs: Contact) -> Bool {
+        lhs.userID == rhs.userID
+    }
+
+    public static func < (lhs: Contact, rhs: Contact) -> Bool {
+        if (lhs.name != rhs.name) {
+            return lhs.name < rhs.name
+        } else {
+            return lhs.email < rhs.email
+        }
     }
 
 }

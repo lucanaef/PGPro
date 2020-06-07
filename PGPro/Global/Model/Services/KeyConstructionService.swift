@@ -37,10 +37,10 @@ class KeyConstructionService {
             do {
                 readKeys = try ObjectivePGP.readKeys(from: asciiKeyData)
             } catch let error {
-                print("Error info: \(error)")
+                Log.e("Error info: \(error)")
             }
         }, catch: { (error) in
-            print("Error info: \(String(describing: error))")
+            Log.e("Error info: \(String(describing: error))")
             }, finallyBlock: {
         })
         return readKeys
@@ -52,10 +52,10 @@ class KeyConstructionService {
             do {
                 readKeys = try ObjectivePGP.readKeys(fromPath: fileURL.path)
             } catch let error {
-                print("Error info: \(error)")
+                Log.e("Error info: \(error)")
             }
         }, catch: { (error) in
-            print("Error info: \(String(describing: error))")
+            Log.e("Error info: \(String(describing: error))")
             }, finallyBlock: {
         })
         return readKeys

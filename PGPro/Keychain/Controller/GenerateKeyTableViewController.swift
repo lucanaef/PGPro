@@ -16,7 +16,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ObjectivePGP
+import ObjectivePGP // TODO use KeyConstructionService()
 
 class GenerateKeyTableViewController: UITableViewController {
     
@@ -54,15 +54,20 @@ class GenerateKeyTableViewController: UITableViewController {
         if validateInput() {
             guard let name = name.text else { return }
             guard let email = email.text else { return }
-            let userID = name + " <" + email + ">"
+            let userID = "\(name) <\(email)>"
             
             // Generate Key
             let keyGen = KeyGenerator()
-            let key = keyGen.generate(for: userID, passphrase: passphrase.text)
+            let pass = passphrase.text != "" ? passphrase.text : nil
+            let key = keyGen.generate(for: userID, passphrase: pass)
             
             // Create Contact
-            if !ContactListService.addContact(name: name, email: email, key: key) {
-                alert(text: "Contact with this Email Address Already Exists!")
+            let result = ContactListService.add(name: name, email: email, key: key)
+
+            if (result.unsupported == 1) {
+                alert(text: "Key format is currently not supported!")
+            } else if (result.duplicates == 1) {
+                alert(text: "Contact with this email address already exists!")
             } else {
                 AppStoreReviewService.incrementReviewWorthyActionCount()
                 dismiss(animated: true, completion: nil)

@@ -16,8 +16,8 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ObjectivePGP
 import MobileCoreServices
+import ObjectivePGP // TODO: should not be needed in view controller...
 
 class KeychainViewController: UIViewController {
     
@@ -25,8 +25,8 @@ class KeychainViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    var contacts = [Contact]()
-    var filteredContacts = [Contact]()
+    private var contacts = [Contact]()
+    private var filteredContacts = [Contact]()
 
     lazy var keychainTableView: UITableView = {
         let tv = UITableView()
@@ -58,7 +58,7 @@ class KeychainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contacts = ContactListService.getContacts()
+        contacts = ContactListService.get(ofType: .both)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(reloadData),
@@ -74,10 +74,10 @@ class KeychainViewController: UIViewController {
             action: #selector(plus(sender:))
         )
 
-        /// Add search bar to super view
+        // Add search bar to super view
         navigationItem.searchController = searchController
 
-        /// Add table view to super view
+        // Add table view to super view
         view.addSubview(keychainTableView)
         keychainTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         keychainTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -88,7 +88,7 @@ class KeychainViewController: UIViewController {
     @objc
     func reloadData() {
         DispatchQueue.main.async {
-            self.contacts = ContactListService.getContacts()
+            self.contacts = ContactListService.get(ofType: .both)
             self.keychainTableView.reloadData()
         }
     }
@@ -134,19 +134,19 @@ class KeychainViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "showContactDetail") {
             if let destVC = segue.destination as? ContactDetailTableViewController {
-                destVC.contact = sender as? Contact
+                guard let contact = sender as? Contact else { return }
+                destVC.setContact(to: contact)
             }
         }
     }
 
-    func addKeyFromClipboard() {
+    private func addKeyFromClipboard() {
         guard let clipboardString = UIPasteboard.general.string else {
-            // Clipboard is empty
             alert(text: "Clipboard is Empty!")
             return
         }
 
-        var readKeys: [Key] = []
+        var readKeys = [Key]()
         do {
             readKeys = try KeyConstructionService.fromString(keyString: clipboardString)
         } catch {
@@ -154,27 +154,34 @@ class KeychainViewController: UIViewController {
             return
         }
 
-        let numOfImportedKeys = ContactListService.importKeys(keys: readKeys)
+        let result: ContactListResult = ContactListService.importFrom(readKeys)
+        alert(result)
+    }
 
-        if (numOfImportedKeys == 0) {
-            alert(text: "No new keys imported")
-        } else if (numOfImportedKeys == 1) {
-            alert(text: "1 new key imported")
-        } else {
-            alert(text: "\(numOfImportedKeys) new keys imported")
-        }
 
+    private func alert(_ result: ContactListResult) {
+
+        let successful = "\(result.successful) key\(result.successful == 1 ? "" : "s") successfully imported"
+        let unsupported = "\(result.unsupported) unsupported key\(result.unsupported == 1 ? "" : "s") skipped"
+        let duplicates = "\(result.duplicates) duplicate key\(result.duplicates == 1 ? "" : "s") skipped"
+
+        let alert = UIAlertController(title: "Import Result",
+                                      message: "\(successful) \n \(unsupported) \n \(duplicates)",
+                                      preferredStyle: UIAlertController.Style.alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
 
     }
 
-    func importKeysFilePicker() {
+    private func importKeysFilePicker() {
         let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeData as String], in: .import)
         documentPicker.delegate = self
         documentPicker.allowsMultipleSelection = true
         present(documentPicker, animated: true, completion: nil)
     }
 
-    func filterContactsforSearchText(searchText: String){
+    private func filterContactsforSearchText(searchText: String){
         filteredContacts = contacts.filter({ (contact: Contact) -> Bool in
             // return every contact if no search text speficied
             if (searchController.searchBar.text?.isEmpty ?? true) {
@@ -186,45 +193,42 @@ class KeychainViewController: UIViewController {
 
             return (matchesName || matchesEmail)
         })
-
-        // apply filter
-        keychainTableView.reloadData()
+        keychainTableView.reloadData() // apply filter
     }
 
-    func isFiltering() -> Bool {
+    private func isFiltering() -> Bool {
         let searchBarNotEmpty = !(searchController.searchBar.text?.isEmpty ?? true)
         return (searchController.isActive && searchBarNotEmpty)
     }
 
 }
 
+// MARK - Document Picker
 
 extension KeychainViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        var numOfImportedKeys = 0
+        var importResult = ContactListResult(successful: 0, unsupported: 0, duplicates: 0)
 
         for selectedFileURL in urls {
             do {
                 let readKeys = try KeyConstructionService.fromFile(fileURL: selectedFileURL)
-                numOfImportedKeys = ContactListService.importKeys(keys: readKeys)
+                let results = ContactListService.importFrom(readKeys)
+                importResult.successful += results.successful
+                importResult.unsupported += results.unsupported
+                importResult.duplicates += results.duplicates
             } catch let error {
-                print("Error info: \(error)")
+                Log.e("Error info: \(error)")
                 continue
             }
         }
 
-        if (numOfImportedKeys == 0) {
-            alert(text: "No new keys imported")
-        } else if (numOfImportedKeys == 1) {
-            alert(text: "1 new key imported")
-        } else {
-            alert(text: "\(numOfImportedKeys) new keys imported")
-        }
-
+        alert(importResult)
     }
 
 }
+
+// MARK - Table View
 
 extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -249,9 +253,7 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView,
-                   commit editingStyle: UITableViewCell.EditingStyle,
-                   forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
             if isFiltering() {
                 let cntct = filteredContacts[indexPath.row]
@@ -259,14 +261,13 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
                 filteredContacts.remove(at: indexPath.row)
                 keychainTableView.deleteRows(at: [indexPath], with: .bottom)
 
-                let index = ContactListService.getIndex(contact: cntct)
-                ContactListService.removeContact(index: index)
-                contacts = ContactListService.getContacts()
+                ContactListService.remove(cntct)
+                contacts = ContactListService.get(ofType: .both)
                 
             } else {
                 // Remove from storage and update local list
-                ContactListService.removeContact(index: indexPath.row)
-                contacts = ContactListService.getContacts()
+                ContactListService.remove(contacts[indexPath.row])
+                contacts = ContactListService.get(ofType: .both)
 
                 // Remove from view and update view
                 keychainTableView.deleteRows(at: [indexPath], with: .bottom)
@@ -282,6 +283,8 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
         performSegue(withIdentifier: "showContactDetail", sender: cntct)
     }
 }
+
+// MARK - Search Bar
 
 extension KeychainViewController: UISearchBarDelegate {
 
