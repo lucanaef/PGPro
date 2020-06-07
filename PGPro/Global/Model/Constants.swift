@@ -19,9 +19,16 @@ import Foundation
 
 enum Constants {
 
-    /* Global PGPro Constants */
-    public enum PGPro {
-        static var appID = "1481696997"
+    enum KeyType {
+        case publicKey
+        case privateKey
+        case both
+        case none
+    }
+
+    // MARK - Global PGPro Constants
+    struct PGPro {
+        static let appID = "1481696997"
 
         static var version: String {
             let vrsn = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
@@ -34,10 +41,10 @@ enum Constants {
 
         static var numRatings: Int {
             // try to get current number and update cached value
-            iTunesAPIInterface.requestJSON { result in
+            iTunesInterface.requestJSON { result in
                 switch result {
                     case .failure(let error):
-                        print(error)
+                        Log.e(error)
                     case .success(let data):
                         if let data = data[0] as? [String: Any] {
                             if let numRatings = data["userRatingCountForCurrentVersion"] {
@@ -53,12 +60,29 @@ enum Constants {
         
     }
 
-    /* Notification Names */
-    public enum NotificationNames {
-
+    // MARK - Notification Names
+    enum NotificationNames {
         static var contactListChange = Notification.Name(rawValue: "pgpro.contactListChange")
-        static var publicKeySelectionChange = Notification.Name(rawValue: "pgpro.publicKeySelectionChange")
-        static var privateKeySelectionChange = Notification.Name(rawValue: "pgpro.privateKeySelectionChange")
-
     }
+
+    static var licenses: [License] = [
+        License(for: "PGPro",
+                at: URL(string: "https://github.com/lucanaef/PGPro/blob/master/LICENSE")!),
+        License(for: "ObjectivePGP",
+                describedBy: "OpenPGP library for iOS and macOS",
+                at: URL(string: "https://objectivepgp.com/LICENSE.txt")!),
+        License(for: "OpenSSL",
+                describedBy: "Cryptography and SSL/TLS Toolkit",
+                at: URL(string: "https://www.openssl.org/source/license-openssl-ssleay.txt")!),
+        License(for: "SwiftTryCatch",
+                at: URL(string: "https://github.com/seanparsons/SwiftTryCatch/blob/master/LICENSE")!),
+        License(for: "Navajo-Swift",
+                describedBy: "Password Validator & Strength Evaluator",
+                at: URL(string: "https://github.com/jasonnam/Navajo-Swift/blob/master/LICENSE")!),
+        License(for: "Swiftlogger",
+                describedBy: "Tiny Logger in Swift",
+                at: URL(string: "https://github.com/sauvikdolui/swiftlogger/blob/master/LICENSE")!)
+
+    ]
+
 }

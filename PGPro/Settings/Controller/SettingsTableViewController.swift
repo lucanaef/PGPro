@@ -17,7 +17,7 @@
 
 import UIKit
 import StoreKit
-import ObjectivePGP
+import ObjectivePGP // TODO: should not be needed in view controller...
 
 class SettingsTableViewController: UITableViewController {
 
@@ -39,7 +39,7 @@ class SettingsTableViewController: UITableViewController {
 
                 let keyring = Keyring()
                 var keys: [Key] = []
-                for cntct in ContactListService.getContacts() {
+                for cntct in ContactListService.get(ofType: .both) {
                     keys.append(cntct.key)
                 }
                 keyring.import(keys: keys)
@@ -91,9 +91,15 @@ class SettingsTableViewController: UITableViewController {
                     UIApplication.shared.open(url)
                 }
             case 3: // Software Licenses
+
+                // TODO: Use separate table view for this...
+
                 url = Bundle.main.url(forResource: "licenses", withExtension: "html")
-                guard url != nil else { return }
-                performSegue(withIdentifier: "goToWebView", sender: nil)
+                guard let url = url else { return }
+                let destVC = WebViewController()
+                navigationController?.pushViewController(destVC, animated: true)
+                let urlRequest = URLRequest(url: url)
+                destVC.loadRequest(urlRequest)
             default:
                 return
             }
@@ -136,12 +142,6 @@ class SettingsTableViewController: UITableViewController {
             return cell
         }
         return super.tableView(tableView, cellForRowAt: indexPath)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let destVC = segue.destination as? WebViewController else { return }
-        guard let url = url else { return }
-        destVC.urlRequest = URLRequest(url: url)
     }
 
 }

@@ -15,35 +15,25 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import Foundation
 import UIKit
 import WebKit
 
-class WebViewController: UIViewController {
+class WebViewController: UIViewController, WKNavigationDelegate {
 
-    @IBOutlet weak var webView: WKWebView!
+    var webView = WKWebView()
 
-    var urlRequest: URLRequest?
+    override func loadView() {
+        view = webView
+        webView.navigationDelegate = self
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let urlRequest = urlRequest {
-            webView.load(urlRequest)
-        }
+        self.title = "Licenses"
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        /* Hide AppLabel & Name from View */
-        for subview in self.navigationController!.view.subviews.filter({$0 is UILabel}) {
-            subview.isHidden = true
-        }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        /* Un-hide AppLabel & Name from View */
-        if let navigationController = self.navigationController {
-            for subview in navigationController.view.subviews.filter({$0 is UILabel}) {
-                subview.isHidden = false
-            }
-        }
+    func loadRequest(_ request: URLRequest) {
+        webView.load(request)
     }
 }
