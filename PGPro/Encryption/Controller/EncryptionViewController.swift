@@ -102,7 +102,6 @@ class EncryptionViewController: UIViewController {
                 label.append(", " + ctct.name)
             }
         }
-        
         selectionLabel = label
         tableView.reloadData()
     }
@@ -212,16 +211,15 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
         case selectionRow:
             cell.textLabel?.text = selectionLabel
             cell.accessoryType = .disclosureIndicator
-            return cell
         case messageRow:
             let cellView = cell.contentView
             cellView.addSubview(textView)
             textView.pinEdges(to: cellView)
-            return cell
         default:
             Log.s("indexPath out of bounds!")
-            return cell
         }
+
+        return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

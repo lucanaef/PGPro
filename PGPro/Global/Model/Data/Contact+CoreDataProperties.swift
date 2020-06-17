@@ -61,7 +61,7 @@ extension Contact {
     }
 
     func getArmoredKey(as type: PGPArmorType) -> String? {
-        return try? Armor.armored(key.export(), as: .secretKey)
+        return try? Armor.armored(key.export(), as: type)
     }
 
 }

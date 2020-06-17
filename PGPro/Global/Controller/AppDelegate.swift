@@ -78,8 +78,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         DispatchQueue.main.async {
             let actualVC = self.window?.rootViewController?.children[1].children.first
-            while !(actualVC is DecryptionTableViewController) { }
-            let decryptionVC = actualVC as? DecryptionTableViewController
+            while !(actualVC is DecryptionViewController) { }
+            let decryptionVC = actualVC as? DecryptionViewController
             if let decryptionVC = decryptionVC {
                 while (decryptionVC.viewIfLoaded == nil) {  }
                 decryptionVC.setMessageField(to: encryptedMessage)

@@ -1,5 +1,5 @@
 //
-//  DecryptionTableViewController.swift
+//  DecryptionViewController.swift
 //  PGPro
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 
 import UIKit
 
-class DecryptionTableViewController: UITableViewController {
+class DecryptionViewController: UITableViewController {
     
     @IBOutlet weak private var titleLabel: UILabel!
     @IBOutlet weak private var passphraseTextField: UITextField!
@@ -50,7 +50,6 @@ class DecryptionTableViewController: UITableViewController {
     }
 
     private func setupView() {
-        // Navigation Bar:
         self.navigationController?.navigationBar.prefersLargeTitles = true
         let decryptButton = UIBarButtonItem(
             image: UIImage(systemName: "envelope.open.fill")?.withTintColor(UIColor.label),
@@ -65,7 +64,7 @@ class DecryptionTableViewController: UITableViewController {
             action: #selector(clearView)
         )
         navigationItem.rightBarButtonItems = [decryptButton, clearButton]
-        // Main Table View:
+
         titleLabel.text = "Select Private Key..."
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
     }
@@ -189,7 +188,7 @@ class DecryptionTableViewController: UITableViewController {
 }
 
 
-extension DecryptionTableViewController: KeySelectionDelegate {
+extension DecryptionViewController: KeySelectionDelegate {
 
     func update(selected: [Contact]) {
         if selected.isEmpty {

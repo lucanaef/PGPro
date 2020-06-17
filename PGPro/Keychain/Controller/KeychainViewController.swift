@@ -131,15 +131,6 @@ class KeychainViewController: UIViewController {
         present(optionMenu, animated: true, completion: nil)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "showContactDetail") {
-            if let destVC = segue.destination as? ContactDetailTableViewController {
-                guard let contact = sender as? Contact else { return }
-                destVC.setContact(to: contact)
-            }
-        }
-    }
-
     private func addKeyFromClipboard() {
         guard let clipboardString = UIPasteboard.general.string else {
             alert(text: "Clipboard is Empty!")
@@ -276,11 +267,15 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var cntct = contacts[indexPath.row]
-        if isFiltering(){
-            cntct = filteredContacts[indexPath.row]
+        var contact = contacts[indexPath.row]
+        if isFiltering() {
+            contact = filteredContacts[indexPath.row]
         }
-        performSegue(withIdentifier: "showContactDetail", sender: cntct)
+
+        let detailViewController = ContactDetailViewController()
+        let contactDetails = ContactDetails(for: contact)
+        detailViewController.setModel(to: contactDetails)
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 

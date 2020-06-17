@@ -26,6 +26,7 @@ class ContactListService {
     private static var contactList: [Contact] = [] {
         didSet {
             NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange, object: nil)
+            PersistenceService.save()
         }
     }
 
@@ -141,8 +142,6 @@ class ContactListService {
 
         contactList.sort()
 
-        NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange, object: nil)
-        
         return true
     }
 
@@ -153,16 +152,12 @@ class ContactListService {
 
         // Delete contact from in-memory data
         contactList = contactList.filter { $0 != contact}
-
-        // Notify observers about change
-        NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange, object: nil)
     }
 
     class func deleteAllData() {
         // Delete in-memory and persistent data
         PersistenceService.context.reset()
         contactList = []
-        NotificationCenter.default.post(name: Constants.NotificationNames.contactListChange, object: nil)
     }
 
     // MARK - Private Helper Functions
