@@ -43,7 +43,7 @@ class ContactDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Details"
+        self.title = contactDetails?.keyID
 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "square.and.arrow.up")?.withTintColor(UIColor.label),

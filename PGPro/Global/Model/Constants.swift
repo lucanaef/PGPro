@@ -16,6 +16,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import StoreKit
 
 enum Constants {
 
@@ -26,44 +27,62 @@ enum Constants {
         case none
     }
 
-    // MARK - Global PGPro Constants
+    // MARK: - Global Constants
     struct PGPro {
+        private init() {}
+
         static let appID = "1481696997"
 
-        static var version: String {
-            let vrsn = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
-            if let vrsn = vrsn as? String {
-                return vrsn
-            } else {
-                return ""
-            }
+        static var version: String? {
+            Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         }
 
         static var numRatings: Int {
             // try to get current number and update cached value
-            iTunesInterface.requestJSON { result in
+            iTunesInterface.requestJSON(for: User.countryCode) { result in
                 switch result {
                     case .failure(let error):
                         Log.e(error)
                     case .success(let data):
                         if let data = data[0] as? [String: Any] {
                             if let numRatings = data["userRatingCountForCurrentVersion"] {
-                                UserDefaults.standard.set(numRatings, forKey: "numRatings")
+                                UserDefaults.standard.set(numRatings, forKey: UserDefaultKeys.numRatings)
                             }
                         }
                 }
             }
             // return cached value
-            return UserDefaults.standard.integer(forKey: "numRatings")
+            return UserDefaults.standard.integer(forKey: UserDefaultKeys.numRatings)
         }
         
     }
 
-    // MARK - Notification Names
+    // MARK: - User Constants
+    struct User {
+        private init() {}
+        static var countryCode: IsoCountryInfo? {
+            if let alpha3CountryCode = SKPaymentQueue.default().storefront?.countryCode {
+                return IsoCountryCodes.find(key: alpha3CountryCode)
+            } else {
+                return nil
+            }
+        }
+    }
+
+
+    // MARK: - Notification Names
     enum NotificationNames {
         static var contactListChange = Notification.Name(rawValue: "pgpro.contactListChange")
     }
 
+    // MARK: - Keys for UserDefaults
+    enum UserDefaultKeys {
+        static var numRatings = "numRatings"
+        static var launchedBefore = "launchedBefore"
+    }
+
+
+    // MARK: - 3rd Party Licenses
     static var licenses: [License] = [
         License(for: "PGPro",
                 at: URL(string: "https://github.com/lucanaef/PGPro/blob/master/LICENSE")!),
@@ -80,7 +99,10 @@ enum Constants {
                 at: URL(string: "https://github.com/jasonnam/Navajo-Swift/blob/master/LICENSE")!),
         License(for: "Swiftlogger",
                 describedBy: "Tiny Logger in Swift",
-                at: URL(string: "https://github.com/sauvikdolui/swiftlogger/blob/master/LICENSE")!)
+                at: URL(string: "https://github.com/sauvikdolui/swiftlogger/blob/master/LICENSE")!),
+        License(for: "IsoCountryCodes",
+                describedBy: "Provides ISO codes, names and currencies for countries",
+                at: URL(string: "https://github.com/funky-monkey/IsoCountryCodes")!)
 
     ]
 

@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window?.tintColor = UIColor.label
 
-        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        let launchedBefore = UserDefaults.standard.bool(forKey: Constants.UserDefaultKeys.launchedBefore)
         if !launchedBefore {
 
             // If in simulator, create example dataset
@@ -37,8 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             #endif
 
             // Set default preferences
-            UserDefaults.standard.set(true, forKey: "launchedBefore")
-            UserDefaults.standard.set(0, forKey: "numRatings")
+            UserDefaults.standard.set(true, forKey: Constants.UserDefaultKeys.launchedBefore)
+            UserDefaults.standard.set(0,    forKey: Constants.UserDefaultKeys.numRatings)
 
             // Get number of ratings
             _ = Constants.PGPro.numRatings

@@ -28,9 +28,14 @@ class iTunesInterface {
         case otherError
     }
 
-    static func requestJSON(completion: @escaping((Result<NSArray, apiError>) -> Void)) {
+    static func requestJSON(for country: IsoCountryInfo?, completion: @escaping((Result<NSArray, apiError>) -> Void)) {
 
-        guard let url = URL(string: "https://itunes.apple.com/lookup?id=" + Constants.PGPro.appID) else {
+        var baseURL = "https://itunes.apple.com/lookup?id=\(Constants.PGPro.appID)"
+        if let countryCode = country?.alpha2 {
+            baseURL += "&country=\(countryCode)"
+        }
+
+        guard let url = URL(string: baseURL) else {
             completion(.failure(apiError.otherError))
             return
         }

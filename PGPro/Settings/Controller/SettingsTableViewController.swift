@@ -76,7 +76,7 @@ class SettingsTableViewController: UITableViewController {
             switch indexPath.row {
             case 0: // Send Feedback
                 AppStoreReviewService.incrementReviewWorthyActionCount()
-                url = URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version)%5D%20Feedback")
+                url = URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")
                 if let url = url {
                     UIApplication.shared.open(url)
                 }
