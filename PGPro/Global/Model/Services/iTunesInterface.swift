@@ -1,5 +1,5 @@
 //
-//  iTunesAPIInterface.swift
+//  iTunesInterface.swift
 //  PGPro
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ class iTunesInterface {
         case otherError
     }
 
-    static func requestJSON(for country: IsoCountryInfo?, completion: @escaping((Result<NSArray, apiError>) -> Void)) {
+    static func requestJSON(localizedFor country: IsoCountryInfo? = nil, completion: @escaping((Result<NSArray, apiError>) -> Void)) {
 
         var baseURL = "https://itunes.apple.com/lookup?id=\(Constants.PGPro.appID)"
         if let countryCode = country?.alpha2 {

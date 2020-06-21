@@ -17,6 +17,7 @@
 
 import Foundation
 import StoreKit
+import MessageUI
 
 enum Constants {
 
@@ -39,20 +40,20 @@ enum Constants {
 
         static var numRatings: Int {
             // try to get current number and update cached value
-            iTunesInterface.requestJSON(for: User.countryCode) { result in
+            iTunesInterface.requestJSON(localizedFor: User.countryCode) { result in
                 switch result {
                     case .failure(let error):
                         Log.e(error)
                     case .success(let data):
                         if let data = data[0] as? [String: Any] {
                             if let numRatings = data["userRatingCountForCurrentVersion"] {
-                                UserDefaults.standard.set(numRatings, forKey: UserDefaultKeys.numRatings)
+                                UserDefaults.standard.set(numRatings, forKey: UserDefaultsKeys.numRatings)
                             }
                         }
                 }
             }
             // return cached value
-            return UserDefaults.standard.integer(forKey: UserDefaultKeys.numRatings)
+            return UserDefaults.standard.integer(forKey: UserDefaultsKeys.numRatings)
         }
         
     }
@@ -60,6 +61,7 @@ enum Constants {
     // MARK: - User Constants
     struct User {
         private init() {}
+
         static var countryCode: IsoCountryInfo? {
             if let alpha3CountryCode = SKPaymentQueue.default().storefront?.countryCode {
                 return IsoCountryCodes.find(key: alpha3CountryCode)
@@ -67,6 +69,11 @@ enum Constants {
                 return nil
             }
         }
+
+        static var canSendMail: Bool {
+            MFMailComposeViewController.canSendMail()
+        }
+
     }
 
 
@@ -76,34 +83,11 @@ enum Constants {
     }
 
     // MARK: - Keys for UserDefaults
-    enum UserDefaultKeys {
+    enum UserDefaultsKeys {
         static var numRatings = "numRatings"
         static var launchedBefore = "launchedBefore"
+        static var mailIntegration = "preference.mailIntegration"
+        static var attachPublicKey = "preference.attachPublicKey"
     }
-
-
-    // MARK: - 3rd Party Licenses
-    static var licenses: [License] = [
-        License(for: "PGPro",
-                at: URL(string: "https://github.com/lucanaef/PGPro/blob/master/LICENSE")!),
-        License(for: "ObjectivePGP",
-                describedBy: "OpenPGP library for iOS and macOS",
-                at: URL(string: "https://objectivepgp.com/LICENSE.txt")!),
-        License(for: "OpenSSL",
-                describedBy: "Cryptography and SSL/TLS Toolkit",
-                at: URL(string: "https://www.openssl.org/source/license-openssl-ssleay.txt")!),
-        License(for: "SwiftTryCatch",
-                at: URL(string: "https://github.com/seanparsons/SwiftTryCatch/blob/master/LICENSE")!),
-        License(for: "Navajo-Swift",
-                describedBy: "Password Validator & Strength Evaluator",
-                at: URL(string: "https://github.com/jasonnam/Navajo-Swift/blob/master/LICENSE")!),
-        License(for: "Swiftlogger",
-                describedBy: "Tiny Logger in Swift",
-                at: URL(string: "https://github.com/sauvikdolui/swiftlogger/blob/master/LICENSE")!),
-        License(for: "IsoCountryCodes",
-                describedBy: "Provides ISO codes, names and currencies for countries",
-                at: URL(string: "https://github.com/funky-monkey/IsoCountryCodes")!)
-
-    ]
 
 }

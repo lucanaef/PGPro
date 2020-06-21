@@ -66,7 +66,7 @@ class SettingsTableViewController: UITableViewController {
                     }
                 }
 
-               DispatchQueue.main.async { [weak self] in
+                DispatchQueue.main.async { [weak self] in
                     self?.exportActivityIndicator.stopAnimating()
                 }
             }

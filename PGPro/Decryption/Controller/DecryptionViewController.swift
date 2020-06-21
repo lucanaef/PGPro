@@ -61,6 +61,11 @@ class DecryptionViewController: UIViewController {
         setupView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        // hack to make sure the imageView inside the table view cells are properly sized
+        tableView.reloadData()
+    }
+
     func setMessageField(to message: String?) {
         encryptedMessage = message
     }
@@ -224,10 +229,10 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
             passphraseCell.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             cell = passphraseCell
         case DecryptionRows.pasteFromClipboard.rawValue:
-            if let symbol = UIImage(systemName: "arrow.down.doc") {
-                cell.imageView?.image = symbol.withTintColor(UIColor.label)
-            }
             cell.textLabel?.text = " Paste from Clipboard"
+            if let symbol = UIImage(systemName: "doc.on.clipboard"), let imageView = cell.imageView {
+                imageView.image = symbol.withTintColor(UIColor.label)
+            }
         case DecryptionRows.message.rawValue:
             let cellView = cell.contentView
             cellView.addSubview(textView)

@@ -170,20 +170,25 @@ class EncryptionViewController: UIViewController {
             return
         }
 
-        // TODO: clean up code below, add setting to deactivate
-        if !MFMailComposeViewController.canSendMail() {
-            let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
-            activityVC.popoverPresentationController?.sourceView = self.view
-            self.present(activityVC, animated: true, completion: nil)
-        } else {
+        if (Constants.User.canSendMail && Preferences.mailIntegrationEnabled) {
             let addresses = encryptionContacts.map { $0.email }
             // Present native mail integration
             let mailComposeViewController = MFMailComposeViewController()
             mailComposeViewController.mailComposeDelegate = self as MFMailComposeViewControllerDelegate
             mailComposeViewController.delegate = self as UINavigationControllerDelegate
+
             mailComposeViewController.setToRecipients(addresses)
             mailComposeViewController.setMessageBody(encryptedMessage, isHTML: false)
+
+            if (Preferences.attachPublicKey) {
+                // TODO: Add exported key of specified contact
+            }
+
             present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
+            activityVC.popoverPresentationController?.sourceView = self.view
+            self.present(activityVC, animated: true, completion: nil)
         }
     }
     

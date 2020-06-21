@@ -156,7 +156,11 @@ class ContactListService {
 
     class func deleteAllData() {
         // Delete in-memory and persistent data
-        PersistenceService.context.reset()
+        for contact in contactList {
+            PersistenceService.context.delete(contact)
+        }
+        PersistenceService.save()
+        PersistenceService.context.processPendingChanges()
         contactList = []
     }
 

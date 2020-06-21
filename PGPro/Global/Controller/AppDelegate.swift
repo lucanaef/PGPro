@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window?.tintColor = UIColor.label
 
-        let launchedBefore = UserDefaults.standard.bool(forKey: Constants.UserDefaultKeys.launchedBefore)
+        let launchedBefore = UserDefaults.standard.bool(forKey: Constants.UserDefaultsKeys.launchedBefore)
         if !launchedBefore {
 
             // If in simulator, create example dataset
@@ -37,13 +37,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             #endif
 
             // Set default preferences
-            UserDefaults.standard.set(true, forKey: Constants.UserDefaultKeys.launchedBefore)
-            UserDefaults.standard.set(0,    forKey: Constants.UserDefaultKeys.numRatings)
+            UserDefaults.standard.set(true,  forKey: Constants.UserDefaultsKeys.launchedBefore)
+            UserDefaults.standard.set(0,     forKey: Constants.UserDefaultsKeys.numRatings)
+            UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.mailIntegration)
+            UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.attachPublicKey)
 
             // Get number of ratings
             _ = Constants.PGPro.numRatings
         } else {
             ContactListService.loadPersistentData()
+
+            if (!Constants.User.canSendMail) {
+                UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.mailIntegration)
+                UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.attachPublicKey)
+            }
         }
 
         return true
