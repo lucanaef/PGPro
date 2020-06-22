@@ -41,6 +41,8 @@ class ContactDetailViewController: UIViewController {
         return tableView
     }()
 
+    private let formatter = ISO8601DateFormatter()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = contactDetails?.keyID
@@ -51,6 +53,8 @@ class ContactDetailViewController: UIViewController {
             target: self,
             action: #selector(setShare)
         )
+
+        formatter.formatOptions = .withFullDate
 
         // Add table view to super view
         view.addSubview(tableView)
@@ -259,7 +263,7 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
                 let date = contactDetails?.keyExpirationDate
                 cell.detailTextLabel?.text = "Never"
                 if let date = date {
-                    cell.detailTextLabel?.text = date.toString()
+                    cell.detailTextLabel?.text = formatter.string(for: date)
                     if (date < Date()) {
                         cell.detailTextLabel?.textColor = UIColor.red
                     }
