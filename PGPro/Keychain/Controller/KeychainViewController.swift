@@ -66,8 +66,8 @@ class KeychainViewController: UIViewController {
                                                object: nil
         )
 
-        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.title = "Keychain"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
@@ -101,13 +101,17 @@ class KeychainViewController: UIViewController {
 
         let generateKey = UIAlertAction(title: "Generate Key Pair", style: .default) { _ -> Void in
             optionMenu.dismiss(animated: true, completion: nil)
-            self.performSegue(withIdentifier: "goToGenerateKey", sender: nil)
+            let generateKeyViewController = GenerateKeyViewController()
+            let navController = UINavigationController(rootViewController: generateKeyViewController)
+            self.present(navController, animated:true, completion: nil)
         }
         optionMenu.addAction(generateKey)
 
         let searchKeyserver = UIAlertAction(title: "Search on Keyserver", style: .default) { _ -> Void in
             optionMenu.dismiss(animated: true, completion: nil)
-            self.performSegue(withIdentifier: "goToSearchKeyserver", sender: nil)
+            let searchKeyserverViewController = SearchKeyserverViewController()
+            let navController = UINavigationController(rootViewController: searchKeyserverViewController)
+            self.present(navController, animated:true, completion: nil)
         }
         optionMenu.addAction(searchKeyserver)
 

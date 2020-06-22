@@ -19,6 +19,13 @@ import Foundation
 
 class Preferences {
 
+    static func setToDefault() {
+        UserDefaults.standard.set(true,  forKey: Constants.UserDefaultsKeys.launchedBefore)
+        UserDefaults.standard.set(0,     forKey: Constants.UserDefaultsKeys.numRatings)
+        UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.mailIntegration)
+        UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.attachPublicKey)
+    }
+
     static var mailIntegrationEnabled: Bool {
         return UserDefaults.standard.bool(forKey: Constants.UserDefaultsKeys.mailIntegration)
     }

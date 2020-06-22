@@ -38,6 +38,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Settings"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
 
         // Add table view to super view
         view.addSubview(tableView)
