@@ -55,6 +55,8 @@ open class FullTextFieldTableViewCell: UITableViewCell {
 
 open class TextField: UITextField {
 
+    open var identifier: String?
+
     let padding = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
 
     override open func textRect(forBounds bounds: CGRect) -> CGRect {
