@@ -155,7 +155,7 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
             return "PGP Key"
         default:
             Log.s("indexPath out of bounds!")
-            return ""
+            return nil
         }
     }
 
@@ -178,6 +178,15 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
         }
 
         return false
+    }
+
+    func tableView(_ tableView: UITableView,
+                   performAction action: Selector,
+                   forRowAt indexPath: IndexPath,
+                   withSender sender: Any?) {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            UIPasteboard.general.string = cell.detailTextLabel?.text
+        }
     }
 
     @objc
