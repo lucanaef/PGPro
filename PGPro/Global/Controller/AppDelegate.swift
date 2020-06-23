@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         // Handle (first) Application Launch
-        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: Constants.UserDefaultsKeys.launchedBefore)
+        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: Preferences.UserDefaultsKeys.launchedBefore)
         if !hasLaunchedBefore {
             firstLaunch()
         } else {
@@ -149,8 +149,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Check if device currently can send mail
         if (!Constants.User.canSendMail) {
-            UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.mailIntegration)
-            UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.attachPublicKey)
+            UserDefaults.standard.set(false, forKey: Preferences.UserDefaultsKeys.mailIntegration)
+            UserDefaults.standard.set(false, forKey: Preferences.UserDefaultsKeys.attachPublicKey)
         }
     }
 

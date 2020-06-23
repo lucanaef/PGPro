@@ -17,9 +17,10 @@
 
 import Foundation
 import UIKit
-import ObjectivePGP
 
 class GenerateKeyViewController: UIViewController {
+
+    private let generateKey = GenerateKey() // model
 
     private let cellIdentifier = "GenerateKeyViewController"
     lazy private var tableView: UITableView = {
@@ -63,26 +64,24 @@ class GenerateKeyViewController: UIViewController {
 
     @objc
     func addContactDone(sender: UIBarButtonItem) {
-        if validateInput() {
-            guard let name = name else { return }
-            guard let email = email else { return }
-            let userID = "\(name) <\(email)>"
-
-            // Generate Key
-            let keyGen = KeyGenerator()
-            let pass = passphrase != "" ? passphrase : nil
-            let key = keyGen.generate(for: userID, passphrase: pass)
-
-            // Create Contact
-            let result = ContactListService.add(name: name, email: email, key: key)
-
-            if (result.unsupported == 1) {
-                alert(text: "Key format is currently not supported!")
-            } else if (result.duplicates == 1) {
-                alert(text: "Contact with this email address already exists!")
-            } else {
-                AppStoreReviewService.incrementReviewWorthyActionCount()
-                dismiss(animated: true, completion: nil)
+        do {
+            try generateKey.generate()
+            dismiss(animated: true, completion: nil)
+        } catch let error {
+            switch error {
+            case GenerateKeyError.nameNil, GenerateKeyError.nameEmpty:
+                alert(text: "Name can't be empty!")
+            case GenerateKeyError.emailAddressNil, GenerateKeyError.emailAddressEmpty:
+                alert(text: "Email address can't be empty!")
+            case GenerateKeyError.emailAddressInvalid:
+                alert(text: "Email address invalid!")
+            case GenerateKeyError.passphraseMismatch:
+                alert(text: "Passphrases don't match!")
+            case GenerateKeyError.nonUnique:
+                alert(text: "Key for this email address already exists!")
+            default:
+                alert(text: "Key generation failed!")
+                Log.e(error)
             }
         }
     }
@@ -116,145 +115,39 @@ class GenerateKeyViewController: UIViewController {
         strengthIndicator.progressTintColor = strengthColour
     }
 
-    func validateInput() -> Bool {
-        guard let name = name else { return false }
-        guard let email = email else { return false }
-
-        guard let passphrase1 = passphrase else { return false }
-        guard let passphrase2 = confirmedPassphrase else { return false }
-
-        guard (name != "") else {
-            alert(text: "Name Can't Be Empty!")
-            return false
-        }
-        guard (email != "") else {
-            alert(text: "Email Address Can't Be Empty!")
-            return false
-        }
-        guard email.isValidEmail() else {
-            alert(text: "Email Address Not Valid!")
-            return false
-        }
-        guard (passphrase1 == passphrase2) else {
-            alert(text: "Passphrases don't match!")
-            return false
-        }
-        return true
-    }
-
-
-    // Model properties
-    private var name: String?
-    private var email: String?
-    private var passphrase: String?
-    private var confirmedPassphrase: String?
-
 }
 
 
 extension GenerateKeyViewController: UITableViewDataSource, UITableViewDelegate {
 
-    private enum Sections: Int, CaseIterable {
-        case contact = 0
-        case security = 1
-
-        var rows: Int {
-            switch self {
-                case .contact:
-                    return ContactSection.allCases.count
-                case .security:
-                    return SecuritySection.allCases.count
-            }
-        }
-
-        var header: String? {
-            switch self {
-                case .contact:
-                    return ContactSection.header
-                case .security:
-                    return SecuritySection.header
-            }
-        }
-
-        var footer: String? {
-            switch self {
-                case .contact:
-                    return ContactSection.footer
-                case .security:
-                    return SecuritySection.footer
-            }
-        }
-
-    }
-
-    private enum ContactSection: Int, CaseIterable {
-        case name = 0
-        case email = 1
-
-        static var header: String? {
-            "Contact Info"
-        }
-
-        static var footer: String? {
-            nil
-        }
-
-        var placeholder: String? {
-            switch self {
-            case .name:
-                return "Name"
-            case .email:
-                return "Email Address"
-            }
-        }
-    }
-
-    private enum SecuritySection: Int, CaseIterable {
-        case passphrase = 0
-        case confirmPassphrase = 1
-        case passwordStength = 2
-
-        static var header: String? {
-            "Security"
-        }
-
-        static var footer: String? {
-            "Note: If you forget your passphrase, there is no way to recover it."
-        }
-
-        var placeholder: String? {
-            switch self {
-            case .passphrase:
-                return "Passphrase"
-            case .confirmPassphrase:
-                return "Confirm Passphrase"
-            case .passwordStength:
-                return nil
-            }
-        }
+    private struct TextFieldIdentifier {
+        static let name = "TextFieldIdentifier.name"
+        static let email = "TextFieldIdentifier.email"
+        static let passphrase = "passphrase"
+        static let confirmPassphrase = "confirmPassphrase"
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return Sections.allCases.count
+        return GenerateKey.Sections.allCases.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Sections(rawValue: section)?.rows ?? 0
+        return GenerateKey.Sections(rawValue: section)?.rows ?? 0
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Sections(rawValue: section)?.header
+        return GenerateKey.Sections(rawValue: section)?.header
     }
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return Sections(rawValue: section)?.footer
+        return GenerateKey.Sections(rawValue: section)?.footer
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = Sections(rawValue: indexPath.section)
-        if section == Sections.security {
-            let subsection = SecuritySection(rawValue: indexPath.row)
-            if subsection == SecuritySection.passwordStength {
+        let section = GenerateKey.Sections(rawValue: indexPath.section)
+        if section == GenerateKey.Sections.security {
+            let subsection = GenerateKey.SecuritySection(rawValue: indexPath.row)
+            if subsection == GenerateKey.SecuritySection.passwordStength {
                 return 5
             }
         }
@@ -262,7 +155,7 @@ extension GenerateKeyViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = Sections(rawValue: indexPath.section)
+        let section = GenerateKey.Sections(rawValue: indexPath.section)
         let cell = FullTextFieldTableViewCell()
 
         cell.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
@@ -270,35 +163,35 @@ extension GenerateKeyViewController: UITableViewDataSource, UITableViewDelegate 
 
         switch section {
         case .contact:
-            let subsection = ContactSection(rawValue: indexPath.row)
+            let subsection = GenerateKey.ContactSection(rawValue: indexPath.row)
             cell.textField.placeholder = subsection?.placeholder
 
             switch subsection {
             case .name:
                 cell.textField.textContentType = .name
                 cell.textField.autocapitalizationType = .words
-                cell.textField.identifier = "name"
+                cell.textField.identifier = TextFieldIdentifier.name
             case .email:
                 cell.textField.textContentType = .emailAddress
                 cell.textField.keyboardType = .emailAddress
                 cell.textField.autocapitalizationType = .none
-                cell.textField.identifier = "email"
+                cell.textField.identifier = TextFieldIdentifier.email
             default:
                 Log.e("IndexPath out of bounds!")
             }
 
         case .security:
-            let subsection = SecuritySection(rawValue: indexPath.row)
+            let subsection = GenerateKey.SecuritySection(rawValue: indexPath.row)
             cell.textField.placeholder = subsection?.placeholder
             cell.textField.isSecureTextEntry = true
 
             switch subsection {
             case .passphrase:
                 cell.textField.textContentType = .newPassword
-                cell.textField.identifier = "passphrase"
+                cell.textField.identifier = TextFieldIdentifier.passphrase
             case .confirmPassphrase:
                 cell.textField.textContentType = .password
-                cell.textField.identifier = "confirmPassphrase"
+                cell.textField.identifier = TextFieldIdentifier.confirmPassphrase
             case .passwordStength:
                 let cell = UITableViewCell(style: .value1, reuseIdentifier: cellIdentifier)
                 cell.selectionStyle = .none
@@ -319,15 +212,15 @@ extension GenerateKeyViewController: UITableViewDataSource, UITableViewDelegate 
     @objc
     func textFieldDidChange(_ textField: TextField) {
         switch textField.identifier {
-        case "name":
-            name = textField.text
-        case "email":
-            email = textField.text
-        case "passphrase":
-            passphrase = textField.text
-            updateStrengthIndicator(for: passphrase)
-        case "confirmPassphrase":
-            confirmedPassphrase = textField.text
+        case TextFieldIdentifier.name:
+            generateKey.name = textField.text
+        case TextFieldIdentifier.email:
+            generateKey.email = textField.text
+        case TextFieldIdentifier.passphrase:
+            generateKey.passphrase = textField.text
+            updateStrengthIndicator(for: textField.text)
+        case TextFieldIdentifier.confirmPassphrase:
+            generateKey.confirmedPassphrase = textField.text
         default:
             Log.e("Unrecognized TestField")
         }

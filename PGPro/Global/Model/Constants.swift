@@ -46,14 +46,17 @@ enum Constants {
                         Log.e(error)
                     case .success(let data):
                         if let data = data[0] as? [String: Any] {
-                            if let numRatings = data["userRatingCountForCurrentVersion"] {
-                                UserDefaults.standard.set(numRatings, forKey: UserDefaultsKeys.numRatings)
+                            if let userRatingCount = data["userRatingCountForCurrentVersion"] {
+                                let numRatings = userRatingCount as? Int
+                                if let numRatings = numRatings {
+                                    Preferences.numRatings = numRatings
+                                }
                             }
                         }
                 }
             }
             // return cached value
-            return UserDefaults.standard.integer(forKey: UserDefaultsKeys.numRatings)
+            return Preferences.numRatings
         }
         
     }
@@ -80,14 +83,6 @@ enum Constants {
     // MARK: - Notification Names
     enum NotificationNames {
         static var contactListChange = Notification.Name(rawValue: "pgpro.contactListChange")
-    }
-
-    // MARK: - Keys for UserDefaults
-    enum UserDefaultsKeys {
-        static var numRatings = "numRatings"
-        static var launchedBefore = "launchedBefore"
-        static var mailIntegration = "preference.mailIntegration"
-        static var attachPublicKey = "preference.attachPublicKey"
     }
 
 }

@@ -171,6 +171,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             activityIndecator.startAnimating()
             setting.activity?(self) {
                 DispatchQueue.main.async {
+                    sleep(1)
                     activityIndecator.stopAnimating()
                 }
             }

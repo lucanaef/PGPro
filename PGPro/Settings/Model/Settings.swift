@@ -239,8 +239,8 @@ class Settings {
         }
         completion()
     }
-    let mailIntegration = Setting(title: "Mail Integration", forKey: Constants.UserDefaultsKeys.mailIntegration, enabled: Constants.User.canSendMail)
-    let attachPublicKey = Setting(title: "Attach Public Key", forKey: Constants.UserDefaultsKeys.attachPublicKey, enabled: Constants.User.canSendMail)
+    let mailIntegration = Setting(title: "Mail Integration", forKey: Preferences.UserDefaultsKeys.mailIntegration, enabled: Constants.User.canSendMail)
+    let attachPublicKey = Setting(title: "Attach Public Key", forKey: Preferences.UserDefaultsKeys.attachPublicKey, enabled: Constants.User.canSendMail)
     let sendFeedback = Setting(title: "Send Feedback",
                                       withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
     let askForRating = Setting(title: "Please Rate PGPro",

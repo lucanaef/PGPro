@@ -19,19 +19,39 @@ import Foundation
 
 class Preferences {
 
+    enum UserDefaultsKeys {
+        static var numRatings = "numRatings"
+        static var launchedBefore = "launchedBefore"
+        static var mailIntegration = "preference.mailIntegration"
+        static var attachPublicKey = "preference.attachPublicKey"
+    }
+
     static func setToDefault() {
-        UserDefaults.standard.set(true,  forKey: Constants.UserDefaultsKeys.launchedBefore)
-        UserDefaults.standard.set(0,     forKey: Constants.UserDefaultsKeys.numRatings)
-        UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.mailIntegration)
-        UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.attachPublicKey)
+        UserDefaults.standard.set(true,  forKey: UserDefaultsKeys.launchedBefore)
+        UserDefaults.standard.set(0,     forKey: UserDefaultsKeys.numRatings)
+        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.mailIntegration)
+        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.attachPublicKey)
     }
 
     static var mailIntegrationEnabled: Bool {
-        return UserDefaults.standard.bool(forKey: Constants.UserDefaultsKeys.mailIntegration)
+        get {
+            UserDefaults.standard.bool(forKey: UserDefaultsKeys.mailIntegration)
+        }
     }
 
     static var attachPublicKey: Bool {
-        return UserDefaults.standard.bool(forKey: Constants.UserDefaultsKeys.attachPublicKey)
+        get {
+            UserDefaults.standard.bool(forKey: UserDefaultsKeys.attachPublicKey)
+        }
+    }
+
+    static var numRatings: Int {
+        get {
+            UserDefaults.standard.integer(forKey: UserDefaultsKeys.numRatings)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.numRatings)
+        }
     }
 
 
