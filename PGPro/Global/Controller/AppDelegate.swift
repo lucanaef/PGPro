@@ -32,67 +32,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        // Setup Tab View Controller
+        // Setup Window with Tab View Controller
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = buildTabBarController()
         window?.tintColor = .label
         window?.makeKeyAndVisible()
 
-        // Handle Application launch
-        let launchedBefore = UserDefaults.standard.bool(forKey: Constants.UserDefaultsKeys.launchedBefore)
-        if !launchedBefore {
-
-            // If in simulator, create example dataset
-            #if targetEnvironment(simulator)
-                ExampleDataService.createExampleDataset()
-            #endif
-
-            // Set default preferences
-            Preferences.setToDefault()
-
-            // Get number of ratings (warm up cache)
-            _ = Constants.PGPro.numRatings
+        // Handle (first) Application Launch
+        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: Constants.UserDefaultsKeys.launchedBefore)
+        if !hasLaunchedBefore {
+            firstLaunch()
         } else {
-            ContactListService.loadPersistentData()
-
-            // Check if device currently can send mail
-            if (!Constants.User.canSendMail) {
-                UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.mailIntegration)
-                UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.attachPublicKey)
-            }
+            launch()
         }
 
         return true
-    }
-
-    private func buildTabBarController() -> UITabBarController {
-
-        let tabBarController = UITabBarController()
-        let viewControllers = [encryptionVC, decryptionVC, keychainVC, settingsVC]
-        let navigationViewControllers = viewControllers.map{ UINavigationController.init(rootViewController: $0)}
-        tabBarController.viewControllers = navigationViewControllers
-
-        let encryptionTabTitle = "Encryption"
-        let encryptionTabImage = UIImage(systemName: "lock.fill")
-        let encryptionTab = UITabBarItem(title: encryptionTabTitle, image: encryptionTabImage, selectedImage: encryptionTabImage)
-        navigationViewControllers[0].tabBarItem = encryptionTab
-
-        let decryptionTabTitle = "Decryption"
-        let decryptionTabImage = UIImage(systemName: "lock.open.fill")
-        let decryptionTab = UITabBarItem(title: decryptionTabTitle, image: decryptionTabImage, selectedImage: decryptionTabImage)
-        navigationViewControllers[1].tabBarItem = decryptionTab
-
-        let keychainTabTitle = "Keychain"
-        let keychainTabImage = UIImage(systemName: "person.2.fill")
-        let keychainTab = UITabBarItem(title: keychainTabTitle, image: keychainTabImage, selectedImage: keychainTabImage)
-        navigationViewControllers[2].tabBarItem = keychainTab
-
-        let settingsTabTitle = "Settings"
-        let settingsTabImage = UIImage(systemName: "gear")
-        let settingsTab = UITabBarItem(title: settingsTabTitle, image: settingsTabImage, selectedImage: settingsTabImage)
-        navigationViewControllers[3].tabBarItem = settingsTab
-
-        return tabBarController
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -108,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Treat file as PGP encrypted text
-        var encryptedMessage = ""
+        var encryptedMessage: String?
         do {
             encryptedMessage = try String(contentsOf: url, encoding: .ascii)
             if let tabBarController = window?.rootViewController as? UITabBarController {
@@ -145,6 +99,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         PersistenceService.save()
+    }
+
+
+
+    // MARK: - Helper functions
+
+    private func buildTabBarController() -> UITabBarController {
+
+        let tabBarController = UITabBarController()
+        let viewControllers = [encryptionVC, decryptionVC, keychainVC, settingsVC]
+        let navigationViewControllers = viewControllers.map{ UINavigationController.init(rootViewController: $0)}
+        tabBarController.viewControllers = navigationViewControllers
+
+        let encryptionTabImage = UIImage(systemName: "lock.fill")
+        let encryptionTab = UITabBarItem(title: "Encryption", image: encryptionTabImage, selectedImage: encryptionTabImage)
+        navigationViewControllers[0].tabBarItem = encryptionTab
+
+        let decryptionTabImage = UIImage(systemName: "lock.open.fill")
+        let decryptionTab = UITabBarItem(title: "Decryption", image: decryptionTabImage, selectedImage: decryptionTabImage)
+        navigationViewControllers[1].tabBarItem = decryptionTab
+
+        let keychainTabImage = UIImage(systemName: "person.2.fill")
+        let keychainTab = UITabBarItem(title: "Keychain", image: keychainTabImage, selectedImage: keychainTabImage)
+        navigationViewControllers[2].tabBarItem = keychainTab
+
+        let settingsTabImage = UIImage(systemName: "gear")
+        let settingsTab = UITabBarItem(title: "Settings", image: settingsTabImage, selectedImage: settingsTabImage)
+        navigationViewControllers[3].tabBarItem = settingsTab
+
+        return tabBarController
+    }
+
+    private func firstLaunch() {
+        // If in simulator, create example dataset
+        #if targetEnvironment(simulator)
+            ExampleDataService.createExampleDataset()
+        #endif
+
+        // Set default preferences
+        Preferences.setToDefault()
+
+        // Get number of ratings (warm up cache)
+        _ = Constants.PGPro.numRatings
+    }
+
+    private func launch() {
+        ContactListService.loadPersistentData()
+
+        // Check if device currently can send mail
+        if (!Constants.User.canSendMail) {
+            UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.mailIntegration)
+            UserDefaults.standard.set(false, forKey: Constants.UserDefaultsKeys.attachPublicKey)
+        }
     }
 
 }

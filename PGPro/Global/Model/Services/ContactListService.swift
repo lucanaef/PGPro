@@ -115,18 +115,24 @@ class ContactListService {
                     name = components[0]
                     email = components[0]
                 } else {
+                    importResult.unsupported += 1
                     break // skip if no name/email address can be inferred from data
                 }
 
                 let addResult = add(name: name, email: email, key: key)
                 importResult.successful += addResult.successful
+                importResult.unsupported += addResult.unsupported
                 importResult.duplicates += addResult.duplicates
 
-            } else { continue }
+            } else {
+                importResult.unsupported += 1
+                continue
+            }
         }
 
-        importResult.unsupported = cleanUp()
-        importResult.successful -= importResult.unsupported
+        let cleanUpResult = cleanUp()
+        importResult.unsupported += cleanUpResult
+        importResult.successful -= cleanUpResult
 
         return importResult
     }

@@ -223,7 +223,7 @@ class Settings {
                 if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
                     let fileURL = dir.appendingPathComponent(file)
                     do {
-                        try keyring.export().write(to: fileURL)
+                        try keyring.export().write(to: fileURL, options: .completeFileProtection)
                     } catch {
                         Log.e("Export failed!")
                         viewController.alert(text: "Export failed!")

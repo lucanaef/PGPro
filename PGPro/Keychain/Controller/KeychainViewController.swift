@@ -208,6 +208,12 @@ extension KeychainViewController: UIDocumentPickerDelegate {
         for selectedFileURL in urls {
             do {
                 let readKeys = try KeyConstructionService.fromFile(fileURL: selectedFileURL)
+
+                if readKeys.isEmpty {
+                    alert(text: "File does not contain a supported key")
+                    continue
+                }
+
                 let results = ContactListService.importFrom(readKeys)
                 importResult.successful += results.successful
                 importResult.unsupported += results.unsupported
