@@ -17,7 +17,7 @@
 
 import Foundation
 import UIKit
-import ObjectivePGP // - should not be needed in view controller...
+import ObjectivePGP // TODO: should not be needed in view controller -> separate to model
 
 class SearchKeyserverViewController: UIViewController {
 
@@ -92,26 +92,33 @@ class SearchKeyserverViewController: UIViewController {
     func addContactDone(sender: UIBarButtonItem) {
         if (selectedRows.isEmpty) {
             alert(text: "No Keys Selected!")
-            return
         } else {
             var selectedKeys: [Key] = []
             for row in selectedRows { selectedKeys.append(foundKeys[row]) }
 
             let result: ContactListResult = ContactListService.importFrom(selectedKeys)
-            if (result.successful == 0) {
-                alert(text: "No new keys imported")
-            } else if (result.successful == 1) {
-                alert(text: "1 new key imported")
-            } else {
-                alert(text: "\(result.successful) new keys imported")
-            }
+            alert(result)
         }
-        dismiss(animated: true, completion: nil)
     }
 
     @objc
     func addContactCancel(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+
+    private func alert(_ result: ContactListResult) {
+
+        let successful = "\(result.successful) key\(result.successful == 1 ? "" : "s") successfully imported"
+        let unsupported = "\(result.unsupported) unsupported key\(result.unsupported == 1 ? "" : "s") skipped"
+        let duplicates = "\(result.duplicates) duplicate key\(result.duplicates == 1 ? "" : "s") skipped"
+
+        let alert = UIAlertController(title: "Import Result",
+                                      message: "\(successful) \n \(unsupported) \n \(duplicates)",
+                                      preferredStyle: UIAlertController.Style.alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+
     }
 
 }
@@ -129,6 +136,7 @@ extension SearchKeyserverViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "searchKeyserverCell")
             else { return UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "searchKeyserverCell") }
+        cell.selectionStyle = .none
 
         let key = foundKeys[indexPath.row]
 
@@ -174,7 +182,6 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
     func switchResult(result: Result<[Key], VerifyingKeyserverInterface.VKIError>) {
         switch result {
         case .failure(let error):
-            Log.e(error)
             switch error {
             case .invalidFormat:
                 DispatchQueue.main.async {
@@ -205,12 +212,14 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
                     self.alert(text: "Keyserver is under Database Maintenanc")
                 }
             }
+            self.foundKeys = []
         case .success(let keys):
             self.foundKeys = keys
-            self.selectedRows = []
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.tableView.reloadData()
-            }
+        }
+
+        self.selectedRows = []
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.tableView.reloadData()
         }
     }
 
