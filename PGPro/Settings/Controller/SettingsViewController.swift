@@ -27,6 +27,7 @@ class SettingsViewController: UIViewController {
         let tableView = UITableView(frame: CGRect.zero, style: .insetGrouped)
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.alwaysBounceVertical = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)

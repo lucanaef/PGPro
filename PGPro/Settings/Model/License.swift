@@ -40,7 +40,7 @@ class Licenses {
 
     static let allLicenses: [License] = [
         License(for: "PGPro",
-                describedBy: "OpenPGP En- & Decryption App for iOS",
+                describedBy: "OpenPGP en- & decryption app for iOS",
                 at: URL(string: "https://github.com/lucanaef/PGPro/blob/master/LICENSE")!),
         License(for: "ObjectivePGP",
                 describedBy: "OpenPGP library for iOS and macOS",
