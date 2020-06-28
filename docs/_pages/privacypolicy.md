@@ -10,10 +10,6 @@ include_in_header: true
 
 PGPro does not collect any information.
 
-The app requests the following (optional) privacy-relevant permissions:
-
-*   **Contacts**: The names and email addresses in the user's address book (contacts) are used to automatically lookup and add their pgp keys.
-
 ## Your Consent
 
 By using PGPro, you consent to this privacy policy.
@@ -22,4 +18,5 @@ By using PGPro, you consent to this privacy policy.
 
 Changes to the privacy policy, will be posted below. Summary of changes so far:
 
+*		**June 28, 2020**: Removed a paragraph about a removed feature.
 *   **September 26, 2019**: First published.

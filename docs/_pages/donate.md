@@ -9,6 +9,9 @@ include_in_header: true
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://pgpro.app/assets/pay-now-button.js"></script>
 
+
+If you'd like to support PGPro financially, below are some options to do so.
+
 <div style="display: inline-block">
   <a href="https://www.paypal.me/pgproapp">
     <img src="https://pgpro.app/assets/paypal-donate-button.png" alt="Donate with PayPal" style="width: 250px;"/>

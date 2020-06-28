@@ -7,6 +7,22 @@ include_in_header: true
 
 # Changelog
 
+## **Version 2020.3** - Jun 25, 2020
+
+Thanks for using PGPro!
+This release includes the following changes:
+
+- New: Mail integration can now be disabled in settings
+- Improved: Various design refinements
+- Improved: More insightful error messages
+- Fixed: Generating a key with an empty passphrase led to problems
+- Fixed: Generated key would not show up until relaunch
+
+as well as a lot of under the hood improvements.
+
+If you encounter bugs or have feedback/suggestions, please reach out to me at [dev@pgpro.app](mailto:dev@pgpro.app).
+
+
 ## **Version 2020.2** - Apr 18, 2020
 
 Thanks for using PGPro! 
