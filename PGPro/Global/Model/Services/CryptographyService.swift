@@ -95,4 +95,39 @@ class CryptographyService {
         return true
     }
 
+
+    static func decryptionContacts(for message: String) -> [Contact] {
+
+        let privateKeyContacts = ContactListService.get(ofType: .privateKey)
+        var decryptionKeyIDs = [KeyID]()
+
+        guard message != "" else {
+            Log.d("empty message")
+            return []
+        }
+        guard let range = message.range(of: #"-----BEGIN PGP MESSAGE-----(.|\n)*-----END PGP MESSAGE-----"#,
+                                        options: .regularExpression) else {
+            Log.d("invalid message")
+            return []
+        }
+        guard let messageData = String(message[range]).data(using: .ascii) else {
+            Log.d("string to data cast failed")
+            return []
+        }
+
+        do {
+            decryptionKeyIDs = try ObjectivePGP.recipientsKeyID(forMessage: messageData)
+            Log.d("found key ids: \(decryptionKeyIDs)")
+        } catch {
+            Log.e(error)
+            return []
+        }
+
+        for key in privateKeyContacts {
+            Log.d("possible key ids: \(key.key.keyID)")
+        }
+
+        return privateKeyContacts.filter { decryptionKeyIDs.contains($0.key.keyID) }
+    }
+
 }
