@@ -42,10 +42,10 @@ class ContactDetails {
     }
 
     var armoredPublicKey: String {
-        contact.getArmoredKey(as: .publicKey) ?? ""
+        contact.getArmoredKey(as: .public) ?? ""
     }
     var armoredPrivateKey: String {
-        contact.getArmoredKey(as: .secretKey) ?? ""
+        contact.getArmoredKey(as: .secret) ?? ""
     }
 
     var keyIsValid: Bool {
