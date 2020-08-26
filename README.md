@@ -5,6 +5,7 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/lucanaef/PGPro?style=flat)
 [![iTunes App Store](https://img.shields.io/itunes/v/1481696997?label=App%20Store%20Version&style=flat)](https://apps.apple.com/app/pgpro/id1481696997)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a27e0963b0384739bad90cde28cb08b8)](https://www.codacy.com/manual/lucanaef/PGPro?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lucanaef/PGPro&amp;utm_campaign=Badge_Grade)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flucanaef%2FPGPro.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Flucanaef%2FPGPro?ref=badge_shield)
 
 PGPro can encrypt and decrypt messages as well as manage all your PGP keys. It is free, simple and lightweight. Everything stays on your device. PGPro is made in Switzerland.
 
@@ -28,6 +29,9 @@ See [https://pgpro.app/changelog/](https://pgpro.app/changelog/).
 
 This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE](./LICENSE) file for details.
 
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flucanaef%2FPGPro.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Flucanaef%2FPGPro?ref=badge_large)
 
 ## Security Audit
 
