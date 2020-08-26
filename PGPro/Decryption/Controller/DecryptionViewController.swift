@@ -253,7 +253,6 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
             navigationController?.pushViewController(keySelectionViewController, animated: true)
         case DecryptionRows.pasteFromClipboard.rawValue:
             encryptedMessage = UIPasteboard.general.string
-            Log.d(CryptographyService.decryptionContacts(for: encryptedMessage!))
             tableView.deselectRow(at: indexPath, animated: true)
         default:
             Log.s("indexPath \(indexPath) out of bounds!")
