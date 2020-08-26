@@ -65,6 +65,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var encryptedMessage: String?
         do {
             encryptedMessage = try String(contentsOf: url, encoding: .ascii)
+
+            // Trim extra new-lines
+            encryptedMessage = encryptedMessage?.trimmingCharacters(in: .whitespacesAndNewlines)
+                                                .components(separatedBy: .newlines)
+                                                .filter{!$0.isEmpty}
+                                                .joined(separator: "\n")
+
             if let tabBarController = window?.rootViewController as? UITabBarController {
                 tabBarController.selectedIndex = 1
             }
