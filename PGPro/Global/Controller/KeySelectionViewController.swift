@@ -77,9 +77,9 @@ class KeySelectionViewController: UIViewController {
 
         switch type {
         case .publicKey:
-            self.title = "Select Public Key"
+            self.title = "Select Public Keys"
         case .privateKey:
-            self.title = "Select Private Keys"
+            self.title = "Select Private Key"
         default:
             self.title = "Select Contacts"
         }
