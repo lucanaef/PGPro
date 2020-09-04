@@ -78,7 +78,7 @@ class GenerateKeyViewController: UIViewController {
             case GenerateKeyError.passphraseMismatch:
                 alert(text: "Passphrases don't match!")
             case GenerateKeyError.nonUnique:
-                alert(text: "Key for this email address already exists!")
+                alert(text: "Contact not unique!")
             default:
                 alert(text: "Key generation failed!")
                 Log.e(error)

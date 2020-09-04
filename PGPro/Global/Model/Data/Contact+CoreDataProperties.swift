@@ -87,7 +87,7 @@ extension Contact {
 extension Contact: Comparable {
 
     public static func == (lhs: Contact, rhs: Contact) -> Bool {
-        lhs.userID == rhs.userID
+        (lhs.userID == rhs.userID) && (lhs.key == rhs.key)
     }
 
     public static func < (lhs: Contact, rhs: Contact) -> Bool {

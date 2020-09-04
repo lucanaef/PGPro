@@ -60,9 +60,9 @@ class ContactListService {
 
     // MARK - Mutate List
     class func add(name: String, email: String, key: Key) -> ContactListResult {
-        // Check that no contact with this email address already exists
+        // Check that no contact with this key already exists
         guard !contactList.contains( where: {
-            (contact) -> Bool in contact.email == email
+            (contact) -> Bool in (contact.key == key)
         }) else {
             return ContactListResult(successful: 0, unsupported: 0, duplicates: 1)
         }
@@ -157,7 +157,7 @@ class ContactListService {
         PersistenceService.save()
 
         // Delete contact from in-memory data
-        contactList = contactList.filter { $0 != contact}
+        contactList = contactList.filter { $0 != contact }
     }
 
     class func deleteAllData() {
