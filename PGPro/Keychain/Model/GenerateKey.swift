@@ -36,6 +36,14 @@ class GenerateKey {
     var confirmedPassphrase: String?
 
     func generate() throws {
+        // Sanitize Inputs
+        if (passphrase == "") {
+            passphrase = nil
+        }
+        if (confirmedPassphrase == "") {
+            confirmedPassphrase = nil
+        }
+
         // Validate Inputs
         guard let name = name else { throw GenerateKeyError.nameNil }
         guard let email = email else { throw GenerateKeyError.emailAddressNil }
@@ -45,10 +53,7 @@ class GenerateKey {
         guard (passphrase == confirmedPassphrase) else { throw GenerateKeyError.passphraseMismatch }
 
         // Generate Key
-        let keyGen = KeyGenerator()
-        let userID = "\(name) <\(email)>"
-        let pass = passphrase != "" ? passphrase : nil
-        let key = keyGen.generate(for: userID, passphrase: pass)
+        let key = KeyGenerator().generate(for: "\(name) <\(email)>", passphrase: passphrase)
 
         // Create Contact
         let result = ContactListService.add(name: name, email: email, key: key)
