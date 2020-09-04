@@ -124,6 +124,7 @@ class EncryptionViewController: UIViewController {
         let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
             self.resetSelection()
             self.textView.text = ""
+            self.textView.textViewDidChange(self.textView)
             self.tableView.reloadData()
         })
 
