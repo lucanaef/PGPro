@@ -96,16 +96,19 @@ class KeySelectionViewController: UIViewController {
         switch type {
         case .publicKey, .both:
             if isSelected(contact) {
-                    selectedContacts.remove(at: selectedContacts.firstIndex(of: contact)!)
-                } else {
-                    selectedContacts.append(contact)
-                }
+                selectedContacts.remove(at: selectedContacts.firstIndex(of: contact)!)
+            } else {
+                selectedContacts.append(contact)
+            }
+            self.tableView.reloadData()
         case .privateKey:
             selectedContacts = [contact]
+            self.tableView.reloadData()
+            // auto-dismiss selection view
+            _ = self.navigationController?.popViewController(animated: true)
         case .none:
             break
         }
-        self.tableView.reloadData()
     }
 
     private func isSelected(_ contact: Contact) -> Bool {
@@ -135,7 +138,6 @@ extension KeySelectionViewController: UITableViewDataSource, UITableViewDelegate
         } else {
             cell.accessoryType = UITableViewCell.AccessoryType.none
         }
-
 
         return cell
     }
