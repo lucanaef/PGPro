@@ -21,7 +21,7 @@ import ObjectivePGP // TODO: should not be needed in view controller -> separate
 
 class SearchKeyserverViewController: UIViewController {
 
-    var foundKeys = [Key]() {
+    var foundKeys = [(Key, String)]() {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -61,7 +61,7 @@ class SearchKeyserverViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "OpenPGP Keyserver"
+        self.title = "Search Keyserver"
 
         /// Add buttons to navigation controller
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -94,7 +94,7 @@ class SearchKeyserverViewController: UIViewController {
             alert(text: "No Keys Selected!")
         } else {
             var selectedKeys: [Key] = []
-            for row in selectedRows { selectedKeys.append(foundKeys[row]) }
+            for row in selectedRows { selectedKeys.append(foundKeys[row].0) }
 
             let result: ContactListResult = ContactListService.importFrom(selectedKeys)
             alert(result)
@@ -138,7 +138,8 @@ extension SearchKeyserverViewController: UITableViewDelegate, UITableViewDataSou
             else { return UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "searchKeyserverCell") }
         cell.selectionStyle = .none
 
-        let key = foundKeys[indexPath.row]
+        let key = foundKeys[indexPath.row].0
+        let source = foundKeys[indexPath.row].1
 
         var primaryUser: User?
         if (key.isSecret) {
@@ -150,7 +151,7 @@ extension SearchKeyserverViewController: UITableViewDelegate, UITableViewDataSou
         }
         if let primaryUser = primaryUser {
             cell.textLabel!.text = primaryUser.userID
-            cell.detailTextLabel!.text = key.keyID.longIdentifier.insertSeparator(" ", atEvery: 4)
+            cell.detailTextLabel!.text = key.keyID.longIdentifier.insertSeparator(" ", atEvery: 4) + " – " + source
         }
 
         if selectedRows.contains(indexPath.row) {
@@ -179,7 +180,9 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
         /// do nothing
     }
 
-    func switchResult(result: Result<[Key], VerifyingKeyserverInterface.VKIError>) {
+    func switchVKIResult(result: Result<[Key], VerifyingKeyserverInterface.VKIError>) {
+        let source = "OpenPGP Keyserver"
+
         switch result {
         case .failure(let error):
             switch error {
@@ -192,13 +195,9 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
                     self.alert(text: "Failed to get valid response from keyserver!")
                 }
             case .keyNotFound:
-                DispatchQueue.main.async {
-                    self.alert(text: "No key found!")
-                }
+                break
             case .keyNotSupported:
-                DispatchQueue.main.async {
-                    self.alert(text: "Found non-supported key!")
-                }
+                break
             case .noConnection:
                 DispatchQueue.main.async {
                     self.alert(text: "No Connection to Keyserver!")
@@ -212,9 +211,11 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
                     self.alert(text: "Keyserver is under Database Maintenanc")
                 }
             }
-            self.foundKeys = []
+
         case .success(let keys):
-            self.foundKeys = keys
+            for key in keys {
+                self.foundKeys.append((key, source))
+            }
         }
 
         self.selectedRows = []
@@ -223,27 +224,55 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
         }
     }
 
+    func switchWKDResult(result: Result<[Key], WebKeyDirectoryService.WKDError>) {
+        let source = "Web Key Directory"
+
+        switch result {
+        case .failure(let error):
+            switch error {
+            case .keyNotSupported:
+                DispatchQueue.main.async {
+                    self.alert(text: "Found non-supported key!")
+                }
+            default:
+                break
+            }
+        case .success(let keys):
+            for key in keys {
+                self.foundKeys.append((key, source))
+            }
+        }
+    }
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchBarText = searchBar.text else { return }
+        self.foundKeys.removeAll() // remove previous search results
 
         let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
-        
         switch scope {
         case "Email Address":
             guard searchBarText.isValidEmail() else {
                 alert(text: "Invalid Email Address!")
                 return
             }
+
             VerifyingKeyserverInterface.getByEmail(email: searchBarText) { result in
-                self.switchResult(result: result)
+                self.switchVKIResult(result: result)
+            }
+
+            WebKeyDirectoryService.getByEmail(email: searchBarText, method: .advanced) { result in
+                self.switchWKDResult(result: result)
+            }
+            WebKeyDirectoryService.getByEmail(email: searchBarText, method: .direct) { result in
+                self.switchWKDResult(result: result)
             }
         case "Fingerprint":
             VerifyingKeyserverInterface.getByFingerprint(fingerprint: searchBarText) { (result) in
-                self.switchResult(result: result)
+                self.switchVKIResult(result: result)
             }
         case "Key ID":
             VerifyingKeyserverInterface.getByKeyID(keyID: searchBarText) { (result) in
-                self.switchResult(result: result)
+                self.switchVKIResult(result: result)
             }
         default:
             /// do nothing

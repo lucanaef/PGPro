@@ -80,6 +80,17 @@ class ContactListService {
         } catch {
             return ContactListResult(successful: 0, unsupported: 1, duplicates: 0)
         }
+
+        // Check for duplicates
+        if contactList.contains(where: {
+            (existingContact) -> Bool in existingContact == contact
+        }) {
+            // Delete contact from persistent data
+            PersistenceService.context.delete(contact)
+            PersistenceService.save()
+
+            return ContactListResult(successful: 0, unsupported: 0, duplicates: 1)
+        }
             
         // Add contact to in-memory and persistent data storage
         contactList.append(contact)
@@ -179,6 +190,7 @@ class ContactListService {
         }
         return count
     }
+
 }
 
 /// Return type when adding keys to the contact list
