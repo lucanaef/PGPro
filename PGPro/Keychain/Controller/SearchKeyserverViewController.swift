@@ -17,7 +17,7 @@
 
 import Foundation
 import UIKit
-import ObjectivePGP // TODO: should not be needed in view controller -> separate to model
+import ObjectivePGP
 
 class SearchKeyserverViewController: UIViewController {
 
@@ -46,8 +46,7 @@ class SearchKeyserverViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
 
-        searchController.searchBar.placeholder = "Search Keys..."
-        searchController.searchBar.scopeButtonTitles = ["Email Address", "Fingerprint", "Key ID"]
+        searchController.searchBar.placeholder = "Search by Email, Fingerprint or Key ID"
         searchController.searchBar.sizeToFit()
         searchController.searchBar.searchBarStyle = .prominent
         searchController.searchBar.delegate = self
@@ -176,10 +175,6 @@ extension SearchKeyserverViewController: UITableViewDelegate, UITableViewDataSou
 
 extension SearchKeyserverViewController: UISearchBarDelegate {
 
-    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        /// do nothing
-    }
-
     func switchVKIResult(result: Result<[Key], VerifyingKeyserverInterface.VKIError>) {
         let source = "OpenPGP Keyserver"
 
@@ -248,36 +243,24 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
         guard let searchBarText = searchBar.text else { return }
         self.foundKeys.removeAll() // remove previous search results
 
-        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
-        switch scope {
-        case "Email Address":
-            guard searchBarText.isValidEmail() else {
-                alert(text: "Invalid Email Address!")
-                return
-            }
-
+        if searchBarText.isValidEmail() { // case: email
             VerifyingKeyserverInterface.getByEmail(email: searchBarText) { result in
                 self.switchVKIResult(result: result)
             }
 
-            WebKeyDirectoryService.getByEmail(email: searchBarText, method: .advanced) { result in
+            WebKeyDirectoryService.getByEmail(email: searchBarText) { result in
                 self.switchWKDResult(result: result)
             }
-            WebKeyDirectoryService.getByEmail(email: searchBarText, method: .direct) { result in
-                self.switchWKDResult(result: result)
-            }
-        case "Fingerprint":
-            VerifyingKeyserverInterface.getByFingerprint(fingerprint: searchBarText) { (result) in
-                self.switchVKIResult(result: result)
-            }
-        case "Key ID":
+        } else if (searchBarText.count <= 18) { // case: key id
             VerifyingKeyserverInterface.getByKeyID(keyID: searchBarText) { (result) in
                 self.switchVKIResult(result: result)
             }
-        default:
-            /// do nothing
-            Log.e("Scope not in bounds!")
+        } else if (searchBarText.count > 18) { // case: fingerprint
+            VerifyingKeyserverInterface.getByFingerprint(fingerprint: searchBarText) { (result) in
+                self.switchVKIResult(result: result)
+            }
         }
+
     }
 
 }

@@ -19,8 +19,9 @@ import Foundation
 
 
 /**
-    Utilities for handling ZBase-32 encoding.
-    See: https://tools.ietf.org/html/rfc6189#section-5.1.6
+    Utilities for handling zBase32 encoding.
+    See https://tools.ietf.org/html/rfc6189#section-5.1.6
+    Implementation based on https://github.com/WelcomWeb/zBase32j
  */
 public class ZBase32 {
 

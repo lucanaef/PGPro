@@ -36,9 +36,20 @@ class WebKeyDirectoryService {
 
     private init() {}
 
-    static func getByEmail(email: String, method: WKDMethod = .advanced, completion: @escaping((Result<[Key], WKDError>) -> Void)) {
-        if let advancedURL = constructURL(email: email, method: method) {
-            GET(url: advancedURL, completion: completion)
+    static func getByEmail(email: String, completion: @escaping((Result<[Key], WKDError>) -> Void)) {
+
+        // First try advanced method, if it fails fall back to direct method
+        if let advancedURL = constructURL(email: email, method: .advanced) {
+            GET(url: advancedURL) { (result) in
+                switch (result) {
+                case .success:
+                    completion(result)
+                case .failure:
+                    if let directURL = constructURL(email: email, method: .direct) {
+                        GET(url: directURL, completion: completion)
+                    }
+                }
+            }
         }
     }
 
