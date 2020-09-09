@@ -1,4 +1,4 @@
-![](https://pgpro.naef.lu/pgpro_banner.png)
+![](https://pgpro.app/assets/pgpro_banner.png)
 
 [![License](https://img.shields.io/github/license/lucanaef/PGPro?style=flat)](https://github.com/lucanaef/PGPro/blob/master/LICENSE)
 ![Swift](https://img.shields.io/badge/language-swift-orange?style=flat)
