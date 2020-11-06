@@ -124,10 +124,9 @@ class Settings {
     init () {
         allSettings[SettingsDictKey(.export,        ExportSection.exportKeychain.rawValue)]         = exportKeychain
         allSettings[SettingsDictKey(.preferences,   PreferencesSection.mailIntegration.rawValue)]   = mailIntegration
-        // TODO:
-        // allSettings[SettingsDictKey(.preferences,   PreferencesSection.attachPublicKey.rawValue)]   = attachPublicKey
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.sendFeedback.rawValue)]         = sendFeedback
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.askForRating.rawValue)]         = askForRating
+        allSettings[SettingsDictKey(.about,         AboutSection.faq.rawValue)]                     = faq
         allSettings[SettingsDictKey(.about,         AboutSection.contribute.rawValue)]              = contribute
         allSettings[SettingsDictKey(.about,         AboutSection.privacyPolicy.rawValue)]           = privacyPolicy
         allSettings[SettingsDictKey(.about,         AboutSection.licenses.rawValue)]                = licenses
@@ -191,9 +190,10 @@ class Settings {
     }
 
     enum AboutSection: Int, CaseIterable {
-        case contribute = 0
-        case privacyPolicy = 1
-        case licenses = 2
+        case faq = 0
+        case contribute = 1
+        case privacyPolicy = 2
+        case licenses = 3
 
         static var header: String? {
             return "About"
@@ -210,7 +210,6 @@ class Settings {
 
     // Mark: - Actual Settings
     let exportKeychain = Setting(title: "Export Keychain") { viewController, completion in
-
         DispatchQueue.global(qos: .default).async {
             let keyring = Keyring()
             var keys: [Key] = []
@@ -240,12 +239,12 @@ class Settings {
         completion()
     }
     let mailIntegration = Setting(title: "Mail Integration", forKey: Preferences.UserDefaultsKeys.mailIntegration, enabled: Constants.User.canSendMail)
-    let attachPublicKey = Setting(title: "Attach Public Key", forKey: Preferences.UserDefaultsKeys.attachPublicKey, enabled: Constants.User.canSendMail)
     let sendFeedback = Setting(title: "Send Feedback",
                                       withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
     let askForRating = Setting(title: "Please Rate PGPro",
                                       subtitle: "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED THIS VERSION",
                                       withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!)
+    let faq = Setting(title: "Frequently Asked Questions", withURL: URL(string: "https://pgpro.app/faq/")!)
     let contribute = Setting(title: "Contribute on GitHub", withURL: URL(string: "https://github.com/lucanaef/PGPro")!)
     let privacyPolicy = Setting(title: "Privacy Policy", withURL: URL(string: "https://pgpro.app/privacypolicy/")!)
     let licenses = Setting(title: "Licenses", to: LicensesViewController())
