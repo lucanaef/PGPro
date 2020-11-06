@@ -31,7 +31,7 @@ See also <https://github.com/lucanaef/PGPro/issues/6>
 ### What kind of keys does PGPro support?
 
 As of now, PGPro supports most OpenPGP compatible keys.
-However: **PGPro doesn't currently support ECC keys.**
+However: **PGPro doesn't currently support ECC or sign-only keys.**
 
 ### Where does PGPro lookup keys?
 
