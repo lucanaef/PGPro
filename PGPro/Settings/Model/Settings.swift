@@ -125,6 +125,7 @@ class Settings {
         allSettings[SettingsDictKey(.export,        ExportSection.exportKeychain.rawValue)]         = exportKeychain
         allSettings[SettingsDictKey(.preferences,   PreferencesSection.mailIntegration.rawValue)]   = mailIntegration
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.sendFeedback.rawValue)]         = sendFeedback
+        allSettings[SettingsDictKey(.feedback,      FeedbackSection.joinBeta.rawValue)]             = joinBeta
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.askForRating.rawValue)]         = askForRating
         allSettings[SettingsDictKey(.about,         AboutSection.faq.rawValue)]                     = faq
         allSettings[SettingsDictKey(.about,         AboutSection.contribute.rawValue)]              = contribute
@@ -182,7 +183,8 @@ class Settings {
 
     enum FeedbackSection: Int, CaseIterable {
         case sendFeedback = 0
-        case askForRating = 1
+        case joinBeta = 1
+        case askForRating = 2
 
         static var header: String? {
             return "Feedback"
@@ -239,11 +241,11 @@ class Settings {
         completion()
     }
     let mailIntegration = Setting(title: "Mail Integration", forKey: Preferences.UserDefaultsKeys.mailIntegration, enabled: Constants.User.canSendMail)
-    let sendFeedback = Setting(title: "Send Feedback",
-                                      withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
+    let sendFeedback = Setting(title: "Send Feedback", withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
+    let joinBeta = Setting(title: "Join Beta", withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
     let askForRating = Setting(title: "Please Rate PGPro",
-                                      subtitle: "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED THIS VERSION",
-                                      withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!)
+                               subtitle: "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED PGPRO IN YOUR REGION",
+                               withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!)
     let faq = Setting(title: "Frequently Asked Questions", withURL: URL(string: "https://pgpro.app/faq/")!)
     let contribute = Setting(title: "Contribute on GitHub", withURL: URL(string: "https://github.com/lucanaef/PGPro")!)
     let privacyPolicy = Setting(title: "Privacy Policy", withURL: URL(string: "https://pgpro.app/privacypolicy/")!)
