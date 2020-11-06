@@ -120,11 +120,17 @@ class ContactListService {
                 var email: String
 
                 if (components.count == 2) {
+                    // Standard OpenPGP Key
                     name = String(components[0].dropLast())
                     email = String(components[1].dropLast())
                 } else if (components.count == 1 && components[0].isValidEmail()) {
-                    name = components[0]
+                    // Key without name
+                    name = "\"\(components[0])\""
                     email = components[0]
+                } else if (components.count == 1) {
+                    // Key without email address
+                    name = components[0]
+                    email = ""
                 } else {
                     importResult.unsupported += 1
                     break // skip if no name/email address can be inferred from data

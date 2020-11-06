@@ -240,18 +240,26 @@ class Settings {
         }
         completion()
     }
-    let mailIntegration = Setting(title: "Mail Integration", forKey: Preferences.UserDefaultsKeys.mailIntegration, enabled: Constants.User.canSendMail)
-    let sendFeedback = Setting(title: "Send Feedback", withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
-    let joinBeta = Setting(title: "Join Beta", withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
-    let askForRating = Setting(title: "Please Rate PGPro",
-                               subtitle: "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED PGPRO IN YOUR REGION",
-                               withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!)
-    let faq = Setting(title: "Frequently Asked Questions", withURL: URL(string: "https://pgpro.app/faq/")!)
-    let contribute = Setting(title: "Contribute on GitHub", withURL: URL(string: "https://github.com/lucanaef/PGPro")!)
-    let privacyPolicy = Setting(title: "Privacy Policy", withURL: URL(string: "https://pgpro.app/privacypolicy/")!)
-    let licenses = Setting(title: "Licenses", to: LicensesViewController())
-    let deleteAllKeys = Setting(title: "Delete All Keys", actionType: Setting.ActionType.destructive) {
-        ContactListService.deleteAllData()
-    }
-
+    let mailIntegration     = Setting(title: "Mail Integration",
+                                      forKey: Preferences.UserDefaultsKeys.mailIntegration,
+                                      enabled: Constants.User.canSendMail)
+    let sendFeedback        = Setting(title: "Send Feedback",
+                                      withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
+    let joinBeta            = Setting(title: "Join the PGPro Beta",
+                                      withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
+    let askForRating        = Setting(title: "Please Rate PGPro",
+                                      subtitle: "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED PGPRO IN YOUR REGION",
+                                      withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!)
+    let faq                 = Setting(title: "Frequently Asked Questions",
+                                      withURL: URL(string: "https://pgpro.app/faq/")!)
+    let contribute          = Setting(title: "Contribute on GitHub",
+                                      withURL: URL(string: "https://github.com/lucanaef/PGPro")!)
+    let privacyPolicy       = Setting(title: "Privacy Policy",
+                                      withURL: URL(string: "https://pgpro.app/privacypolicy/")!)
+    let licenses            = Setting(title: "Licenses",
+                                      to: LicensesViewController())
+    let deleteAllKeys       = Setting(title: "Delete All Keys",
+                                      actionType: Setting.ActionType.destructive) {
+                                        ContactListService.deleteAllData()
+                                      }
 }
