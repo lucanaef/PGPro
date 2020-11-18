@@ -57,7 +57,7 @@ class CryptographyService {
             throw CryptographyError.invalidMessage
         }
         let message = String(message[range]) // trim message to armored part
-        guard let messageData = message.data(using: .ascii) else { throw CryptographyError.invalidMessage}
+        guard let messageData = message.data(using: .ascii) else { throw CryptographyError.invalidMessage }
 
         // Handle PASSPHRASE
         if (keyRequiresPassphrase) {
