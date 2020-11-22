@@ -7,6 +7,19 @@ include_in_header: true
 
 # Changelog
 
+## **Version 2020.6** - Nov 22, 2020
+
+Thanks for using PGPro! 
+This release includes the following changes:
+
+- New: Support for keys without email addresses
+- Improved: Settings page
+
+as well as minor improvements and bug fixes.
+
+In case you encounter any bugs, please reach out to me at [dev@pgpro.app](mailto:dev@pgpro.app).
+Please consider leaving a review if you find the app useful.
+
 ## **Version 2020.5** - Sep 9, 2020
 
 Thanks for using PGPro! 
