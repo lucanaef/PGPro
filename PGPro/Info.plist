@@ -37,10 +37,6 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
-	<key>NFCReaderUsageDescription</key>
-	<string>Use Yubikeys for two-facor authentication.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Scan QR codes</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
