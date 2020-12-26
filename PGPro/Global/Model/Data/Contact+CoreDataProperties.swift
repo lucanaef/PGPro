@@ -71,8 +71,9 @@ extension Contact {
 
         case .secret:
             do {
+                let publicKeyData = try key.export(keyType: .public)
                 let privateKeyData = try key.export(keyType: .secret)
-                return Armor.armored(privateKeyData, as: .secretKey)
+                return Armor.armored(publicKeyData, as: .publicKey) + Armor.armored(privateKeyData, as: .secretKey)
             } catch { return nil }
 
         default:
