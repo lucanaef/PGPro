@@ -211,10 +211,6 @@ class EncryptionViewController: UIViewController {
             mailComposeViewController.setToRecipients(addresses)
             mailComposeViewController.setMessageBody(encryptedMessage, isHTML: false)
 
-            if (Preferences.attachPublicKey) {
-                // TODO: Add exported key of specified contact
-            }
-
             present(mailComposeViewController, animated: true, completion: nil)
         } else {
             let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)

@@ -63,6 +63,8 @@
 		81EFEB01249A97C800470493 /* FDTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EFEB00249A97C800470493 /* FDTextFieldTableViewCell.swift */; };
 		81EFEB03249AA6AA00470493 /* FullTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EFEB02249AA6AA00470493 /* FullTextFieldTableViewCell.swift */; };
 		81F95FF72502A4BF00786238 /* ZBase32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F95FF62502A4BF00786238 /* ZBase32.swift */; };
+		81FC11F52598DDD800F8CD51 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC11F42598DDD800F8CD51 /* AuthenticationViewController.swift */; };
+		81FC11FB2598ECA700F8CD51 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC11FA2598ECA700F8CD51 /* AuthenticationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +140,8 @@
 		81EFEB00249A97C800470493 /* FDTextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FDTextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		81EFEB02249AA6AA00470493 /* FullTextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullTextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		81F95FF62502A4BF00786238 /* ZBase32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZBase32.swift; sourceTree = "<group>"; };
+		81FC11F42598DDD800F8CD51 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
+		81FC11FA2598ECA700F8CD51 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +245,7 @@
 		81B594DE231DBCC8004893A0 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				81FC11FA2598ECA700F8CD51 /* AuthenticationService.swift */,
 				81B594F623241400004893A0 /* PersistenceService.swift */,
 				81B594E923212251004893A0 /* ContactListService.swift */,
 				81819203231D334200BB7BBB /* ExampleDataService.swift */,
@@ -381,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				81E4631B231029A4008DC317 /* AppDelegate.swift */,
+				81FC11F42598DDD800F8CD51 /* AuthenticationViewController.swift */,
 				81C61AB42482851E00DCEB6D /* KeySelectionViewController.swift */,
 			);
 			path = Controller;
@@ -559,6 +565,7 @@
 			files = (
 				81E46320231029A4008DC317 /* DecryptionViewController.swift in Sources */,
 				8114B8A6231822D9001DBAC5 /* KeychainTableViewCell.swift in Sources */,
+				81FC11F52598DDD800F8CD51 /* AuthenticationViewController.swift in Sources */,
 				81EFEB03249AA6AA00470493 /* FullTextFieldTableViewCell.swift in Sources */,
 				8137AC6F233271E3007483EA /* Constants.swift in Sources */,
 				8165F8B62496515F00496E84 /* ContactDetails.swift in Sources */,
@@ -586,6 +593,7 @@
 				8114B8A02315B664001DBAC5 /* KeychainViewController.swift in Sources */,
 				8194D96E23E1F292000D47C3 /* Navajo.swift in Sources */,
 				81453BAC247BA59C00613F18 /* CryptographyService.swift in Sources */,
+				81FC11FB2598ECA700F8CD51 /* AuthenticationService.swift in Sources */,
 				81323BEA24A2440D00ADAABA /* GenerateKey.swift in Sources */,
 				8114B8A4231815D5001DBAC5 /* EncryptionViewController.swift in Sources */,
 				81B594E8232038F1004893A0 /* KeySelectionTableViewCell.swift in Sources */,

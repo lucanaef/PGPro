@@ -124,6 +124,7 @@ class Settings {
     init () {
         allSettings[SettingsDictKey(.export,        ExportSection.exportKeychain.rawValue)]         = exportKeychain
         allSettings[SettingsDictKey(.preferences,   PreferencesSection.mailIntegration.rawValue)]   = mailIntegration
+        allSettings[SettingsDictKey(.preferences,   PreferencesSection.authentication.rawValue)]    = authentication
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.sendFeedback.rawValue)]         = sendFeedback
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.joinBeta.rawValue)]             = joinBeta
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.askForRating.rawValue)]         = askForRating
@@ -174,7 +175,7 @@ class Settings {
 
     enum PreferencesSection: Int, CaseIterable {
         case mailIntegration = 0
-        //case attachPublicKey = 1
+        case authentication = 1
 
         static var header: String? {
             return "Preferences"
@@ -243,6 +244,9 @@ class Settings {
     let mailIntegration     = Setting(title: "Mail Integration",
                                       forKey: Preferences.UserDefaultsKeys.mailIntegration,
                                       enabled: Constants.User.canSendMail)
+    let authentication      = Setting(title: "Biometric Authentication",
+                                      forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
+                                      enabled: (AuthenticationService.faceIDAvailable || AuthenticationService.touchIDAvailable))
     let sendFeedback        = Setting(title: "Send Feedback",
                                       withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
     let joinBeta            = Setting(title: "Join the PGPro Beta",

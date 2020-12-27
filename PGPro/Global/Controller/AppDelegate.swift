@@ -32,19 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        // Setup Window with Tab View Controller
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = buildTabBarController()
         window?.tintColor = .label
-        window?.makeKeyAndVisible()
 
         // Handle (first) Application Launch
         let hasLaunchedBefore = UserDefaults.standard.bool(forKey: Preferences.UserDefaultsKeys.launchedBefore)
-        if !hasLaunchedBefore {
-            firstLaunch()
-        } else {
-            launch()
-        }
+        if !hasLaunchedBefore { firstLaunch() }
 
         return true
     }
@@ -96,7 +89,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) { }
 
-    func applicationDidBecomeActive(_ application: UIApplication) { }
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        if (Preferences.biometricAuthentication) {
+            let authController = AuthenticationViewController()
+            window?.rootViewController = authController
+            window?.makeKeyAndVisible()
+            authController.authenticateAction {
+                self.launch()
+            }
+        } else {
+            self.launch()
+        }
+    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         PersistenceService.save()
@@ -151,8 +155,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Check if device currently can send mail
         if (!Constants.User.canSendMail) {
             UserDefaults.standard.set(false, forKey: Preferences.UserDefaultsKeys.mailIntegration)
-            UserDefaults.standard.set(false, forKey: Preferences.UserDefaultsKeys.attachPublicKey)
         }
+
+        self.window?.rootViewController = self.buildTabBarController()
+        self.window?.rootViewController?.navigationController?.navigationBar.prefersLargeTitles = true
+        self.window?.makeKeyAndVisible()
     }
 
 }

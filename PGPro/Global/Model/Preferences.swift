@@ -23,14 +23,14 @@ class Preferences {
         static var numRatings = "numRatings"
         static var launchedBefore = "launchedBefore"
         static var mailIntegration = "preference.mailIntegration"
-        static var attachPublicKey = "preference.attachPublicKey"
+        static var biometricAuthentication = "preference.biometricAuthentication"
     }
 
     static func setToDefault() {
         UserDefaults.standard.set(true,  forKey: UserDefaultsKeys.launchedBefore)
         UserDefaults.standard.set(0,     forKey: UserDefaultsKeys.numRatings)
         UserDefaults.standard.set(false, forKey: UserDefaultsKeys.mailIntegration)
-        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.attachPublicKey)
+        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.biometricAuthentication)
     }
 
     static var mailIntegrationEnabled: Bool {
@@ -39,9 +39,9 @@ class Preferences {
         }
     }
 
-    static var attachPublicKey: Bool {
+    static var biometricAuthentication: Bool {
         get {
-            UserDefaults.standard.bool(forKey: UserDefaultsKeys.attachPublicKey)
+            UserDefaults.standard.bool(forKey: UserDefaultsKeys.biometricAuthentication)
         }
     }
 
