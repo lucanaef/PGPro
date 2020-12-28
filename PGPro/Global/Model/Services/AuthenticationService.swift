@@ -36,6 +36,14 @@ class AuthenticationService {
         return biometricsAvailable && context.biometryType == .touchID
     }()
 
+    static var symbolName: String = {
+        var imageName = "lock"
+        if AuthenticationService.touchIDAvailable { imageName = "touchid" }
+        if AuthenticationService.faceIDAvailable { imageName = "faceid" }
+
+        return imageName
+    }()
+
     static func requestAuthentication(completion: @escaping (Result<Bool, LAError>) -> Void) {
         let reason = "Launching PGPro requires Authentication."
         context.evaluatePolicy(

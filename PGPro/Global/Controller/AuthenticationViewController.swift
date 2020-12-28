@@ -32,13 +32,7 @@ class AuthenticationViewController: UIViewController {
     }()
 
     lazy private var authImage: UIImage = {
-        var imageName = "lock"
-        if AuthenticationService.touchIDAvailable { imageName = "touchid" }
-        if AuthenticationService.faceIDAvailable { imageName = "faceid" }
-
-        let image = UIImage(systemName: imageName)!.withTintColor(.white)
-
-        return image
+        return UIImage(systemName: AuthenticationService.symbolName)!.withTintColor(.white)
     }()
 
     lazy private var authenticateButton: UIButton = {

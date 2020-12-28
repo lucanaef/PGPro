@@ -36,11 +36,13 @@ class Setting {
     }
 
     var title: String
+    var symbolName: String
     var subtitle: String?
     var type: SettingType
 
-    init(title: String, subtitle: String? = nil, of type: SettingType) {
+    init(title: String, symbol: String, subtitle: String? = nil, of type: SettingType) {
         self.title = title
+        self.symbolName = symbol
         self.subtitle = subtitle
         self.type = type
     }
@@ -49,8 +51,9 @@ class Setting {
 
     // Activity:
     private(set) var activity: ((_ viewController: UIViewController, _ completion: () -> Void) -> ())?
-    init(title: String, subtitle: String? = nil, withActivity activity: @escaping (_ viewController: UIViewController, _ completion: () -> Void) -> Void) {
+    init(title: String, symbol: String, subtitle: String? = nil, withActivity activity: @escaping (_ viewController: UIViewController, _ completion: () -> Void) -> Void) {
         self.title = title
+        self.symbolName = symbol
         self.subtitle = subtitle
         self.type = .Activity
         self.activity = activity
@@ -58,8 +61,9 @@ class Setting {
 
     // Action:
     private(set) var action: (() -> Void)?
-    init(title: String, subtitle: String? = nil, actionType: ActionType = .normal, withAction action: @escaping () -> Void) {
+    init(title: String, symbol: String, subtitle: String? = nil, actionType: ActionType = .normal, withAction action: @escaping () -> Void) {
         self.title = title
+        self.symbolName = symbol
         self.subtitle = subtitle
         self.type = .Action(type: actionType)
         self.action = action
@@ -79,8 +83,9 @@ class Setting {
         }
     }
 
-    init(title: String, subtitle: String? = nil, forKey key: String, enabled: Bool) {
+    init(title: String, symbol: String, subtitle: String? = nil, forKey key: String, enabled: Bool) {
         self.title = title
+        self.symbolName = symbol
         self.subtitle = subtitle
         self.type = .Preference
         self.userDefaultsKey = key
@@ -89,8 +94,9 @@ class Setting {
 
     // Link:
     private(set) var url: URL?
-    init(title: String, subtitle: String? = nil, withURL url: URL) {
+    init(title: String, symbol: String, subtitle: String? = nil, withURL url: URL) {
         self.title = title
+        self.symbolName = symbol
         self.subtitle = subtitle
         self.type = .Link
         self.url = url
@@ -98,8 +104,9 @@ class Setting {
 
     // Segue:
     private(set) var viewController: UIViewController?
-    init(title: String, subtitle: String? = nil, to viewController: UIViewController) {
+    init(title: String, symbol: String, subtitle: String? = nil, to viewController: UIViewController) {
         self.title = title
+        self.symbolName = symbol
         self.subtitle = subtitle
         self.type = .Segue
         self.viewController = viewController
@@ -122,7 +129,8 @@ class Settings {
 
     private(set) var allSettings: [SettingsDictKey : Setting] = [:]
     init () {
-        allSettings[SettingsDictKey(.export,        ExportSection.exportKeychain.rawValue)]         = exportKeychain
+        allSettings[SettingsDictKey(.data,          DataSection.exportKeychain.rawValue)]           = exportKeychain
+        allSettings[SettingsDictKey(.data,          DataSection.deleteAllKeys.rawValue)]            = deleteAllKeys
         allSettings[SettingsDictKey(.preferences,   PreferencesSection.mailIntegration.rawValue)]   = mailIntegration
         allSettings[SettingsDictKey(.preferences,   PreferencesSection.authentication.rawValue)]    = authentication
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.sendFeedback.rawValue)]         = sendFeedback
@@ -132,44 +140,41 @@ class Settings {
         allSettings[SettingsDictKey(.about,         AboutSection.contribute.rawValue)]              = contribute
         allSettings[SettingsDictKey(.about,         AboutSection.privacyPolicy.rawValue)]           = privacyPolicy
         allSettings[SettingsDictKey(.about,         AboutSection.licenses.rawValue)]                = licenses
-        allSettings[SettingsDictKey(.actions,       ActionSection.deleteAllKeys.rawValue)]          = deleteAllKeys
     }
 
     // Mark: - Sections
     enum Sections: Int, CaseIterable {
-        case export = 0
+        case data = 0
         case preferences = 1
         case feedback = 2
         case about = 3
-        case actions = 4
 
         var rows: Int {
             switch self {
-                case .export:       return ExportSection.allCases.count
+                case .data:         return DataSection.allCases.count
                 case .preferences:  return PreferencesSection.allCases.count
                 case .feedback:     return FeedbackSection.allCases.count
                 case .about:        return AboutSection.allCases.count
-                case .actions:      return ActionSection.allCases.count
             }
         }
 
         var header: String? {
             switch self {
-                case .export:       return ExportSection.header
+                case .data:         return DataSection.header
                 case .preferences:  return PreferencesSection.header
                 case .feedback:     return FeedbackSection.header
                 case .about:        return AboutSection.header
-                case .actions:      return ActionSection.header
             }
         }
     }
 
     // MARK: - Subsection
-    enum ExportSection: Int, CaseIterable {
+    enum DataSection: Int, CaseIterable {
         case exportKeychain = 0
+        case deleteAllKeys = 1
 
-        static var header: String? {
-            return nil
+        static var header: String {
+            return "Data"
         }
     }
 
@@ -177,7 +182,7 @@ class Settings {
         case mailIntegration = 0
         case authentication = 1
 
-        static var header: String? {
+        static var header: String {
             return "Preferences"
         }
     }
@@ -187,7 +192,7 @@ class Settings {
         case joinBeta = 1
         case askForRating = 2
 
-        static var header: String? {
+        static var header: String {
             return "Feedback"
         }
     }
@@ -198,21 +203,14 @@ class Settings {
         case privacyPolicy = 2
         case licenses = 3
 
-        static var header: String? {
+        static var header: String {
             return "About"
         }
     }
 
-    enum ActionSection: Int, CaseIterable {
-        case deleteAllKeys = 0
-
-        static var header: String? {
-            return nil
-        }
-    }
 
     // Mark: - Actual Settings
-    let exportKeychain = Setting(title: "Export Keychain") { viewController, completion in
+    let exportKeychain = Setting(title: "Export Keychain", symbol: "square.and.arrow.up") { viewController, completion in
         DispatchQueue.global(qos: .default).async {
             let keyring = Keyring()
             var keys: [Key] = []
@@ -241,29 +239,39 @@ class Settings {
         }
         completion()
     }
-    let mailIntegration     = Setting(title: "Mail Integration",
-                                      forKey: Preferences.UserDefaultsKeys.mailIntegration,
-                                      enabled: Constants.User.canSendMail)
-    let authentication      = Setting(title: "App Launch Authentication",
-                                      forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
-                                      enabled: (AuthenticationService.faceIDAvailable || AuthenticationService.touchIDAvailable))
-    let sendFeedback        = Setting(title: "Send Feedback",
-                                      withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
-    let joinBeta            = Setting(title: "Join the PGPro Beta",
-                                      withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
-    let askForRating        = Setting(title: "Please Rate PGPro",
-                                      subtitle: "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED PGPRO IN YOUR REGION",
-                                      withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!)
-    let faq                 = Setting(title: "Frequently Asked Questions",
-                                      withURL: URL(string: "https://pgpro.app/faq/")!)
-    let contribute          = Setting(title: "Contribute on GitHub",
-                                      withURL: URL(string: "https://github.com/lucanaef/PGPro")!)
-    let privacyPolicy       = Setting(title: "Privacy Policy",
-                                      withURL: URL(string: "https://pgpro.app/privacypolicy/")!)
-    let licenses            = Setting(title: "Licenses",
-                                      to: LicensesViewController())
-    let deleteAllKeys       = Setting(title: "Delete All Keys",
+    let deleteAllKeys       = Setting(title: "Delete Keychain",
+                                      symbol: "trash",
                                       actionType: Setting.ActionType.destructive) {
                                         ContactListService.deleteAllData()
                                       }
+    let mailIntegration     = Setting(title: "Mail Integration",
+                                      symbol: "envelope",
+                                      forKey: Preferences.UserDefaultsKeys.mailIntegration,
+                                      enabled: Constants.User.canSendMail)
+    let authentication      = Setting(title: "App Launch Authentication",
+                                      symbol: AuthenticationService.symbolName,
+                                      forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
+                                      enabled: Constants.User.canUseBiometrics)
+    let sendFeedback        = Setting(title: "Send Feedback",
+                                      symbol: "text.bubble",
+                                      withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
+    let joinBeta            = Setting(title: "Join the PGPro Beta",
+                                      symbol: "stethoscope",
+                                      withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
+    let askForRating        = Setting(title: "Please Rate PGPro",
+                                      symbol: "heart",
+                                      subtitle: "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED PGPRO IN YOUR REGION",
+                                      withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!)
+    let faq                 = Setting(title: "Frequently Asked Questions",
+                                      symbol: "questionmark.circle",
+                                      withURL: URL(string: "https://pgpro.app/faq/")!)
+    let contribute          = Setting(title: "Contribute on GitHub",
+                                      symbol: "chevron.left.slash.chevron.right",
+                                      withURL: URL(string: "https://github.com/lucanaef/PGPro")!)
+    let privacyPolicy       = Setting(title: "Privacy Policy",
+                                      symbol: "eye.slash",
+                                      withURL: URL(string: "https://pgpro.app/privacypolicy/")!)
+    let licenses            = Setting(title: "Licenses",
+                                      symbol: "scroll",
+                                      to: LicensesViewController())
 }

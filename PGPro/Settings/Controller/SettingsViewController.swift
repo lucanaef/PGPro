@@ -60,8 +60,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if let section = Settings.Sections(rawValue: section), section == .preferences {
-            if (!Constants.User.canSendMail) {
-                return "Device is not configured for sending mail"
+            if (!Constants.User.canSendMail || !Constants.User.canUseBiometrics) {
+                return "Disabled preferences are not available on this device."
             }
         }
         return nil
@@ -73,7 +73,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        var cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
         guard let section = Settings.Sections(rawValue: indexPath.section) else {
             Log.s("IndexPath \(indexPath) out of bounds!")
             return cell
@@ -87,18 +87,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         cell.textLabel?.text = setting.title
         cell.detailTextLabel?.text = setting.subtitle
         cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.imageView?.image = UIImage(systemName: setting.symbolName)
 
         switch setting.type {
         case .Activity:
             cell.accessoryView = UIActivityIndicatorView(style: .medium)
 
-        case .Action(let actionType):
-            cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
-            cell.textLabel?.text = setting.title
-            cell.textLabel?.textAlignment = .center
-            if actionType == .destructive {
-                cell.textLabel?.textColor = UIColor.red
-            }
+        case .Action:
+            break
 
         case .Preference:
             let toggle = PassableUISwitch()

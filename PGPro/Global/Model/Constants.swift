@@ -77,6 +77,10 @@ enum Constants {
             MFMailComposeViewController.canSendMail()
         }
 
+        static var canUseBiometrics: Bool {
+            AuthenticationService.faceIDAvailable || AuthenticationService.touchIDAvailable
+        }
+
     }
 
 
