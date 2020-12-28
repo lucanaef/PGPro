@@ -120,18 +120,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let encryptionTabImage = UIImage(systemName: "lock.fill")
         let encryptionTab = UITabBarItem(title: "Encryption", image: encryptionTabImage, selectedImage: encryptionTabImage)
         navigationViewControllers[0].tabBarItem = encryptionTab
+        navigationViewControllers[0].navigationBar.prefersLargeTitles = true
 
         let decryptionTabImage = UIImage(systemName: "lock.open.fill")
         let decryptionTab = UITabBarItem(title: "Decryption", image: decryptionTabImage, selectedImage: decryptionTabImage)
         navigationViewControllers[1].tabBarItem = decryptionTab
+        navigationViewControllers[1].navigationBar.prefersLargeTitles = true
 
         let keychainTabImage = UIImage(systemName: "person.2.fill")
         let keychainTab = UITabBarItem(title: "Keychain", image: keychainTabImage, selectedImage: keychainTabImage)
         navigationViewControllers[2].tabBarItem = keychainTab
+        navigationViewControllers[2].navigationBar.prefersLargeTitles = true
 
         let settingsTabImage = UIImage(systemName: "gear")
         let settingsTab = UITabBarItem(title: "Settings", image: settingsTabImage, selectedImage: settingsTabImage)
         navigationViewControllers[3].tabBarItem = settingsTab
+        navigationViewControllers[3].navigationBar.prefersLargeTitles = true
 
         return tabBarController
     }
@@ -158,7 +162,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         self.window?.rootViewController = self.buildTabBarController()
-        self.window?.rootViewController?.navigationController?.navigationBar.prefersLargeTitles = true
         self.window?.makeKeyAndVisible()
     }
 

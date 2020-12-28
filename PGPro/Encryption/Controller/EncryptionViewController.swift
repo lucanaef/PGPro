@@ -89,6 +89,7 @@ class EncryptionViewController: UIViewController {
             action: #selector(clearView)
         )
         navigationItem.rightBarButtonItems = [encryptButton, clearButton]
+        navigationItem.largeTitleDisplayMode = .always
 
         // Add table view to super view
         view.addSubview(tableView)
