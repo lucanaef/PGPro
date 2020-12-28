@@ -155,9 +155,9 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
         let section = Sections(rawValue: section)
         switch (section) {
         case .contact:
-            return "Contact"
+            return "User Info"
         case .key:
-            return "PGP Key"
+            return "Primary Key"
         default:
             Log.s("indexPath out of bounds!")
             return nil
