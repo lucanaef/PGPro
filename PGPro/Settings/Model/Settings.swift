@@ -244,7 +244,7 @@ class Settings {
     let mailIntegration     = Setting(title: "Mail Integration",
                                       forKey: Preferences.UserDefaultsKeys.mailIntegration,
                                       enabled: Constants.User.canSendMail)
-    let authentication      = Setting(title: "Biometric Authentication",
+    let authentication      = Setting(title: "App Launch Authentication",
                                       forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
                                       enabled: (AuthenticationService.faceIDAvailable || AuthenticationService.touchIDAvailable))
     let sendFeedback        = Setting(title: "Send Feedback",
