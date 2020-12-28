@@ -37,7 +37,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Handle (first) Application Launch
         let hasLaunchedBefore = UserDefaults.standard.bool(forKey: Preferences.UserDefaultsKeys.launchedBefore)
-        if !hasLaunchedBefore { firstLaunch() }
+        if !hasLaunchedBefore {
+            firstLaunch()
+        } else {
+            if (Preferences.biometricAuthentication) {
+                let authController = AuthenticationViewController()
+                window?.rootViewController = authController
+                window?.makeKeyAndVisible()
+                authController.authenticateAction {
+                    self.launch()
+                }
+            } else {
+                self.launch()
+            }
+        }
 
         return true
     }
@@ -90,16 +103,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) { }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        if (Preferences.biometricAuthentication) {
-            let authController = AuthenticationViewController()
-            window?.rootViewController = authController
-            window?.makeKeyAndVisible()
-            authController.authenticateAction {
-                self.launch()
-            }
-        } else {
-            self.launch()
-        }
+        // I don't want to authenticate every time the app becomes active since it resets the UI state every time
+        //  this means copying text from other apps would become very difficult and I don't want to keep track of
+        //  the state myself.
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
