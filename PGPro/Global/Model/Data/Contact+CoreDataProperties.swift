@@ -35,6 +35,20 @@ extension Contact {
         return "\(name) <\(email)>"
     }
 
+    var symbolName: String {
+        var symbol = "person.crop.circle.badge.questionmark" // invalid key
+
+        if (key.isPublic && !key.isSecret) {
+            symbol = "person.circle"
+        } else if (!key.isPublic && key.isSecret){
+            symbol = "person.circle.fill"
+        } else if (key.isPublic && key.isSecret) {
+            symbol = "person.2.circle.fill"
+        }
+
+        return symbol
+    }
+
     public override var description: String { userID }
 
     var keyRequiresPassphrase: Bool {

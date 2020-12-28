@@ -35,16 +35,14 @@ class KeychainTableViewCell: UITableViewCell {
 
         self.textLabel?.text = contact.name
         self.detailTextLabel?.text = contact.email
-        
-        let currentDate = Date()
-        let keyExpirationDate = contact.key.expirationDate ?? currentDate
-        
+
+
+        var icon = UIImage(systemName: contact.symbolName,
+                           withConfiguration: UIImage.SymbolConfiguration(pointSize: 27, weight: .light))
+        let currentDate = Date(), keyExpirationDate = contact.key.expirationDate ?? currentDate
         if (keyExpirationDate < currentDate) { // Key expired
-            // Add Spacing
-            self.textLabel?.text!.append(" ")
-            // Add Symbol
-            guard let symbol = UIImage(systemName: "exclamationmark.triangle") else { return }
-            self.textLabel?.addImage(img: symbol.withTintColor(UIColor.red), behindText: true)
+            icon = icon?.withTintColor(.red, renderingMode: .alwaysOriginal)
         }
+        self.imageView?.image = icon
     }
 }
