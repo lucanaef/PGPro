@@ -132,7 +132,7 @@
 		81E33AE423265A4E00241E4A /* Contact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+CoreDataClass.swift"; sourceTree = "<group>"; };
 		81E33AE523265A4E00241E4A /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		81E33AFC23279A0700241E4A /* UIBarButtonItem+button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+button.swift"; sourceTree = "<group>"; };
-		81E33B0123279B4900241E4A /* UIViewController+alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIViewController+alert.swift"; path = "/Users/Luca/Documents/4 Development/PGPro/PGPro-app/PGPro/Global/Model/Extensions/UIViewController+alert.swift"; sourceTree = "<absolute>"; };
+		81E33B0123279B4900241E4A /* UIViewController+alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+alert.swift"; sourceTree = "<group>"; };
 		81E46318231029A4008DC317 /* PGPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PGPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E4631B231029A4008DC317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81E4631F231029A4008DC317 /* DecryptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionViewController.swift; sourceTree = "<group>"; };
