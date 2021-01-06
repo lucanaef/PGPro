@@ -22,7 +22,7 @@ class AuthenticationViewController: UIViewController {
 
     lazy private var lockImageView: UIImageView = {
         let image = UIImage(systemName: "lock.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .light))!
-        image.withTintColor(.white)
+            .withTintColor(.white, renderingMode: .alwaysOriginal)
 
         let imageView = UIImageView(image: image, highlightedImage: image)
         imageView.sizeToFit()
@@ -86,8 +86,12 @@ class AuthenticationViewController: UIViewController {
         AuthenticationService.requestAuthentication { result in
             switch result {
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.alert(text: "Authentication failed: \(error.localizedDescription)")
+                switch error.code {
+                case .userCancel: Log.d("Authentication failed: \(error.localizedDescription)")
+                default:
+                    DispatchQueue.main.async {
+                        self.alert(text: "Authentication failed: \(error.localizedDescription)")
+                    }
                 }
             case .success(let succ):
                 DispatchQueue.main.async {
