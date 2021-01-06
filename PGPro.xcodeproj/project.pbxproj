@@ -816,7 +816,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2020.7;
+				MARKETING_VERSION = 2021.1;
 				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -844,7 +844,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2020.7;
+				MARKETING_VERSION = 2021.1;
 				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
