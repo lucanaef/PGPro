@@ -44,9 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let authController = AuthenticationViewController()
                 window?.rootViewController = authController
                 window?.makeKeyAndVisible()
-                authController.authenticateAction {
-                    self.launch()
-                }
+                authController.authenticatedLaunch()
             } else {
                 self.launch()
             }
@@ -159,7 +157,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ = Constants.PGPro.numRatings
     }
 
-    private func launch() {
+    func launch() {
         ContactListService.loadPersistentData()
 
         // Check if device currently can send mail

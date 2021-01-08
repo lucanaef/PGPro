@@ -49,7 +49,7 @@ class AuthenticationViewController: UIViewController {
         button.layer.cornerRadius = 4
         button.contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
 
-        button.addTarget(self, action: #selector(self.authenticateAction), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.authenticatedLaunch), for: .touchUpInside)
 
         return button
     }()
@@ -80,9 +80,15 @@ class AuthenticationViewController: UIViewController {
         self.navigationItem.largeTitleDisplayMode = .always
     }
 
-
     @objc
-    func authenticateAction(onSuccess: @escaping () -> Void) {
+    func authenticatedLaunch() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        authenticateAction {
+            appDelegate.launch()
+        }
+    }
+
+    private func authenticateAction(onSuccess: @escaping () -> Void) {
         AuthenticationService.requestAuthentication { result in
             switch result {
             case .failure(let error):
@@ -93,9 +99,9 @@ class AuthenticationViewController: UIViewController {
                         self.alert(text: "Authentication failed: \(error.localizedDescription)")
                     }
                 }
-            case .success(let succ):
+            case .success(_): // bool must be true in case of success
                 DispatchQueue.main.async {
-                    if succ { onSuccess() } else { self.alert(text: "Authentication failed")}
+                    onSuccess()
                 }
             }
         }
