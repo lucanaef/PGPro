@@ -7,6 +7,20 @@ include_in_header: true
 
 # Changelog
 
+## **Version 2121.1** - Jan 11, 2021
+
+Thanks for using PGPro! 
+This release includes the following changes:
+
+- New: Biometric App Launch Authentication
+- Improved: Include Public Key when exporting Private Key
+- Improved: User Interface
+
+as well as minor improvements and bug fixes.
+
+In case you encounter any bugs, please reach out to me at [dev@pgpro.app](mailto:dev@pgpro.app).
+Please consider leaving a review if you find the app useful.
+
 ## **Version 2020.6** - Nov 22, 2020
 
 Thanks for using PGPro! 
