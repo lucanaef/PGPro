@@ -141,6 +141,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationViewControllers[3].tabBarItem = settingsTab
         navigationViewControllers[3].navigationBar.prefersLargeTitles = true
 
+        // Select "Decrypt Message"-View as first view
+        tabBarController.selectedIndex = 1
+
         return tabBarController
     }
 
