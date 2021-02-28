@@ -55,43 +55,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
 
-        // Check if file type is valid
-        let fileExtension = url.pathExtension
-        guard (fileExtension == "asc") else {
-            let alertController = UIAlertController(title: "Filetype not supported!", message: nil, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-            window?.rootViewController?.present(alertController, animated: true, completion: nil)
-            Log.i("Filetype \(fileExtension) not supported!")
-            return false
-        }
+        // Check if file type is supported
+        guard (url.pathExtension == "asc") else { return false }
 
-        // Treat file as PGP encrypted text
-        var encryptedMessage: String?
+        // Load file contents
+        var fileContants: String?
         do {
-            encryptedMessage = try String(contentsOf: url, encoding: .ascii)
-
-            if let tabBarController = window?.rootViewController as? UITabBarController {
-                tabBarController.selectedIndex = 1
-            }
+            fileContants = try String(contentsOf: url, encoding: .ascii)
         } catch {
-            let alertController = UIAlertController(title: "File not supported!", message: nil, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-            window?.rootViewController?.present(alertController, animated: true, completion: nil)
-            Log.i("File not supported!")
+            Log.e("Filetype not supported!")
             return false
         }
+        guard let fileContants = fileContants else { return false }
 
-        DispatchQueue.main.async {
-            let actualVC = self.window?.rootViewController?.children[1].children.first
-            while !(actualVC is DecryptionViewController) { }
-            let decryptionVC = actualVC as? DecryptionViewController
-            if let decryptionVC = decryptionVC {
-                while (decryptionVC.viewIfLoaded == nil) {  }
-                decryptionVC.setMessageField(to: encryptedMessage)
+
+        if fileContants.contains("KEY BLOCK") {
+            // Treat content as key
+            var readKeys = [Key]()
+            do {
+                readKeys = try KeyConstructionService.fromString(keyString: fileContants)
+            } catch {
+                Log.e("No key found in file!")
+                return true
             }
-        }
+            let result: ContactListResult = ContactListService.importFrom(readKeys)
 
-        return true
+            /* Present result if application is unlocked */
+            if !Preferences.biometricAuthentication {
+                DispatchQueue.main.async {
+                    let actualVC = self.window?.rootViewController?.children[1].children.first
+                    while !(actualVC is DecryptionViewController) { }
+                    let decryptionVC = actualVC as? DecryptionViewController
+
+                    if let decryptionVC = decryptionVC {
+                        while (decryptionVC.viewIfLoaded == nil) {  }
+                        decryptionVC.alert(result)
+                    }
+                }
+            }
+            return true
+        } else if fileContants.contains("MESSAGE") {
+            decryptionVC.setMessageField(to: fileContants)
+            return true
+        } else {
+            return false
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) { }
