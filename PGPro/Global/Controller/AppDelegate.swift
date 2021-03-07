@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 window?.makeKeyAndVisible()
                 authController.authenticatedLaunch()
             } else {
-                self.launch()
+                launch()
             }
         }
 
@@ -66,37 +66,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Log.e("Filetype not supported!")
             return false
         }
-        guard let fileContants = fileContants else { return false }
+        if let fileContants = fileContants {
+            if fileContants.contains("KEY BLOCK") {
+                // Treat content as key
+                var readKeys = [Key]()
+                do {
+                    readKeys = try KeyConstructionService.fromString(keyString: fileContants)
+                } catch {
+                    Log.e("No key found in file!")
+                    return true
+                }
+                let result: ContactListResult = ContactListService.importFrom(readKeys)
 
+                /* Present result if application is unlocked */
+                if !Preferences.biometricAuthentication {
+                    DispatchQueue.main.async {
+                        let actualVC = self.window?.rootViewController?.children[1].children.first
+                        while !(actualVC is DecryptionViewController) { }
+                        let decryptionVC = actualVC as? DecryptionViewController
 
-        if fileContants.contains("KEY BLOCK") {
-            // Treat content as key
-            var readKeys = [Key]()
-            do {
-                readKeys = try KeyConstructionService.fromString(keyString: fileContants)
-            } catch {
-                Log.e("No key found in file!")
-                return true
-            }
-            let result: ContactListResult = ContactListService.importFrom(readKeys)
-
-            /* Present result if application is unlocked */
-            if !Preferences.biometricAuthentication {
-                DispatchQueue.main.async {
-                    let actualVC = self.window?.rootViewController?.children[1].children.first
-                    while !(actualVC is DecryptionViewController) { }
-                    let decryptionVC = actualVC as? DecryptionViewController
-
-                    if let decryptionVC = decryptionVC {
-                        while (decryptionVC.viewIfLoaded == nil) {  }
-                        decryptionVC.alert(result)
+                        if let decryptionVC = decryptionVC {
+                            while (decryptionVC.viewIfLoaded == nil) {  }
+                            decryptionVC.alert(result)
+                        }
                     }
                 }
+                return true
+            } else if fileContants.contains("MESSAGE") {
+                decryptionVC.setMessageField(to: fileContants)
+                return true
+            } else {
+                return false
             }
-            return true
-        } else if fileContants.contains("MESSAGE") {
-            decryptionVC.setMessageField(to: fileContants)
-            return true
         } else {
             return false
         }
@@ -166,6 +167,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Get number of ratings (warm up cache)
         _ = Constants.PGPro.numRatings
+
+        self.window?.rootViewController = self.buildTabBarController()
+        self.window?.makeKeyAndVisible()
     }
 
     func launch() {
