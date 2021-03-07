@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		81045C5D2555F70C0076142F /* YubiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 81045C5C2555F70C0076142F /* YubiKit */; };
+		81045C5D2555F70C0076142F /* YubiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 81045C5C2555F70C0076142F /* YubiKit */; settings = {ATTRIBUTES = (Weak, ); }; };
 		810AE9D5248D421400DF17D2 /* UIView+pinEdges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810AE9D4248D421400DF17D2 /* UIView+pinEdges.swift */; };
 		8114B8A02315B664001DBAC5 /* KeychainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8114B89F2315B664001DBAC5 /* KeychainViewController.swift */; };
 		8114B8A4231815D5001DBAC5 /* EncryptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8114B8A3231815D5001DBAC5 /* EncryptionViewController.swift */; };
@@ -82,7 +82,6 @@
 		8114B89F2315B664001DBAC5 /* KeychainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainViewController.swift; sourceTree = "<group>"; };
 		8114B8A3231815D5001DBAC5 /* EncryptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionViewController.swift; sourceTree = "<group>"; };
 		8114B8A5231822D9001DBAC5 /* KeychainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTableViewCell.swift; sourceTree = "<group>"; };
-		8114B8A9231924D3001DBAC5 /* ObjectivePGP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectivePGP.framework; sourceTree = "<group>"; };
 		8114B8B123193169001DBAC5 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		8114B8B323193174001DBAC5 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		8114B8B52319317E001DBAC5 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
@@ -172,7 +171,6 @@
 				8114B8B52319317E001DBAC5 /* libbz2.tbd */,
 				8114B8B323193174001DBAC5 /* libz.tbd */,
 				8114B8B123193169001DBAC5 /* Security.framework */,
-				8114B8A9231924D3001DBAC5 /* ObjectivePGP.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
