@@ -133,7 +133,7 @@ class Settings {
         allSettings[SettingsDictKey(.data,          DataSection.deleteAllKeys.rawValue)]            = deleteAllKeys
         allSettings[SettingsDictKey(.preferences,   PreferencesSection.mailIntegration.rawValue)]   = mailIntegration
         allSettings[SettingsDictKey(.preferences,   PreferencesSection.authentication.rawValue)]    = authentication
-        allSettings[SettingsDictKey(.feedback,      FeedbackSection.sendFeedback.rawValue)]         = sendFeedback
+        allSettings[SettingsDictKey(.feedback,      FeedbackSection.sendFeedback.rawValue)]         = reportIssue
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.joinBeta.rawValue)]             = joinBeta
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.askForRating.rawValue)]         = askForRating
         allSettings[SettingsDictKey(.about,         AboutSection.faq.rawValue)]                     = faq
@@ -252,9 +252,9 @@ class Settings {
                                       symbol: AuthenticationService.symbolName,
                                       forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
                                       enabled: Constants.User.canUseBiometrics)
-    let sendFeedback        = Setting(title: "Send Feedback",
-                                      symbol: "text.bubble",
-                                      withURL: URL(string: "mailto:dev@pgpro.app?subject=%5BPGPro%20\(Constants.PGPro.version ?? "")%5D%20Feedback")!)
+    let reportIssue         = Setting(title: "Report Issue",
+                                      symbol: "ladybug",
+                                      withURL: URL(string: "https://github.com/lucanaef/PGPro/issues/new")!)
     let joinBeta            = Setting(title: "Join the PGPro Beta",
                                       symbol: "stethoscope",
                                       withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
