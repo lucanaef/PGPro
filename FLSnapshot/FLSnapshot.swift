@@ -30,18 +30,18 @@ class FLSnapshot: XCTestCase {
     func testGenerateScreenshots() {
         let app = XCUIApplication()
 
-        snapshot("1-EncryptionView")
-
-        app.tabBars.buttons["Decryption"].tap()
-
         snapshot("2-DecryptionView")
 
-        app.tabBars.buttons["Keychain"].tap()
+        app.tabBars.buttons["Encryption"].tap()
+        snapshot("1-EncryptionView")
 
+        app.tabBars.buttons["Settings"].tap()
+        snapshot("5-SettingsView")
+
+        app.tabBars.buttons["Keychain"].tap()
         snapshot("3-KeychainView")
 
         app.tables.firstMatch.cells.firstMatch.tap()
-
         snapshot("4-DetailView")
     }
 
