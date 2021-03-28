@@ -383,7 +383,11 @@ extension EncryptionViewController: KeySelectionDelegate {
         if type == Constants.KeyType.publicKey {
             self.encryptionContacts = selected
         } else if type == Constants.KeyType.privateKey {
-            self.signatureContact = selected[0]
+            if selected.isEmpty {
+                self.signatureContact = nil
+            } else {
+                self.signatureContact = selected[0]
+            }
         }
 
         self.updateView()
