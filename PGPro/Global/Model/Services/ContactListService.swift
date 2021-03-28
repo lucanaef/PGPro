@@ -58,6 +58,12 @@ class ContactListService {
         }
     }
 
+    class func get(forKey key: Key) -> Contact? {
+        return contactList.first { Contact in
+            Contact.key == key
+        }
+    }
+
     // MARK - Mutate List
     class func add(name: String, email: String, key: Key) -> ContactListResult {
         // Check that no contact with this key already exists

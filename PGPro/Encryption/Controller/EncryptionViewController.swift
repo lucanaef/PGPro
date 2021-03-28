@@ -24,7 +24,18 @@ class EncryptionViewController: UIViewController {
     private let cellIdentifier = "EncryptionTableViewCell"
 
     private var encryptionContacts = [Contact]()
-    private var selectionLabel = "Select Public Keys..."
+    private var signatureContact: Contact?
+    private var signatureKeyPassphrase: String?
+    private var passphraseRequired: Bool {
+        if let signatureContact = signatureContact {
+            return signatureContact.key.isEncryptedWithPassword
+        } else {
+            return false
+        }
+    }
+
+    private var encryptionKeysSelectionLabel = "Select Contacts..."
+    private var signatureKeysSelectionLabel = "Add Signature..."
 
     lazy private var tableView: UITableView = {
         let tableView = UITableView()
@@ -98,20 +109,28 @@ class EncryptionViewController: UIViewController {
 
     @objc
     private func updateView() {
-        var label = "Select Public Keys..."
-        let count = encryptionContacts.count
+        var encryptionLabel = "Select Contacts..."
+        var signatureLabel = "Add Signature..."
+
+        let encryptionCount = encryptionContacts.count
         
-        if (count == 1) {
-            label = encryptionContacts[0].userID
-        } else if (count > 0) {
-            label = encryptionContacts[0].name
+        if (encryptionCount == 1) {
+            encryptionLabel = encryptionContacts[0].userID
+        } else if (encryptionCount > 1) {
+            encryptionLabel = encryptionContacts[0].name
             
             let tail = encryptionContacts.dropFirst()
             for ctct in tail {
-                label.append(", " + ctct.name)
+                encryptionLabel.append(", " + ctct.name)
             }
         }
-        selectionLabel = label
+        encryptionKeysSelectionLabel = encryptionLabel
+
+        if let signatureContact = signatureContact {
+            signatureLabel = signatureContact.userID
+        }
+        signatureKeysSelectionLabel = signatureLabel
+
         tableView.reloadData()
     }
 
@@ -124,6 +143,7 @@ class EncryptionViewController: UIViewController {
         // Create OK button with action handler
         let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
             self.resetSelection()
+            self.signatureKeyPassphrase = nil
             self.textView.text = ""
             self.textView.textViewDidChange(self.textView)
             self.tableView.reloadData()
@@ -172,6 +192,7 @@ class EncryptionViewController: UIViewController {
     @objc
     private func resetSelection() {
         encryptionContacts = [Contact]()
+        signatureContact = nil
         updateView()
     }
     
@@ -185,7 +206,41 @@ class EncryptionViewController: UIViewController {
 
         var encryptedMessage: String
         do {
-            encryptedMessage = try CryptographyService.encrypt(message: text, for: encryptionContacts)
+            if let signatureContact = signatureContact {
+                // For each private key included in signatureContacts OR encryptionContacts, we need the passphrase.
+                //  That's how the framework call works (no separation between encryption and signing)
+
+                // Check that encryption contacts don't contain private keys
+                let noPrivateKeys = encryptionContacts.filter { $0.key.isSecret }.isEmpty
+                guard noPrivateKeys else {
+                    alert(text: "PGPro does not support signing messages if the encryption contacts include private keys.")
+                    return
+                }
+
+                // Check that there is a valid non-nil passphrase for the signing key
+                if passphraseRequired {
+                    guard let signatureKeyPassphrase = signatureKeyPassphrase else {
+                        alert(text: "Signing requires the passphrase of the private Key!")
+                        return
+                    }
+                    guard CryptographyService.passphraseIsCorrect(signatureKeyPassphrase, for: signatureContact.key) else {
+                        alert(text: "Incorrect Passphrase!")
+                        return
+                    }
+                }
+
+                encryptedMessage = try CryptographyService.encrypt(message: text, for: encryptionContacts, by: [signatureContact], passphraseForContact: { Contact in
+                    // A bit hacky but it works since we only allow signing with one key and no private keys in encryption contacts
+                    if Contact == signatureContact {
+                        return self.signatureKeyPassphrase
+                    } else {
+                        Log.s("Framework requested passphrase for non-signing key or non-encrypted key!")
+                        return nil
+                    }
+                })
+            } else {
+                encryptedMessage = try CryptographyService.encrypt(message: text, for: encryptionContacts)
+            }
         } catch {
             switch error {
             case CryptographyError.emptyMessage:
@@ -224,11 +279,20 @@ class EncryptionViewController: UIViewController {
 
 extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
 
-    private var selectionRow: Int { return 0 }
-    private var messageRow: Int { return 1 }
+    enum EncryptionRows: Int, CaseIterable {
+        case encryptionContacts = 0
+        case signatureContact = 1
+        case passphrase = 2
+        case message = 3
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return EncryptionRows.allCases.count
+    }
+
+    @objc
+    func textFieldDidChange(_ textField: UITextField) {
+        signatureKeyPassphrase = textField.text
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -241,10 +305,22 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .none
 
         switch (indexPath.row) {
-        case selectionRow:
-            cell.textLabel?.text = selectionLabel
+        case EncryptionRows.encryptionContacts.rawValue:
+            cell.textLabel?.text = encryptionKeysSelectionLabel
             cell.accessoryType = .disclosureIndicator
-        case messageRow:
+        case EncryptionRows.signatureContact.rawValue:
+            cell.textLabel?.text = signatureKeysSelectionLabel
+            cell.accessoryType = .disclosureIndicator
+        case EncryptionRows.passphrase.rawValue:
+            let passphraseCell = FullTextFieldTableViewCell(style: .value1, reuseIdentifier: "FDTextFieldTableViewCell")
+            passphraseCell.textField.placeholder = "Passphrase"
+            passphraseCell.textField.text = signatureKeyPassphrase
+            passphraseCell.textField.clearButtonMode = .never
+            passphraseCell.textField.textContentType = .password
+            passphraseCell.textField.isSecureTextEntry = true
+            passphraseCell.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+            cell = passphraseCell
+        case EncryptionRows.message.rawValue:
             let cellView = cell.contentView
             cellView.addSubview(textView)
             textView.pinEdges(to: cellView)
@@ -257,32 +333,35 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch (indexPath.row) {
-        case selectionRow:
-            let keySelectionViewController = KeySelectionViewController()
-            keySelectionViewController.set(toType: .publicKey)
-            keySelectionViewController.delegate = self
-            navigationController?.pushViewController(keySelectionViewController, animated: true)
-        case messageRow:
-            return
+        case EncryptionRows.encryptionContacts.rawValue:
+            let encryptionContactSelectionVC = KeySelectionViewController()
+            encryptionContactSelectionVC.set(toType: .publicKey)
+            encryptionContactSelectionVC.delegate = self
+            navigationController?.pushViewController(encryptionContactSelectionVC, animated: true)
+        case EncryptionRows.signatureContact.rawValue:
+            let signatureContactSelectionVC = KeySelectionViewController()
+            signatureContactSelectionVC.set(toType: .privateKey)
+            signatureContactSelectionVC.delegate = self
+            navigationController?.pushViewController(signatureContactSelectionVC, animated: true)
         default:
-            Log.s("indexPath out of bounds!")
+            return
         }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch (indexPath.row) {
-        case selectionRow:
-            return 44
-        case messageRow:
+        case EncryptionRows.passphrase.rawValue:
+            return passphraseRequired ? 44 : 0
+        case EncryptionRows.message.rawValue:
             var height = self.view.frame.height
-            height -= 44
+            height -= 2*44 // Key Selection Rows
+            height -= passphraseRequired ? 44 : 0 // Passphrase Row
             height -= (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0)
             height -= (self.navigationController?.navigationBar.frame.height ?? 0.0)
             height -= (self.tabBarController?.tabBar.frame.size.height ?? 0.0)
             return height
         default:
-            Log.e("indexPath out of bounds!")
-            return 0
+            return 44
         }
     }
 
@@ -300,8 +379,13 @@ extension EncryptionViewController: MFMailComposeViewControllerDelegate, UINavig
 
 extension EncryptionViewController: KeySelectionDelegate {
 
-    func update(selected: [Contact]) {
-        self.encryptionContacts = selected
+    func update(selected: [Contact], for type: Constants.KeyType) {
+        if type == Constants.KeyType.publicKey {
+            self.encryptionContacts = selected
+        } else if type == Constants.KeyType.privateKey {
+            self.signatureContact = selected[0]
+        }
+
         self.updateView()
     }
 

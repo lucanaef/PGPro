@@ -18,7 +18,7 @@
 import UIKit
 
 protocol KeySelectionDelegate {
-    func update(selected: [Contact])
+    func update(selected: [Contact], for type: Constants.KeyType)
 }
 
 class KeySelectionViewController: UIViewController {
@@ -69,7 +69,7 @@ class KeySelectionViewController: UIViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        if (delegate != nil) { delegate?.update(selected: selectedContacts) }
+        if (delegate != nil) { delegate?.update(selected: selectedContacts, for: type) }
     }
 
     func set(toType type: Constants.KeyType) {

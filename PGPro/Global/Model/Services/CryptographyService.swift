@@ -24,6 +24,7 @@ enum CryptographyError: Error {
     case requiresPassphrase
     case wrongPassphrase
     case frameworkError(_ error: Error)
+    case failedEncryption
     case failedDecryption
 }
 
@@ -31,14 +32,53 @@ class CryptographyService {
 
     private init() {}
 
-    static func encrypt(message: String, for contacts: [Contact]) throws -> String {
+    /**
+     Encrypts and signs a message.
+     *Note*: If `contacts` contains a keys that includes a private keys,
+     this method will also sign the message with that key.
+     (That's how the framework call works)[https://github.com/krzyzanowskim/ObjectivePGP/issues/97].
+
+     - Parameters:
+        - message: A string to be encrypted and signed
+        - contacts: The contacts (keys) for whom the message should be encrypted for.
+        - signatures: The contacts (keys) that sign the message (optional).
+        - passphraseForKey: Handler for passphrase protected keys. Return passphrase for a key in question.
+
+     - Throws:
+        - `CryptographyError.emptyMessage` if the `message` contains an empty string.
+        - `CryptographyError.invalidMessage` if the `message` can't be UTF8-encoded.
+        - `CryptographyError.frameworkError` if ObjectivePGP throws an error during encryption.
+        - `CryptographyError.failedEncryption` if the called wants to sign messages without providing a passphrase handler.
+
+     - Returns: A new string containing the encrypted, (signed) and armored message.
+     */
+    static func encrypt(message: String, for contacts: [Contact], by signatures: [Contact]? = nil, passphraseForContact passphrase: ((Contact) -> String?)? = nil) throws -> String {
         guard message != "" else { throw CryptographyError.emptyMessage }
         guard let messageData = message.data(using: .utf8) else { throw CryptographyError.invalidMessage }
 
-        let encryptionKeys = contacts.map { $0.key }
-        assert(encryptionKeys.count > 0, "CryptographyService.encrypt(for: \(contacts)): Argument contains no contact with supported OpenPGP key.")
+        // Get encryption keys
+        var keys = contacts.map { $0.key }
+        assert(keys.count > 0, "CryptographyService.encrypt(for: \(contacts)): Argument contains no contact with supported OpenPGP key.")
+
+        // Get signing keys
+        var signMessage = false
+        if let signatures = signatures, !signatures.isEmpty {
+            signMessage = true
+            // Check that passphrase is not nil
+            guard passphrase != nil else {
+                throw CryptographyError.failedEncryption
+            }
+            let signingKeys = signatures.map { $0.key }
+            keys.append(contentsOf: signingKeys)
+        }
+
+        // Encrypt (and sign) the message
         do {
-            let encryptedBin = try ObjectivePGP.encrypt(messageData, addSignature: false, using: encryptionKeys)
+            let encryptedBin = try ObjectivePGP.encrypt(messageData, addSignature: signMessage, using: keys, passphraseForKey: { (Key) in
+                let contact = ContactListService.get(forKey: Key)
+                return passphrase!(contact!) // hic sunt dracones 🐉
+            })
+
             AppStoreReviewService.incrementReviewWorthyActionCount()
             return Armor.armored(encryptedBin, as: .message)
         } catch {
@@ -86,7 +126,7 @@ class CryptographyService {
         }
     }
 
-    private static func passphraseIsCorrect(_ passphrase: String, for key: Key) -> Bool {
+    static func passphraseIsCorrect(_ passphrase: String, for key: Key) -> Bool {
         do {
             _ = try key.decrypted(withPassphrase: passphrase)
         } catch {

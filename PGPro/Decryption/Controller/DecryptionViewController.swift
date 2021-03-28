@@ -296,8 +296,8 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension DecryptionViewController: KeySelectionDelegate {
-
-    func update(selected: [Contact]) {
+    
+    func update(selected: [Contact], for type: Constants.KeyType) {
         decryptionContact = selected.isEmpty ? nil : selected[0]
         self.updateView()
     }
