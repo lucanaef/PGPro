@@ -256,7 +256,7 @@ class Settings {
                                       symbol: "ladybug",
                                       withURL: URL(string: "https://github.com/lucanaef/PGPro/issues/new")!)
     let joinBeta            = Setting(title: "Join the PGPro Beta",
-                                      symbol: "stethoscope",
+                                      symbol: "airplane",
                                       withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
     let askForRating        = Setting(title: "Please Rate PGPro",
                                       symbol: "heart",
