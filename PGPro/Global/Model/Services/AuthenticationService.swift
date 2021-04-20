@@ -38,7 +38,9 @@ class AuthenticationService {
 
     static var symbolName: String = {
         var imageName = "lock"
-        if AuthenticationService.touchIDAvailable { imageName = "touchid" }
+        if #available(iOS 14.0, *) {
+            if AuthenticationService.touchIDAvailable { imageName = "touchid" }
+        }
         if AuthenticationService.faceIDAvailable { imageName = "faceid" }
 
         return imageName
