@@ -121,10 +121,10 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
 
         var rows: Int {
             switch self {
-                case .contact:
-                    return ContactSection.allCases.count
-                case .key:
-                    return KeySection.allCases.count
+            case .contact:
+                return ContactSection.allCases.count
+            case .key:
+                return KeySection.allCases.count
             }
         }
     }

@@ -74,8 +74,8 @@ class CryptographyService {
 
         // Encrypt (and sign) the message
         do {
-            let encryptedBin = try ObjectivePGP.encrypt(messageData, addSignature: signMessage, using: keys, passphraseForKey: { (Key) in
-                let contact = ContactListService.get(forKey: Key)
+            let encryptedBin = try ObjectivePGP.encrypt(messageData, addSignature: signMessage, using: keys, passphraseForKey: { key in
+                let contact = ContactListService.get(forKey: key)
                 return passphrase!(contact!) // hic sunt dracones 🐉
             })
 

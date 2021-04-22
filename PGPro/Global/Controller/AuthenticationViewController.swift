@@ -99,7 +99,7 @@ class AuthenticationViewController: UIViewController {
                         self.alert(text: "Authentication failed: \(error.localizedDescription)")
                     }
                 }
-            case .success(_): // bool must be true in case of success
+            case .success:
                 DispatchQueue.main.async {
                     onSuccess()
                 }

@@ -40,7 +40,7 @@ extension Contact {
 
         if (key.isPublic && !key.isSecret) {
             symbol = "person.circle"
-        } else if (!key.isPublic && key.isSecret){
+        } else if (!key.isPublic && key.isSecret) {
             symbol = "person.circle.fill"
         } else if (key.isPublic && key.isSecret) {
             symbol = "person.2.circle.fill"

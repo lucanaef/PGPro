@@ -3,7 +3,6 @@
 //  FLSnapshot
 //
 //  Created by Luca Näf on 10.03.20.
-//  Copyright © 2020 Luca Näf. All rights reserved.
 //
 
 import XCTest

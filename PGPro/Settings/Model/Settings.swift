@@ -50,7 +50,7 @@ class Setting {
     // Mark: - Type-specific fields
 
     // Activity:
-    private(set) var activity: ((_ viewController: UIViewController, _ completion: () -> Void) -> ())?
+    private(set) var activity: ((_ viewController: UIViewController, _ completion: () -> Void) -> Void)?
     init(title: String, symbol: String, subtitle: String? = nil, withActivity activity: @escaping (_ viewController: UIViewController, _ completion: () -> Void) -> Void) {
         self.title = title
         self.symbolName = symbol
@@ -127,7 +127,7 @@ class Settings {
         }
     }
 
-    private(set) var allSettings: [SettingsDictKey : Setting] = [:]
+    private(set) var allSettings: [SettingsDictKey: Setting] = [:]
     init () {
         allSettings[SettingsDictKey(.data,          DataSection.exportKeychain.rawValue)]           = exportKeychain
         allSettings[SettingsDictKey(.data,          DataSection.deleteAllKeys.rawValue)]            = deleteAllKeys
@@ -151,19 +151,19 @@ class Settings {
 
         var rows: Int {
             switch self {
-                case .data:         return DataSection.allCases.count
-                case .preferences:  return PreferencesSection.allCases.count
-                case .feedback:     return FeedbackSection.allCases.count
-                case .about:        return AboutSection.allCases.count
+            case .data:         return DataSection.allCases.count
+            case .preferences:  return PreferencesSection.allCases.count
+            case .feedback:     return FeedbackSection.allCases.count
+            case .about:        return AboutSection.allCases.count
             }
         }
 
         var header: String? {
             switch self {
-                case .data:         return DataSection.header
-                case .preferences:  return PreferencesSection.header
-                case .feedback:     return FeedbackSection.header
-                case .about:        return AboutSection.header
+            case .data:         return DataSection.header
+            case .preferences:  return PreferencesSection.header
+            case .feedback:     return FeedbackSection.header
+            case .about:        return AboutSection.header
             }
         }
     }

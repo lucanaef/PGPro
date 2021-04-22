@@ -17,7 +17,7 @@
 
 import UIKit
 import MobileCoreServices
-import ObjectivePGP // TODO: should not be needed in view controller...
+import ObjectivePGP
 
 class KeychainViewController: UIViewController {
     
@@ -103,7 +103,7 @@ class KeychainViewController: UIViewController {
             optionMenu.dismiss(animated: true, completion: nil)
             let generateKeyViewController = GenerateKeyViewController()
             let navController = UINavigationController(rootViewController: generateKeyViewController)
-            self.present(navController, animated:true, completion: nil)
+            self.present(navController, animated: true, completion: nil)
         }
         optionMenu.addAction(generateKey)
 
@@ -176,7 +176,7 @@ class KeychainViewController: UIViewController {
         present(documentPicker, animated: true, completion: nil)
     }
 
-    private func filterContactsforSearchText(searchText: String){
+    private func filterContactsforSearchText(searchText: String) {
         filteredContacts = contacts.filter({ (contact: Contact) -> Bool in
             // return every contact if no search text speficied
             if (searchController.searchBar.text?.isEmpty ?? true) {
@@ -198,7 +198,7 @@ class KeychainViewController: UIViewController {
 
 }
 
-// MARK - Document Picker
+// MARK: - Document Picker
 
 extension KeychainViewController: UIDocumentPickerDelegate {
 
@@ -229,7 +229,7 @@ extension KeychainViewController: UIDocumentPickerDelegate {
 
 }
 
-// MARK - Table View
+// MARK: - Table View
 
 extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -289,7 +289,7 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK - Search Bar
+// MARK: - Search Bar
 
 extension KeychainViewController: UISearchBarDelegate {
 

@@ -42,17 +42,17 @@ enum Constants {
             // try to get current number and update cached value
             iTunesInterface.requestJSON(localizedFor: User.countryCode) { result in
                 switch result {
-                    case .failure(let error):
-                        Log.e(error)
-                    case .success(let data):
-                        if let data = data[0] as? [String: Any] {
-                            if let userRatingCount = data["userRatingCountForCurrentVersion"] {
-                                let numRatings = userRatingCount as? Int
-                                if let numRatings = numRatings {
-                                    Preferences.numRatings = numRatings
-                                }
+                case .failure(let error):
+                    Log.e(error)
+                case .success(let data):
+                    if let data = data[0] as? [String: Any] {
+                        if let userRatingCount = data["userRatingCountForCurrentVersion"] {
+                            let numRatings = userRatingCount as? Int
+                            if let numRatings = numRatings {
+                                Preferences.numRatings = numRatings
                             }
                         }
+                    }
                 }
             }
             // return cached value

@@ -71,28 +71,28 @@ class GenerateKey {
 
         var rows: Int {
             switch self {
-                case .contact:
-                    return ContactSection.allCases.count
-                case .security:
-                    return SecuritySection.allCases.count
+            case .contact:
+                return ContactSection.allCases.count
+            case .security:
+                return SecuritySection.allCases.count
             }
         }
 
         var header: String? {
             switch self {
-                case .contact:
-                    return ContactSection.header
-                case .security:
-                    return SecuritySection.header
+            case .contact:
+                return ContactSection.header
+            case .security:
+                return SecuritySection.header
             }
         }
 
         var footer: String? {
             switch self {
-                case .contact:
-                    return ContactSection.footer
-                case .security:
-                    return SecuritySection.footer
+            case .contact:
+                return ContactSection.footer
+            case .security:
+                return SecuritySection.footer
             }
         }
 

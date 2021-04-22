@@ -59,16 +59,16 @@ class ContactListService {
     }
 
     class func get(forKey key: Key) -> Contact? {
-        return contactList.first { Contact in
-            Contact.key == key
+        return contactList.first { contact in
+            contact.key == key
         }
     }
 
     // MARK - Mutate List
     class func add(name: String, email: String, key: Key) -> ContactListResult {
         // Check that no contact with this key already exists
-        guard !contactList.contains( where: {
-            (contact) -> Bool in (contact.key == key)
+        guard !contactList.contains( where: { contact -> Bool in
+            contact.key == key
         }) else {
             return ContactListResult(successful: 0, unsupported: 0, duplicates: 1)
         }
@@ -88,8 +88,8 @@ class ContactListService {
         }
 
         // Check for duplicates
-        if contactList.contains(where: {
-            (existingContact) -> Bool in existingContact == contact
+        if contactList.contains(where: { existingContact -> Bool in
+            existingContact == contact
         }) {
             // Delete contact from persistent data
             PersistenceService.context.delete(contact)

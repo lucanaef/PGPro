@@ -127,7 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let tabBarController = UITabBarController()
         let viewControllers = [encryptionVC, decryptionVC, keychainVC, settingsVC]
-        let navigationViewControllers = viewControllers.map{ UINavigationController.init(rootViewController: $0)}
+        let navigationViewControllers = viewControllers.map{ UINavigationController.init(rootViewController: $0) }
         tabBarController.viewControllers = navigationViewControllers
 
         let encryptionTabImage = UIImage(systemName: "lock.fill")

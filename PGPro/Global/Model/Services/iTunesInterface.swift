@@ -40,7 +40,7 @@ class iTunesInterface {
             return
         }
 
-        URLSession.shared.dataTask(with: url) { data, res, error in
+        URLSession.shared.dataTask(with: url) { data, _, error in
             if (error != nil) {
                 completion(.failure(.networkError))
                 return

@@ -116,7 +116,7 @@ class VerifyingKeyserverInterface {
                     completion(.failure(.invalidResponse))
                     return
                 }
-            }, catch: { (error) in
+            }, catch: { (_) in
                 completion(.failure(.keyNotSupported))
                 return
                 }, finallyBlock: {

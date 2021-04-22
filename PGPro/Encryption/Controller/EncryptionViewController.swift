@@ -229,9 +229,9 @@ class EncryptionViewController: UIViewController {
                     }
                 }
 
-                encryptedMessage = try CryptographyService.encrypt(message: text, for: encryptionContacts, by: [signatureContact], passphraseForContact: { Contact in
+                encryptedMessage = try CryptographyService.encrypt(message: text, for: encryptionContacts, by: [signatureContact], passphraseForContact: { contact in
                     // A bit hacky but it works since we only allow signing with one key and no private keys in encryption contacts
-                    if Contact == signatureContact {
+                    if contact == signatureContact {
                         return self.signatureKeyPassphrase
                     } else {
                         Log.s("Framework requested passphrase for non-signing key or non-encrypted key!")

@@ -132,7 +132,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     @objc
-    func switchStateDidChange(_ sender : PassableUISwitch!) {
+    func switchStateDidChange(_ sender: PassableUISwitch!) {
         guard let settingsDictKey = sender.params["setting"] as? Settings.SettingsDictKey else {
             Log.s("Unable to get passed value (key) from switch")
             return
