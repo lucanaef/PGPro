@@ -254,7 +254,7 @@ class Settings {
                                       enabled: Constants.User.canUseBiometrics)
     let reportIssue         = Setting(title: "Report Issue",
                                       symbol: "ladybug",
-                                      withURL: URL(string: "https://github.com/lucanaef/PGPro/issues/new")!)
+                                      withURL: URL(string: "https://github.com/lucanaef/PGPro/issues")!)
     let joinBeta            = Setting(title: "Join the PGPro Beta",
                                       symbol: "airplane",
                                       withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
