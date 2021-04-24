@@ -227,7 +227,7 @@ open class Snapshot: NSObject {
         #if os(OSX)
             let homeDir = URL(fileURLWithPath: NSHomeDirectory())
             return homeDir.appendingPathComponent(cachePath)
-        #elseif arch(i386) || arch(x86_64)
+        #elseif arch(i386) || arch(x86_64) || arch(arm64)
             guard let simulatorHostHome = ProcessInfo().environment["SIMULATOR_HOST_HOME"] else {
                 throw SnapshotError.cannotFindSimulatorHomeDirectory
             }
@@ -302,4 +302,4 @@ private extension CGFloat {
 
 // Please don't remove the lines below
 // They are used to detect outdated configuration files
-// SnapshotHelperVersion [1.24]
+// SnapshotHelperVersion [1.25]
