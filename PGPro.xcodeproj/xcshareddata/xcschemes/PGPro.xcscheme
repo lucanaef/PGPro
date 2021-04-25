@@ -57,6 +57,16 @@
                ReferencedContainer = "container:PGPro.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "812E9E652635D279008C910C"
+               BuildableName = "PGProTests.xctest"
+               BlueprintName = "PGProTests"
+               ReferencedContainer = "container:PGPro.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

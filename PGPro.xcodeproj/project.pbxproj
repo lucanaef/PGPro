@@ -19,6 +19,7 @@
 		8120EF54249FA008007F3420 /* PassableUISwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF53249FA008007F3420 /* PassableUISwitch.swift */; };
 		8120EF56249FA4CB007F3420 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF55249FA4CB007F3420 /* Preferences.swift */; };
 		8120EF58249FB5A4007F3420 /* LicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF57249FB5A4007F3420 /* LicensesViewController.swift */; };
+		812E9E692635D279008C910C /* PGProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E9E682635D279008C910C /* PGProTests.swift */; };
 		81323BEA24A2440D00ADAABA /* GenerateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81323BE924A2440D00ADAABA /* GenerateKey.swift */; };
 		8137AC6F233271E3007483EA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137AC6E233271E3007483EA /* Constants.swift */; };
 		8137AC712332AC1C007483EA /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137AC702332AC1C007483EA /* String+Email.swift */; };
@@ -67,6 +68,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		812E9E6B2635D279008C910C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81E46310231029A4008DC317 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81E46317231029A4008DC317;
+			remoteInfo = PGPro;
+		};
 		817E6E4C24179B7F0040A28B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 81E46310231029A4008DC317 /* Project object */;
@@ -93,6 +101,9 @@
 		8120EF53249FA008007F3420 /* PassableUISwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassableUISwitch.swift; sourceTree = "<group>"; };
 		8120EF55249FA4CB007F3420 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		8120EF57249FB5A4007F3420 /* LicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicensesViewController.swift; sourceTree = "<group>"; };
+		812E9E662635D279008C910C /* PGProTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PGProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		812E9E682635D279008C910C /* PGProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTests.swift; sourceTree = "<group>"; };
+		812E9E6A2635D279008C910C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		81323BE924A2440D00ADAABA /* GenerateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKey.swift; sourceTree = "<group>"; };
 		8137AC6E233271E3007483EA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = PGPro/Global/Model/Constants.swift; sourceTree = SOURCE_ROOT; };
 		8137AC702332AC1C007483EA /* String+Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
@@ -143,6 +154,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		812E9E632635D279008C910C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		817E6E4424179B7F0040A28B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -180,6 +198,15 @@
 				8120EF4D249EA2F0007F3420 /* IsoCountryCodes.swift */,
 			);
 			path = IsoCountryCodes;
+			sourceTree = "<group>";
+		};
+		812E9E672635D279008C910C /* PGProTests */ = {
+			isa = PBXGroup;
+			children = (
+				812E9E682635D279008C910C /* PGProTests.swift */,
+				812E9E6A2635D279008C910C /* Info.plist */,
+			);
+			path = PGProTests;
 			sourceTree = "<group>";
 		};
 		81453BA8247B121800613F18 /* Model */ = {
@@ -403,6 +430,7 @@
 			children = (
 				81E4631A231029A4008DC317 /* PGPro */,
 				817E6E4824179B7F0040A28B /* FLSnapshot */,
+				812E9E672635D279008C910C /* PGProTests */,
 				81E46319231029A4008DC317 /* Products */,
 				8114B89D23113453001DBAC5 /* Frameworks */,
 			);
@@ -413,6 +441,7 @@
 			children = (
 				81E46318231029A4008DC317 /* PGPro.app */,
 				817E6E4724179B7F0040A28B /* FLSnapshot.xctest */,
+				812E9E662635D279008C910C /* PGProTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -442,6 +471,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		812E9E652635D279008C910C /* PGProTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 812E9E6F2635D279008C910C /* Build configuration list for PBXNativeTarget "PGProTests" */;
+			buildPhases = (
+				812E9E622635D279008C910C /* Sources */,
+				812E9E632635D279008C910C /* Frameworks */,
+				812E9E642635D279008C910C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				812E9E6C2635D279008C910C /* PBXTargetDependency */,
+			);
+			name = PGProTests;
+			productName = PGProTests;
+			productReference = 812E9E662635D279008C910C /* PGProTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		817E6E4624179B7F0040A28B /* FLSnapshot */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 817E6E4E24179B7F0040A28B /* Build configuration list for PBXNativeTarget "FLSnapshot" */;
@@ -487,10 +534,14 @@
 		81E46310231029A4008DC317 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Luca Näf";
 				TargetAttributes = {
+					812E9E652635D279008C910C = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = 81E46317231029A4008DC317;
+					};
 					817E6E4624179B7F0040A28B = {
 						CreatedOnToolsVersion = 11.3.1;
 						TestTargetID = 81E46317231029A4008DC317;
@@ -520,11 +571,19 @@
 			targets = (
 				81E46317231029A4008DC317 /* PGPro */,
 				817E6E4624179B7F0040A28B /* FLSnapshot */,
+				812E9E652635D279008C910C /* PGProTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		812E9E642635D279008C910C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		817E6E4524179B7F0040A28B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -544,6 +603,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		812E9E622635D279008C910C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				812E9E692635D279008C910C /* PGProTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		817E6E4324179B7F0040A28B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -614,6 +681,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		812E9E6C2635D279008C910C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81E46317231029A4008DC317 /* PGPro */;
+			targetProxy = 812E9E6B2635D279008C910C /* PBXContainerItemProxy */;
+		};
 		817E6E4D24179B7F0040A28B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 81E46317231029A4008DC317 /* PGPro */;
@@ -633,6 +705,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		812E9E6D2635D279008C910C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q7BD4XD9Q7;
+				INFOPLIST_FILE = PGProTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = lu.naef.PGProTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PGPro.app/PGPro";
+			};
+			name = Debug;
+		};
+		812E9E6E2635D279008C910C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q7BD4XD9Q7;
+				INFOPLIST_FILE = PGProTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = lu.naef.PGProTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PGPro.app/PGPro";
+			};
+			name = Release;
+		};
 		817E6E4F24179B7F0040A28B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -849,6 +963,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		812E9E6F2635D279008C910C /* Build configuration list for PBXNativeTarget "PGProTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				812E9E6D2635D279008C910C /* Debug */,
+				812E9E6E2635D279008C910C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		817E6E4E24179B7F0040A28B /* Build configuration list for PBXNativeTarget "FLSnapshot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
