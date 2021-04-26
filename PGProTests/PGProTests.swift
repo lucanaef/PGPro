@@ -24,46 +24,23 @@ class PGProTests: XCTestCase {
 
     var context: NSManagedObjectContext?
 
-    enum PGProTestsError: Error {
-        case keyGeneratonError
-    }
-
     override func setUpWithError() throws {
-        context = setUpInMemoryManagedObjectContext()
+        context = PGProTestsHelper.setUpInMemoryManagedObjectContext()
     }
 
     override func tearDownWithError() throws {
         context = nil
     }
 
-    private func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
-        let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
-
-        print(managedObjectModel.entities)
-
-        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-
-        do {
-            try persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
-        } catch {
-            print("Adding in-memory persistent store failed")
-        }
-
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
-
-        return managedObjectContext
-    }
-
     func testGenerateKeyNoPassphraseEncryptDecrypt() throws {
-        // generate key
+        /// Generate key
         let name = "PGPro 0"
         let email = "0@test.pgpro.app"
 
         let keyGen = KeyGenerator()
         let key = keyGen.generate(for: email, passphrase: nil)
 
-        // import key
+        /// Import key
         let contact = Contact(context: context!)
         contact.name = name
         contact.email = email
@@ -71,21 +48,15 @@ class PGProTests: XCTestCase {
         do {
             let keyData = try key.export() as NSData
             guard (keyData.length > 0) else {
-                throw PGProTestsError.keyGeneratonError
+                throw PGProTestsHelper.TestsError.keyGeneratonError
             }
             contact.keyData = keyData
         } catch {
-            throw PGProTestsError.keyGeneratonError
+            throw PGProTestsHelper.TestsError.keyGeneratonError
         }
 
-        // encrypt and decrypt message
-        let message =
-        """
-        In sequi veniam est nihil exercitationem numquam. Quisquam beatae eos aliquam quo et.
-        Aut atque voluptates in doloribus aspernatur error nobis.
-        Consequuntur nesciunt deleniti illo vel aut error facilis.
-        Non et quos laborum vero debitis. Nihil accusantium est vitae pariatur illo.
-        """
+        /// Encrypt and decrypt message
+        let message = PGProTestsHelper.randomString(of: 2048)
 
         do {
             let encryptedMessage = try CryptographyService.encrypt(message: message, for: [contact])
@@ -103,6 +74,70 @@ class PGProTests: XCTestCase {
             throw error
         }
 
+    }
+
+    private func importEncryptDecrypt(id: Int, from url: URL, passphrase: String?, for message: String? = nil, isSupported: Bool = true) throws {
+        do {
+            /// Check that supported keys are supported
+            if isSupported {
+                XCTAssertNoThrow(try KeyConstructionService.fromFile(fileURL: url))
+            } else {
+                XCTAssertThrowsError(try KeyConstructionService.fromFile(fileURL: url))
+            }
+
+            /// Import key from file
+            let keys = try KeyConstructionService.fromFile(fileURL: url)
+            let key = keys.first!
+
+            /// Construct contact from key
+            let contact = Contact(context: context!)
+            contact.name = "PGPro \(id)"
+            contact.email = "\(id)@test.pgpro.app"
+
+            do {
+                let keyData = try key.export() as NSData
+                guard (keyData.length > 0) else {
+                    throw PGProTestsHelper.TestsError.keyGeneratonError
+                }
+                contact.keyData = keyData
+            } catch {
+                throw PGProTestsHelper.TestsError.keyGeneratonError
+            }
+
+            /// If necessary, generate random message
+            let message: String = message ?? PGProTestsHelper.randomString(of: Int.random(in: 0...10000))
+
+            /// Encrypt and decrypt message
+            do {
+                let encryptedMessage = try CryptographyService.encrypt(message: message, for: [contact])
+
+                do {
+                    let decryptedMessage = try CryptographyService.decrypt(message: encryptedMessage, by: contact, withPassphrase: passphrase)
+
+                    XCTAssertEqual(message, decryptedMessage)
+
+                } catch (let error) {
+                    throw error
+                }
+
+            } catch (let error) {
+                throw error
+            }
+
+
+        } catch (let error) {
+            throw error
+        }
+    }
+
+    func testImportEncryptDecrypt() throws {
+        for key in PGProTestsKeys.keys {
+            do {
+                try importEncryptDecrypt(id: key.id, from: key.url, passphrase: key.passphrase, isSupported: key.isSupported)
+            } catch (let error) {
+                throw error
+            }
+        }
     }
 
 }
