@@ -7,7 +7,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a27e0963b0384739bad90cde28cb08b8)](https://www.codacy.com/manual/lucanaef/PGPro?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lucanaef/PGPro&amp;utm_campaign=Badge_Grade)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flucanaef%2FPGPro.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Flucanaef%2FPGPro?ref=badge_shield)
 
-PGPro can encrypt and decrypt messages as well as manage all your PGP keys. It is free, simple and lightweight. Everything stays on your device. PGPro is made in Switzerland.
+PGPro can encrypt and decrypt messages as well as manage all your OpenPGP keys. It is free, simple and lightweight. Everything stays on your device. PGPro is made in Switzerland.
 
 ## Screenshots
 <p float="left">

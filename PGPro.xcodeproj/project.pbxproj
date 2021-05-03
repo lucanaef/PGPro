@@ -117,7 +117,7 @@
 		815A63B02636F33E001BD30A /* PGProTestsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTestsHelper.swift; sourceTree = "<group>"; };
 		815A63B82636FB22001BD30A /* PGProTestsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTestsKeys.swift; sourceTree = "<group>"; };
 		815A63CA26370DE4001BD30A /* 1.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1.asc; sourceTree = "<group>"; };
-		815A63D226371C29001BD30A /* 2.asc */ = {isa = PBXFileReference; lastKnownFileType = file; name = 2.asc; path = PGProTests/Keys/2.asc; sourceTree = SOURCE_ROOT; };
+		815A63D226371C29001BD30A /* 2.asc */ = {isa = PBXFileReference; lastKnownFileType = text; name = 2.asc; path = PGProTests/Keys/2.asc; sourceTree = SOURCE_ROOT; };
 		8165F8B52496515F00496E84 /* ContactDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetails.swift; sourceTree = "<group>"; };
 		817E6E4724179B7F0040A28B /* FLSnapshot.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FLSnapshot.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		817E6E4924179B7F0040A28B /* FLSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FLSnapshot.swift; sourceTree = "<group>"; };
