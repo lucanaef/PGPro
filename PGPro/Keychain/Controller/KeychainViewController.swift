@@ -144,8 +144,17 @@ class KeychainViewController: UIViewController {
         var readKeys = [Key]()
         do {
             readKeys = try KeyConstructionService.fromString(keyString: clipboardString)
-        } catch {
-            alert(text: "No Key found in Clipboard!")
+        } catch (let error) {
+            var message: String
+            switch error {
+            case KeyConstructionService.KeyConstructionError.invalidFormat:
+                message = "Clipboard contains invalid key!"
+            case KeyConstructionService.KeyConstructionError.keyNotSupported:
+                message = "Clipboard contains unsupported key!"
+            default:
+                message = "No valid Key found in Clipboard!"
+            }
+            alert(text: message)
             return
         }
 
