@@ -270,7 +270,7 @@ class EncryptionViewController: UIViewController {
             present(mailComposeViewController, animated: true, completion: nil)
         } else {
             let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
-            activityVC.popoverPresentationController?.sourceView = self.view
+            activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?.first
             self.present(activityVC, animated: true, completion: nil)
         }
     }

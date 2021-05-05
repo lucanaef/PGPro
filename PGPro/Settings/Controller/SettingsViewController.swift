@@ -177,6 +177,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 let dialogMessage = UIAlertController(title: "Are you sure?",
                                                       message: "",
                                                       preferredStyle: .alert)
+
+                if let popoverController = dialogMessage.popoverPresentationController {
+                    popoverController.sourceView = self.view
+                    popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                    popoverController.permittedArrowDirections = []
+                }
+
                 let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
                     setting.action?()
                 })

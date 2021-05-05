@@ -98,6 +98,7 @@ class KeychainViewController: UIViewController {
         let optionMenu = UIAlertController(title: nil,
                                            message: nil,
                                            preferredStyle: .actionSheet)
+        optionMenu.popoverPresentationController?.barButtonItem = sender
 
         let generateKey = UIAlertAction(title: "Generate Key Pair", style: .default) { _ -> Void in
             optionMenu.dismiss(animated: true, completion: nil)

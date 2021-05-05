@@ -74,6 +74,7 @@ class ContactDetailViewController: UIViewController {
             let optionMenu = UIAlertController(title: nil,
                                                message: "Select Key to Share",
                                                preferredStyle: .actionSheet)
+            optionMenu.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
             let sharePublicKey = UIAlertAction(title: "Public Key", style: .default) { _ -> Void in
                 let activityItem = self.contactDetails?.armoredPublicKey as Any
@@ -106,7 +107,7 @@ class ContactDetailViewController: UIViewController {
         AppStoreReviewService.incrementReviewWorthyActionCount()
 
         let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-        activityVC.popoverPresentationController?.sourceView = self.view
+        activityVC.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
         present(activityVC, animated: true, completion: nil)
     }

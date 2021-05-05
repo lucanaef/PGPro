@@ -231,6 +231,11 @@ class Settings {
                     }
                     var filesToShare: [Any] = [fileURL]
                     let activityViewController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
+                    if let popoverController = activityViewController.popoverPresentationController {
+                        popoverController.sourceView = viewController.view
+                        popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.midY, width: 0, height: 0)
+                        popoverController.permittedArrowDirections = []
+                    }
                     viewController.present(activityViewController, animated: true, completion: nil)
                 } else {
                     viewController.alert(text: "Export failed!")

@@ -66,7 +66,7 @@ class DecryptedMessageViewController: UIViewController {
     @objc
     private func share(sender: UIBarButtonItem) {
         let activityVC = UIActivityViewController(activityItems: [self], applicationActivities: nil)
-        activityVC.popoverPresentationController?.sourceView = self.view
+        activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         self.present(activityVC, animated: true, completion: nil)
     }
 
