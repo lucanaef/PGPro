@@ -33,32 +33,54 @@ class KeyConstructionService {
         guard let asciiKeyData = keyString.data(using: .ascii) else { throw KeyConstructionError.invalidFormat }
 
         var readKeys: [Key] = []
+        var frameworkError = false
         SwiftTryCatch.try({
             do {
                 readKeys = try ObjectivePGP.readKeys(from: asciiKeyData)
+                for key in readKeys {
+                    try keyIsSupported(key: key)
+                }
             } catch let error {
                 Log.e("Error info: \(error)")
+                frameworkError = true
             }
         }, catch: { (error) in
             Log.e("Error info: \(String(describing: error))")
+            frameworkError = true
             }, finallyBlock: {
         })
+        if frameworkError { throw KeyConstructionError.keyNotSupported }
         return readKeys
     }
 
     static func fromFile(fileURL: URL) throws -> [Key] {
         var readKeys: [Key] = []
+        var frameworkError = false
         SwiftTryCatch.try({
             do {
                 readKeys = try ObjectivePGP.readKeys(fromPath: fileURL.path)
+                for key in readKeys {
+                    try keyIsSupported(key: key)
+                }
             } catch let error {
                 Log.e("Error info: \(error)")
+                frameworkError = true
             }
         }, catch: { (error) in
             Log.e("Error info: \(String(describing: error))")
+            frameworkError = true
             }, finallyBlock: {
         })
+        if frameworkError { throw KeyConstructionError.keyNotSupported }
         return readKeys
+    }
+
+    private static func keyIsSupported(key: Key) throws {
+        do {
+            try key.export()
+        } catch {
+            throw KeyConstructionError.keyNotSupported
+        }
     }
 
 }

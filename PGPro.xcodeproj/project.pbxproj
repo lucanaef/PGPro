@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		810AE9D5248D421400DF17D2 /* UIView+pinEdges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810AE9D4248D421400DF17D2 /* UIView+pinEdges.swift */; };
+		810C4C5526429AEE00A5064D /* 3.asc in Resources */ = {isa = PBXBuildFile; fileRef = 810C4C5426429AEE00A5064D /* 3.asc */; };
+		810C4C582642A0A100A5064D /* 5.asc in Resources */ = {isa = PBXBuildFile; fileRef = 810C4C562642A0A100A5064D /* 5.asc */; };
+		810C4C592642A0A100A5064D /* 4.asc in Resources */ = {isa = PBXBuildFile; fileRef = 810C4C572642A0A100A5064D /* 4.asc */; };
 		8114B8A02315B664001DBAC5 /* KeychainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8114B89F2315B664001DBAC5 /* KeychainViewController.swift */; };
 		8114B8A4231815D5001DBAC5 /* EncryptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8114B8A3231815D5001DBAC5 /* EncryptionViewController.swift */; };
 		8114B8A6231822D9001DBAC5 /* KeychainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8114B8A5231822D9001DBAC5 /* KeychainTableViewCell.swift */; };
@@ -90,6 +93,9 @@
 
 /* Begin PBXFileReference section */
 		810AE9D4248D421400DF17D2 /* UIView+pinEdges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+pinEdges.swift"; sourceTree = "<group>"; };
+		810C4C5426429AEE00A5064D /* 3.asc */ = {isa = PBXFileReference; lastKnownFileType = file; name = 3.asc; path = PGProTests/Keys/3.asc; sourceTree = SOURCE_ROOT; };
+		810C4C562642A0A100A5064D /* 5.asc */ = {isa = PBXFileReference; lastKnownFileType = file; name = 5.asc; path = PGProTests/Keys/5.asc; sourceTree = SOURCE_ROOT; };
+		810C4C572642A0A100A5064D /* 4.asc */ = {isa = PBXFileReference; lastKnownFileType = file; name = 4.asc; path = PGProTests/Keys/4.asc; sourceTree = SOURCE_ROOT; };
 		8114B89F2315B664001DBAC5 /* KeychainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainViewController.swift; sourceTree = "<group>"; };
 		8114B8A3231815D5001DBAC5 /* EncryptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionViewController.swift; sourceTree = "<group>"; };
 		8114B8A5231822D9001DBAC5 /* KeychainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTableViewCell.swift; sourceTree = "<group>"; };
@@ -243,6 +249,9 @@
 		815A63C62636FCBF001BD30A /* Keys */ = {
 			isa = PBXGroup;
 			children = (
+				810C4C572642A0A100A5064D /* 4.asc */,
+				810C4C562642A0A100A5064D /* 5.asc */,
+				810C4C5426429AEE00A5064D /* 3.asc */,
 				815A63D226371C29001BD30A /* 2.asc */,
 				815A63CA26370DE4001BD30A /* 1.asc */,
 			);
@@ -602,8 +611,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				810C4C5526429AEE00A5064D /* 3.asc in Resources */,
+				810C4C592642A0A100A5064D /* 4.asc in Resources */,
 				815A63D326371C29001BD30A /* 2.asc in Resources */,
 				815A63CB26370DE4001BD30A /* 1.asc in Resources */,
+				810C4C582642A0A100A5064D /* 5.asc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -83,6 +83,7 @@ class PGProTests: XCTestCase {
                 XCTAssertNoThrow(try KeyConstructionService.fromFile(fileURL: url))
             } else {
                 XCTAssertThrowsError(try KeyConstructionService.fromFile(fileURL: url))
+                return
             }
 
             /// Import key from file
