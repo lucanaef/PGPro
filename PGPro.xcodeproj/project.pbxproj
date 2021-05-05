@@ -93,9 +93,9 @@
 
 /* Begin PBXFileReference section */
 		810AE9D4248D421400DF17D2 /* UIView+pinEdges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+pinEdges.swift"; sourceTree = "<group>"; };
-		810C4C5426429AEE00A5064D /* 3.asc */ = {isa = PBXFileReference; lastKnownFileType = file; name = 3.asc; path = PGProTests/Keys/3.asc; sourceTree = SOURCE_ROOT; };
-		810C4C562642A0A100A5064D /* 5.asc */ = {isa = PBXFileReference; lastKnownFileType = file; name = 5.asc; path = PGProTests/Keys/5.asc; sourceTree = SOURCE_ROOT; };
-		810C4C572642A0A100A5064D /* 4.asc */ = {isa = PBXFileReference; lastKnownFileType = file; name = 4.asc; path = PGProTests/Keys/4.asc; sourceTree = SOURCE_ROOT; };
+		810C4C5426429AEE00A5064D /* 3.asc */ = {isa = PBXFileReference; lastKnownFileType = text; name = 3.asc; path = PGProTests/Keys/3.asc; sourceTree = SOURCE_ROOT; };
+		810C4C562642A0A100A5064D /* 5.asc */ = {isa = PBXFileReference; lastKnownFileType = text; name = 5.asc; path = PGProTests/Keys/5.asc; sourceTree = SOURCE_ROOT; };
+		810C4C572642A0A100A5064D /* 4.asc */ = {isa = PBXFileReference; lastKnownFileType = text; name = 4.asc; path = PGProTests/Keys/4.asc; sourceTree = SOURCE_ROOT; };
 		8114B89F2315B664001DBAC5 /* KeychainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainViewController.swift; sourceTree = "<group>"; };
 		8114B8A3231815D5001DBAC5 /* EncryptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionViewController.swift; sourceTree = "<group>"; };
 		8114B8A5231822D9001DBAC5 /* KeychainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTableViewCell.swift; sourceTree = "<group>"; };
@@ -966,7 +966,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -993,7 +993,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
