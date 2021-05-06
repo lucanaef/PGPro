@@ -43,7 +43,7 @@ class DecryptedMessageViewController: UIViewController {
         // Text view
         textView = UITextView(frame: CGRect(x: 0, y: 56, width: view.frame.size.width, height: view.frame.size.height))
         textView!.font = UIFont.systemFont(ofSize: 18.0)
-        textView!.text = message ?? "Test Message"
+        textView!.text = message ?? ""
         textView!.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         view.addSubview(textView!)
     }
