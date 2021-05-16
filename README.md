@@ -11,15 +11,15 @@ PGPro can encrypt and decrypt messages as well as manage all your OpenPGP keys. 
 
 ## Screenshots
 <p float="left">
-  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro-1-EncryptionView.png" width="200">
-  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro-2-DecryptionView.png" width="200">
-  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro-3-KeychainView.png" width="200">
-  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro-4-DetailView.png" width="200">
+  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro%20Max-1-EncryptionView.png" width="200">
+  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro%20Max-2-DecryptionView.png" width="200">
+  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro%20Max-3-KeychainView.png" width="200">
+  <img src="./fastlane/screenshots/en-US/iPhone%2011%20Pro%20Max-4-DetailView.png" width="200">
 </p>
 
 ## Contribution
 
-You are welcome to contribute. Please create a [Pull Request]().
+You are welcome to contribute. Please create a [Pull Request](https://github.com/lucanaef/PGPro/pulls).
 
 ## Changelog
 
@@ -41,9 +41,9 @@ The cryptographic library used by PGPro, [ObjectivePGP](https://objectivepgp.com
 ## Acknowledgment
 
 This project uses the [ObjectivePGP](https://objectivepgp.com/) library developed by [Marcin Krzyżanowski](https://krzyzanowskim.com/).
-Thereby it uses software developed by the [OpenSSL](http://www.openssl.org/) Project for use in the [OpenSSL Toolkit](http://www.openssl.org/).
+Thereby it uses software developed by the [OpenSSL](http://www.openssl.org/) Project for use in the [OpenSSL Toolkit](https://www.openssl.org/).
 
 
 ## Author
 
-[Luca Näf](http://naef.lu)
+[Luca Näf](https://naef.lu)
