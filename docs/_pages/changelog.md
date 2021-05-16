@@ -7,6 +7,15 @@ include_in_header: true
 
 # Changelog
 
+## **Version 2021.3** - May 17, 2021
+
+Thanks for using PGPro! 
+
+This release adds iPad support! I recommend using it side-by-side with your mail app.
+
+In case you encounter any bugs, please reach out to me at [dev@pgpro.app](mailto:dev@pgpro.app).
+Please consider leaving a review if you find the app useful.
+
 ## **Version 2021.2** - May 3, 2021
 
 Thanks for using PGPro! 
