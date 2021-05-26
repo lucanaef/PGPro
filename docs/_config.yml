@@ -12,7 +12,7 @@ presskit_download_link                    :                                     
 app_icon                                  : # assets/appicon.png                      # Automatically populates if not set and if iOS app ID is set.  Otherwise enter path to icon file manually.
 app_name                                  :                                           # Automatically populates if not set and if iOS app ID is set.  Otherwise enter manually.
 app_price                                 :                                           # Automatically populates if not set and if iOS app ID is set.  Otherwise enter manually.
-app_description                           : Free & Open-Source OpenPGP Cryptography for iOS
+app_description                           : Free & Open-Source GPG/OpenPGP Cryptography for iOS and iPadOS
 
 enable_smart_app_banner                   : true                                      # Set to true to show a smart app banner at top of page on mobile devices.
 
@@ -22,11 +22,11 @@ enable_smart_app_banner                   : true                                
 your_name                                 : Luca Näf
 your_link                                 : https://naef.lu
 your_city                                 : Switzerland
-email_address                             : 
+email_address                             : dev@naef.lu
 facebook_username                         :
 instagram_username                        :
 twitter_username                          :
-github_username                           :
+github_username                           : lucanaef
 youtube_username                          :
 
 
@@ -77,16 +77,6 @@ social_icons_foreground_color             : "#666666"
 social_icons_background_color             : "#e6e6e6"
 
 footer_text_color                         : "#666666"
-
-
-
-
-
-
-
-
-
-
 
 
 
