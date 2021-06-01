@@ -59,7 +59,10 @@ class Licenses {
                 at: URL(string: "https://github.com/sauvikdolui/swiftlogger/blob/master/LICENSE")!),
         License(for: "IsoCountryCodes",
                 describedBy: "Provides ISO codes, names and currencies for countries",
-                at: URL(string: "https://github.com/funky-monkey/IsoCountryCodes")!)
+                at: URL(string: "https://github.com/funky-monkey/IsoCountryCodes")!),
+        License(for: "CodeScanner",
+                describedBy: "A SwiftUI view that is able to scan barcodes, QR codes, and more",
+                at: URL(string: "https://github.com/twostraws/CodeScanner/blob/main/LICENSE")!)
     ]
 
 }

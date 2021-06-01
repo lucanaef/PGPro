@@ -17,6 +17,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 import ObjectivePGP
 
 class SearchKeyserverViewController: UIViewController {
@@ -53,6 +54,10 @@ class SearchKeyserverViewController: UIViewController {
         searchController.searchBar.keyboardType = .emailAddress
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.autocorrectionType = .no
+
+        searchController.searchBar.showsBookmarkButton = true
+        searchController.searchBar.setImage(UIImage(systemName: "qrcode"), for: .bookmark, state: .normal)
+
 
         return searchController
     }()
@@ -260,7 +265,28 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
                 self.switchVKIResult(result: result)
             }
         }
+    }
 
+    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+        let codeScannerView = CodeScannerView(codeTypes: [.qr], completion: self.handleScan)
+        let codeScannerViewController = UIHostingController(rootView: codeScannerView)
+        self.present(codeScannerViewController, animated: true)
+    }
+
+    func handleScan(result: Result<String, CodeScannerView.ScanError>) {
+        dismiss(animated: true)
+        switch result {
+        case .success(let code):
+            guard code.contains("OPENPGP4FPR:") else {
+                self.alert(text: "Invalid QR Code!")
+                return
+            }
+            let parsedCode = code.replacingOccurrences(of: "OPENPGP4FPR:", with: "")
+            searchController.searchBar.text = parsedCode
+            searchBarSearchButtonClicked(searchController.searchBar)
+        case .failure:
+            self.alert(text: "Scan failed!")
+        }
     }
 
 }

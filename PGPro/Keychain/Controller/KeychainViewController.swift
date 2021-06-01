@@ -104,7 +104,7 @@ class KeychainViewController: UIViewController {
             optionMenu.dismiss(animated: true, completion: nil)
             let generateKeyViewController = GenerateKeyViewController()
             let navController = UINavigationController(rootViewController: generateKeyViewController)
-            self.present(navController, animated: true, completion: nil)
+            self.present(navController, animated: true)
         }
         optionMenu.addAction(generateKey)
 
@@ -112,28 +112,28 @@ class KeychainViewController: UIViewController {
             optionMenu.dismiss(animated: true, completion: nil)
             let searchKeyserverViewController = SearchKeyserverViewController()
             let navController = UINavigationController(rootViewController: searchKeyserverViewController)
-            self.present(navController, animated:true, completion: nil)
+            self.present(navController, animated: true)
         }
         optionMenu.addAction(searchKeyserver)
 
         let importKeyFromFile = UIAlertAction(title: "Import Keys from File", style: .default) { _ -> Void in
             self.importKeysFilePicker()
-            optionMenu.dismiss(animated: true, completion: nil)
+            optionMenu.dismiss(animated: true)
         }
         optionMenu.addAction(importKeyFromFile)
 
         let addKeyFromClipboard = UIAlertAction(title: "Add Key from Clipboard", style: .default) { _ -> Void in
             self.addKeyFromClipboard()
-            optionMenu.dismiss(animated: true, completion: nil)
+            optionMenu.dismiss(animated: true)
         }
         optionMenu.addAction(addKeyFromClipboard)
 
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ -> Void in
-            optionMenu.dismiss(animated: true, completion: nil)
+            optionMenu.dismiss(animated: true)
         }
         optionMenu.addAction(cancel)
 
-        present(optionMenu, animated: true, completion: nil)
+        present(optionMenu, animated: true)
     }
 
     private func addKeyFromClipboard() {

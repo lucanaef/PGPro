@@ -58,6 +58,7 @@
 		81B6EA622482B4E000008A5C /* License.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B6EA612482B4E000008A5C /* License.swift */; };
 		81BB434F244201E900886A2F /* SearchKeyserverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BB434E244201E900886A2F /* SearchKeyserverViewController.swift */; };
 		81C61AB52482851E00DCEB6D /* KeySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C61AB42482851E00DCEB6D /* KeySelectionViewController.swift */; };
+		81DDB53A2666B59900EE6575 /* CodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DDB5392666B59900EE6575 /* CodeScannerView.swift */; };
 		81E28319256A7F0300F9F801 /* ObjectivePGP in Frameworks */ = {isa = PBXBuildFile; productRef = 81E28318256A7F0300F9F801 /* ObjectivePGP */; };
 		81E33AE623265A4E00241E4A /* Contact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E33AE423265A4E00241E4A /* Contact+CoreDataClass.swift */; };
 		81E33AE723265A4E00241E4A /* Contact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E33AE523265A4E00241E4A /* Contact+CoreDataProperties.swift */; };
@@ -152,6 +153,7 @@
 		81BB434E244201E900886A2F /* SearchKeyserverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeyserverViewController.swift; sourceTree = "<group>"; };
 		81C61AB42482851E00DCEB6D /* KeySelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySelectionViewController.swift; sourceTree = "<group>"; };
 		81C80A7F232E4FB200574E3F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81DDB5392666B59900EE6575 /* CodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeScannerView.swift; sourceTree = "<group>"; };
 		81E33AE423265A4E00241E4A /* Contact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+CoreDataClass.swift"; sourceTree = "<group>"; };
 		81E33AE523265A4E00241E4A /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		81E33AFC23279A0700241E4A /* UIBarButtonItem+button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+button.swift"; sourceTree = "<group>"; };
@@ -431,6 +433,7 @@
 				81E33AF52326B68300241E4A /* Resources */,
 				81B594E7232038F1004893A0 /* KeySelectionTableViewCell.swift */,
 				8120EF53249FA008007F3420 /* PassableUISwitch.swift */,
+				81DDB5392666B59900EE6575 /* CodeScannerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -669,6 +672,7 @@
 				8165F8B62496515F00496E84 /* ContactDetails.swift in Sources */,
 				81E33B0223279B4900241E4A /* UIViewController+alert.swift in Sources */,
 				81B69914241A8CB900636FD4 /* KeyConstructionService.swift in Sources */,
+				81DDB53A2666B59900EE6575 /* CodeScannerView.swift in Sources */,
 				8188E5532502DE98001B2476 /* Data+hexString.swift in Sources */,
 				8120EF52249F8AB5007F3420 /* SettingsViewController.swift in Sources */,
 				81819204231D334200BB7BBB /* ExampleDataService.swift in Sources */,
