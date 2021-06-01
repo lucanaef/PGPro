@@ -55,7 +55,7 @@ class EncryptionViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         textView.font = UIFont.preferredFont(forTextStyle: .body)
-        textView.addDoneButton(title: "Done", target: self, selector: #selector(tapDone(sender:)))
+        textView.addKeyboardDismissButton(target: self, selector: #selector(tapDone(sender:)))
 
         return textView
     }()

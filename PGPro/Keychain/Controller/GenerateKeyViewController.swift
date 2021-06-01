@@ -159,6 +159,7 @@ extension GenerateKeyViewController: UITableViewDataSource, UITableViewDelegate 
         let cell = FullTextFieldTableViewCell()
 
         cell.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        cell.textField.addKeyboardDismissButton(target: self, selector: #selector(tapDone(sender:)))
         cell.selectionStyle = .none
 
         switch section {
@@ -207,6 +208,11 @@ extension GenerateKeyViewController: UITableViewDataSource, UITableViewDelegate 
         }
 
         return cell
+    }
+
+    @objc
+    private func tapDone(sender: Any) {
+        view.endEditing(true)
     }
 
     @objc

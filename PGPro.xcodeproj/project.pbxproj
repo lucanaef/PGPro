@@ -46,7 +46,7 @@
 		8194D97123E2E359000D47C3 /* SwiftTryCatch in Frameworks */ = {isa = PBXBuildFile; productRef = 8194D97023E2E359000D47C3 /* SwiftTryCatch */; };
 		819EB2BF2444EC7800D10100 /* iTunesInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819EB2BE2444EC7800D10100 /* iTunesInterface.swift */; };
 		81A0918A241D0F98004C91FB /* VerifyingKeyserverInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09189241D0F98004C91FB /* VerifyingKeyserverInterface.swift */; };
-		81A0A6152472C6F700D3B4AC /* UITextView+addDoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A0A6142472C6F700D3B4AC /* UITextView+addDoneButton.swift */; };
+		81A0A6152472C6F700D3B4AC /* DismissableKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A0A6142472C6F700D3B4AC /* DismissableKeyboard.swift */; };
 		81B40A1923A79423008B4EDE /* UILabel+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */; };
 		81B594D6231DBA07004893A0 /* UITextView+Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B594D5231DBA07004893A0 /* UITextView+Placeholder.swift */; };
 		81B594D8231DBBB5004893A0 /* String+insertedSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B594D7231DBBB5004893A0 /* String+insertedSeparator.swift */; };
@@ -138,7 +138,7 @@
 		8194D96D23E1F292000D47C3 /* Navajo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navajo.swift; sourceTree = "<group>"; };
 		819EB2BE2444EC7800D10100 /* iTunesInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesInterface.swift; sourceTree = "<group>"; };
 		81A09189241D0F98004C91FB /* VerifyingKeyserverInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyingKeyserverInterface.swift; sourceTree = "<group>"; };
-		81A0A6142472C6F700D3B4AC /* UITextView+addDoneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+addDoneButton.swift"; sourceTree = "<group>"; };
+		81A0A6142472C6F700D3B4AC /* DismissableKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableKeyboard.swift; sourceTree = "<group>"; };
 		81A80174233E414900ADE6E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+UIImage.swift"; sourceTree = "<group>"; };
 		81B594D5231DBA07004893A0 /* UITextView+Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Placeholder.swift"; sourceTree = "<group>"; };
@@ -287,7 +287,7 @@
 				8188E5522502DE98001B2476 /* Data+hexString.swift */,
 				81E33AFC23279A0700241E4A /* UIBarButtonItem+button.swift */,
 				81B594D5231DBA07004893A0 /* UITextView+Placeholder.swift */,
-				81A0A6142472C6F700D3B4AC /* UITextView+addDoneButton.swift */,
+				81A0A6142472C6F700D3B4AC /* DismissableKeyboard.swift */,
 				810AE9D4248D421400DF17D2 /* UIView+pinEdges.swift */,
 				81E33B0123279B4900241E4A /* UIViewController+alert.swift */,
 				81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */,
@@ -701,7 +701,7 @@
 				81B6EA622482B4E000008A5C /* License.swift in Sources */,
 				81EFEB01249A97C800470493 /* FDTextFieldTableViewCell.swift in Sources */,
 				81B594D6231DBA07004893A0 /* UITextView+Placeholder.swift in Sources */,
-				81A0A6152472C6F700D3B4AC /* UITextView+addDoneButton.swift in Sources */,
+				81A0A6152472C6F700D3B4AC /* DismissableKeyboard.swift in Sources */,
 				81B40A1923A79423008B4EDE /* UILabel+UIImage.swift in Sources */,
 				81E33AFD23279A0700241E4A /* UIBarButtonItem+button.swift in Sources */,
 				81B594EA23212251004893A0 /* ContactListService.swift in Sources */,
