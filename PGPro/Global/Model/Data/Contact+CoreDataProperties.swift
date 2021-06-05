@@ -35,6 +35,16 @@ extension Contact {
         return "\(name) <\(email)>"
     }
 
+    var keyFingerprint: String? {
+        if let pubKey = key.publicKey {
+            return pubKey.fingerprint.description()
+        } else if let privKey = key.secretKey {
+            return privKey.fingerprint.description()
+        } else {
+            return nil
+        }
+    }
+
     var symbolName: String {
         var symbol = "person.crop.circle.badge.questionmark" // invalid key
 
@@ -75,7 +85,6 @@ extension Contact {
     }
 
     func getArmoredKey(as type: PGPKeyType) -> String? {
-
         switch type {
         case .public:
             do {

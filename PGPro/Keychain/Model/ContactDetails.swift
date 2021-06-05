@@ -73,12 +73,7 @@ class ContactDetails {
     }
 
     var keyFingerprint: String? {
-        if let pubKey = key.publicKey {
-            return pubKey.fingerprint.description().insertSeparator(" ", atEvery: 4)
-        } else if let privKey = key.secretKey {
-            return privKey.fingerprint.description().insertSeparator(" ", atEvery: 4)
-        }
-        return nil
+        return contact.keyFingerprint
     }
 
     // MARK: - Intents

@@ -22,6 +22,8 @@
 		8120EF54249FA008007F3420 /* PassableUISwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF53249FA008007F3420 /* PassableUISwitch.swift */; };
 		8120EF56249FA4CB007F3420 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF55249FA4CB007F3420 /* Preferences.swift */; };
 		8120EF58249FB5A4007F3420 /* LicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF57249FB5A4007F3420 /* LicensesViewController.swift */; };
+		812CC5E8266BF45F00256B8F /* Contact+Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812CC5E7266BF45F00256B8F /* Contact+Keychain.swift */; };
+		812D582B2667FE220062547F /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D582A2667FE220062547F /* KeychainService.swift */; };
 		812E9E692635D279008C910C /* PGProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E9E682635D279008C910C /* PGProTests.swift */; };
 		81323BEA24A2440D00ADAABA /* GenerateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81323BE924A2440D00ADAABA /* GenerateKey.swift */; };
 		8137AC6F233271E3007483EA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137AC6E233271E3007483EA /* Constants.swift */; };
@@ -112,6 +114,8 @@
 		8120EF53249FA008007F3420 /* PassableUISwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassableUISwitch.swift; sourceTree = "<group>"; };
 		8120EF55249FA4CB007F3420 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		8120EF57249FB5A4007F3420 /* LicensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicensesViewController.swift; sourceTree = "<group>"; };
+		812CC5E7266BF45F00256B8F /* Contact+Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Keychain.swift"; sourceTree = "<group>"; };
+		812D582A2667FE220062547F /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		812E9E662635D279008C910C /* PGProTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PGProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		812E9E682635D279008C910C /* PGProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTests.swift; sourceTree = "<group>"; };
 		812E9E6A2635D279008C910C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -310,6 +314,7 @@
 				81820DFE250285BF00D5BC97 /* WebKeyDirectoryService.swift */,
 				819EB2BE2444EC7800D10100 /* iTunesInterface.swift */,
 				81453BAB247BA59C00613F18 /* CryptographyService.swift */,
+				812D582A2667FE220062547F /* KeychainService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -454,6 +459,7 @@
 				8114B8D923194F92001DBAC5 /* PGPro.xcdatamodeld */,
 				81E33AE423265A4E00241E4A /* Contact+CoreDataClass.swift */,
 				81E33AE523265A4E00241E4A /* Contact+CoreDataProperties.swift */,
+				812CC5E7266BF45F00256B8F /* Contact+Keychain.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -678,6 +684,7 @@
 				81819204231D334200BB7BBB /* ExampleDataService.swift in Sources */,
 				8114B8DB23194F92001DBAC5 /* PGPro.xcdatamodeld in Sources */,
 				81BB434F244201E900886A2F /* SearchKeyserverViewController.swift in Sources */,
+				812D582B2667FE220062547F /* KeychainService.swift in Sources */,
 				8120EF58249FB5A4007F3420 /* LicensesViewController.swift in Sources */,
 				81B594F723241400004893A0 /* PersistenceService.swift in Sources */,
 				8120EF4C249EA293007F3420 /* IsoCountries.swift in Sources */,
@@ -693,6 +700,7 @@
 				81417F6824A0F43900732A62 /* GenerateKeyViewController.swift in Sources */,
 				81E4631C231029A4008DC317 /* AppDelegate.swift in Sources */,
 				8114B8A02315B664001DBAC5 /* KeychainViewController.swift in Sources */,
+				812CC5E8266BF45F00256B8F /* Contact+Keychain.swift in Sources */,
 				8194D96E23E1F292000D47C3 /* Navajo.swift in Sources */,
 				81453BAC247BA59C00613F18 /* CryptographyService.swift in Sources */,
 				81FC11FB2598ECA700F8CD51 /* AuthenticationService.swift in Sources */,
