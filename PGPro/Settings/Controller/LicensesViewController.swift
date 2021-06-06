@@ -27,7 +27,6 @@ class LicensesViewController: UIViewController {
         let tableView = UITableView()
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.alwaysBounceVertical = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)

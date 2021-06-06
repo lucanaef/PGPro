@@ -24,6 +24,7 @@ class Preferences {
         static var launchedBefore = "launchedBefore"
         static var mailIntegration = "preference.mailIntegration"
         static var biometricAuthentication = "preference.biometricAuthentication"
+        static var reviewWorthyActions = "reviewWorthyActionCount"
     }
 
     static func setToDefault() {

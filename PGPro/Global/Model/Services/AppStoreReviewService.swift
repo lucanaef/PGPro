@@ -23,24 +23,23 @@ class AppStoreReviewService {
     private init() {}
 
     private static var minimumReviewWorthyActionCount = 10
-    private static let reviewWorthyActionKey = "reviewWorthyActionCount"
 
     static func incrementReviewWorthyActionCount() {
         let defaults = UserDefaults.standard
 
-        var actionCount = defaults.integer(forKey: reviewWorthyActionKey)
+        var actionCount = defaults.integer(forKey: Preferences.UserDefaultsKeys.reviewWorthyActions)
         actionCount += 1
-        defaults.set(actionCount, forKey: reviewWorthyActionKey)
+        defaults.set(actionCount, forKey: Preferences.UserDefaultsKeys.reviewWorthyActions)
     }
 
     static func requestReviewIfAppropriate() {
         let defaults = UserDefaults.standard
 
-        let actionCount = defaults.integer(forKey: reviewWorthyActionKey)
+        let actionCount = defaults.integer(forKey: Preferences.UserDefaultsKeys.reviewWorthyActions)
         if (actionCount >= minimumReviewWorthyActionCount) {
             SKStoreReviewController.requestReview()
             minimumReviewWorthyActionCount += 10
-            defaults.set(0, forKey: reviewWorthyActionKey)
+            defaults.set(0, forKey: Preferences.UserDefaultsKeys.reviewWorthyActions)
         }
     }
 
