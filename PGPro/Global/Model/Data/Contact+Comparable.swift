@@ -1,5 +1,5 @@
 //
-//  Contact+CoreDataProperties.swift
+//  Contact+Comparable.swift
 //  PGPro
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -16,23 +16,19 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import CoreData
 
-extension Contact {
+extension Contact: Comparable {
 
-    @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<Contact> {
-        return NSFetchRequest<Contact>(entityName: "Contact")
+    public static func == (lhs: Contact, rhs: Contact) -> Bool {
+        (lhs.key == rhs.key) || ((lhs.key.keyID == rhs.key.keyID) && (lhs.key.isPublic == rhs.key.isPublic) && (lhs.key.isSecret == rhs.key.isSecret))
     }
 
-    @NSManaged public var name: String
-    @NSManaged public var email: String
-    @NSManaged public var keyData: NSData
-
-    var userID: String {
-        return "\(name) <\(email)>"
+    public static func < (lhs: Contact, rhs: Contact) -> Bool {
+        if (lhs.name != rhs.name) {
+            return lhs.name < rhs.name
+        } else {
+            return lhs.email < rhs.email
+        }
     }
-
-    public override var description: String { userID }
 
 }

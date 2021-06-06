@@ -35,6 +35,8 @@
 		815A63B92636FB22001BD30A /* PGProTestsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A63B82636FB22001BD30A /* PGProTestsKeys.swift */; };
 		815A63CB26370DE4001BD30A /* 1.asc in Resources */ = {isa = PBXBuildFile; fileRef = 815A63CA26370DE4001BD30A /* 1.asc */; };
 		815A63D326371C29001BD30A /* 2.asc in Resources */ = {isa = PBXBuildFile; fileRef = 815A63D226371C29001BD30A /* 2.asc */; };
+		815B9E55266CCFCD00BEA572 /* Contact+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815B9E54266CCFCD00BEA572 /* Contact+Comparable.swift */; };
+		815B9E57266CD06C00BEA572 /* Contact+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815B9E56266CD06C00BEA572 /* Contact+Key.swift */; };
 		8165F8B62496515F00496E84 /* ContactDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8165F8B52496515F00496E84 /* ContactDetails.swift */; };
 		817E6E4A24179B7F0040A28B /* FLSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817E6E4924179B7F0040A28B /* FLSnapshot.swift */; };
 		817E6E5224179B8D0040A28B /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817E6E5124179B8D0040A28B /* SnapshotHelper.swift */; };
@@ -129,6 +131,8 @@
 		815A63B82636FB22001BD30A /* PGProTestsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTestsKeys.swift; sourceTree = "<group>"; };
 		815A63CA26370DE4001BD30A /* 1.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = 1.asc; path = PGProTests/Keys/1.asc; sourceTree = SOURCE_ROOT; };
 		815A63D226371C29001BD30A /* 2.asc */ = {isa = PBXFileReference; lastKnownFileType = text; name = 2.asc; path = PGProTests/Keys/2.asc; sourceTree = SOURCE_ROOT; };
+		815B9E54266CCFCD00BEA572 /* Contact+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Comparable.swift"; sourceTree = "<group>"; };
+		815B9E56266CD06C00BEA572 /* Contact+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Key.swift"; sourceTree = "<group>"; };
 		8165F8B52496515F00496E84 /* ContactDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetails.swift; sourceTree = "<group>"; };
 		817E6E4724179B7F0040A28B /* FLSnapshot.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FLSnapshot.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		817E6E4924179B7F0040A28B /* FLSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FLSnapshot.swift; sourceTree = "<group>"; };
@@ -459,7 +463,9 @@
 				8114B8D923194F92001DBAC5 /* PGPro.xcdatamodeld */,
 				81E33AE423265A4E00241E4A /* Contact+CoreDataClass.swift */,
 				81E33AE523265A4E00241E4A /* Contact+CoreDataProperties.swift */,
+				815B9E56266CD06C00BEA572 /* Contact+Key.swift */,
 				812CC5E7266BF45F00256B8F /* Contact+Keychain.swift */,
+				815B9E54266CCFCD00BEA572 /* Contact+Comparable.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -685,10 +691,12 @@
 				8114B8DB23194F92001DBAC5 /* PGPro.xcdatamodeld in Sources */,
 				81BB434F244201E900886A2F /* SearchKeyserverViewController.swift in Sources */,
 				812D582B2667FE220062547F /* KeychainService.swift in Sources */,
+				815B9E55266CCFCD00BEA572 /* Contact+Comparable.swift in Sources */,
 				8120EF58249FB5A4007F3420 /* LicensesViewController.swift in Sources */,
 				81B594F723241400004893A0 /* PersistenceService.swift in Sources */,
 				8120EF4C249EA293007F3420 /* IsoCountries.swift in Sources */,
 				81E33AE623265A4E00241E4A /* Contact+CoreDataClass.swift in Sources */,
+				815B9E57266CD06C00BEA572 /* Contact+Key.swift in Sources */,
 				8194386123E35CCF008B518E /* AppStoreReviewService.swift in Sources */,
 				81A0918A241D0F98004C91FB /* VerifyingKeyserverInterface.swift in Sources */,
 				81F95FF72502A4BF00786238 /* ZBase32.swift in Sources */,

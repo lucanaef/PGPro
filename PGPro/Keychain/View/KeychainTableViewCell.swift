@@ -37,7 +37,7 @@ class KeychainTableViewCell: UITableViewCell {
         self.detailTextLabel?.text = contact.email
 
 
-        var icon = UIImage(systemName: contact.symbolName,
+        var icon = UIImage(systemName: contact.keySymbol,
                            withConfiguration: UIImage.SymbolConfiguration(pointSize: 27, weight: .light))
         let currentDate = Date(), keyExpirationDate = contact.key.expirationDate ?? currentDate
         if (keyExpirationDate < currentDate) { // Key expired
