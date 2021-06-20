@@ -22,9 +22,6 @@ enum KeychainError: Error {
     // Attempted read for an item that does not exist.
     case itemNotFound
 
-    // Attempted save to override an existing item.
-    case duplicateItem
-
     case invalidItemFormat
 
     // Any operation result status than errSecSuccess
@@ -55,7 +52,11 @@ class KeychainService {
 
         // errSecDuplicateItem is a special case where the item identified by the query already exists.
         if status == errSecDuplicateItem {
-            throw KeychainError.duplicateItem
+            do {
+                try update(value, forKey: key)
+            } catch (let error) {
+                throw error
+            }
         }
 
         // Any status other than errSecSuccess indicates the save operation failed.
@@ -64,7 +65,7 @@ class KeychainService {
         }
     }
 
-    public static func update(_ value: String, forKey key: String) throws {
+    private static func update(_ value: String, forKey key: String) throws {
         let query: [String: AnyObject] = [
             kSecClass               as String: kSecClassGenericPassword,
             kSecAttrAccessible      as String: kSecAttrAccessibleWhenUnlockedThisDeviceOnly,

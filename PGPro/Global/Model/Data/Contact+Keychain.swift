@@ -20,8 +20,13 @@ import Foundation
 extension Contact {
 
     enum ContactKeychainError: Error {
-        case emptyKeyPackets
         case keyHasNoPassphrase
+        case keyHasNoFingerprint
+        case passphraseNotStored
+    }
+
+    var storablePassphrase: Bool {
+        key.isSecret && key.isEncryptedWithPassword
     }
 
     func setPassphrase(to passphrase: String) throws {
@@ -29,24 +34,12 @@ extension Contact {
             throw ContactKeychainError.keyHasNoPassphrase
         }
         guard let fingerprint = self.keyFingerprint else {
-            throw ContactKeychainError.emptyKeyPackets
+            throw ContactKeychainError.keyHasNoFingerprint
         }
         do {
             try KeychainService.set(passphrase, forKey: fingerprint)
-        } catch (let error) {
-            throw error
-        }
-    }
-
-    func updatePassphrase(to passhrase: String) throws {
-        guard keyRequiresPassphrase else {
-            throw ContactKeychainError.keyHasNoPassphrase
-        }
-        guard let fingerprint = self.keyFingerprint else {
-            throw ContactKeychainError.emptyKeyPackets
-        }
-        do {
-            try KeychainService.update(passhrase, forKey: fingerprint)
+            let key = try getUserDefaultsKey(for: fingerprint)
+            UserDefaults.standard.set(true, forKey: key)
         } catch (let error) {
             throw error
         }
@@ -57,9 +50,11 @@ extension Contact {
             return .failure(ContactKeychainError.keyHasNoPassphrase)
         }
         guard let fingerprint = self.keyFingerprint else {
-            return .failure(ContactKeychainError.emptyKeyPackets)
+            return .failure(ContactKeychainError.keyHasNoFingerprint)
         }
         do {
+            let passphraseIsStored = try storesPassphrase()
+            guard passphraseIsStored else { return .failure(ContactKeychainError.passphraseNotStored) }
             let passphrase = try KeychainService.get(fingerprint)
             return .success(passphrase)
         } catch (let error) {
@@ -73,13 +68,34 @@ extension Contact {
             throw ContactKeychainError.keyHasNoPassphrase
         }
         guard let fingerprint = self.keyFingerprint else {
-            throw ContactKeychainError.emptyKeyPackets
+            throw ContactKeychainError.keyHasNoFingerprint
         }
         do {
             try KeychainService.delete(fingerprint)
+            let key = try getUserDefaultsKey(for: fingerprint)
+            UserDefaults.standard.set(false, forKey: key)
         } catch (let error) {
             throw error
         }
+    }
+
+    func storesPassphrase() throws -> Bool {
+        guard keyRequiresPassphrase else {
+            throw ContactKeychainError.keyHasNoPassphrase
+        }
+        guard let fingerprint = self.keyFingerprint else {
+            throw ContactKeychainError.keyHasNoFingerprint
+        }
+        do {
+            let key = try getUserDefaultsKey(for: fingerprint)
+            return UserDefaults.standard.bool(forKey: key)
+        } catch (let error) {
+            throw error
+        }
+    }
+
+    private func getUserDefaultsKey(for fingerprint: String) throws -> String {
+        return "containsPassphraseFor" + fingerprint
     }
 
 }

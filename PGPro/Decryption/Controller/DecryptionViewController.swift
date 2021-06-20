@@ -135,13 +135,23 @@ class DecryptionViewController: UIViewController {
         updateView()
     }
 
-    
     @objc
     private func decrypt() {
         guard let encryptedMessage = encryptedMessage else { return }
         guard let decryptionContact = decryptionContact else {
             alert(text: "No Private Key Selected!")
             return
+        }
+
+        // Load stored passphrase
+        if decryptionContact.keyRequiresPassphrase, let storesPassphrase = try? decryptionContact.storesPassphrase(), storesPassphrase {
+            let passphraseRequest = decryptionContact.getPassphrase()
+            switch passphraseRequest {
+            case .success(let pass):
+                passphrase = pass
+            case .failure(let error):
+                Log.e(error)
+            }
         }
 
         do {
@@ -187,7 +197,6 @@ class DecryptionViewController: UIViewController {
     }
 
     func alert(_ result: ContactListResult) {
-
         let successful = "\(result.successful) key\(result.successful == 1 ? "" : "s") successfully imported"
         let unsupported = "\(result.unsupported) unsupported key\(result.unsupported == 1 ? "" : "s") skipped"
         let duplicates = "\(result.duplicates) duplicate key\(result.duplicates == 1 ? "" : "s") skipped"
@@ -198,7 +207,6 @@ class DecryptionViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
-
     }
 
 }
@@ -222,7 +230,6 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         var cell: UITableViewCell!
         cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
         if cell == nil {
@@ -276,14 +283,17 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let keyRequiresPassphrase = decryptionContact?.keyRequiresPassphrase ?? false
+        var keyRequiresAskingForPassphrase = decryptionContact?.keyRequiresPassphrase ?? false
+        if keyRequiresAskingForPassphrase, let storedPassphrase = try? decryptionContact?.storesPassphrase(), storedPassphrase {
+            keyRequiresAskingForPassphrase = false
+        }
 
         switch (indexPath.row) {
         case DecryptionRows.passphrase.rawValue:
-            return (keyRequiresPassphrase ? 44 : 0)
+            return (keyRequiresAskingForPassphrase ? 44 : 0)
         case DecryptionRows.message.rawValue:
             var height = self.view.frame.height
-            height -= (keyRequiresPassphrase ? 132 : 88) // table view cells above
+            height -= (keyRequiresAskingForPassphrase ? 132 : 88) // table view cells above
             height -= (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0)
             height -= (self.navigationController?.navigationBar.frame.height ?? 0.0)
             height -= (self.tabBarController?.tabBar.frame.size.height ?? 0.0)
