@@ -116,6 +116,7 @@
 		812E9E662635D279008C910C /* PGProTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PGProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		812E9E682635D279008C910C /* PGProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTests.swift; sourceTree = "<group>"; };
 		812E9E6A2635D279008C910C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		813131922681192200DFEB8A /* PGPro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PGPro.entitlements; sourceTree = "<group>"; };
 		81323BE924A2440D00ADAABA /* GenerateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKey.swift; sourceTree = "<group>"; };
 		8137AC6E233271E3007483EA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = PGPro/Global/Model/Constants.swift; sourceTree = SOURCE_ROOT; };
 		8137AC702332AC1C007483EA /* String+Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
@@ -484,6 +485,7 @@
 		81E4631A231029A4008DC317 /* PGPro */ = {
 			isa = PBXGroup;
 			children = (
+				813131922681192200DFEB8A /* PGPro.entitlements */,
 				81C80A7F232E4FB200574E3F /* Info.plist */,
 				81E33AE82326B5B000241E4A /* Global */,
 				81E33AE92326B5CA00241E4A /* Encryption */,
@@ -955,6 +957,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PGPro/PGPro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Q7BD4XD9Q7;
@@ -984,6 +987,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PGPro/PGPro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Q7BD4XD9Q7;
