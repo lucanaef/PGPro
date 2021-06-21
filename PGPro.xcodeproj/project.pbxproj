@@ -23,6 +23,7 @@
 		8120EF56249FA4CB007F3420 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF55249FA4CB007F3420 /* Preferences.swift */; };
 		8120EF58249FB5A4007F3420 /* LicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF57249FB5A4007F3420 /* LicensesViewController.swift */; };
 		812E9E692635D279008C910C /* PGProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E9E682635D279008C910C /* PGProTests.swift */; };
+		81313191268117B400DFEB8A /* YubiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 81313190268117B400DFEB8A /* YubiKit */; };
 		81323BEA24A2440D00ADAABA /* GenerateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81323BE924A2440D00ADAABA /* GenerateKey.swift */; };
 		8137AC6F233271E3007483EA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137AC6E233271E3007483EA /* Constants.swift */; };
 		8137AC712332AC1C007483EA /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137AC702332AC1C007483EA /* String+Email.swift */; };
@@ -188,6 +189,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81313191268117B400DFEB8A /* YubiKit in Frameworks */,
 				81E28319256A7F0300F9F801 /* ObjectivePGP in Frameworks */,
 				8194D97123E2E359000D47C3 /* SwiftTryCatch in Frameworks */,
 			);
@@ -556,6 +558,7 @@
 			packageProductDependencies = (
 				8194D97023E2E359000D47C3 /* SwiftTryCatch */,
 				81E28318256A7F0300F9F801 /* ObjectivePGP */,
+				81313190268117B400DFEB8A /* YubiKit */,
 			);
 			productName = PGPro;
 			productReference = 81E46318231029A4008DC317 /* PGPro.app */;
@@ -597,6 +600,7 @@
 			packageReferences = (
 				8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */,
 				81E28317256A7F0300F9F801 /* XCRemoteSwiftPackageReference "ObjectivePGP" */,
+				8131318F268117B400DFEB8A /* XCRemoteSwiftPackageReference "yubikit-ios" */,
 			);
 			productRefGroup = 81E46319231029A4008DC317 /* Products */;
 			projectDirPath = "";
@@ -1045,6 +1049,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8131318F268117B400DFEB8A /* XCRemoteSwiftPackageReference "yubikit-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Yubico/yubikit-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/seanparsons/SwiftTryCatch.git";
@@ -1064,6 +1076,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		81313190268117B400DFEB8A /* YubiKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8131318F268117B400DFEB8A /* XCRemoteSwiftPackageReference "yubikit-ios" */;
+			productName = YubiKit;
+		};
 		8194D97023E2E359000D47C3 /* SwiftTryCatch */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */;
