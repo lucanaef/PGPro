@@ -38,9 +38,13 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>PGPro needs the camera to scan QR codes.</string>
+	<string>$(PRODUCT_NAME) needs the camera to scan QR codes.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>$(PRODUCT_NAME) uses FaceID for Authentication</string>
+	<key>UISupportedExternalAccessoryProtocols</key>
+	<array>
+		<string>com.yubico.ylp</string>
+	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
