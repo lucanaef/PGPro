@@ -311,8 +311,9 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (!isFiltering() && indexPath.row == 0 && Preferences.yubikey) {
-            // TODO: This code gets executed when the Yubikey button is pressed
+            // MARK: - This code gets executed when the Yubikey button is pressed
             let ykSession = YKOpenPGP()
+            ykSession.getYKConfiguration()
             ykSession.selectApplet()
             return
         }

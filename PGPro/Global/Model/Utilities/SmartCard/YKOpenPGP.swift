@@ -20,6 +20,9 @@ import YubiKit
 
 class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
 
+    // MARK: - Connection handling
+    // According to https://github.com/Yubico/yubikit-ios/blob/master/docs/easy-handling-connections.md
+
     override init() {
         super.init()
         YubiKitManager.shared.delegate = self
@@ -28,8 +31,6 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
 
     private var nfcConnection: YKFNFCConnection?
     private var accessoryConnection: YKFAccessoryConnection?
-
-    // MARK: - YKFManagerDelegate functions
 
     func didConnectNFC(_ connection: YKFNFCConnection) {
         nfcConnection = connection
@@ -54,7 +55,7 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
     // MARK: - Connection helper functions
 
     private var connectionCallback: ((_ connection: YKFConnectionProtocol) -> Void)?
-    private func connection(completion: @escaping (_ connection: YKFConnectionProtocol) -> Void) {
+    private func getConnection(completion: @escaping (_ connection: YKFConnectionProtocol) -> Void) {
         if let connection = accessoryConnection {
             completion(connection)
         } else {
@@ -62,6 +63,8 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
             YubiKitManager.shared.startNFCConnection()
         }
     }
+
+    // MARK: - OpenPGP Smartcard helper functions
 
     enum YKError: Error {
         case nfcSessionClosed
@@ -109,8 +112,6 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
 
     }
 
-
-    // MARK: - OpenPGP Smartcard helper functions
 
     typealias apduResponse = (UInt16?, Data?)
     private func parseResponse(response: Data) -> apduResponse {
@@ -176,7 +177,7 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
 
     // RawCommandService execution abstraction
     private func execute(command apdu: YKFAPDU, executionCompletion: @escaping (Data?, YKError) -> Void) {
-        connection { (connection) in
+        getConnection { (connection) in
             guard let SCInterface = connection.smartCardInterface else {
                 Log.s("Failed to initialize SmartCardInterface")
                 executionCompletion(nil, YKError.rawCommandServiceNotAvailable)
@@ -205,7 +206,7 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
     }
 
     func selectApplet() {
-        connection { (connection) in
+        getConnection { (connection) in
             guard let SCInterface = connection.smartCardInterface else {
                 Log.s("Failed to initialize SmartCardInterface")
                 return
@@ -219,6 +220,17 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
 
 
     // MARK: - Public functions
+
+    func getYKConfiguration() {
+        getConnection { connection in
+            connection.managementSession { session, error in
+                session?.readConfiguration { response, error in
+                    Log.d("Response \(response)")
+                    Log.d("Error: \(error)")
+                }
+            }
+        }
+    }
 
     func getCardholder(completion: @escaping (Result<SmartCard.Cardholder, YKError>) -> Void) {
         execute(command: APDU.getCardholderData) { (data, status) in
