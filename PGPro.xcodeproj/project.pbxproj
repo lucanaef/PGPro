@@ -38,6 +38,7 @@
 		815A63CB26370DE4001BD30A /* 1.asc in Resources */ = {isa = PBXBuildFile; fileRef = 815A63CA26370DE4001BD30A /* 1.asc */; };
 		815A63D326371C29001BD30A /* 2.asc in Resources */ = {isa = PBXBuildFile; fileRef = 815A63D226371C29001BD30A /* 2.asc */; };
 		8165F8B62496515F00496E84 /* ContactDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8165F8B52496515F00496E84 /* ContactDetails.swift */; };
+		816E0C0B2685169900BAF7EF /* YKVersion+description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E0C0A2685169900BAF7EF /* YKVersion+description.swift */; };
 		817E6E4A24179B7F0040A28B /* FLSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817E6E4924179B7F0040A28B /* FLSnapshot.swift */; };
 		817E6E5224179B8D0040A28B /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817E6E5124179B8D0040A28B /* SnapshotHelper.swift */; };
 		81819204231D334200BB7BBB /* ExampleDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81819203231D334200BB7BBB /* ExampleDataService.swift */; };
@@ -134,6 +135,7 @@
 		815A63CA26370DE4001BD30A /* 1.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = 1.asc; path = PGProTests/Keys/1.asc; sourceTree = SOURCE_ROOT; };
 		815A63D226371C29001BD30A /* 2.asc */ = {isa = PBXFileReference; lastKnownFileType = text; name = 2.asc; path = PGProTests/Keys/2.asc; sourceTree = SOURCE_ROOT; };
 		8165F8B52496515F00496E84 /* ContactDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetails.swift; sourceTree = "<group>"; };
+		816E0C0A2685169900BAF7EF /* YKVersion+description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YKVersion+description.swift"; sourceTree = "<group>"; };
 		817E6E4724179B7F0040A28B /* FLSnapshot.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FLSnapshot.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		817E6E4924179B7F0040A28B /* FLSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FLSnapshot.swift; sourceTree = "<group>"; };
 		817E6E4B24179B7F0040A28B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 		8136C66926825A8F00FD31AC /* SmartCard */ = {
 			isa = PBXGroup;
 			children = (
+				816E0C092685168400BAF7EF /* Helper */,
 				813131952681271000DFEB8A /* YKOpenPGP.swift */,
 				8136C66A26825B6E00FD31AC /* SmartCard.swift */,
 			);
@@ -287,6 +290,14 @@
 				81323BE924A2440D00ADAABA /* GenerateKey.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		816E0C092685168400BAF7EF /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				816E0C0A2685169900BAF7EF /* YKVersion+description.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		817E6E4824179B7F0040A28B /* FLSnapshot */ = {
@@ -742,6 +753,7 @@
 				8120EF50249F7882007F3420 /* Settings.swift in Sources */,
 				8120EF54249FA008007F3420 /* PassableUISwitch.swift in Sources */,
 				81B594D8231DBBB5004893A0 /* String+insertedSeparator.swift in Sources */,
+				816E0C0B2685169900BAF7EF /* YKVersion+description.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

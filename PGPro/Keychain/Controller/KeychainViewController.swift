@@ -311,10 +311,35 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (!isFiltering() && indexPath.row == 0 && Preferences.yubikey) {
-            // MARK: - This code gets executed when the Yubikey button is pressed
-            let ykSession = YKOpenPGP()
-            ykSession.getYKConfiguration()
-            ykSession.selectApplet()
+            // MARK: - Fow now, this code gets executed when the Yubikey button is pressed
+
+            let yubikeySession = YKOpenPGP()
+
+            // Print key info
+            yubikeySession.getConfiguration { result in
+                switch result {
+                case .success(let response):
+                    Log.i("Serial Number: \(response.serialNumber)")
+                    Log.i("Form Factor: \(response.formFactor)")
+                    Log.i("Version: \(response.version)")
+                    if let configuration = response.configuration {
+                        Log.i("Configuration is locked: \(configuration.isConfigurationLocked)")
+                        Log.i("OpenPGP supported over NFC: \(configuration.isSupported(.OPGP, overTransport: .NFC))")
+                        Log.i("OpenPGP enabled over NFC: \(configuration.isEnabled(.OPGP, overTransport: .NFC))")
+                    } else {
+                        Log.e("Configuration not available!")
+                    }
+                case .failure(let error):
+                    Log.e(error)
+                }
+            }
+
+            // I wish I already had async await
+            do {
+                sleep(5)
+            }
+
+            //ykSession.selectApplet()
             return
         }
 

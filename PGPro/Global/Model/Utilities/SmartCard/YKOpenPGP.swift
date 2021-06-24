@@ -212,8 +212,8 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
                 return
             }
             SCInterface.selectApplication(APDU.selectOpenPGPApplet2) { (response, error) in
-                Log.d("Response \(response)")
-                Log.d("Error: \(error)")
+                Log.d("Response \(response?.description ?? "null response")")
+                Log.d("Error: \(error.debugDescription)")
             }
         }
     }
@@ -221,16 +221,36 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
 
     // MARK: - Public functions
 
-    func getYKConfiguration() {
+
+    /**
+    Establishes a new connection to the Yubikey and fetches its configuration from the management application.
+
+    - Parameters:
+        - completion: The completion handler gets called once a configuration has been fetched or an has error occured.
+    */
+    func getConfiguration(completion: @escaping (Result<YKFManagementReadConfigurationResponse, Error>) -> Void) {
         getConnection { connection in
-            connection.managementSession { session, error in
-                session?.readConfiguration { response, error in
-                    Log.d("Response \(response)")
-                    Log.d("Error: \(error)")
+            connection.managementSession { (session, error) in
+                if let session = session {
+                    session.readConfiguration { (response, error) in
+                        if let response = response {
+                            completion(.success(response))
+                        } else if let error = error {
+                            completion(.failure(error))
+                        } else {
+                            Log.s("Unknown error occured while reading configuration.")
+                        }
+                    }
+                } else if let error = error {
+                    completion(.failure(error))
+                } else {
+                    Log.s("Unknown error occured while establishing the management session.")
                 }
             }
         }
     }
+
+
 
     func getCardholder(completion: @escaping (Result<SmartCard.Cardholder, YKError>) -> Void) {
         execute(command: APDU.getCardholderData) { (data, status) in
