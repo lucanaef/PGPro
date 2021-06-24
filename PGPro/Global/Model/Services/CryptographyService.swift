@@ -42,7 +42,7 @@ class CryptographyService {
         - message: A string to be encrypted and signed
         - contacts: The contacts (keys) for whom the message should be encrypted for.
         - signatures: The contacts (keys) that sign the message (optional).
-        - passphraseForKey: Handler for passphrase protected keys. Return passphrase for a key in question.
+        - passphrase: Handler for passphrase protected keys. Return passphrase for a key in question.
 
      - Throws:
         - `CryptographyError.emptyMessage` if the `message` contains an empty string.
