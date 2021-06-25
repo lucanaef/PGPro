@@ -18,7 +18,7 @@
 import Foundation
 import YubiKit
 
-class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
+class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
 
     // MARK: - Connection handling
     // According to https://github.com/Yubico/yubikit-ios/blob/master/docs/easy-handling-connections.md
@@ -83,35 +83,12 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
             case .rawCommandServiceNotAvailable: return "rawCommandService is not available"
             case .executionError(let error): return "NFC execution error: \(error)"
             case .emptyExecutionResponse: return "Empty NFC execution response"
-            case .rawCommandService(let status): return "RawCommandService Status: \(YKOpenPGP.statusDescription(of: status))"
+            case .rawCommandService(let status): return "RawCommandService Status: \(YKConnectionSession.statusDescription(of: status))"
             case .invalidResponse: return "Invalid Response"
             case .notImplemented: return "Not Implemented"
             }
         }
     }
-
-    private enum APDU {
-        static var selectOpenPGPApplet = YKFAPDU(cla: SmartCard.Class.singleWithoutSM, // 0x00
-                                                 ins: SmartCard.Ins.select, // 0xA4
-                                                 p1: 0x04, p2: 0x00,
-                                                 data: Data([0xD2, 0x76, 0x00, 0x01, 0x24, 0x01]),
-                                                 type: YKFAPDUType.short)!
-        static var selectOpenPGPApplet2 = YKFSelectApplicationAPDU(data: Data([0xD2, 0x76, 0x00, 0x01, 0x24, 0x01]))!
-
-        // TODO: Ideally use Secure Messaging for this command here (?)
-        static var getCardholderData = YKFAPDU(cla: SmartCard.Class.singleWithoutSM,
-                                               ins: SmartCard.Ins.getData,
-                                               p1: 0x00, p2: SmartCard.DataObjects.Constructed.cardholderData,
-                                               data: Data(),
-                                               type: YKFAPDUType.short)! // since data doesn't exceed 256 bytes
-        static var getKeyInformation = YKFAPDU(cla: SmartCard.Class.singleWithoutSM,
-                                               ins: SmartCard.Ins.getData,
-                                               p1: 0x00, p2: SmartCard.DataObjects.Simple.keyInfo,
-                                               data: Data(),
-                                               type: YKFAPDUType.short)!
-
-    }
-
 
     typealias apduResponse = (UInt16?, Data?)
     private func parseResponse(response: Data) -> apduResponse {
@@ -175,7 +152,6 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
         }
      }
 
-    // RawCommandService execution abstraction
     private func execute(command apdu: YKFAPDU, executionCompletion: @escaping (Data?, YKError) -> Void) {
         getConnection { (connection) in
             guard let SCInterface = connection.smartCardInterface else {
@@ -199,7 +175,7 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
                 }
 
                 let (statusCode, data) = self.parseResponse(response: response)
-                Log.d("Execution status: \(YKOpenPGP.statusDescription(of: statusCode!))")
+                Log.d("Execution status: \(YKConnectionSession.statusDescription(of: statusCode!))")
                 executionCompletion(data, YKError.rawCommandService(status: statusCode!))
             })
         }
@@ -249,8 +225,6 @@ class YKOpenPGP: NSObject, ObservableObject, YKFManagerDelegate {
             }
         }
     }
-
-
 
     func getCardholder(completion: @escaping (Result<SmartCard.Cardholder, YKError>) -> Void) {
         execute(command: APDU.getCardholderData) { (data, status) in
