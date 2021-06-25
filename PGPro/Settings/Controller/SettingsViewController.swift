@@ -60,7 +60,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if let section = Settings.Sections(rawValue: section), section == .preferences {
-            if (!Constants.User.canSendMail || !Constants.User.canUseBiometrics) {
+            if (!Constants.User.canSendMail || !AuthenticationService.supportedByDevice) {
                 return "Disabled preferences are not available on this device."
             }
         }
@@ -87,7 +87,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         cell.textLabel?.text = setting.title
         cell.detailTextLabel?.text = setting.subtitle
         cell.detailTextLabel?.textColor = .secondaryLabel
-        cell.imageView?.image = UIImage(systemName: setting.symbolName)
+        cell.imageView?.image = setting.symbol
 
         switch setting.type {
         case .Activity:

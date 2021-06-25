@@ -32,7 +32,7 @@ class Preferences {
         UserDefaults.standard.set(0,     forKey: UserDefaultsKeys.numRatings)
         UserDefaults.standard.set(false, forKey: UserDefaultsKeys.mailIntegration)
         UserDefaults.standard.set(false, forKey: UserDefaultsKeys.biometricAuthentication)
-        UserDefaults.standard.set(true,  forKey: UserDefaultsKeys.yubikey)
+        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.yubikey)
     }
 
     static var mailIntegrationEnabled: Bool {
@@ -49,7 +49,7 @@ class Preferences {
 
     static var yubikey: Bool {
         get {
-            UserDefaults.standard.bool(forKey: UserDefaultsKeys.biometricAuthentication)
+            UserDefaults.standard.bool(forKey: UserDefaultsKeys.yubikey)
         }
     }
 

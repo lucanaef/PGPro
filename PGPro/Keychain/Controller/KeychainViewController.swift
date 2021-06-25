@@ -66,6 +66,12 @@ class KeychainViewController: UIViewController {
                                                object: nil
         )
 
+        // Reload if (Yubikey) settings changed
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reloadData),
+                                               name: UserDefaults.didChangeNotification,
+                                               object: nil)
+
         self.title = "Keychain"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -162,7 +168,6 @@ class KeychainViewController: UIViewController {
         let result: ContactListResult = ContactListService.importFrom(readKeys)
         alert(result)
     }
-
 
     private func alert(_ result: ContactListResult) {
 

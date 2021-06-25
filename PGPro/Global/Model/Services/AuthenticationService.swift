@@ -28,13 +28,17 @@ class AuthenticationService {
         return AuthenticationService.context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
     }
 
-    static var faceIDAvailable: Bool = {
+    private static var faceIDAvailable: Bool = {
         return  biometricsAvailable && context.biometryType == .faceID
     }()
 
-    static var touchIDAvailable: Bool = {
+    private static var touchIDAvailable: Bool = {
         return biometricsAvailable && context.biometryType == .touchID
     }()
+
+    static var supportedByDevice: Bool {
+        faceIDAvailable || touchIDAvailable
+    }
 
     static var symbolName: String = {
         var imageName = "lock"

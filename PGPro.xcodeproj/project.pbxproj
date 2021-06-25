@@ -47,13 +47,14 @@
 		8188E5532502DE98001B2476 /* Data+hexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5522502DE98001B2476 /* Data+hexString.swift */; };
 		8188E5552502E4A0001B2476 /* String+InsecureHashing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5542502E4A0001B2476 /* String+InsecureHashing.swift */; };
 		818E129F26864DF200EBA85E /* APDU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818E129E26864DF200EBA85E /* APDU.swift */; };
-		818E12A12686541800EBA85E /* Yubikey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818E12A02686541800EBA85E /* Yubikey.swift */; };
+		818E12A32686706C00EBA85E /* UIImage+resized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818E12A22686706C00EBA85E /* UIImage+resized.swift */; };
 		8194386123E35CCF008B518E /* AppStoreReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8194386023E35CCF008B518E /* AppStoreReviewService.swift */; };
 		8194D96E23E1F292000D47C3 /* Navajo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8194D96D23E1F292000D47C3 /* Navajo.swift */; };
 		8194D97123E2E359000D47C3 /* SwiftTryCatch in Frameworks */ = {isa = PBXBuildFile; productRef = 8194D97023E2E359000D47C3 /* SwiftTryCatch */; };
 		819EB2BF2444EC7800D10100 /* iTunesInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819EB2BE2444EC7800D10100 /* iTunesInterface.swift */; };
 		81A0918A241D0F98004C91FB /* VerifyingKeyserverInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09189241D0F98004C91FB /* VerifyingKeyserverInterface.swift */; };
 		81A0A6152472C6F700D3B4AC /* DismissableKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A0A6142472C6F700D3B4AC /* DismissableKeyboard.swift */; };
+		81AC371B268676AF0006CA2A /* Yubikey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC371A268676AE0006CA2A /* Yubikey.swift */; };
 		81B40A1923A79423008B4EDE /* UILabel+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */; };
 		81B594D6231DBA07004893A0 /* UITextView+Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B594D5231DBA07004893A0 /* UITextView+Placeholder.swift */; };
 		81B594D8231DBBB5004893A0 /* String+insertedSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B594D7231DBBB5004893A0 /* String+insertedSeparator.swift */; };
@@ -148,13 +149,14 @@
 		8188E5522502DE98001B2476 /* Data+hexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+hexString.swift"; sourceTree = "<group>"; };
 		8188E5542502E4A0001B2476 /* String+InsecureHashing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+InsecureHashing.swift"; sourceTree = "<group>"; };
 		818E129E26864DF200EBA85E /* APDU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APDU.swift; sourceTree = "<group>"; };
-		818E12A02686541800EBA85E /* Yubikey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Yubikey.swift; path = ../../../../../../../Yubikey.swift; sourceTree = "<group>"; };
+		818E12A22686706C00EBA85E /* UIImage+resized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+resized.swift"; sourceTree = "<group>"; };
 		8194386023E35CCF008B518E /* AppStoreReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreReviewService.swift; sourceTree = "<group>"; };
 		8194D96D23E1F292000D47C3 /* Navajo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navajo.swift; sourceTree = "<group>"; };
 		819EB2BE2444EC7800D10100 /* iTunesInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesInterface.swift; sourceTree = "<group>"; };
 		81A09189241D0F98004C91FB /* VerifyingKeyserverInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyingKeyserverInterface.swift; sourceTree = "<group>"; };
 		81A0A6142472C6F700D3B4AC /* DismissableKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableKeyboard.swift; sourceTree = "<group>"; };
 		81A80174233E414900ADE6E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		81AC371A268676AE0006CA2A /* Yubikey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Yubikey.swift; sourceTree = "<group>"; };
 		81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+UIImage.swift"; sourceTree = "<group>"; };
 		81B594D5231DBA07004893A0 /* UITextView+Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Placeholder.swift"; sourceTree = "<group>"; };
 		81B594D7231DBBB5004893A0 /* String+insertedSeparator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+insertedSeparator.swift"; sourceTree = "<group>"; };
@@ -308,7 +310,7 @@
 		818E129926864CE400EBA85E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				818E12A02686541800EBA85E /* Yubikey.swift */,
+				81AC371A268676AE0006CA2A /* Yubikey.swift */,
 				818E129E26864DF200EBA85E /* APDU.swift */,
 				8136C66A26825B6E00FD31AC /* SmartCard.swift */,
 				818E129C26864D1B00EBA85E /* Extensions */,
@@ -353,6 +355,7 @@
 				810AE9D4248D421400DF17D2 /* UIView+pinEdges.swift */,
 				81E33B0123279B4900241E4A /* UIViewController+alert.swift */,
 				81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */,
+				818E12A22686706C00EBA85E /* UIImage+resized.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -542,10 +545,10 @@
 		81E4631A231029A4008DC317 /* PGPro */ = {
 			isa = PBXGroup;
 			children = (
-				818E129826864CCF00EBA85E /* Yubikey */,
 				813131922681192200DFEB8A /* PGPro.entitlements */,
 				81C80A7F232E4FB200574E3F /* Info.plist */,
 				81E33AE82326B5B000241E4A /* Global */,
+				818E129826864CCF00EBA85E /* Yubikey */,
 				81E33AE92326B5CA00241E4A /* Encryption */,
 				81E33AEA2326B5D900241E4A /* Decryption */,
 				81E33AEB2326B5EA00241E4A /* Keychain */,
@@ -742,6 +745,7 @@
 				813131962681271000DFEB8A /* YKConnectionSession.swift in Sources */,
 				8136C66B26825B6E00FD31AC /* SmartCard.swift in Sources */,
 				8120EF52249F8AB5007F3420 /* SettingsViewController.swift in Sources */,
+				81AC371B268676AF0006CA2A /* Yubikey.swift in Sources */,
 				81819204231D334200BB7BBB /* ExampleDataService.swift in Sources */,
 				8114B8DB23194F92001DBAC5 /* PGPro.xcdatamodeld in Sources */,
 				81BB434F244201E900886A2F /* SearchKeyserverViewController.swift in Sources */,
@@ -759,6 +763,7 @@
 				815097C3247D7F3C00022E0F /* Logger.swift in Sources */,
 				81417F6824A0F43900732A62 /* GenerateKeyViewController.swift in Sources */,
 				81E4631C231029A4008DC317 /* AppDelegate.swift in Sources */,
+				818E12A32686706C00EBA85E /* UIImage+resized.swift in Sources */,
 				8114B8A02315B664001DBAC5 /* KeychainViewController.swift in Sources */,
 				8194D96E23E1F292000D47C3 /* Navajo.swift in Sources */,
 				81453BAC247BA59C00613F18 /* CryptographyService.swift in Sources */,
@@ -774,7 +779,6 @@
 				818E129F26864DF200EBA85E /* APDU.swift in Sources */,
 				81B594D6231DBA07004893A0 /* UITextView+Placeholder.swift in Sources */,
 				81A0A6152472C6F700D3B4AC /* DismissableKeyboard.swift in Sources */,
-				818E12A12686541800EBA85E /* Yubikey.swift in Sources */,
 				81B40A1923A79423008B4EDE /* UILabel+UIImage.swift in Sources */,
 				81E33AFD23279A0700241E4A /* UIBarButtonItem+button.swift in Sources */,
 				81B594EA23212251004893A0 /* ContactListService.swift in Sources */,

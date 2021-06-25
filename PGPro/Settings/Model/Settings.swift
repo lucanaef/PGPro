@@ -36,13 +36,13 @@ class Setting {
     }
 
     var title: String
-    var symbolName: String
+    var symbol: UIImage
     var subtitle: String?
     var type: SettingType
 
-    init(title: String, symbol: String, subtitle: String? = nil, of type: SettingType) {
+    init(title: String, symbol: UIImage, subtitle: String? = nil, of type: SettingType) {
         self.title = title
-        self.symbolName = symbol
+        self.symbol = symbol
         self.subtitle = subtitle
         self.type = type
     }
@@ -51,9 +51,9 @@ class Setting {
 
     // Activity:
     private(set) var activity: ((_ viewController: UIViewController, _ completion: () -> Void) -> Void)?
-    init(title: String, symbol: String, subtitle: String? = nil, withActivity activity: @escaping (_ viewController: UIViewController, _ completion: () -> Void) -> Void) {
+    init(title: String, symbol: UIImage, subtitle: String? = nil, withActivity activity: @escaping (_ viewController: UIViewController, _ completion: () -> Void) -> Void) {
         self.title = title
-        self.symbolName = symbol
+        self.symbol = symbol
         self.subtitle = subtitle
         self.type = .Activity
         self.activity = activity
@@ -61,9 +61,9 @@ class Setting {
 
     // Action:
     private(set) var action: (() -> Void)?
-    init(title: String, symbol: String, subtitle: String? = nil, actionType: ActionType = .normal, withAction action: @escaping () -> Void) {
+    init(title: String, symbol: UIImage, subtitle: String? = nil, actionType: ActionType = .normal, withAction action: @escaping () -> Void) {
         self.title = title
-        self.symbolName = symbol
+        self.symbol = symbol
         self.subtitle = subtitle
         self.type = .Action(type: actionType)
         self.action = action
@@ -83,9 +83,9 @@ class Setting {
         }
     }
 
-    init(title: String, symbol: String, subtitle: String? = nil, forKey key: String, enabled: Bool) {
+    init(title: String, symbol: UIImage, subtitle: String? = nil, forKey key: String, enabled: Bool) {
         self.title = title
-        self.symbolName = symbol
+        self.symbol = symbol
         self.subtitle = subtitle
         self.type = .Preference
         self.userDefaultsKey = key
@@ -94,9 +94,9 @@ class Setting {
 
     // Link:
     private(set) var url: URL?
-    init(title: String, symbol: String, subtitle: String? = nil, withURL url: URL) {
+    init(title: String, symbol: UIImage, subtitle: String? = nil, withURL url: URL) {
         self.title = title
-        self.symbolName = symbol
+        self.symbol = symbol
         self.subtitle = subtitle
         self.type = .Link
         self.url = url
@@ -104,9 +104,9 @@ class Setting {
 
     // Segue:
     private(set) var viewController: UIViewController?
-    init(title: String, symbol: String, subtitle: String? = nil, to viewController: UIViewController) {
+    init(title: String, symbol: UIImage, subtitle: String? = nil, to viewController: UIViewController) {
         self.title = title
-        self.symbolName = symbol
+        self.symbol = symbol
         self.subtitle = subtitle
         self.type = .Segue
         self.viewController = viewController
@@ -133,6 +133,7 @@ class Settings {
         allSettings[SettingsDictKey(.data,          DataSection.deleteAllKeys.rawValue)]            = deleteAllKeys
         allSettings[SettingsDictKey(.preferences,   PreferencesSection.mailIntegration.rawValue)]   = mailIntegration
         allSettings[SettingsDictKey(.preferences,   PreferencesSection.authentication.rawValue)]    = authentication
+        allSettings[SettingsDictKey(.preferences,   PreferencesSection.yubikey.rawValue)]           = yubikey
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.sendFeedback.rawValue)]         = reportIssue
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.joinBeta.rawValue)]             = joinBeta
         allSettings[SettingsDictKey(.feedback,      FeedbackSection.askForRating.rawValue)]         = askForRating
@@ -181,6 +182,7 @@ class Settings {
     enum PreferencesSection: Int, CaseIterable {
         case mailIntegration = 0
         case authentication = 1
+        case yubikey = 2
 
         static var header: String {
             return "Preferences"
@@ -210,7 +212,7 @@ class Settings {
 
 
     // Mark: - Actual Settings
-    let exportKeychain = Setting(title: "Export Keychain", symbol: "square.and.arrow.up") { viewController, completion in
+    let exportKeychain = Setting(title: "Export Keychain", symbol: UIImage(systemName: "square.and.arrow.up")!) { viewController, completion in
         DispatchQueue.global(qos: .default).async {
             let keyring = Keyring()
             var keys: [Key] = []
@@ -245,38 +247,43 @@ class Settings {
         completion()
     }
     let deleteAllKeys       = Setting(title: "Delete Keychain",
-                                      symbol: "trash",
+                                      symbol: UIImage(systemName: "trash")!,
                                       actionType: Setting.ActionType.destructive) {
                                         ContactListService.deleteAllData()
                                       }
     let mailIntegration     = Setting(title: "Mail Integration",
-                                      symbol: "envelope",
+                                      symbol: UIImage(systemName: "envelope")!,
                                       forKey: Preferences.UserDefaultsKeys.mailIntegration,
                                       enabled: Constants.User.canSendMail)
     let authentication      = Setting(title: "App Launch Authentication",
-                                      symbol: AuthenticationService.symbolName,
+                                      symbol: UIImage(systemName: AuthenticationService.symbolName)!,
                                       forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
-                                      enabled: Constants.User.canUseBiometrics)
+                                      enabled: AuthenticationService.supportedByDevice)
+    let yubikey             = Setting(title: "Yubikey",
+                                      symbol: UIImage(systemName: "key.fill")!,
+                                      //symbol: UIImage.resize(image: UIImage(named: "LASKey")!, targetSize: CGSize(width: 8, height: 22)),
+                                      forKey: Preferences.UserDefaultsKeys.yubikey,
+                                      enabled: Yubikey.supportedByDevice)
     let reportIssue         = Setting(title: "Report Issue",
-                                      symbol: "ladybug",
+                                      symbol: UIImage(systemName: "ladybug")!,
                                       withURL: URL(string: "https://github.com/lucanaef/PGPro/issues")!)
     let joinBeta            = Setting(title: "Join the PGPro Beta",
-                                      symbol: "airplane",
+                                      symbol: UIImage(systemName: "airplane")!,
                                       withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
     let askForRating        = Setting(title: "Please Rate PGPro",
-                                      symbol: "heart",
+                                      symbol: UIImage(systemName: "heart")!,
                                       subtitle: "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED PGPRO IN YOUR REGION",
                                       withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!)
     let faq                 = Setting(title: "Frequently Asked Questions",
-                                      symbol: "questionmark.circle",
+                                      symbol: UIImage(systemName: "questionmark.circle")!,
                                       withURL: URL(string: "https://pgpro.app/faq/")!)
     let contribute          = Setting(title: "Contribute on GitHub",
-                                      symbol: "chevron.left.slash.chevron.right",
+                                      symbol: UIImage(systemName: "chevron.left.slash.chevron.right")!,
                                       withURL: URL(string: "https://github.com/lucanaef/PGPro")!)
     let privacyPolicy       = Setting(title: "Privacy Policy",
-                                      symbol: "eye.slash",
+                                      symbol: UIImage(systemName: "eye.slash")!,
                                       withURL: URL(string: "https://pgpro.app/privacypolicy/")!)
     let licenses            = Setting(title: "Licenses",
-                                      symbol: "scroll",
+                                      symbol: UIImage(systemName: "scroll")!,
                                       to: LicensesViewController())
 }
