@@ -318,6 +318,9 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
             // MARK: - Fow now, this code gets executed when the Yubikey button is pressed
             let yubikey = Yubikey()
             yubikey.logInfo()
+            let detailViewController = YubikeyDetailViewController()
+            detailViewController.setModel(to: yubikey)
+            self.navigationController?.pushViewController(detailViewController, animated: true)
             return
         }
 
