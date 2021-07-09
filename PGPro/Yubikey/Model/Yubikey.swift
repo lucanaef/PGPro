@@ -46,9 +46,11 @@ class Yubikey {
 
     init() {
         self.fetchConfiguration()
-        self.fetchSmartCard()
 
-        // I wish I already had async await
+        // MARK: - This method below does not yet work
+        //self.fetchSmartCard()
+
+        // Hacky way to make it work async await
         do {
             sleep(3)
         }
@@ -77,7 +79,14 @@ class Yubikey {
     }
 
     private func fetchSmartCard() {
-        // TODO: Fetch SmartCard
+        session.getCardholder { result in
+            switch result {
+            case .success(_):
+                Log.i("Success!")
+            case .failure(let error):
+                Log.e(error)
+            }
+        }
     }
 
     func logInfo() {

@@ -18,6 +18,74 @@
 import Foundation
 import YubiKit
 
+public enum YKError: Error, CustomStringConvertible {
+    case nfcSessionClosed
+    case invalidAPDU
+    case rawCommandServiceNotAvailable
+    case executionError(error: Error)
+    case emptyExecutionResponse
+    case rawCommandService(status: UInt16)
+    case invalidResponse
+    case notImplemented
+
+    public var description: String {
+        switch self {
+        case .nfcSessionClosed: return "NFC session is closed"
+        case .invalidAPDU: return "Invalid APDU command"
+        case .rawCommandServiceNotAvailable: return "rawCommandService is not available"
+        case .executionError(let error): return "NFC execution error: \(error)"
+        case .emptyExecutionResponse: return "Empty NFC execution response"
+        case .rawCommandService(let status): return "RawCommandService Status: \(statusDescription(of: status))"
+        case .invalidResponse: return "Invalid Response"
+        case .notImplemented: return "Not Implemented"
+        }
+    }
+
+    func statusDescription(of status: UInt16) -> String {
+        let sw1 = UInt8(status >> 8)
+        let sw2 = UInt8(status & 0x00FF)
+
+        // Special cases (commented out below)
+        if (sw1 == 0x61) {
+            return "Command correct, \(sw2) bytes available in response"
+        } else if (sw1 == 0x63) {
+            let retries = UInt8((sw2 >> 4) & 0x000F)
+            return "Password not checked, \(retries) further allowed retries"
+        } else if (status >= 0x6280) && (status <= 0x6402) {
+            return "Triggering by the card; 0E = Out of Memory (BasicCard specific)"
+        }
+
+        switch status {
+        // case: 0x61XX: return "Command correct, xx bytes available in response"
+        case 0x6285: return "Selected file or DO in termination state"
+        // case 0x63CX: return "Password not checked, 'X' encodes the number of further allowed retries"
+        // case 0x6402-0x6280: return "Triggering by the card; 0E = Out of Memory (BasicCard specific)"
+        case 0x6581: return "Memory failure"
+        case 0x6600: return "Security-related issues"
+        case 0x6700: return "Wrong length (Lc and/or Le)"
+        case 0x6881: return "Logical channel not supported"
+        case 0x6882: return "Secure messaging not supported"
+        case 0x6883: return "Last command of the chain expected"
+        case 0x6884: return "Command chaining not supported"
+        case 0x6982: return "Security status not satisfied (PW wrong/PW not checked/SM incorrect)"
+        case 0x6983: return "Authentication method blocked; PW blocked (error counter zero)"
+        case 0x6985: return "Condition of use not satisfied"
+        case 0x6987: return "Expected secure messaging DOs missing (e. g. SM-key)"
+        case 0x6988: return "SM data objects incorrect (e. g. wrong TLV-structure in command data)"
+        case 0x6A80: return "Incorrect parameters in the command data field"
+        case 0x6A82: return "File or application not found"
+        case 0x6A88: return "Referenced data, reference data or DO not found"
+        case 0x6B00: return "Wrong parameters P1-P2"
+        case 0x6D00: return "Instruction code (INS) not supported or invalid"
+        case 0x6E00: return "Class (CLA) not supported"
+        case 0x6F00: return "No precise diagnosis"
+        case 0x9000: return "Command correct"
+        default:     return "Other status code: \(String(format:"%02X", status))"
+        }
+     }
+}
+
+
 class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
 
     // MARK: - Connection handling
@@ -66,30 +134,6 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
 
     // MARK: - OpenPGP Smartcard helper functions
 
-    enum YKError: Error {
-        case nfcSessionClosed
-        case invalidAPDU
-        case rawCommandServiceNotAvailable
-        case executionError(error: Error)
-        case emptyExecutionResponse
-        case rawCommandService(status: UInt16)
-        case invalidResponse
-        case notImplemented
-
-        var description: String {
-            switch self {
-            case .nfcSessionClosed: return "NFC session is closed"
-            case .invalidAPDU: return "Invalid APDU command"
-            case .rawCommandServiceNotAvailable: return "rawCommandService is not available"
-            case .executionError(let error): return "NFC execution error: \(error)"
-            case .emptyExecutionResponse: return "Empty NFC execution response"
-            case .rawCommandService(let status): return "RawCommandService Status: \(YKConnectionSession.statusDescription(of: status))"
-            case .invalidResponse: return "Invalid Response"
-            case .notImplemented: return "Not Implemented"
-            }
-        }
-    }
-
     typealias apduResponse = (UInt16?, Data?)
     private func parseResponse(response: Data) -> apduResponse {
         var statusCode: UInt16?
@@ -106,51 +150,6 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
 
         return (statusCode, data)
     }
-
-    private static func statusDescription(of status: UInt16) -> String {
-        let sw1 = UInt8(status >> 8)
-        Log.d("sw1: " + (String(format:"%02X", sw1)))
-        let sw2 = UInt8(status)
-        Log.d("sw2: " + (String(format:"%02X", sw2)))
-
-        // Special cases (commented out below)
-        if (sw1 == 0x61) {
-            return "Command correct, \(sw2) bytes available in response"
-        } else if (sw1 == 0x63) {
-            let retries = UInt8((sw2 >> 4) & 0x000F)
-            return "Password not checked, \(retries) further allowed retries"
-        } else if (status >= 0x6280) && (status <= 0x6402) {
-            return "Triggering by the card; 0E = Out of Memory (BasicCard specific)"
-        }
-
-        switch status {
-        // case: 0x61XX: return "Command correct, xx bytes available in response"
-        case 0x6285: return "Selected file or DO in termination state"
-        // case 0x63CX: return "Password not checked, 'X' encodes the number of further allowed retries"
-        // case 0x6402-0x6280: return "Triggering by the card; 0E = Out of Memory (BasicCard specific)"
-        case 0x6581: return "Memory failure"
-        case 0x6600: return "Security-related issues"
-        case 0x6700: return "Wrong length (Lc and/or Le)"
-        case 0x6881: return "Logical channel not supported"
-        case 0x6882: return "Secure messaging not supported"
-        case 0x6883: return "Last command of the chain expected"
-        case 0x6884: return "Command chaining not supported"
-        case 0x6982: return "Security status not satisfied (PW wrong/PW not checked/SM incorrect)"
-        case 0x6983: return "Authentication method blocked; PW blocked (error counter zero)"
-        case 0x6985: return "Condition of use not satisfied"
-        case 0x6987: return "Expected secure messaging DOs missing (e. g. SM-key)"
-        case 0x6988: return "SM data objects incorrect (e. g. wrong TLV-structure in command data)"
-        case 0x6A80: return "Incorrect parameters in the command data field"
-        case 0x6A82: return "File or application not found"
-        case 0x6A88: return "Referenced data, reference data or DO not found"
-        case 0x6B00: return "Wrong parameters P1-P2"
-        case 0x6D00: return "Instruction code (INS) not supported or invalid"
-        case 0x6E00: return "Class (CLA) not supported"
-        case 0x6F00: return "No precise diagnosis"
-        case 0x9000: return "Command correct"
-        default:     return "Other status code: \(String(format:"%02X", status))"
-        }
-     }
 
     private func execute(command apdu: YKFAPDU, executionCompletion: @escaping (Data?, YKError) -> Void) {
         getConnection { (connection) in
@@ -175,19 +174,19 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
                 }
 
                 let (statusCode, data) = self.parseResponse(response: response)
-                Log.d("Execution status: \(YKConnectionSession.statusDescription(of: statusCode!))")
+                Log.d("Execution status: \(YKError.rawCommandService(status: statusCode!))")
                 executionCompletion(data, YKError.rawCommandService(status: statusCode!))
             })
         }
     }
 
-    func selectApplet() {
+    private func selectOpenPGPApplet() {
         getConnection { (connection) in
             guard let SCInterface = connection.smartCardInterface else {
                 Log.s("Failed to initialize SmartCardInterface")
                 return
             }
-            SCInterface.selectApplication(APDU.selectOpenPGPApplet2) { (response, error) in
+            SCInterface.selectApplication(APDU.selectOpenPGPApplet) { (response, error) in
                 Log.d("Response \(response?.description ?? "null response")")
                 Log.d("Error: \(error.debugDescription)")
             }
@@ -227,6 +226,7 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
     }
 
     func getCardholder(completion: @escaping (Result<SmartCard.Cardholder, YKError>) -> Void) {
+        self.selectOpenPGPApplet()
         execute(command: APDU.getCardholderData) { (data, status) in
             switch status {
             case .rawCommandService(let code):

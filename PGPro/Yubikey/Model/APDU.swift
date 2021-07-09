@@ -79,13 +79,7 @@ struct APDU {
 
     // MARK: - Public APDU Commands
 
-    static var selectOpenPGPApplet = YKFAPDU(cla: Class.singleWithoutSM, // 0x00
-                                             ins: Ins.select, // 0xA4
-                                             p1: 0x04, p2: 0x00,
-                                             data: Data([0xD2, 0x76, 0x00, 0x01, 0x24, 0x01]),
-                                             type: YKFAPDUType.short)!
-
-    static var selectOpenPGPApplet2 = YKFSelectApplicationAPDU(data: Data([0xD2, 0x76, 0x00, 0x01, 0x24, 0x01]))!
+    static var selectOpenPGPApplet = YKFSelectApplicationAPDU(data: Data([0xD2, 0x76, 0x00, 0x01, 0x24, 0x01]))!
 
     // TODO: Ideally use Secure Messaging for this command here (?)
     static var getCardholderData = YKFAPDU(cla: Class.singleWithoutSM,
