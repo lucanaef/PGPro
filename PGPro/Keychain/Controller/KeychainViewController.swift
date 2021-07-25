@@ -211,35 +211,14 @@ class KeychainViewController: UIViewController {
         return (searchController.isActive && searchBarNotEmpty)
     }
 
-}
-
-// MARK: - Document Picker
-
-extension KeychainViewController: UIDocumentPickerDelegate {
-
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        var importResult = ContactListResult(successful: 0, unsupported: 0, duplicates: 0)
-
-        for selectedFileURL in urls {
-            do {
-                let readKeys = try KeyConstructionService.fromFile(fileURL: selectedFileURL)
-
-                if readKeys.isEmpty {
-                    importResult.unsupported += 1
-                    continue
-                }
-
-                let results = ContactListService.importFrom(readKeys)
-                importResult.successful += results.successful
-                importResult.unsupported += results.unsupported
-                importResult.duplicates += results.duplicates
-            } catch let error {
-                Log.e("Error info: \(error)")
-                continue
-            }
+    private func yubiKeyCellTapped(pin: String) {
+        if let yubikey = Yubikey(pin: pin) {
+            let detailViewController = YubikeyDetailViewController()
+            detailViewController.setModel(to: yubikey)
+            self.navigationController?.pushViewController(detailViewController, animated: true)
+        } else {
+            self.alert(text: "Unable to connect to YubiKey (Timeout)")
         }
-
-        alert(importResult)
     }
 
 }
@@ -256,7 +235,11 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
         if isFiltering() {
             return filteredContacts.count
         } else {
-            return contacts.count + yubikey
+            if Preferences.Development.hideKeychain {
+                return yubikey
+            } else {
+                return contacts.count + yubikey
+            }
         }
     }
     
@@ -283,7 +266,7 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (!isFiltering() && indexPath.row == 0 && Preferences.yubikey) {
-            Log.s("Can't delete the Yubikey cell!")
+            Log.s("Can't delete the YubiKey cell!")
             return // Don't delete the Yubikey cell
         }
 
@@ -315,12 +298,28 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (!isFiltering() && indexPath.row == 0 && Preferences.yubikey) {
-            // MARK: - Fow now, this code gets executed when the Yubikey button is pressed
-            let yubikey = Yubikey()
-            yubikey.logInfo()
-            let detailViewController = YubikeyDetailViewController()
-            detailViewController.setModel(to: yubikey)
-            self.navigationController?.pushViewController(detailViewController, animated: true)
+            // MARK: - This code gets executed when the Yubikey button is pressed
+            let pinAlert = UIAlertController(title: "Enter PIN", message: "Default PIN: 123456", preferredStyle: .alert)
+            pinAlert.addTextField {
+                $0.autocapitalizationType = .none
+                $0.autocorrectionType = .no
+                $0.enablesReturnKeyAutomatically = true
+                $0.keyboardType = .asciiCapableNumberPad
+                $0.returnKeyType = .done
+                $0.smartDashesType = .no
+                $0.smartInsertDeleteType = .no
+                $0.smartQuotesType = .no
+                $0.delegate = self
+            }
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            pinAlert.addAction(cancel)
+            let enter = UIAlertAction(title: "Enter", style: .default) { _ in
+                let textField = pinAlert.textFields?.first
+                guard let pin = textField?.text else { return }
+                self.yubiKeyCellTapped(pin: pin)
+            }
+            pinAlert.addAction(enter)
+            present(pinAlert, animated: true, completion: nil)
             return
         }
 
@@ -355,6 +354,48 @@ extension KeychainViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         filterContactsforSearchText(searchText: searchController.searchBar.text ?? "")
+    }
+
+}
+
+// MARK: - Document Picker
+
+extension KeychainViewController: UIDocumentPickerDelegate {
+
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        var importResult = ContactListResult(successful: 0, unsupported: 0, duplicates: 0)
+
+        for selectedFileURL in urls {
+            do {
+                let readKeys = try KeyConstructionService.fromFile(fileURL: selectedFileURL)
+
+                if readKeys.isEmpty {
+                    importResult.unsupported += 1
+                    continue
+                }
+
+                let results = ContactListService.importFrom(readKeys)
+                importResult.successful += results.successful
+                importResult.unsupported += results.unsupported
+                importResult.duplicates += results.duplicates
+            } catch let error {
+                Log.e("Error info: \(error)")
+                continue
+            }
+        }
+
+        alert(importResult)
+    }
+
+}
+
+// MARK: - YubiKey PIN
+extension KeychainViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard textField.text != nil else { return false }
+        presentedViewController?.dismiss(animated: true, completion: nil)
+        return true
     }
 
 }

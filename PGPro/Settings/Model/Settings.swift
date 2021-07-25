@@ -259,7 +259,7 @@ class Settings {
                                       symbol: UIImage(systemName: AuthenticationService.symbolName)!,
                                       forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
                                       enabled: AuthenticationService.supportedByDevice)
-    let yubikey             = Setting(title: "Yubikey",
+    let yubikey             = Setting(title: "YubiKey",
                                       symbol: UIImage(systemName: "key.fill")!,
                                       //symbol: UIImage.resize(image: UIImage(named: "LASKey")!, targetSize: CGSize(width: 8, height: 22)),
                                       forKey: Preferences.UserDefaultsKeys.yubikey,

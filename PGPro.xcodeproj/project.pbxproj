@@ -67,6 +67,7 @@
 		81B6EA622482B4E000008A5C /* License.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B6EA612482B4E000008A5C /* License.swift */; };
 		81BB434F244201E900886A2F /* SearchKeyserverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BB434E244201E900886A2F /* SearchKeyserverViewController.swift */; };
 		81C61AB52482851E00DCEB6D /* KeySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C61AB42482851E00DCEB6D /* KeySelectionViewController.swift */; };
+		81CC47AD26AC1EDB000036C0 /* Data+hexEncodedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CC47AC26AC1EDB000036C0 /* Data+hexEncodedString.swift */; };
 		81DDB53A2666B59900EE6575 /* CodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DDB5392666B59900EE6575 /* CodeScannerView.swift */; };
 		81E28319256A7F0300F9F801 /* ObjectivePGP in Frameworks */ = {isa = PBXBuildFile; productRef = 81E28318256A7F0300F9F801 /* ObjectivePGP */; };
 		81E33AE623265A4E00241E4A /* Contact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E33AE423265A4E00241E4A /* Contact+CoreDataClass.swift */; };
@@ -171,6 +172,7 @@
 		81BB434E244201E900886A2F /* SearchKeyserverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeyserverViewController.swift; sourceTree = "<group>"; };
 		81C61AB42482851E00DCEB6D /* KeySelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySelectionViewController.swift; sourceTree = "<group>"; };
 		81C80A7F232E4FB200574E3F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81CC47AC26AC1EDB000036C0 /* Data+hexEncodedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+hexEncodedString.swift"; sourceTree = "<group>"; };
 		81DDB5392666B59900EE6575 /* CodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeScannerView.swift; sourceTree = "<group>"; };
 		81E33AE423265A4E00241E4A /* Contact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+CoreDataClass.swift"; sourceTree = "<group>"; };
 		81E33AE523265A4E00241E4A /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 				81E33B0123279B4900241E4A /* UIViewController+alert.swift */,
 				81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */,
 				818E12A22686706C00EBA85E /* UIImage+resized.swift */,
+				81CC47AC26AC1EDB000036C0 /* Data+hexEncodedString.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -770,6 +773,7 @@
 				8114B8A02315B664001DBAC5 /* KeychainViewController.swift in Sources */,
 				8194D96E23E1F292000D47C3 /* Navajo.swift in Sources */,
 				81453BAC247BA59C00613F18 /* CryptographyService.swift in Sources */,
+				81CC47AD26AC1EDB000036C0 /* Data+hexEncodedString.swift in Sources */,
 				81FC11FB2598ECA700F8CD51 /* AuthenticationService.swift in Sources */,
 				81323BEA24A2440D00ADAABA /* GenerateKey.swift in Sources */,
 				8114B8A4231815D5001DBAC5 /* EncryptionViewController.swift in Sources */,

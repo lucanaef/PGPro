@@ -19,28 +19,29 @@ import Foundation
 import YubiKit
 
 public enum YKError: Error, CustomStringConvertible {
-    case nfcSessionClosed
-    case invalidAPDU
-    case rawCommandServiceNotAvailable
-    case executionError(error: Error)
-    case emptyExecutionResponse
-    case rawCommandService(status: UInt16)
-    case invalidResponse
+    case smartcardNotAvailable
+    case smartcardError(status: UInt16)
+    case nilExecutionResponse
     case notImplemented
+    case invalidResponse
+    case invalidPIN
+    case timeout
 
     public var description: String {
         switch self {
-        case .nfcSessionClosed: return "NFC session is closed"
-        case .invalidAPDU: return "Invalid APDU command"
-        case .rawCommandServiceNotAvailable: return "rawCommandService is not available"
-        case .executionError(let error): return "NFC execution error: \(error)"
-        case .emptyExecutionResponse: return "Empty NFC execution response"
-        case .rawCommandService(let status): return "RawCommandService Status: \(statusDescription(of: status))"
-        case .invalidResponse: return "Invalid Response"
+        case .smartcardNotAvailable: return "rawCommandService is not available"
+        case .smartcardError(let status): return "RawCommandService Status: \(statusDescription(of: status))"
+        case .nilExecutionResponse: return "Empty NFC execution response"
         case .notImplemented: return "Not Implemented"
+        case .invalidResponse: return "Invalid Response"
+        case .invalidPIN: return "Invalid PIN"
+        case .timeout: return "Timeout"
         }
     }
 
+    /**
+    Returns a string describing a given OpenPGP smart card status code
+     */
     func statusDescription(of status: UInt16) -> String {
         let sw1 = UInt8(status >> 8)
         let sw2 = UInt8(status & 0x00FF)
@@ -85,7 +86,6 @@ public enum YKError: Error, CustomStringConvertible {
      }
 }
 
-
 class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
 
     // MARK: - Connection handling
@@ -119,6 +119,12 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
         accessoryConnection = nil
     }
 
+    func stop() {
+        YubiKitManager.shared.stopAccessoryConnection()
+        YubiKitManager.shared.stopNFCConnection()
+        YubiKitManager.shared.delegate = nil
+    }
+
 
     // MARK: - Connection helper functions
 
@@ -132,78 +138,17 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
         }
     }
 
-    // MARK: - OpenPGP Smartcard helper functions
-
-    typealias apduResponse = (UInt16?, Data?)
-    private func parseResponse(response: Data) -> apduResponse {
-        var statusCode: UInt16?
-        if response.count >= 2 {
-            statusCode = UInt16(response[response.count - 2]) << 8 + UInt16(response[response.count - 1])
-        } else {
-            Log.e("Respons too short: \(response.count) bytes")
-        }
-
-        var data: Data? = nil
-        if response.count >= 2 {
-            data = response.subdata(in: 0..<response.count - 2)
-        }
-
-        return (statusCode, data)
+    private func closeConnection() {
+        YubiKitManager.shared.stopAccessoryConnection()
+        YubiKitManager.shared.stopNFCConnection()
     }
-
-    private func execute(command apdu: YKFAPDU, executionCompletion: @escaping (Data?, YKError) -> Void) {
-        getConnection { (connection) in
-            guard let SCInterface = connection.smartCardInterface else {
-                Log.s("Failed to initialize SmartCardInterface")
-                executionCompletion(nil, YKError.rawCommandServiceNotAvailable)
-                return
-            }
-
-            SCInterface.executeCommand(apdu, completion: { (response, error) in
-                if let error = error {
-                    Log.s("Error while executing command!")
-                    let errorCode = (error as NSError).code
-                    executionCompletion(nil, YKError.rawCommandService(status: UInt16(errorCode)))
-                    return
-                }
-
-                guard let response = response, response.count >= 2 else {
-                    Log.s("Received empty response!")
-                    executionCompletion(nil, YKError.emptyExecutionResponse)
-                    return
-                }
-
-                let (statusCode, data) = self.parseResponse(response: response)
-                Log.d("Execution status: \(YKError.rawCommandService(status: statusCode!))")
-                executionCompletion(data, YKError.rawCommandService(status: statusCode!))
-            })
-        }
-    }
-
-    private func selectOpenPGPApplet() {
-        getConnection { (connection) in
-            guard let SCInterface = connection.smartCardInterface else {
-                Log.s("Failed to initialize SmartCardInterface")
-                return
-            }
-            SCInterface.selectApplication(APDU.selectOpenPGPApplet) { (response, error) in
-                Log.d("Response \(response?.description ?? "null response")")
-                Log.d("Error: \(error.debugDescription)")
-            }
-        }
-    }
-
 
     // MARK: - Public functions
 
-
     /**
-    Establishes a new connection to the Yubikey and fetches its configuration from the management application.
-
-    - Parameters:
-        - completion: The completion handler gets called once a configuration has been fetched or an has error occured.
+     Establishes a new connection to the YubiKey and fetches its configuration from the management application.
     */
-    func getConfiguration(completion: @escaping (Result<YKFManagementReadConfigurationResponse, Error>) -> Void) {
+    open func getConfiguration(completion: @escaping (Result<YKFManagementReadConfigurationResponse, Error>) -> Void) {
         getConnection { connection in
             connection.managementSession { (session, error) in
                 if let session = session {
@@ -225,49 +170,131 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
         }
     }
 
-    func getCardholder(completion: @escaping (Result<SmartCard.Cardholder, YKError>) -> Void) {
-        self.selectOpenPGPApplet()
-        execute(command: APDU.getCardholderData) { (data, status) in
-            switch status {
-            case .rawCommandService(let code):
-                guard code == 0x9000 else {
-                    completion(.failure(status))
+    /**
+     Establishes a new connection to the YubiKey and fetches the key information from the OpenPGP applet.
+    */
+    open func getKeyInformation(pin: String, completion: @escaping (Result<SmartCard.KeyInformation, Error>) -> Void) {
+        getConnection { connection in
+            guard let smartcard = connection.smartCardInterface else {
+                completion(.failure(YKError.smartcardNotAvailable))
+                return
+            }
+
+            // Select the OpenPGP applet:
+            smartcard.executeCommand(APDU.selectOpenPGPApplet) { (data, error) in
+                if let error = error {
+                    let statuscode = (error as NSError).code
+                    completion(.failure(YKError.smartcardError(status: UInt16(statuscode))))
                     return
                 }
 
-                guard let data = data else {
-                    completion(.failure(.invalidResponse))
+                // Parse response from smart card (0 byte data expected)
+                guard data != nil else {
+                    completion(.failure(YKError.nilExecutionResponse))
                     return
                 }
-                Log.d("Data size: \(data.count)")
-                Log.d("Data: \(String(decoding: data, as: UTF8.self))")
-                completion(.failure(YKError.notImplemented))
-            default:
-                completion(.failure(status))
+                // OpenPGP application selected!
+
+                // Verify Pin:
+                guard let verifyPINAPDU = APDU.verfiyPIN(pin: pin) else {
+                    completion(.failure(YKError.invalidPIN))
+                    return
+                }
+
+                smartcard.executeCommand(verifyPINAPDU) { (data, error) in
+                    guard error != nil else {
+                        Log.e("PIN verification failed!")
+                        completion(.failure(YKError.invalidPIN))
+                        return
+                    }
+                    // PIN verification successful!
+
+                    // Request key information:
+                    smartcard.executeCommand(APDU.getKeyInformation) { (data, error) in
+                        if let error = error {
+                            let statuscode = (error as NSError).code
+                            completion(.failure(YKError.smartcardError(status: UInt16(statuscode))))
+                            return
+                        }
+
+                        guard let data = data else {
+                            completion(.failure(YKError.nilExecutionResponse))
+                            return
+                        }
+
+                        let keyInformation = SmartCard.KeyInformation(from: data)
+                        if let keyInformation = keyInformation {
+                            completion(.success(keyInformation))
+                        } else {
+                            completion(.failure(YKError.invalidResponse))
+                        }
+                    }
+                }
             }
         }
     }
 
-    func getKeyInformation(completion: @escaping (Result<SmartCard.KeyInformation, YKError>) -> Void) {
-        execute(command: APDU.getKeyInformation) { (data, status) in
-            switch status {
-            case .rawCommandService(let code):
-                guard code == 0x9000 else {
-                    completion(.failure(status))
+    /**
+     Establishes a new connection to the YubiKey and fetches the cardholder related data from the OpenPGP applet.
+    */
+    open func getCardholderData(pin: String, completion: @escaping (Result<SmartCard.Cardholder, Error>) -> Void) {
+        getConnection { connection in
+            guard let smartcard = connection.smartCardInterface else {
+                completion(.failure(YKError.smartcardNotAvailable))
+                return
+            }
+
+            /// (Synchronously) select the OpenPGP Applet
+            smartcard.executeCommand(APDU.selectOpenPGPApplet) { (data, error) in
+                if let error = error {
+                    let statuscode = (error as NSError).code
+                    completion(.failure(YKError.smartcardError(status: UInt16(statuscode))))
                     return
                 }
 
-                guard let data = data else {
-                    completion(.failure(.invalidResponse))
+                // Parse response from smart card (0 byte data expected)
+                guard data != nil else {
+                    completion(.failure(YKError.nilExecutionResponse))
                     return
                 }
-                Log.d("Data size: \(data.count)")
-                Log.d("Data: \(String(decoding: data, as: UTF8.self))")
-                completion(.failure(YKError.notImplemented))
-            default:
-                completion(.failure(status))
+                // OpenPGP application selected!
+
+                // Verify Pin
+                guard let verifyPINAPDU = APDU.verfiyPIN(pin: pin) else {
+                    completion(.failure(YKError.invalidPIN))
+                    return
+                }
+
+                smartcard.executeCommand(verifyPINAPDU) { (data, error) in
+                    guard error != nil else {
+                        Log.e("PIN verification failed!")
+                        completion(.failure(YKError.invalidPIN))
+                        return
+                    }
+                    // PIN verification successful!
+
+                    // Request key information
+                    smartcard.executeCommand(APDU.getCardholderData) { (data, error) in
+                        if let error = error {
+                            let statuscode = (error as NSError).code
+                            completion(.failure(YKError.smartcardError(status: UInt16(statuscode))))
+                            return
+                        }
+
+                        guard let data = data else {
+                            completion(.failure(YKError.nilExecutionResponse))
+                            return
+                        }
+
+                        let cardholder = SmartCard.Cardholder(from: data)
+                        if let cardholder = cardholder {
+                            completion(.success(cardholder))
+                        } else {
+                            completion(.failure(YKError.invalidResponse))
+                        }
+                    }
+                }
             }
         }
     }
-
 }

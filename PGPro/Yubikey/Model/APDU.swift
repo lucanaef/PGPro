@@ -16,10 +16,9 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import YubiKit // for YKFAPDU
+import YubiKit
 
 struct APDU {
-
     private init() {}
 
     // MARK: - Private ISO/IEC 7816-4 APDU Data model
@@ -39,59 +38,51 @@ struct APDU {
         static var select: UInt8            = 0xA4
         static var getData: UInt8           = 0xCA
         static var verify: UInt8            = 0x20
-        static var changeRefData: UInt8     = 0x24
         static var resetRetryCounter: UInt8 = 0x2C
-        // TODO: Whis one is it? DA or DB? Specifications unclear to me...
-        //static var putData: UInt8           = 0xDA 0xDB
-        static var generateAsymPair: UInt8  = 0x47
-        static var computeDigSig: UInt8     = 0x2A
         static var decipher: UInt8          = 0x2A
-        static var internalAuth: UInt8      = 0x88
-        static var getResponse: UInt8       = 0xC0
-        static var getChallenge: UInt8      = 0x84
-        static var terminateDF: UInt8       = 0x44
-        static var activateFile: UInt8      = 0xE6
     }
 
     /// Terminal-accessible, get-able OpenPGP smart card Data Object tags
     private struct DataObjects {
         private init() {}
 
-        struct Simple {
+        // Single
+        static var keyInfo: UInt8           = 0xDE
+
+        struct publicKeyURL {
             private init() {}
 
-            static var applicationIdentifier: UInt8     = 0x4F
-            static var loginData: UInt8                 = 0x5E
-            static var publicKeyURL: UInt16             = 0x5F50
-            static var historicalBytes: UInt16          = 0x5F52
-            static var pwStatus: UInt8                  = 0xC4
-            static var keyInfo: UInt8                   = 0xDE
+            static var P1: UInt8            = 0x5F
+            static var P2: UInt8            = 0x50
         }
 
-        struct Constructed {
-            private init() {}
-
-            static var cardholderData: UInt8            = 0x65
-            static var applicationData: UInt8           = 0x6E
-            static var securitySupportTemplate: UInt8   = 0x7A
-        }
+        // Constructed
+        static var cardholderData: UInt8    = 0x65
+        static var applicationData: UInt8   = 0x6E
     }
 
     // MARK: - Public APDU Commands
 
-    static var selectOpenPGPApplet = YKFSelectApplicationAPDU(data: Data([0xD2, 0x76, 0x00, 0x01, 0x24, 0x01]))!
+    static var selectOpenPGPApplet = YKFAPDU(data: Data([Class.singleWithoutSM, Ins.select, 0x04, 0x00, 0x06, 0xD2, 0x76, 0x00, 0x01, 0x24, 0x01]))!
 
-    // TODO: Ideally use Secure Messaging for this command here (?)
-    static var getCardholderData = YKFAPDU(cla: Class.singleWithoutSM,
-                                           ins: Ins.getData,
-                                           p1: 0x00, p2: DataObjects.Constructed.cardholderData,
-                                           data: Data(),
-                                           type: YKFAPDUType.short)! // since data doesn't exceed 256 bytes
+    static var getApplicationData = YKFAPDU(data: Data([Class.singleWithoutSM, Ins.getData, 0x00, DataObjects.applicationData, 0x00]))!
 
-    static var getKeyInformation = YKFAPDU(cla: Class.singleWithoutSM,
-                                           ins: Ins.getData,
-                                           p1: 0x00, p2: DataObjects.Simple.keyInfo,
-                                           data: Data(),
-                                           type: YKFAPDUType.short)!
+    static var getCardholderData = YKFAPDU(data: Data([Class.singleWithoutSM, Ins.getData, 0x00, DataObjects.cardholderData, 0x00]))!
+
+    static var getKeyInformation = YKFAPDU(data: Data([Class.singleWithoutSM, Ins.getData, 0x00, DataObjects.keyInfo, 0x00]))!
+
+    static var getKeyURL = YKFAPDU(cla: Class.singleWithoutSM, ins: Ins.getData, p1: DataObjects.publicKeyURL.P1, p2: DataObjects.publicKeyURL.P2, data: Data(), type: .short)!
+
+    static func verfiyPIN(pin: String) -> YKFAPDU? {
+        guard let pinData = pin.data(using: .utf8) else {
+            return nil
+        }
+
+        var verifyPINCommand = Data([Class.singleWithoutSM, Ins.verify, 0x00, 0x82])
+        verifyPINCommand.append(UInt8(pinData.count))
+        verifyPINCommand.append(pinData)
+
+        return YKFAPDU(data: verifyPINCommand)
+    }
 
 }

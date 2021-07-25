@@ -19,6 +19,10 @@ import Foundation
 
 class Preferences {
 
+    struct Development {
+        static var hideKeychain = true
+    }
+
     enum UserDefaultsKeys {
         static var numRatings = "numRatings"
         static var launchedBefore = "launchedBefore"

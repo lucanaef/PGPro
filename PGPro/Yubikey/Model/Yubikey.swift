@@ -20,43 +20,59 @@ import YubiKit
 
 class Yubikey {
 
-    private let session = YKConnectionSession()
+    private var pin: String
 
     var version: YKFVersion?
     var formFactor: UInt?
     var serialNumber: UInt?
 
     var description: String {
-        return "Yubikey \(String(describing: serialNumber)) (Version: \(String(describing: version)))"
+        return "Yubikey \(String(describing: serialNumber)) (Version \(String(describing: version)))"
     }
 
-    // Flags indicating whether or not OpenPGP is supported/enabled over NFC
-    var openPGPSupported: Bool?
-    var openPGPEnabled: Bool?
+    // Indicated whether or not OpenPGP is supported/enabled over NFC
+    struct OpenPGPCapabilities {
+        enum OpenPGPStatus {
+            case notSupported
+            case disabled
+            case enabled
 
-    var configurationLocked: Bool?
+            init(supported: Bool, enabled: Bool) {
+                if !supported {
+                    self = .notSupported
+                } else if enabled {
+                    self = .enabled
+                } else {
+                    self = .disabled
+                }
+            }
+        }
 
-    // OpenPGP smartcard of the Yubikey
-    var smartcard: SmartCard?
+        var NFC: OpenPGPStatus
+        var Accessory: OpenPGPStatus
+        var locked: Bool
+    }
+    var capabilities: OpenPGPCapabilities?
+
 
     /// Returns true, if the device can support a Yubikey
     static var supportedByDevice: Bool {
         YubiKitDeviceCapabilities.supportsMFIAccessoryKey || YubiKitDeviceCapabilities.supportsNFCScanning
     }
 
-    init() {
-        self.fetchConfiguration()
-
-        // MARK: - This method below does not yet work
-        //self.fetchSmartCard()
-
-        // Hacky way to make it work async await
+    init?(pin: String) {
+        self.pin = pin
         do {
-            sleep(3)
+            try self.fetchConfiguration()
+        } catch {
+            return nil
         }
     }
 
-    private func fetchConfiguration() {
+    private func fetchConfiguration() throws {
+        let semaphore = DispatchSemaphore(value: 0)
+
+        let session = YKConnectionSession()
         session.getConfiguration { result in
             switch result {
             case .success(let response):
@@ -65,38 +81,35 @@ class Yubikey {
                 self.serialNumber = response.serialNumber
 
                 if let configuration = response.configuration {
-                    self.openPGPSupported = configuration.isSupported(.OPGP, overTransport: .NFC)
-                    self.openPGPEnabled = configuration.isEnabled(.OPGP, overTransport: .NFC)
+                    let nfc = OpenPGPCapabilities.OpenPGPStatus(supported: configuration.isSupported(.OPGP, overTransport: .NFC),
+                                                                enabled: configuration.isEnabled(.OPGP, overTransport: .NFC))
+                    let accessory = OpenPGPCapabilities.OpenPGPStatus(supported: configuration.isSupported(.OPGP, overTransport: .USB),
+                                                                      enabled: configuration.isEnabled(.OPGP, overTransport: .USB))
 
-                    self.configurationLocked = configuration.isConfigurationLocked
+                    self.capabilities = OpenPGPCapabilities(NFC: nfc, Accessory: accessory, locked: configuration.isConfigurationLocked)
                 } else {
                     Log.e("Configuration not available!")
                 }
             case .failure(let error):
                 Log.e(error)
             }
+            semaphore.signal()
+        }
+
+        if semaphore.wait(timeout: .now() + 7) == .timedOut {
+            session.stop()
+            throw YKError.timeout
+        }
+
+        session.stop()
+    }
+
+    open func getKeyInformation(completion: @escaping (Result<SmartCard.KeyInformation, Error>) -> Void) {
+        let session = YKConnectionSession()
+        session.getKeyInformation(pin: pin) { result in
+            completion(result)
+            session.stop()
         }
     }
-
-    private func fetchSmartCard() {
-        session.getCardholder { result in
-            switch result {
-            case .success(_):
-                Log.i("Success!")
-            case .failure(let error):
-                Log.e(error)
-            }
-        }
-    }
-
-    func logInfo() {
-        Log.i("Version: \(String(describing: version))")
-        Log.i("Serial Number: \(String(describing: serialNumber))")
-        Log.i("Form factor: \(String(describing: formFactor))")
-        Log.i("Configuration locked: \(String(describing: configurationLocked))")
-        Log.i("OpenPGP supported over NFC: \(String(describing: openPGPSupported))")
-        Log.i("OpenPGP enabled over NFC: \(String(describing: openPGPEnabled))")
-    }
-
 
 }

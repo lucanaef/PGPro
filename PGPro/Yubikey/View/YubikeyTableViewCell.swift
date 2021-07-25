@@ -27,7 +27,7 @@ class YubikeyTableViewCell: UITableViewCell {
         self.detailTextLabel?.textColor = .secondaryLabel
 
         self.textLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
-        self.textLabel?.text = "Yubikey"
+        self.textLabel?.text = "YubiKey"
         self.detailTextLabel?.text = "Tap to connect"
 
         self.imageView?.image = UIImage(named: "LASKey")

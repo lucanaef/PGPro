@@ -22,7 +22,17 @@ class YubikeyDetailViewController: UIViewController {
 
     private var yubikey: Yubikey? {
         didSet {
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+
+    private var keyInformation: SmartCard.KeyInformation? {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
 
@@ -36,13 +46,14 @@ class YubikeyDetailViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
 
         return tableView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Yubikey"
+        self.title = "YubiKey"
 
         view.addSubview(tableView)
         tableView.pinEdges(to: view)
@@ -61,6 +72,7 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
     private enum Sections: Int, CaseIterable {
         case about = 0
         case configuration = 1
+        case keys = 2
 
         var rows: Int {
             switch self {
@@ -68,6 +80,8 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 return AboutSection.allCases.count
             case .configuration:
                 return ConfigurationSection.allCases.count
+            case .keys:
+                return KeysSection.allCases.count
             }
         }
     }
@@ -78,14 +92,23 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     private enum ConfigurationSection: Int, CaseIterable {
-        case openPGPSupported = 0
-        case openPGPEnabled = 1
+        case nfc = 0
+        case accessory = 1
     }
 
-    
+    private enum KeysSection: Int, CaseIterable {
+        case loadKeys = 0
+        case signing = 1
+        case decryption = 2
+        case authentication = 3
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Sections(rawValue: section)?.rows ?? 0
+        if section == Sections.keys.rawValue, keyInformation == nil {
+            return 1 // Only return "Load Keys" cell if keys have not yet been loaded
+        } else {
+            return Sections(rawValue: section)?.rows ?? 0
+        }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -114,15 +137,157 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
             }
 
         case .configuration:
+            let capabilities = yubikey?.capabilities
             let row = ConfigurationSection(rawValue: indexPath.row)
             switch row {
-            case .openPGPSupported:
-                cell.textLabel?.text = "Supported"
-                cell.detailTextLabel?.text = yubikey?.openPGPSupported?.description
+            case .nfc:
+                cell.textLabel?.text = "NFC"
 
-            case .openPGPEnabled:
-                cell.textLabel?.text = "Enabled"
-                cell.detailTextLabel?.text = yubikey?.openPGPEnabled?.description
+                var label: String?
+                var symbolName: String
+                var tintColor: UIColor
+                switch capabilities?.NFC {
+                case .notSupported:
+                    label = "Not Supported"
+                    symbolName = "xmark.circle"
+                    tintColor = UIColor.systemRed
+                case .disabled:
+                    label = "Disabled"
+                    symbolName = "exclamationmark.circle"
+                    tintColor = UIColor.systemOrange
+                case .enabled:
+                    label = "Enabled"
+                    symbolName = "checkmark.circle"
+                    tintColor = UIColor.systemGreen
+                default:
+                    label = nil
+                    symbolName = "questionmark.circle"
+                    tintColor = UIColor.label
+                }
+                cell.detailTextLabel?.text = label
+                cell.imageView?.image = UIImage(systemName: symbolName)
+                cell.imageView?.tintColor = tintColor
+
+            case .accessory:
+                cell.textLabel?.text = "Accessory"
+
+                var label: String?
+                var symbolName: String
+                var tintColor: UIColor
+                switch capabilities?.Accessory {
+                case .notSupported:
+                    label = "Not Supported"
+                    symbolName = "xmark.circle"
+                    tintColor = UIColor.systemRed
+                case .disabled:
+                    label = "Disabled"
+                    symbolName = "exclamationmark.circle"
+                    tintColor = UIColor.systemOrange
+                case .enabled:
+                    label = "Enabled"
+                    symbolName = "checkmark.circle"
+                    tintColor = UIColor.systemGreen
+                default:
+                    label = nil
+                    symbolName = "questionmark.circle"
+                    tintColor = UIColor.label
+                }
+                cell.detailTextLabel?.text = label
+                cell.imageView?.image = UIImage(systemName: symbolName)
+                cell.imageView?.tintColor = tintColor
+
+
+            default:
+                Log.s("indexPath out of bounds!")
+            }
+
+        case .keys:
+            let row = KeysSection(rawValue: indexPath.row)
+            switch row {
+            case .loadKeys:
+                let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+                cell.textLabel?.text = "Tap to load keys..."
+                cell.textLabel?.textAlignment = .center
+                cell.selectionStyle = .none
+                return cell
+            case .signing:
+                let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+                cell.selectionStyle = .none
+                cell.textLabel?.text = "Signing Key"
+                cell.detailTextLabel?.text = keyInformation?.signatureKeyStatus?.description
+
+                var symbolName: String
+                var tintColor: UIColor
+                switch keyInformation?.signatureKeyStatus {
+                case .keyNotPresent:
+                    symbolName = "xmark.circle"
+                    tintColor = UIColor.systemRed
+                case .keyImported:
+                    symbolName = "checkmark.circle"
+                    tintColor = UIColor.systemGreen
+                case .keyGenerated:
+                    symbolName = "checkmark.seal"
+                    tintColor = UIColor.systemGreen
+                default:
+                    symbolName = "questionmark.circle"
+                    tintColor = UIColor.label
+                }
+                cell.imageView?.image = UIImage(systemName: symbolName)
+                cell.imageView?.tintColor = tintColor
+
+                return cell
+            case .decryption:
+                let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+                cell.selectionStyle = .none
+                cell.textLabel?.text = "Decryption Key"
+                cell.detailTextLabel?.text = keyInformation?.decryptionKeyStatus?.description
+
+                var symbolName: String
+                var tintColor: UIColor
+                switch keyInformation?.signatureKeyStatus {
+                case .keyNotPresent:
+                    symbolName = "xmark.circle"
+                    tintColor = UIColor.systemRed
+                case .keyImported:
+                    symbolName = "checkmark.circle"
+                    tintColor = UIColor.systemGreen
+                case .keyGenerated:
+                    symbolName = "checkmark.seal"
+                    tintColor = UIColor.systemGreen
+                default:
+                    symbolName = "questionmark.circle"
+                    tintColor = UIColor.label
+                }
+                cell.imageView?.image = UIImage(systemName: symbolName)
+                cell.imageView?.tintColor = tintColor
+
+                return cell
+            case .authentication:
+                let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+                cell.selectionStyle = .none
+                cell.textLabel?.text = "Authentication Key"
+                cell.detailTextLabel?.text = keyInformation?.authenticationKeyStatus?.description
+
+                var symbolName: String
+                var tintColor: UIColor
+                switch keyInformation?.signatureKeyStatus {
+                case .keyNotPresent:
+                    symbolName = "xmark.circle"
+                    tintColor = UIColor.systemRed
+                case .keyImported:
+                    symbolName = "checkmark.circle"
+                    tintColor = UIColor.systemGreen
+                case .keyGenerated:
+                    symbolName = "checkmark.seal"
+                    tintColor = UIColor.systemGreen
+                default:
+                    symbolName = "questionmark.circle"
+                    tintColor = UIColor.label
+                }
+                cell.imageView?.image = UIImage(systemName: symbolName)
+                cell.imageView?.tintColor = tintColor
+
+                return cell
 
             default:
                 Log.s("indexPath out of bounds!")
@@ -141,11 +306,44 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
         case .about:
             return "About"
         case .configuration:
-            return "OpenPGP via NFC"
+            return "OpenPGP Capabilities"
+        case .keys:
+            return "OpenPGP Keys"
         default:
             return nil
         }
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (indexPath.section == Sections.keys.rawValue) {
+            if (indexPath.row == KeysSection.loadKeys.rawValue) {
+                yubikey?.getKeyInformation(completion: { result in
+                    switch result {
+                    case .failure(let error as YKError):
+                        DispatchQueue.main.async {
+                            self.alert(text: error.description)
+                        }
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            self.alert(text: error.localizedDescription)
+                        }
+                    case .success(let keyInformation):
+                        self.keyInformation = keyInformation
+                    }
+                })
+            }
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.section == Sections.keys.rawValue) {
+            if (indexPath.row == KeysSection.loadKeys.rawValue) {
+                if (keyInformation != nil) {
+                    return 0.0
+                }
+            }
+        }
+        return 44.0
+    }
 
 }
