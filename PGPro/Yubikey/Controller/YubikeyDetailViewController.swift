@@ -28,7 +28,7 @@ class YubikeyDetailViewController: UIViewController {
         }
     }
 
-    private var keyInformation: SmartCard.KeyInformation? {
+    private var smartCard: SmartCard? {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -104,7 +104,7 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == Sections.keys.rawValue, keyInformation == nil {
+        if section == Sections.keys.rawValue, smartCard == nil {
             return 1 // Only return "Load Keys" cell if keys have not yet been loaded
         } else {
             return Sections(rawValue: section)?.rows ?? 0
@@ -214,11 +214,18 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
                 cell.selectionStyle = .none
                 cell.textLabel?.text = "Signing Key"
-                cell.detailTextLabel?.text = keyInformation?.signatureKeyStatus?.description
+
+                let keyAlgorithm = smartCard?.signatureKey.algorithmAttributes?.algorithmID?.description
+                if let keyAlgorithm = keyAlgorithm {
+                    cell.textLabel?.text?.append(" (\(keyAlgorithm))")
+                }
+
+                cell.detailTextLabel?.text = smartCard?.signatureKey.fingerprint?.description
+                cell.detailTextLabel?.textColor = .secondaryLabel
 
                 var symbolName: String
                 var tintColor: UIColor
-                switch keyInformation?.signatureKeyStatus {
+                switch smartCard?.signatureKey.status {
                 case .keyNotPresent:
                     symbolName = "xmark.circle"
                     tintColor = UIColor.systemRed
@@ -240,11 +247,18 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
                 cell.selectionStyle = .none
                 cell.textLabel?.text = "Decryption Key"
-                cell.detailTextLabel?.text = keyInformation?.decryptionKeyStatus?.description
+
+                let keyAlgorithm = smartCard?.decryptionKey.algorithmAttributes?.algorithmID?.description
+                if let keyAlgorithm = keyAlgorithm {
+                    cell.textLabel?.text?.append(" (\(keyAlgorithm))")
+                }
+
+                cell.detailTextLabel?.text = smartCard?.decryptionKey.fingerprint?.description
+                cell.detailTextLabel?.textColor = .secondaryLabel
 
                 var symbolName: String
                 var tintColor: UIColor
-                switch keyInformation?.signatureKeyStatus {
+                switch smartCard?.decryptionKey.status {
                 case .keyNotPresent:
                     symbolName = "xmark.circle"
                     tintColor = UIColor.systemRed
@@ -266,11 +280,18 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
                 cell.selectionStyle = .none
                 cell.textLabel?.text = "Authentication Key"
-                cell.detailTextLabel?.text = keyInformation?.authenticationKeyStatus?.description
+
+                let keyAlgorithm = smartCard?.authenticationKey.algorithmAttributes?.algorithmID?.description
+                if let keyAlgorithm = keyAlgorithm {
+                    cell.textLabel?.text?.append(" (\(keyAlgorithm))")
+                }
+
+                cell.detailTextLabel?.text = smartCard?.authenticationKey.fingerprint?.description
+                cell.detailTextLabel?.textColor = .secondaryLabel
 
                 var symbolName: String
                 var tintColor: UIColor
-                switch keyInformation?.signatureKeyStatus {
+                switch smartCard?.authenticationKey.status {
                 case .keyNotPresent:
                     symbolName = "xmark.circle"
                     tintColor = UIColor.systemRed
@@ -317,7 +338,7 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.section == Sections.keys.rawValue) {
             if (indexPath.row == KeysSection.loadKeys.rawValue) {
-                yubikey?.getKeyInformation(completion: { result in
+                yubikey?.getSmartCard(completion: { result in
                     switch result {
                     case .failure(let error as YKError):
                         DispatchQueue.main.async {
@@ -327,8 +348,8 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
                         DispatchQueue.main.async {
                             self.alert(text: error.localizedDescription)
                         }
-                    case .success(let keyInformation):
-                        self.keyInformation = keyInformation
+                    case .success(let smarCard):
+                        self.smartCard = smarCard
                     }
                 })
             }
@@ -338,7 +359,7 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.section == Sections.keys.rawValue) {
             if (indexPath.row == KeysSection.loadKeys.rawValue) {
-                if (keyInformation != nil) {
+                if (smartCard != nil) {
                     return 0.0
                 }
             }

@@ -80,6 +80,7 @@
 		81E46328231029A5008DC317 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81E46326231029A5008DC317 /* LaunchScreen.storyboard */; };
 		81EFEB01249A97C800470493 /* FDTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EFEB00249A97C800470493 /* FDTextFieldTableViewCell.swift */; };
 		81EFEB03249AA6AA00470493 /* FullTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EFEB02249AA6AA00470493 /* FullTextFieldTableViewCell.swift */; };
+		81F0DE4826C0091E00DE8069 /* SmartCardKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0DE4726C0091E00DE8069 /* SmartCardKey.swift */; };
 		81F95FF72502A4BF00786238 /* ZBase32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F95FF62502A4BF00786238 /* ZBase32.swift */; };
 		81FC11F52598DDD800F8CD51 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC11F42598DDD800F8CD51 /* AuthenticationViewController.swift */; };
 		81FC11FB2598ECA700F8CD51 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC11FA2598ECA700F8CD51 /* AuthenticationService.swift */; };
@@ -184,6 +185,7 @@
 		81E46324231029A5008DC317 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81EFEB00249A97C800470493 /* FDTextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FDTextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		81EFEB02249AA6AA00470493 /* FullTextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullTextFieldTableViewCell.swift; sourceTree = "<group>"; };
+		81F0DE4726C0091E00DE8069 /* SmartCardKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartCardKey.swift; sourceTree = "<group>"; };
 		81F95FF62502A4BF00786238 /* ZBase32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZBase32.swift; sourceTree = "<group>"; };
 		81FC11F42598DDD800F8CD51 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		81FC11FA2598ECA700F8CD51 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 				81AC371A268676AE0006CA2A /* Yubikey.swift */,
 				818E129E26864DF200EBA85E /* APDU.swift */,
 				8136C66A26825B6E00FD31AC /* SmartCard.swift */,
+				81F0DE4726C0091E00DE8069 /* SmartCardKey.swift */,
 				818E129C26864D1B00EBA85E /* Extensions */,
 			);
 			path = Model;
@@ -747,6 +750,7 @@
 				81B69914241A8CB900636FD4 /* KeyConstructionService.swift in Sources */,
 				81DDB53A2666B59900EE6575 /* CodeScannerView.swift in Sources */,
 				813131942681243100DFEB8A /* YubikeyTableViewCell.swift in Sources */,
+				81F0DE4826C0091E00DE8069 /* SmartCardKey.swift in Sources */,
 				8188E5532502DE98001B2476 /* Data+hexString.swift in Sources */,
 				813131962681271000DFEB8A /* YKConnectionSession.swift in Sources */,
 				8136C66B26825B6E00FD31AC /* SmartCard.swift in Sources */,

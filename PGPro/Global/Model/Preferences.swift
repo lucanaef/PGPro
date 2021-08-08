@@ -20,7 +20,7 @@ import Foundation
 class Preferences {
 
     struct Development {
-        static var hideKeychain = true
+        static var hideKeychain = false
     }
 
     enum UserDefaultsKeys {

@@ -171,9 +171,9 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
     }
 
     /**
-     Establishes a new connection to the YubiKey and fetches the key information from the OpenPGP applet.
+     Establishes a new connection to the YubiKey and fetches the smart card information from the OpenPGP applet.
     */
-    open func getKeyInformation(pin: String, completion: @escaping (Result<SmartCard.KeyInformation, Error>) -> Void) {
+    open func getSmartCard(pin: String, completion: @escaping (Result<SmartCard, Error>) -> Void) {
         getConnection { connection in
             guard let smartcard = connection.smartCardInterface else {
                 completion(.failure(YKError.smartcardNotAvailable))
@@ -202,7 +202,7 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
                 }
 
                 smartcard.executeCommand(verifyPINAPDU) { (data, error) in
-                    guard error != nil else {
+                    guard error == nil else {
                         Log.e("PIN verification failed!")
                         completion(.failure(YKError.invalidPIN))
                         return
@@ -210,7 +210,7 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
                     // PIN verification successful!
 
                     // Request key information:
-                    smartcard.executeCommand(APDU.getKeyInformation) { (data, error) in
+                    smartcard.executeCommand(APDU.getApplicationData) { (data, error) in
                         if let error = error {
                             let statuscode = (error as NSError).code
                             completion(.failure(YKError.smartcardError(status: UInt16(statuscode))))
@@ -222,12 +222,11 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
                             return
                         }
 
-                        let keyInformation = SmartCard.KeyInformation(from: data)
-                        if let keyInformation = keyInformation {
-                            completion(.success(keyInformation))
-                        } else {
-                            completion(.failure(YKError.invalidResponse))
-                        }
+                        Log.i(data.hexEncodedString)
+
+
+                        let smartCard = SmartCard(from: data)
+                        completion(.success(smartCard))
                     }
                 }
             }
@@ -266,7 +265,7 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
                 }
 
                 smartcard.executeCommand(verifyPINAPDU) { (data, error) in
-                    guard error != nil else {
+                    guard error == nil else {
                         Log.e("PIN verification failed!")
                         completion(.failure(YKError.invalidPIN))
                         return
@@ -293,6 +292,49 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
                             completion(.failure(YKError.invalidResponse))
                         }
                     }
+                }
+            }
+        }
+    }
+
+
+    open func decipher(ciphertext: String, pin: String, completion: @escaping (Result<String, Error>) -> Void) {
+        getConnection { connection in
+            guard let smartcard = connection.smartCardInterface else {
+                completion(.failure(YKError.smartcardNotAvailable))
+                return
+            }
+
+            // Select the OpenPGP applet:
+            smartcard.executeCommand(APDU.selectOpenPGPApplet) { (data, error) in
+                if let error = error {
+                    let statuscode = (error as NSError).code
+                    completion(.failure(YKError.smartcardError(status: UInt16(statuscode))))
+                    return
+                }
+
+                // Parse response from smart card (0 byte data expected)
+                guard data != nil else {
+                    completion(.failure(YKError.nilExecutionResponse))
+                    return
+                }
+                // OpenPGP application selected!
+
+                // Verify Pin:
+                guard let verifyPINAPDU = APDU.verfiyPIN(pin: pin) else {
+                    completion(.failure(YKError.invalidPIN))
+                    return
+                }
+
+                smartcard.executeCommand(verifyPINAPDU) { (data, error) in
+                    guard error != nil else {
+                        Log.e("PIN verification failed!")
+                        completion(.failure(YKError.invalidPIN))
+                        return
+                    }
+                    // PIN verification successful!
+
+                    // TODO: Decrypt ciphertext
                 }
             }
         }

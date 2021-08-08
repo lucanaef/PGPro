@@ -104,9 +104,9 @@ class Yubikey {
         session.stop()
     }
 
-    open func getKeyInformation(completion: @escaping (Result<SmartCard.KeyInformation, Error>) -> Void) {
+    open func getSmartCard(completion: @escaping (Result<SmartCard, Error>) -> Void) {
         let session = YKConnectionSession()
-        session.getKeyInformation(pin: pin) { result in
+        session.getSmartCard(pin: pin) { result in
             completion(result)
             session.stop()
         }
