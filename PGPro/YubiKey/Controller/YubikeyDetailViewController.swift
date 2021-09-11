@@ -55,6 +55,7 @@ class YubikeyDetailViewController: UIViewController {
         super.viewDidLoad()
         self.title = "YubiKey"
 
+        
         view.addSubview(tableView)
         tableView.pinEdges(to: view)
     }
@@ -222,6 +223,7 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
                 cell.detailTextLabel?.text = smartCard?.signatureKey.fingerprint?.description
                 cell.detailTextLabel?.textColor = .secondaryLabel
+                cell.detailTextLabel?.font = UIFont.monospacedDigitSystemFont(ofSize: CGFloat(10.0), weight: .regular)
 
                 var symbolName: String
                 var tintColor: UIColor
@@ -255,6 +257,7 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
                 cell.detailTextLabel?.text = smartCard?.decryptionKey.fingerprint?.description
                 cell.detailTextLabel?.textColor = .secondaryLabel
+                cell.detailTextLabel?.font = UIFont.monospacedDigitSystemFont(ofSize: CGFloat(10.0), weight: .regular)
 
                 var symbolName: String
                 var tintColor: UIColor
@@ -288,6 +291,7 @@ extension YubikeyDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
                 cell.detailTextLabel?.text = smartCard?.authenticationKey.fingerprint?.description
                 cell.detailTextLabel?.textColor = .secondaryLabel
+                cell.detailTextLabel?.font = UIFont.monospacedDigitSystemFont(ofSize: CGFloat(10.0), weight: .regular)
 
                 var symbolName: String
                 var tintColor: UIColor

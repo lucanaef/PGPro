@@ -85,4 +85,28 @@ struct APDU {
         return YKFAPDU(data: verifyPINCommand)
     }
 
+    static func decipherAPDU(ciphertext: Data, keyType: SmartCardKey.AlgorithmAttributes.AlgorithmAttributesID) -> YKFAPDU? {
+        guard let ciphertextLength = UInt8(exactly: ciphertext.count) else {
+            Log.e("Ciphertext length (\(ciphertext.count)) not convertible to UTF8.")
+            return nil
+        }
+
+        switch keyType {
+        case .RSA:
+            var decipherAPDU = Data([Class.singleWithoutSM, Ins.decipher, 0x80, 0x86, ciphertextLength])
+
+            decipherAPDU.append(Data([00])) // Padding indicator byte (00) for RSA
+            decipherAPDU.append(ciphertext)
+            decipherAPDU.append(Data([00])) // Le
+
+            return YKFAPDU(data: decipherAPDU)
+        case .ECDH:
+            Log.e("ECDH deciphering not implemented")
+            return nil
+        case .ECDSA:
+            Log.e("ECDSA deciphering not implemented")
+            return nil
+        }
+    }
+
 }

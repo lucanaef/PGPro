@@ -61,6 +61,33 @@ class DecryptionViewController: UIViewController {
         setupView()
     }
 
+    @objc
+    func testDecipher(){
+        let pin = "123456"
+        let ciphertext = """
+        -----BEGIN PGP MESSAGE-----
+
+        hQEMA4qjD1vusxL4AQf/VrVQGNIxa3BLTGiHV02+BJZ/d/TTYyFFyOXNqT53u2vW
+        caeyKXE4EeTMAWiB/tKZd6v5NQRnZPj5UJdVnvy2h5tTSJW1ku1/EhJkiu0o3mYp
+        NAdfyZE4YIbuOJE1tlVQonHuE9Fdu8vTvXSEcu3G8XgoP+Ul3DYrpAxGWLawo+VH
+        5G7L2h1Ng17Kp90PIMs80QvIZuz2IEy/NoHX79W1W5s9Oj4gok/BeRGD20aKjvZ7
+        khoeFadlhGqY6Q091jsocDuGw/fZKDLJ0Wc3gesNgIj2TkmJgZcb6gO3CeCsU3Xo
+        pMD2QrBEI6v90A3k/7pO/zdeWwtmZocYD52gImV/4dJHAS6GzJ9w1mf05zMrFgRd
+        HXxT6b9WCruuiGJhYik8ldUtl1EpNsnHjSwLCFDCBvAv/gPA7jmK3m8cKfV3UDLV
+        WbvvCMbo56A=
+        =m6YI
+        -----END PGP MESSAGE-----
+        """
+        Yubikey.decrypt(ciphertext: ciphertext, pin: pin) { result in
+            switch result {
+            case .failure(let error):
+                Log.e(error)
+            case .success(let plaintext):
+                Log.d(plaintext)
+            }
+        }
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         // hack to make sure the imageView inside the table view cells are properly sized
         tableView.reloadData()
@@ -86,7 +113,10 @@ class DecryptionViewController: UIViewController {
             target: self,
             action: #selector(clearView)
         )
-        navigationItem.rightBarButtonItems = [decryptButton, clearButton]
+
+        let ykText = UIBarButtonItem(image: UIImage(systemName: "key.fill"), style: .plain, target: self, action: #selector(testDecipher))
+
+        navigationItem.rightBarButtonItems = [decryptButton, clearButton, ykText]
 
         // Add table view to super view
         view.addSubview(tableView)

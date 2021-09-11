@@ -45,7 +45,12 @@ class SmartCardKey {
             return value.hexEncodedString.uppercased().insertSeparator(" ", atEvery: 4)
         }
 
-        init(from data: Data) {
+        init?(from data: Data) {
+            // Fail if all bytes are zero
+            if data.allSatisfy({ dataByte in dataByte == 0 }) {
+                return nil
+            }
+
             self.value = data
         }
 
@@ -76,9 +81,10 @@ class SmartCardKey {
         init(from data: UInt8) {
             self.algorithmID = AlgorithmAttributesID(rawValue: data)
         }
+
     }
 
-    class AlgorithmAttributesRSA: AlgorithmAttributes {
+    class AlgorithmAttributesRSA: AlgorithmAttributes, CustomStringConvertible {
         // Length of modulus n in bit (e. g. 2048 bit decimal = 0800), binary
         var modulusLength: UInt16? = nil
 
@@ -88,11 +94,20 @@ class SmartCardKey {
         // Import-Format of private key
         var importFormat: AlgorithmAttributesRSAImportFormat? = nil
 
-        enum AlgorithmAttributesRSAImportFormat: UInt8 {
+        enum AlgorithmAttributesRSAImportFormat: UInt8, CustomStringConvertible {
             case standard               = 0x00
             case standardWithModulus    = 0x01
             case crt                    = 0x02
             case crtWithModulus         = 0x03
+
+            var description: String {
+                switch self {
+                case .standard: return "Standard (e, p, q)"
+                case .standardWithModulus: return "Standard (e, p, q) with Modulus"
+                case .crt: return "Chinese Remainder Theorem"
+                case .crtWithModulus: return "Chinese Remainder Theorem with Modulus"
+                }
+            }
         }
 
         init(from data: Data) {
@@ -103,9 +118,18 @@ class SmartCardKey {
             importFormat = AlgorithmAttributesRSAImportFormat(rawValue: UInt8(data[5]))
         }
 
+        var description: String {
+            return """
+            === AlgorithmAttributesRSA ===
+            Modulus length: \(modulusLength?.description ?? "nA")
+            Exponent length: \(exponentLength?.description ?? "nA")
+            Import format: \(importFormat?.description ?? "nA")
+            """
+        }
+
     }
 
-    class AlgorithAttributesECDSA: AlgorithmAttributes {
+    class AlgorithAttributesECDSA: AlgorithmAttributes, CustomStringConvertible {
         // OID of relevant curve, binary (see annex)
         var oid: Data? = nil
 
@@ -117,6 +141,14 @@ class SmartCardKey {
 
             importFormat = UInt8(data[data.count - 1]) // last byte
             oid = Data(data.dropFirst().dropLast()) // everything but ID and import format
+        }
+
+        var description: String {
+            return """
+            === AlgorithAttributesECDSA ===
+            OID: \(oid?.description ?? "nA")
+            Import format: \(importFormat?.description ?? "nA")
+            """
         }
     }
 

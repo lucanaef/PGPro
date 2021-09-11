@@ -21,8 +21,12 @@ import YubiKit
 public enum YKError: Error, CustomStringConvertible {
     case smartcardNotAvailable
     case smartcardError(status: UInt16)
+    case unrecognizedKeyAttributes
     case nilExecutionResponse
+    case failedToBuildAPDU
+    case failedToDecipher
     case notImplemented
+    case invalidInput
     case invalidResponse
     case invalidPIN
     case timeout
@@ -31,8 +35,12 @@ public enum YKError: Error, CustomStringConvertible {
         switch self {
         case .smartcardNotAvailable: return "rawCommandService is not available"
         case .smartcardError(let status): return "RawCommandService Status: \(statusDescription(of: status))"
+        case .unrecognizedKeyAttributes: return "Unrecognized Key Attributes"
         case .nilExecutionResponse: return "Empty NFC execution response"
+        case .failedToBuildAPDU: return "Failed to build APDU"
+        case .failedToDecipher: return "Failed to decipher"
         case .notImplemented: return "Not Implemented"
+        case .invalidInput: return "Invalid Input"
         case .invalidResponse: return "Invalid Response"
         case .invalidPIN: return "Invalid PIN"
         case .timeout: return "Timeout"
@@ -327,12 +335,79 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
                 }
 
                 smartcard.executeCommand(verifyPINAPDU) { (data, error) in
-                    guard error != nil else {
+                    guard error == nil else {
                         Log.e("PIN verification failed!")
                         completion(.failure(YKError.invalidPIN))
                         return
                     }
                     // PIN verification successful!
+
+                    // Request key information
+                    smartcard.executeCommand(APDU.getApplicationData) { (data, error) in
+                        if let error = error {
+                            let statuscode = (error as NSError).code
+                            completion(.failure(YKError.smartcardError(status: UInt16(statuscode))))
+                            return
+                        }
+
+                        guard let data = data else {
+                            completion(.failure(YKError.nilExecutionResponse))
+                            return
+                        }
+
+
+                        let smartCard = SmartCard(from: data)
+                        let keyAttributes = smartCard.decryptionKey.algorithmAttributes
+
+                        guard let algorithmID = keyAttributes?.algorithmID else {
+                            completion(.failure(YKError.unrecognizedKeyAttributes))
+                            return
+                        }
+
+                        switch keyAttributes {
+                        case let keyAttributesRSA as SmartCardKey.AlgorithmAttributesRSA:
+                            Log.d("RSA key: \(keyAttributesRSA)")
+
+
+                            // Decode amored message
+                            var ciphertextData = Data() // this line is just here to calm down the compiler
+                            do {
+                                ciphertextData = try CryptographyService.dearmor(message: ciphertext)
+                            } catch (let parsingError) {
+                                Log.e(parsingError)
+                                completion(.failure(YKError.invalidInput))
+                                return
+                            }
+
+                            guard let decipherAPDU = APDU.decipherAPDU(ciphertext: ciphertextData, keyType: algorithmID) else {
+                                completion(.failure(YKError.failedToBuildAPDU))
+                                return
+                            }
+
+                            smartcard.executeCommand(decipherAPDU) { (data, error) in
+                                guard error == nil else {
+                                    Log.e("Deciphering failed!")
+                                    completion(.failure(YKError.failedToDecipher))
+                                    return
+                                }
+
+                                guard let data = data, let plaintext = String(bytes: data, encoding: .utf8) else {
+                                    Log.d("Data: \(String(describing: data))")
+                                    completion(.failure(YKError.invalidResponse))
+                                    return
+                                }
+
+                                completion(.success(plaintext))
+                                return
+                            }
+                        case let keyAttributesECDSA as SmartCardKey.AlgorithAttributesECDSA:
+                            Log.d("ECC key: \(keyAttributesECDSA)")
+                            completion(.failure(YKError.notImplemented))
+                        default:
+                            completion(.failure(YKError.unrecognizedKeyAttributes))
+                        }
+
+                    }
 
                     // TODO: Decrypt ciphertext
                 }

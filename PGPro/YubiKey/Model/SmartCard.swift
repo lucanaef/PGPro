@@ -50,11 +50,9 @@ class SmartCard {
             }
             recursiveInit(from: Data(data.dropFirst(4)))
         case 0x4f: // Application identifier (AID)
-            // Log.i("Application identifier (AID): \(data[1...17].hexEncodedString)")
             recursiveInit(from: Data(data.dropFirst(18)))
         case 0x5f: // Historial bytes
             if (data[1] == 0x52) {
-                // Log.i("Historial bytes: \(data[2...10].hexEncodedString)")
                 recursiveInit(from: Data(data.dropFirst(11)))
             } else {
                 Log.e("Unrecognized data packet: \(data.hexEncodedString)")
@@ -62,24 +60,18 @@ class SmartCard {
             }
         case 0x7f:
             if (data[1] == 0x74) { // General feature management (optional)
-                // Log.i("General feature management: \(data[2...5].hexEncodedString)")
                 recursiveInit(from: Data(data.dropFirst(6)))
             } else if (data[1] == 0x66) { // Extended length information
-                // Log.i("Extended length information: \(data[2...10].hexEncodedString)")
                 recursiveInit(from: Data(data.dropFirst(11)))
             } else {
                 Log.e("Unrecognized data packet: \(data.hexEncodedString)")
                 return
             }
         case 0x73: // Discretionary data objects
-            // Log.i("Discretionary data objects: \(data[1...3].hexEncodedString)")
             recursiveInit(from: Data(data.dropFirst(4)))
         case 0xc0: // Extended capabilities
-            // Log.i("Extended capabilities: \(data[1...11].hexEncodedString)")
             recursiveInit(from: Data(data.dropFirst(12)))
         case 0xc1: // Algorithm attributes signature
-            Log.i("Data: \(data.hexEncodedString)")
-
             let length = Int(UInt8(data[1]))
 
             switch data[2] {
@@ -136,7 +128,6 @@ class SmartCard {
             }
             recursiveInit(from: Data(data.dropFirst(length + 2)))
         case 0xc4: // PW Status Bytes
-            // Log.i("PW Status Bytes: \(data[1...8].hexEncodedString)")
             recursiveInit(from: Data(data.dropFirst(9)))
         case 0xc5: // Fingerprints (20 bytes (dec.) each)
             guard data[1] == 0x50 else {
@@ -152,10 +143,8 @@ class SmartCard {
 
             recursiveInit(from: Data(data.dropFirst(82)))
         case 0xc6: // CA-Fingerprints (20 bytes (dec.) each)
-            // Log.i("CA-Fingerprints (20 bytes (dec.) each): \(data[1...81].hexEncodedString)")
             recursiveInit(from: Data(data.dropFirst(82)))
         case 0xcd: // List of generation dates/times of key pairs (4 bytes (dec.) each)
-            // Log.i("List of generation dates/times of key pairs: \(data[1...17].hexEncodedString)")
             recursiveInit(from: Data(data.dropFirst(18)))
         case 0xde: // Key Information (2 bytes (dec.) each)
             guard data[1] == 0x08 else {
@@ -166,19 +155,15 @@ class SmartCard {
             recursiveInitKeyInformation(from: Data(data[2...9]))
             recursiveInit(from: Data(data.dropFirst(10)))
         case 0xd6: // User Interaction Flag (UIF) for PSO:CDS
-            // Log.i("UIF for PSO:CDS: \(data[1...3].hexEncodedString)")
             signatureKey.userInteractionFlag = SmartCardKey.UserInteractionFlag(rawValue: UInt8(data[2]))
             recursiveInit(from: Data(data.dropFirst(4)))
         case 0xd7: // User Interaction Flag (UIF) for PSO:DEC
-            // Log.i("UIF for PSO:DEC: \(data[1...3].hexEncodedString)")
             decryptionKey.userInteractionFlag = SmartCardKey.UserInteractionFlag(rawValue: UInt8(data[2]))
             recursiveInit(from: Data(data.dropFirst(4)))
         case 0xd8: // User Interaction Flag (UIF) for PSO:AUT
-            // Log.i("UIF for PSO:AUT: \(data[1...3].hexEncodedString)")
             authenticationKey.userInteractionFlag = SmartCardKey.UserInteractionFlag(rawValue: UInt8(data[2]))
             recursiveInit(from: Data(data.dropFirst(4)))
         case 0xd9: // UIF for Attestation key and Generate Attestation command (Yubico)
-            // Log.i("UIF for PSO:ATT: \(data[1...3].hexEncodedString)")
             attestationKey.userInteractionFlag = SmartCardKey.UserInteractionFlag(rawValue: UInt8(data[2]))
             recursiveInit(from: Data(data.dropFirst(4)))
         default:

@@ -303,14 +303,14 @@
 			path = FLSnapshot;
 			sourceTree = "<group>";
 		};
-		818E129826864CCF00EBA85E /* Yubikey */ = {
+		818E129826864CCF00EBA85E /* YubiKey */ = {
 			isa = PBXGroup;
 			children = (
 				818E129B26864CF300EBA85E /* Controller */,
 				818E129A26864CEF00EBA85E /* View */,
 				818E129926864CE400EBA85E /* Model */,
 			);
-			path = Yubikey;
+			path = YubiKey;
 			sourceTree = "<group>";
 		};
 		818E129926864CE400EBA85E /* Model */ = {
@@ -557,7 +557,7 @@
 				813131922681192200DFEB8A /* PGPro.entitlements */,
 				81C80A7F232E4FB200574E3F /* Info.plist */,
 				81E33AE82326B5B000241E4A /* Global */,
-				818E129826864CCF00EBA85E /* Yubikey */,
+				818E129826864CCF00EBA85E /* YubiKey */,
 				81E33AE92326B5CA00241E4A /* Encryption */,
 				81E33AEA2326B5D900241E4A /* Decryption */,
 				81E33AEB2326B5EA00241E4A /* Keychain */,

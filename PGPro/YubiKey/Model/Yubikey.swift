@@ -112,4 +112,12 @@ class Yubikey {
         }
     }
 
+    static func decrypt(ciphertext: String, pin: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let session = YKConnectionSession()
+        session.decipher(ciphertext: ciphertext, pin: pin) { result in
+            completion(result)
+            session.stop()
+        }
+    }
+
 }

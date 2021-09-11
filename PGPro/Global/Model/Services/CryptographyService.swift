@@ -28,6 +28,13 @@ enum CryptographyError: Error {
     case failedDecryption
 }
 
+enum ArmorParsingError: Error {
+    case missingHeader
+    case missingFooter
+    case checksumMismatch
+    case invalidMessageFormat
+}
+
 class CryptographyService {
 
     private init() {}
@@ -169,5 +176,52 @@ class CryptographyService {
 
         return privateKeyContacts.filter { decryptionKeyIDs.contains($0.key.keyID) }
     }
+
+    /*
+     Removes the OpenPGP ASCII armor (RFC 4880, section 6) of a message and returns the corresponding binary data.
+
+     - Parameters:
+        - message: ASCII armored message
+
+     - Returns: Binary data corresponding to the ASCII armored message
+     */
+    static func dearmor(message: String) throws -> Data {
+        // Get the base64-encoding substring
+
+        let armoredBase64EncodedString = message.replacingOccurrences(of: "-----BEGIN PGP MESSAGE-----", with: "")
+        guard armoredBase64EncodedString.count < message.count else {
+            throw ArmorParsingError.missingHeader
+        }
+
+        var base64EncodedString = armoredBase64EncodedString.replacingOccurrences(of: "-----END PGP MESSAGE-----", with: "")
+        guard base64EncodedString.count < armoredBase64EncodedString.count else {
+            throw ArmorParsingError.missingFooter
+        }
+
+        base64EncodedString = base64EncodedString.filter {!$0.isWhitespace && !$0.isNewline}
+
+        let base64EncodedStringComponents = base64EncodedString.components(separatedBy: "=")
+
+        guard base64EncodedStringComponents.count == 3 else {
+            throw ArmorParsingError.invalidMessageFormat
+        }
+
+        let base64MessageString = base64EncodedStringComponents[0] + "=" // re-add padding character
+        // let base64ChecksumString = base64EncodedStringComponents[2] + "=" // re-add padding character
+
+        // Validate checksum
+        // TODO
+
+        // Decode base64-endcoded string
+        guard let messageData = Data(base64Encoded: base64MessageString, options: .ignoreUnknownCharacters) else {
+            throw ArmorParsingError.invalidMessageFormat
+        }
+
+        Log.d("Hex. Message: \(messageData.hexEncodedString)")
+
+        return messageData
+    }
+
+
 
 }
