@@ -296,12 +296,7 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        var cell: UITableViewCell!
-        cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
-        if cell == nil {
-            cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
-        }
+        var cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
         cell.selectionStyle = .none
 
         switch (indexPath.row) {
@@ -321,6 +316,7 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
             passphraseCell.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             cell = passphraseCell
         case EncryptionRows.message.rawValue:
+            cell.separatorInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 10000) // hack way to hide last separator
             let cellView = cell.contentView
             cellView.addSubview(textView)
             textView.pinEdges(to: cellView)
