@@ -379,6 +379,8 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
                                 return
                             }
 
+                            // TODO: Extract session key and decrypt it using yubikey smart card
+
                             guard let decipherAPDU = APDU.decipherAPDU(ciphertext: ciphertextData, keyType: algorithmID) else {
                                 completion(.failure(YKError.failedToBuildAPDU))
                                 return
