@@ -92,7 +92,7 @@ class CryptographyService {
 
         // Handle MESSAGE
         guard message != "" else { throw CryptographyError.emptyMessage }
-        guard let range = message.range(of: #"-----BEGIN PGP MESSAGE-----(.|\n)*-----END PGP MESSAGE-----"#,
+        guard let range = message.range(of: #"-----BEGIN PGP MESSAGE-----(.|\s)*-----END PGP MESSAGE-----"#,
                                         options: .regularExpression) else {
             throw CryptographyError.invalidMessage
         }
@@ -145,7 +145,7 @@ class CryptographyService {
             Log.d("empty message")
             return []
         }
-        guard let range = message.range(of: #"-----BEGIN PGP MESSAGE-----(.|\n)*-----END PGP MESSAGE-----"#,
+        guard let range = message.range(of: #"-----BEGIN PGP MESSAGE-----(.|\s)*-----END PGP MESSAGE-----"#,
                                         options: .regularExpression) else {
             Log.d("invalid message")
             return []
