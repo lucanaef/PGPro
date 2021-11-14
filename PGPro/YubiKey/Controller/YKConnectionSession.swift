@@ -102,7 +102,11 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
     override init() {
         super.init()
         YubiKitManager.shared.delegate = self
-        YubiKitManager.shared.startAccessoryConnection()
+        if (YubiKitDeviceCapabilities.supportsMFIAccessoryKey) {
+            YubiKitManager.shared.startAccessoryConnection()
+        } else {
+            Log.e("YubiKitDeviceCapabilities.supportsMFIAccessoryKey returned false: Unsupproted Device!")
+        }
     }
 
     private var nfcConnection: YKFNFCConnection?
@@ -142,7 +146,11 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
             completion(connection)
         } else {
             connectionCallback = completion
-            YubiKitManager.shared.startNFCConnection()
+            if (YubiKitDeviceCapabilities.supportsISO7816NFCTags) {
+                YubiKitManager.shared.startNFCConnection()
+            } else {
+                Log.e("YubiKitDeviceCapabilities.supportsISO7816NFCTags returned false: Unsupported Device!")
+            }
         }
     }
 
