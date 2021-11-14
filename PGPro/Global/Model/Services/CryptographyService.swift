@@ -186,8 +186,11 @@ class CryptographyService {
      - Returns: Binary data corresponding to the ASCII armored message
      */
     static func dearmor(message: String) throws -> Data {
-        // Get the base64-encoding substring
 
+        return try Armor.readArmored(message)
+
+        /*
+        // Get the base64-encoding substring
         let armoredBase64EncodedString = message.replacingOccurrences(of: "-----BEGIN PGP MESSAGE-----", with: "")
         guard armoredBase64EncodedString.count < message.count else {
             throw ArmorParsingError.missingHeader
@@ -220,6 +223,7 @@ class CryptographyService {
         Log.d("Hex. Message: \(messageData.hexEncodedString)")
 
         return messageData
+        */
     }
 
 
