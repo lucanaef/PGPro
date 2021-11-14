@@ -44,6 +44,8 @@
 		81819204231D334200BB7BBB /* ExampleDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81819203231D334200BB7BBB /* ExampleDataService.swift */; };
 		8181920A231D45C500BB7BBB /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81819209231D45C500BB7BBB /* ContactDetailViewController.swift */; };
 		81820DFF250285BF00D5BC97 /* WebKeyDirectoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81820DFE250285BF00D5BC97 /* WebKeyDirectoryService.swift */; };
+		8183395B274160770033EA02 /* ObjectivePGP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81833958274160590033EA02 /* ObjectivePGP.framework */; platformFilter = ios; };
+		8183395C274160770033EA02 /* ObjectivePGP.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 81833958274160590033EA02 /* ObjectivePGP.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8188E5532502DE98001B2476 /* Data+hexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5522502DE98001B2476 /* Data+hexString.swift */; };
 		8188E5552502E4A0001B2476 /* String+InsecureHashing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5542502E4A0001B2476 /* String+InsecureHashing.swift */; };
 		818E129F26864DF200EBA85E /* APDU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818E129E26864DF200EBA85E /* APDU.swift */; };
@@ -100,7 +102,35 @@
 			remoteGlobalIDString = 81E46317231029A4008DC317;
 			remoteInfo = PGPro;
 		};
+		81833957274160590033EA02 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81833952274160590033EA02 /* ObjectivePGP.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 750F89341F0D6A3F00B99726;
+			remoteInfo = ObjectivePGP;
+		};
+		81833959274160590033EA02 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81833952274160590033EA02 /* ObjectivePGP.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 756299C51914DE1A00C5AD3B;
+			remoteInfo = ObjectivePGPTests;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		818F344B27415E4900B98CE0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8183395C274160770033EA02 /* ObjectivePGP.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		810AE9D4248D421400DF17D2 /* UIView+pinEdges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+pinEdges.swift"; sourceTree = "<group>"; };
@@ -148,6 +178,7 @@
 		81819203231D334200BB7BBB /* ExampleDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleDataService.swift; sourceTree = "<group>"; };
 		81819209231D45C500BB7BBB /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 		81820DFE250285BF00D5BC97 /* WebKeyDirectoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKeyDirectoryService.swift; sourceTree = "<group>"; };
+		81833952274160590033EA02 /* ObjectivePGP.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectivePGP.xcodeproj; path = ../../../ObjectivePGP/ObjectivePGP.xcodeproj; sourceTree = "<group>"; };
 		8188E5522502DE98001B2476 /* Data+hexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+hexString.swift"; sourceTree = "<group>"; };
 		8188E5542502E4A0001B2476 /* String+InsecureHashing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+InsecureHashing.swift"; sourceTree = "<group>"; };
 		818E129E26864DF200EBA85E /* APDU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APDU.swift; sourceTree = "<group>"; };
@@ -209,6 +240,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8183395B274160770033EA02 /* ObjectivePGP.framework in Frameworks */,
 				81313191268117B400DFEB8A /* YubiKit in Frameworks */,
 				8194D97123E2E359000D47C3 /* SwiftTryCatch in Frameworks */,
 			);
@@ -299,6 +331,15 @@
 				817E6E4B24179B7F0040A28B /* Info.plist */,
 			);
 			path = FLSnapshot;
+			sourceTree = "<group>";
+		};
+		81833953274160590033EA02 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				81833958274160590033EA02 /* ObjectivePGP.framework */,
+				8183395A274160590033EA02 /* ObjectivePGPTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		818E129826864CCF00EBA85E /* YubiKey */ = {
@@ -552,6 +593,7 @@
 		81E4631A231029A4008DC317 /* PGPro */ = {
 			isa = PBXGroup;
 			children = (
+				81833952274160590033EA02 /* ObjectivePGP.xcodeproj */,
 				813131922681192200DFEB8A /* PGPro.entitlements */,
 				81C80A7F232E4FB200574E3F /* Info.plist */,
 				81E33AE82326B5B000241E4A /* Global */,
@@ -619,6 +661,7 @@
 				81E46314231029A4008DC317 /* Sources */,
 				81E46315231029A4008DC317 /* Frameworks */,
 				81E46316231029A4008DC317 /* Resources */,
+				818F344B27415E4900B98CE0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -672,6 +715,12 @@
 			);
 			productRefGroup = 81E46319231029A4008DC317 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 81833953274160590033EA02 /* Products */;
+					ProjectRef = 81833952274160590033EA02 /* ObjectivePGP.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				81E46317231029A4008DC317 /* PGPro */,
@@ -680,6 +729,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		81833958274160590033EA02 /* ObjectivePGP.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ObjectivePGP.framework;
+			remoteRef = 81833957274160590033EA02 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8183395A274160590033EA02 /* ObjectivePGPTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ObjectivePGPTests.xctest;
+			remoteRef = 81833959274160590033EA02 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		812E9E642635D279008C910C /* Resources */ = {
@@ -1050,7 +1116,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2021.3;
+				MARKETING_VERSION = 2021.5;
 				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -1080,7 +1146,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2021.3;
+				MARKETING_VERSION = 2021.5;
 				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
