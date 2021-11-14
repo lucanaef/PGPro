@@ -56,8 +56,6 @@
 		81A0A6152472C6F700D3B4AC /* DismissableKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A0A6142472C6F700D3B4AC /* DismissableKeyboard.swift */; };
 		81A356B426876E4200AC94EA /* YubikeyDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A356B326876E4200AC94EA /* YubikeyDetailViewController.swift */; };
 		81AC371B268676AF0006CA2A /* Yubikey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC371A268676AE0006CA2A /* Yubikey.swift */; };
-		81ADE25227412B9200DB51E1 /* ObjectivePGP in Resources */ = {isa = PBXBuildFile; fileRef = 81ADE25127412B9200DB51E1 /* ObjectivePGP */; };
-		81ADE2542741310200DB51E1 /* ObjectivePGP in Frameworks */ = {isa = PBXBuildFile; productRef = 81ADE2532741310200DB51E1 /* ObjectivePGP */; };
 		81B40A1923A79423008B4EDE /* UILabel+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */; };
 		81B594D6231DBA07004893A0 /* UITextView+Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B594D5231DBA07004893A0 /* UITextView+Placeholder.swift */; };
 		81B594D8231DBBB5004893A0 /* String+insertedSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B594D7231DBBB5004893A0 /* String+insertedSeparator.swift */; };
@@ -162,7 +160,6 @@
 		81A356B326876E4200AC94EA /* YubikeyDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YubikeyDetailViewController.swift; sourceTree = "<group>"; };
 		81A80174233E414900ADE6E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		81AC371A268676AE0006CA2A /* Yubikey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Yubikey.swift; sourceTree = "<group>"; };
-		81ADE25127412B9200DB51E1 /* ObjectivePGP */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ObjectivePGP; sourceTree = "<group>"; };
 		81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+UIImage.swift"; sourceTree = "<group>"; };
 		81B594D5231DBA07004893A0 /* UITextView+Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Placeholder.swift"; sourceTree = "<group>"; };
 		81B594D7231DBBB5004893A0 /* String+insertedSeparator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+insertedSeparator.swift"; sourceTree = "<group>"; };
@@ -213,7 +210,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				81313191268117B400DFEB8A /* YubiKit in Frameworks */,
-				81ADE2542741310200DB51E1 /* ObjectivePGP in Frameworks */,
 				8194D97123E2E359000D47C3 /* SwiftTryCatch in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -556,7 +552,6 @@
 		81E4631A231029A4008DC317 /* PGPro */ = {
 			isa = PBXGroup;
 			children = (
-				81ADE25127412B9200DB51E1 /* ObjectivePGP */,
 				813131922681192200DFEB8A /* PGPro.entitlements */,
 				81C80A7F232E4FB200574E3F /* Info.plist */,
 				81E33AE82326B5B000241E4A /* Global */,
@@ -633,7 +628,6 @@
 			packageProductDependencies = (
 				8194D97023E2E359000D47C3 /* SwiftTryCatch */,
 				81313190268117B400DFEB8A /* YubiKit */,
-				81ADE2532741310200DB51E1 /* ObjectivePGP */,
 			);
 			productName = PGPro;
 			productReference = 81E46318231029A4008DC317 /* PGPro.app */;
@@ -712,7 +706,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				81E46328231029A5008DC317 /* LaunchScreen.storyboard in Resources */,
-				81ADE25227412B9200DB51E1 /* ObjectivePGP in Resources */,
 				81E46325231029A5008DC317 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1166,10 +1159,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */;
 			productName = SwiftTryCatch;
-		};
-		81ADE2532741310200DB51E1 /* ObjectivePGP */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ObjectivePGP;
 		};
 /* End XCSwiftPackageProductDependency section */
 
