@@ -53,7 +53,7 @@ class PGProTestsKeys {
          *  Key Alg.:   ?
          *  Note:       https://github.com/lucanaef/PGPro/issues/35
          */
-        // TestKeyURL(id: 3), ¡ missing passphrase !
+        //TestKeyURL(id: 3), ¡ missing passphrase !
 
         /** User ID:    Foo Bar <foo@bar.com>
          *  Key ID:     4C8002FC
