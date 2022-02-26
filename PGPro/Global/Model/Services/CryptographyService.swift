@@ -226,6 +226,12 @@ class CryptographyService {
         */
     }
 
+    static func getSessionPassphrase(message: Data) -> Data {
+
+        //let allPackets = ObjectivePGP.readPackets(from: NSData(data: message))
+        return Data()
+    }
+
 
 
 }

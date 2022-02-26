@@ -17,6 +17,7 @@
 
 import Foundation
 import YubiKit
+import ObjectivePGP
 
 public enum YKError: Error, CustomStringConvertible {
     case smartcardNotAvailable
@@ -393,6 +394,7 @@ class YKConnectionSession: NSObject, ObservableObject, YKFManagerDelegate {
                                 completion(.failure(YKError.failedToBuildAPDU))
                                 return
                             }
+
 
                             smartcard.executeCommand(decipherAPDU) { (data, error) in
                                 guard error == nil else {
