@@ -28,6 +28,7 @@
 		8135BB4C282308CB000CA445 /* 1.asc in Resources */ = {isa = PBXBuildFile; fileRef = 8135BB47282308CB000CA445 /* 1.asc */; };
 		8135BB4D282308CB000CA445 /* 3.asc in Resources */ = {isa = PBXBuildFile; fileRef = 8135BB48282308CB000CA445 /* 3.asc */; };
 		8135BB4E282308CB000CA445 /* 2.asc in Resources */ = {isa = PBXBuildFile; fileRef = 8135BB49282308CB000CA445 /* 2.asc */; };
+		8135BB5128230C33000CA445 /* MimeParser in Frameworks */ = {isa = PBXBuildFile; productRef = 8135BB5028230C33000CA445 /* MimeParser */; };
 		8137AC6F233271E3007483EA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137AC6E233271E3007483EA /* Constants.swift */; };
 		8137AC712332AC1C007483EA /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137AC702332AC1C007483EA /* String+Email.swift */; };
 		81417F6824A0F43900732A62 /* GenerateKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81417F6724A0F43900732A62 /* GenerateKeyViewController.swift */; };
@@ -198,6 +199,7 @@
 			files = (
 				81E28319256A7F0300F9F801 /* ObjectivePGP in Frameworks */,
 				8194D97123E2E359000D47C3 /* SwiftTryCatch in Frameworks */,
+				8135BB5128230C33000CA445 /* MimeParser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +571,7 @@
 			packageProductDependencies = (
 				8194D97023E2E359000D47C3 /* SwiftTryCatch */,
 				81E28318256A7F0300F9F801 /* ObjectivePGP */,
+				8135BB5028230C33000CA445 /* MimeParser */,
 			);
 			productName = PGPro;
 			productReference = 81E46318231029A4008DC317 /* PGPro.app */;
@@ -610,6 +613,7 @@
 			packageReferences = (
 				8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */,
 				81E28317256A7F0300F9F801 /* XCRemoteSwiftPackageReference "ObjectivePGP" */,
+				8135BB4F28230C33000CA445 /* XCRemoteSwiftPackageReference "MimeParser" */,
 			);
 			productRefGroup = 81E46319231029A4008DC317 /* Products */;
 			projectDirPath = "";
@@ -1084,6 +1088,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8135BB4F28230C33000CA445 /* XCRemoteSwiftPackageReference "MimeParser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/miximka/MimeParser";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/seanparsons/SwiftTryCatch.git";
@@ -1096,13 +1108,18 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzyzanowskim/ObjectivePGP.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.17.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8135BB5028230C33000CA445 /* MimeParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8135BB4F28230C33000CA445 /* XCRemoteSwiftPackageReference "MimeParser" */;
+			productName = MimeParser;
+		};
 		8194D97023E2E359000D47C3 /* SwiftTryCatch */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */;

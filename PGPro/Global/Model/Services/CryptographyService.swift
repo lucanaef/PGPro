@@ -17,6 +17,7 @@
 
 import Foundation
 import ObjectivePGP
+import MimeParser
 
 enum CryptographyError: Error {
     case emptyMessage
@@ -120,7 +121,30 @@ class CryptographyService {
                                                             passphraseForKey: {(_) -> (String?) in return passphrase})
             guard let decryptedMessage = String(data: decryptedMessageData, encoding: .utf8) else { throw CryptographyError.failedDecryption }
             AppStoreReviewService.incrementReviewWorthyActionCount()
-            return decryptedMessage
+
+            // Handle MIME PARSING
+            #warning("TODO: Refactor this code and make a recursive parser; handle more cases")
+            do {
+                let parsedDecryptedMessage = try MimeParser().parse(decryptedMessage).content
+                switch parsedDecryptedMessage {
+                case .body(let body):
+                    return body.raw
+                case .alternative(let alternative):
+                    Log.i("Alternative MIME: \(alternative)")
+                    return decryptedMessage
+                case .mixed(let mixedMime):
+                    let mimeWithTextContent = mixedMime.filter { $0.header.contentType?.type == "text"}.first
+                    if case .body(let body) = mimeWithTextContent?.content {
+                        return body.raw
+                    } else {
+                        return decryptedMessage
+                    }
+                }
+            } catch {
+                Log.i("Unable to parse message")
+                return decryptedMessage
+            }
+
         } catch {
             throw CryptographyError.frameworkError(error)
         }

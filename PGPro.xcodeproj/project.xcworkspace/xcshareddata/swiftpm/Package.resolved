@@ -1,25 +1,32 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "ObjectivePGP",
-        "repositoryURL": "https://github.com/krzyzanowskim/ObjectivePGP.git",
-        "state": {
-          "branch": null,
-          "revision": "a1ed56c067245fe5b818cbb722d70f3dd74ba213",
-          "version": "0.99.0"
-        }
-      },
-      {
-        "package": "SwiftTryCatch",
-        "repositoryURL": "https://github.com/seanparsons/SwiftTryCatch.git",
-        "state": {
-          "branch": "master",
-          "revision": "6a177252cfa2ef649b0aa7b2d16ab221386ca51c",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "mimeparser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/miximka/MimeParser",
+      "state" : {
+        "branch" : "master",
+        "revision" : "07eb0fc2f4386767ef8a8204963f8122a0889663"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "objectivepgp",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzyzanowskim/ObjectivePGP.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0dc7ca7ffe193095dc37456b0c75be167a2026f4"
+      }
+    },
+    {
+      "identity" : "swifttrycatch",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/seanparsons/SwiftTryCatch.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "6a177252cfa2ef649b0aa7b2d16ab221386ca51c"
+      }
+    }
+  ],
+  "version" : 2
 }
