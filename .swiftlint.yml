@@ -1,0 +1,5 @@
+# SwiftLint Configuration
+# https://github.com/realm/SwiftLint
+
+disabled_rules:
+  - line_length
