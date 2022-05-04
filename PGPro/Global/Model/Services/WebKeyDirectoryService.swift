@@ -41,7 +41,7 @@ class WebKeyDirectoryService {
         // First try advanced method, if it fails fall back to direct method
         if let advancedURL = constructURL(email: email, method: .advanced) {
             GET(url: advancedURL) { (result) in
-                switch (result) {
+                switch result {
                 case .success:
                     completion(result)
                 case .failure:
@@ -72,7 +72,7 @@ class WebKeyDirectoryService {
         }
 
         // Construct URL based on chosen methode
-        switch (method) {
+        switch method {
         case .advanced:
             return URL(string: "https://openpgpkey." + domain + "/.well-known/openpgpkey/" + domain + "/hu/" + encodedLocal)
         case .direct:
@@ -83,7 +83,7 @@ class WebKeyDirectoryService {
     static private func GET(url: URL, completion: @escaping((Result<[Key], WKDError>) -> Void)) {
 
         URLSession.shared.dataTask(with: url) { data, res, error in
-            if (error != nil) {
+            if error != nil {
                 completion(.failure(.noConnection))
                 return
             }
@@ -93,7 +93,7 @@ class WebKeyDirectoryService {
             }
 
             /// Handle critical HTTP status codes
-            if (httpResponse.statusCode == 404) {
+            if httpResponse.statusCode == 404 {
                 completion(.failure(.keyNotFound))
                 return
             }
@@ -112,13 +112,13 @@ class WebKeyDirectoryService {
                     completion(.failure(.invalidResponse))
                     return
                 }
-            }, catch: { (error) in
+            }, catch: { (_) in
                 completion(.failure(.keyNotSupported))
                 return
                 }, finallyBlock: {
             })
 
-            if (readKeys.isEmpty) {
+            if readKeys.isEmpty {
                 completion(.failure(.keyNotFound))
                 return
             }

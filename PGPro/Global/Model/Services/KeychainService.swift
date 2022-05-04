@@ -54,7 +54,7 @@ class KeychainService {
         if status == errSecDuplicateItem {
             do {
                 try update(value, forKey: key)
-            } catch (let error) {
+            } catch let error {
                 throw error
             }
         }

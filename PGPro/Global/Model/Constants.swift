@@ -40,7 +40,7 @@ enum Constants {
 
         static var numRatings: Int {
             // try to get current number and update cached value
-            iTunesInterface.requestJSON(localizedFor: User.countryCode) { result in
+            ITunesInterface.requestJSON(localizedFor: User.countryCode) { result in
                 switch result {
                 case .failure(let error):
                     Log.e(error)
@@ -58,7 +58,7 @@ enum Constants {
             // return cached value
             return Preferences.numRatings
         }
-        
+
     }
 
     // MARK: - User Constants
@@ -82,7 +82,6 @@ enum Constants {
         }
 
     }
-
 
     // MARK: - Notification Names
     enum NotificationNames {

@@ -73,7 +73,7 @@ class ContactListService {
         }
     }
 
-    // MARK - Mutate List
+    // MARK: - Mutate List
     class func add(name: String, email: String, key: Key) -> ContactListResult {
         // Check that no contact with this key already exists
         guard !contactList.contains( where: { contact -> Bool in
@@ -81,14 +81,14 @@ class ContactListService {
         }) else {
             return ContactListResult(successful: 0, unsupported: 0, duplicates: 1)
         }
-        
+
         // Create new contact
         let contact = Contact(context: PersistenceService.context)
         contact.name = name
         contact.email = email
         do {
             let keyData = try key.export() as NSData
-            guard (keyData.length > 0) else {
+            guard keyData.length > 0 else {
                 return ContactListResult(successful: 0, unsupported: 1, duplicates: 0)
             }
             contact.keyData = keyData
@@ -106,12 +106,12 @@ class ContactListService {
 
             return ContactListResult(successful: 0, unsupported: 0, duplicates: 1)
         }
-            
+
         // Add contact to in-memory and persistent data storage
         contactList.append(contact)
         contactList.sort()
         PersistenceService.save()
-        
+
         return ContactListResult(successful: 1, unsupported: 0, duplicates: 0)
     }
 
@@ -120,7 +120,7 @@ class ContactListService {
 
         for key in keys {
             var primaryUser: User?
-            if (key.isSecret) {
+            if key.isSecret {
                 guard let privateKey = key.secretKey else { continue }
                 primaryUser = privateKey.primaryUser
             } else {
@@ -134,15 +134,15 @@ class ContactListService {
                 var name: String
                 var email: String
 
-                if (components.count == 2) {
+                if components.count == 2 {
                     // Standard OpenPGP Key
                     name = String(components[0].dropLast())
                     email = String(components[1].dropLast())
-                } else if (components.count == 1 && components[0].isValidEmail()) {
+                } else if components.count == 1 && components[0].isValidEmail() {
                     // Key without name
                     name = "\"\(components[0])\""
                     email = components[0]
-                } else if (components.count == 1) {
+                } else if components.count == 1 {
                     // Key without email address
                     name = components[0]
                     email = ""
@@ -202,7 +202,7 @@ class ContactListService {
         contactList = []
     }
 
-    // MARK - Private Helper Functions
+    // MARK: - Private Helper Functions
     private class func cleanUp() -> Int {
         var count = 0
         for contact in contactList where (!contact.key.isPublic && !contact.key.isSecret) {

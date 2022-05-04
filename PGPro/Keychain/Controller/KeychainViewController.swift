@@ -20,7 +20,7 @@ import MobileCoreServices
 import ObjectivePGP
 
 class KeychainViewController: UIViewController {
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -55,7 +55,7 @@ class KeychainViewController: UIViewController {
 
         return searchController
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         contacts = ContactListService.get(ofType: .both)
@@ -84,7 +84,7 @@ class KeychainViewController: UIViewController {
         keychainTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         keychainTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
-    
+
     @objc
     func reloadData() {
         DispatchQueue.main.async {
@@ -145,7 +145,7 @@ class KeychainViewController: UIViewController {
         var readKeys = [Key]()
         do {
             readKeys = try KeyConstructionService.fromString(keyString: clipboardString)
-        } catch (let error) {
+        } catch let error {
             var message: String
             switch error {
             case KeyConstructionService.KeyConstructionError.invalidFormat:
@@ -162,7 +162,6 @@ class KeychainViewController: UIViewController {
         let result: ContactListResult = ContactListService.importFrom(readKeys)
         alert(result)
     }
-
 
     private func alert(_ result: ContactListResult) {
 
@@ -189,7 +188,7 @@ class KeychainViewController: UIViewController {
     private func filterContactsforSearchText(searchText: String) {
         filteredContacts = contacts.filter({ (contact: Contact) -> Bool in
             // return every contact if no search text speficied
-            if (searchController.searchBar.text?.isEmpty ?? true) {
+            if searchController.searchBar.text?.isEmpty ?? true {
                 return true
             }
 
@@ -242,7 +241,7 @@ extension KeychainViewController: UIDocumentPickerDelegate {
 // MARK: - Table View
 
 extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltering() {
             return filteredContacts.count
@@ -250,7 +249,7 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
             return contacts.count
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cntct = contacts[indexPath.row]
         if isFiltering() {
@@ -263,9 +262,9 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell() // Dummy return value
         }
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete) {
+        if editingStyle == .delete {
             if isFiltering() {
                 let cntct = filteredContacts[indexPath.row]
 
@@ -274,7 +273,7 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
 
                 ContactListService.remove(cntct)
                 contacts = ContactListService.get(ofType: .both)
-                
+
             } else {
                 // Remove from storage and update local list
                 ContactListService.remove(contacts[indexPath.row])
@@ -285,7 +284,7 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
             }
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var contact = contacts[indexPath.row]
         if isFiltering() {

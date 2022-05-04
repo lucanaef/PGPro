@@ -7,8 +7,8 @@
 
 import UIKit
 
-class PassableUISwitch: UIButton{
-    var params: Dictionary<String, Any>
+class PassableUISwitch: UIButton {
+    var params: [String: Any]
 
     override init(frame: CGRect) {
         self.params = [:]

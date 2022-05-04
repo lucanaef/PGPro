@@ -57,11 +57,11 @@ extension Contact {
     var keySymbol: String {
         var symbol = "person.crop.circle.badge.questionmark" // invalid key
 
-        if (key.isPublic && !key.isSecret) {
+        if key.isPublic && !key.isSecret {
             symbol = "person.circle"
-        } else if (!key.isPublic && key.isSecret) {
+        } else if !key.isPublic && key.isSecret {
             symbol = "person.circle.fill"
-        } else if (key.isPublic && key.isSecret) {
+        } else if key.isPublic && key.isSecret {
             symbol = "person.2.circle.fill"
         }
 
@@ -88,5 +88,5 @@ extension Contact {
         }
 
     }
-    
+
 }

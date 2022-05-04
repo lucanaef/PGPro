@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 public class PassableUISwitch: UISwitch {
-    var params: Dictionary<String, Any>
+    var params: [String: Any]
 
     override init(frame: CGRect) {
         self.params = [:]

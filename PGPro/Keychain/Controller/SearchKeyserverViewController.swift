@@ -58,7 +58,6 @@ class SearchKeyserverViewController: UIViewController {
         searchController.searchBar.showsBookmarkButton = true
         searchController.searchBar.setImage(UIImage(systemName: "qrcode"), for: .bookmark, state: .normal)
 
-
         return searchController
     }()
 
@@ -94,7 +93,7 @@ class SearchKeyserverViewController: UIViewController {
 
     @objc
     func addContactDone(sender: UIBarButtonItem) {
-        if (selectedRows.isEmpty) {
+        if selectedRows.isEmpty {
             alert(text: "No Keys Selected!")
         } else {
             var selectedKeys: [Key] = []
@@ -146,7 +145,7 @@ extension SearchKeyserverViewController: UITableViewDelegate, UITableViewDataSou
         let source = foundKeys[indexPath.row].1
 
         var primaryUser: User?
-        if (key.isSecret) {
+        if key.isSecret {
             guard let privateKey = key.secretKey else { return cell }
             primaryUser = privateKey.primaryUser
         } else {
@@ -256,11 +255,11 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
             WebKeyDirectoryService.getByEmail(email: searchBarText) { result in
                 self.switchWKDResult(result: result)
             }
-        } else if (searchBarText.count <= 18) { // case: key id
+        } else if searchBarText.count <= 18 { // case: key id
             VerifyingKeyserverInterface.getByKeyID(keyID: searchBarText) { (result) in
                 self.switchVKIResult(result: result)
             }
-        } else if (searchBarText.count > 18) { // case: fingerprint
+        } else if searchBarText.count > 18 { // case: fingerprint
             VerifyingKeyserverInterface.getByFingerprint(fingerprint: searchBarText) { (result) in
                 self.switchVKIResult(result: result)
             }

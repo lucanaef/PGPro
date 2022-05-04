@@ -28,8 +28,8 @@ class Preferences {
     }
 
     static func setToDefault() {
-        UserDefaults.standard.set(true,  forKey: UserDefaultsKeys.launchedBefore)
-        UserDefaults.standard.set(0,     forKey: UserDefaultsKeys.numRatings)
+        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.launchedBefore)
+        UserDefaults.standard.set(0, forKey: UserDefaultsKeys.numRatings)
         UserDefaults.standard.set(false, forKey: UserDefaultsKeys.mailIntegration)
         UserDefaults.standard.set(false, forKey: UserDefaultsKeys.biometricAuthentication)
     }
@@ -54,6 +54,5 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.numRatings)
         }
     }
-
 
 }

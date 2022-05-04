@@ -23,11 +23,11 @@ class Setting {
 
     // type of setting for the controller to know how to display them
     enum SettingType {
-        case Activity
-        case Action(type: ActionType)
-        case Preference
-        case Link
-        case Segue
+        case activity
+        case action(type: ActionType)
+        case preference
+        case link
+        case segue
     }
 
     enum ActionType {
@@ -47,7 +47,7 @@ class Setting {
         self.type = type
     }
 
-    // Mark: - Type-specific fields
+    // MARK: - Type-specific fields
 
     // Activity:
     private(set) var activity: ((_ viewController: UIViewController, _ completion: () -> Void) -> Void)?
@@ -55,7 +55,7 @@ class Setting {
         self.title = title
         self.symbolName = symbol
         self.subtitle = subtitle
-        self.type = .Activity
+        self.type = .activity
         self.activity = activity
     }
 
@@ -65,11 +65,11 @@ class Setting {
         self.title = title
         self.symbolName = symbol
         self.subtitle = subtitle
-        self.type = .Action(type: actionType)
+        self.type = .action(type: actionType)
         self.action = action
     }
 
-    // Mark: - Preference
+    // MARK: - Preference
     private var userDefaultsKey: String?
     var enabled: Bool?
     var toggled: Bool? {
@@ -87,7 +87,7 @@ class Setting {
         self.title = title
         self.symbolName = symbol
         self.subtitle = subtitle
-        self.type = .Preference
+        self.type = .preference
         self.userDefaultsKey = key
         self.enabled = enabled
     }
@@ -98,7 +98,7 @@ class Setting {
         self.title = title
         self.symbolName = symbol
         self.subtitle = subtitle
-        self.type = .Link
+        self.type = .link
         self.url = url
     }
 
@@ -108,10 +108,9 @@ class Setting {
         self.title = title
         self.symbolName = symbol
         self.subtitle = subtitle
-        self.type = .Segue
+        self.type = .segue
         self.viewController = viewController
     }
-
 
 }
 
@@ -129,20 +128,20 @@ class Settings {
 
     private(set) var allSettings: [SettingsDictKey: Setting] = [:]
     init () {
-        allSettings[SettingsDictKey(.data,          DataSection.exportKeychain.rawValue)]           = exportKeychain
-        allSettings[SettingsDictKey(.data,          DataSection.deleteAllKeys.rawValue)]            = deleteAllKeys
-        allSettings[SettingsDictKey(.preferences,   PreferencesSection.mailIntegration.rawValue)]   = mailIntegration
-        allSettings[SettingsDictKey(.preferences,   PreferencesSection.authentication.rawValue)]    = authentication
-        allSettings[SettingsDictKey(.feedback,      FeedbackSection.sendFeedback.rawValue)]         = reportIssue
-        allSettings[SettingsDictKey(.feedback,      FeedbackSection.joinBeta.rawValue)]             = joinBeta
-        allSettings[SettingsDictKey(.feedback,      FeedbackSection.askForRating.rawValue)]         = askForRating
-        allSettings[SettingsDictKey(.about,         AboutSection.faq.rawValue)]                     = faq
-        allSettings[SettingsDictKey(.about,         AboutSection.contribute.rawValue)]              = contribute
-        allSettings[SettingsDictKey(.about,         AboutSection.privacyPolicy.rawValue)]           = privacyPolicy
-        allSettings[SettingsDictKey(.about,         AboutSection.licenses.rawValue)]                = licenses
+        allSettings[SettingsDictKey(.data, DataSection.exportKeychain.rawValue)]           = exportKeychain
+        allSettings[SettingsDictKey(.data, DataSection.deleteAllKeys.rawValue)]            = deleteAllKeys
+        allSettings[SettingsDictKey(.preferences, PreferencesSection.mailIntegration.rawValue)]   = mailIntegration
+        allSettings[SettingsDictKey(.preferences, PreferencesSection.authentication.rawValue)]    = authentication
+        allSettings[SettingsDictKey(.feedback, FeedbackSection.sendFeedback.rawValue)]         = reportIssue
+        allSettings[SettingsDictKey(.feedback, FeedbackSection.joinBeta.rawValue)]             = joinBeta
+        allSettings[SettingsDictKey(.feedback, FeedbackSection.askForRating.rawValue)]         = askForRating
+        allSettings[SettingsDictKey(.about, AboutSection.faq.rawValue)]                     = faq
+        allSettings[SettingsDictKey(.about, AboutSection.contribute.rawValue)]              = contribute
+        allSettings[SettingsDictKey(.about, AboutSection.privacyPolicy.rawValue)]           = privacyPolicy
+        allSettings[SettingsDictKey(.about, AboutSection.licenses.rawValue)]                = licenses
     }
 
-    // Mark: - Sections
+    // MARK: - Sections
     enum Sections: Int, CaseIterable {
         case data = 0
         case preferences = 1
@@ -208,8 +207,7 @@ class Settings {
         }
     }
 
-
-    // Mark: - Actual Settings
+    // MARK: - Actual Settings
     let exportKeychain = Setting(title: "Export Keychain", symbol: "square.and.arrow.up") { viewController, completion in
         DispatchQueue.global(qos: .default).async {
             let keyring = Keyring()

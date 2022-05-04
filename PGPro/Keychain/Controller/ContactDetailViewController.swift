@@ -70,7 +70,7 @@ class ContactDetailViewController: UIViewController {
 
     @objc
     func setShare() {
-        if (contactDetails?.keyType == "Public & Private") {
+        if contactDetails?.keyType == "Public & Private" {
             let optionMenu = UIAlertController(title: nil,
                                                message: "Select Key to Share",
                                                preferredStyle: .actionSheet)
@@ -142,10 +142,9 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
         case fingerprint = 3
     }
 
-
     func numberOfSections(in tableView: UITableView) -> Int {
         let hasValidKey = contactDetails?.keyIsValid ?? false
-        if (hasValidKey) {
+        if hasValidKey {
             return Sections.allCases.count
         } else {
             return 1
@@ -154,7 +153,7 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = Sections(rawValue: section)
-        switch (section) {
+        switch section {
         case .contact:
             return "User Info"
         case .key:
@@ -179,7 +178,7 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
                    withSender sender: Any?) -> Bool {
 
         let section = Sections(rawValue: indexPath.section)
-        if (section == .key) {
+        if section == .key {
             return action == #selector(UIResponderStandardEditActions.copy(_:))
         }
 
@@ -213,7 +212,7 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
             try contactDetails?.rename(to: changedContactName)
             _ = navigationController?.popViewController(animated: true)
         } catch let error {
-            switch (error) {
+            switch error {
             case ContactDetails.RenameError.cantBeNil:
                 Log.e("Failed to rename contact: \(error)")
             case ContactDetails.RenameError.cantBeEmpty:
@@ -232,10 +231,10 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
 
         var cell = UITableViewCell(style: .value1, reuseIdentifier: cellIdentifier)
 
-        switch (section) {
+        switch section {
         case .contact:
             let row = ContactSection(rawValue: indexPath.row)
-            switch (row) {
+            switch row {
             case .name:
                 let nameCell = FDTextFieldTableViewCell(style: .value1, reuseIdentifier: "FDTextFieldTableViewCell")
                 nameCell.textLabel?.text = "Name"
@@ -253,7 +252,7 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
 
         case .key:
             let row = KeySection(rawValue: indexPath.row)
-            switch (row) {
+            switch row {
             case .id:
                 cell.textLabel?.text = "ID"
                 cell.detailTextLabel?.text = contactDetails?.keyID
@@ -266,7 +265,7 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
                 cell.detailTextLabel?.text = "Never"
                 if let date = date {
                     cell.detailTextLabel?.text = formatter.string(for: date)
-                    if (date < Date()) {
+                    if date < Date() {
                         cell.detailTextLabel?.textColor = UIColor.red
                     }
                 }
@@ -287,7 +286,5 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
         return cell
 
     }
-
-
 
 }

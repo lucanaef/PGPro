@@ -49,9 +49,9 @@ extension UITextView: UITextViewDelegate {
             return placeholderText
         }
         set {
-            if let placeholderLabel = self.viewWithTag(100) as! UILabel? {
-                placeholderLabel.text = newValue
-                placeholderLabel.sizeToFit()
+            if let placeholderLabel = self.viewWithTag(100) as? UILabel? {
+                placeholderLabel?.text = newValue
+                placeholderLabel?.sizeToFit()
             } else {
                 self.addPlaceholder(newValue!)
             }
@@ -69,13 +69,13 @@ extension UITextView: UITextViewDelegate {
 
     /// Resize the placeholder UILabel to make sure it's in the same position as the UITextView text
     private func resizePlaceholder() {
-        if let placeholderLabel = self.viewWithTag(100) as! UILabel? {
+        if let placeholderLabel = self.viewWithTag(100) as? UILabel? {
             let labelX = self.textContainerInset.left + textContainer.lineFragmentPadding
             let labelY = self.textContainerInset.top - 2
             let labelWidth = self.frame.width - (labelX * 2)
-            let labelHeight = placeholderLabel.frame.height
+            let labelHeight = placeholderLabel?.frame.height ?? 0.0
 
-            placeholderLabel.frame = CGRect(x: labelX, y: labelY, width: labelWidth, height: labelHeight)
+            placeholderLabel?.frame = CGRect(x: labelX, y: labelY, width: labelWidth, height: labelHeight)
         }
     }
 

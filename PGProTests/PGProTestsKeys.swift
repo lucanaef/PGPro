@@ -15,7 +15,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 class PGProTestsKeys {
@@ -26,7 +25,7 @@ class PGProTestsKeys {
 
     struct TestKeyURL {
         var id: Int
-        var passphrase: String? = nil
+        var passphrase: String?
         var url: URL {
             return bundle.url(forResource: "\(id)", withExtension: "asc")!
         }
@@ -53,7 +52,7 @@ class PGProTestsKeys {
          *  Key Alg.:   ?
          *  Note:       https://github.com/lucanaef/PGPro/issues/35
          */
-        //TestKeyURL(id: 3), ¡ missing passphrase !
+        // TestKeyURL(id: 3), ¡ missing passphrase !
 
         /** User ID:    Foo Bar <foo@bar.com>
          *  Key ID:     4C8002FC
@@ -70,7 +69,6 @@ class PGProTestsKeys {
          *  Note:       private.master.gpg-key.txt from https://github.com/lucanaef/PGPro/issues/17
          */
         TestKeyURL(id: 5, passphrase: "very secure passphrase!")
-
 
     ]
 

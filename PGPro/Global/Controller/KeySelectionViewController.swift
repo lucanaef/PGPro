@@ -69,7 +69,7 @@ class KeySelectionViewController: UIViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        if (delegate != nil) { delegate?.update(selected: selectedContacts, for: type) }
+        if delegate != nil { delegate?.update(selected: selectedContacts, for: type) }
     }
 
     func set(toType type: Constants.KeyType) {

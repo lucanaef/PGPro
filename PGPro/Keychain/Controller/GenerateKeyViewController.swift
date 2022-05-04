@@ -40,7 +40,6 @@ class GenerateKeyViewController: UIViewController {
         return strengthIndicator
     }()
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Generate Key Pair"
@@ -116,7 +115,6 @@ class GenerateKeyViewController: UIViewController {
     }
 
 }
-
 
 extension GenerateKeyViewController: UITableViewDataSource, UITableViewDelegate {
 
@@ -231,6 +229,5 @@ extension GenerateKeyViewController: UITableViewDataSource, UITableViewDelegate 
             Log.e("Unrecognized TestField")
         }
     }
-
 
 }

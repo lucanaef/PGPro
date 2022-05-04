@@ -58,11 +58,11 @@ class ContactDetails {
 
     var keyType: String? {
         var type = "None"
-        if (key.isPublic && key.isSecret) {
+        if key.isPublic && key.isSecret {
             type = "Public & Private"
-        } else if (key.isPublic) {
+        } else if key.isPublic {
             type = "Public"
-        } else if (key.isSecret) {
+        } else if key.isSecret {
             type = "Private"
         }
         return type
@@ -91,7 +91,7 @@ class ContactDetails {
 
         let success = ContactListService.rename(contact, to: newName, withEmail: email)
 
-        if (!success) { throw RenameError.alreadyExists }
+        if !success { throw RenameError.alreadyExists }
 
     }
 }

@@ -11,7 +11,8 @@ import SwiftUI
 
 /// A SwiftUI view that is able to scan barcodes, QR codes, and more, and send back what was found.
 /// To use, set `codeTypes` to be an array of things to scan for, e.g. `[.qr]`, and set `completion` to
-/// a closure that will be called when scanning has finished. This will be sent the string that was detected or a `ScanError`.
+/// a closure that will be called when scanning has finished.
+/// This will be sent the string that was detected or a `ScanError`.
 /// For testing inside the simulator, set the `simulatedData` property to some test data you want to send back.
 public struct CodeScannerView: UIViewControllerRepresentable {
     public enum ScanError: Error {
@@ -72,7 +73,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
     }
 
     #if targetEnvironment(simulator)
-    public class ScannerViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    public class ScannerViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         var delegate: ScannerCoordinator?
         private let showViewfinder: Bool
 
@@ -127,30 +128,30 @@ public struct CodeScannerView: UIViewControllerRepresentable {
             delegate?.found(code: simulatedData)
         }
 
-        @objc func openGallery(_ sender: UIButton){
+        @objc func openGallery(_ sender: UIButton) {
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
             self.present(imagePicker, animated: true, completion: nil)
         }
 
-        public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+        public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let qrcodeImg = info[.originalImage] as? UIImage {
-                let detector:CIDetector=CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy:CIDetectorAccuracyHigh])!
-                let ciImage:CIImage=CIImage(image:qrcodeImg)!
+                let detector: CIDetector=CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])!
+                let ciImage: CIImage=CIImage(image: qrcodeImg)!
                 var qrCodeLink=""
 
-                let features=detector.features(in: ciImage)
-                for feature in features as! [CIQRCodeFeature] {
+                let features = detector.features(in: ciImage)
+                guard let features = features as? [CIQRCodeFeature] else { return }
+                for feature in features {
                     qrCodeLink += feature.messageString!
                 }
 
                 if qrCodeLink=="" {
                     delegate?.didFail(reason: .badOutput)
-                }else{
+                } else {
                     delegate?.found(code: qrCodeLink)
                 }
-            }
-            else{
+            } else {
                 print("Something went wrong")
             }
             self.dismiss(animated: true, completion: nil)
@@ -188,7 +189,6 @@ public struct CodeScannerView: UIViewControllerRepresentable {
         override public func viewDidLoad() {
             super.viewDidLoad()
 
-
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(updateOrientation),
                                                    name: Notification.Name("UIDeviceOrientationDidChangeNotification"),
@@ -203,7 +203,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
 
             guard let videoInput = try? AVCaptureDeviceInput(device: videoCaptureDevice) else { return }
 
-            if (captureSession.canAddInput(videoInput)) {
+            if captureSession.canAddInput(videoInput) {
                 captureSession.addInput(videoInput)
             } else {
                 delegate?.didFail(reason: .badInput)
@@ -212,7 +212,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
 
             let metadataOutput = AVCaptureMetadataOutput()
 
-            if (captureSession.canAddOutput(metadataOutput)) {
+            if captureSession.canAddOutput(metadataOutput) {
                 captureSession.addOutput(metadataOutput)
 
                 metadataOutput.setMetadataObjectsDelegate(delegate, queue: DispatchQueue.main)
@@ -249,7 +249,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
             view.layer.addSublayer(previewLayer)
             addviewfinder()
 
-            if (captureSession?.isRunning == false) {
+            if captureSession?.isRunning == false {
                 captureSession.startRunning()
             }
         }
@@ -262,14 +262,14 @@ public struct CodeScannerView: UIViewControllerRepresentable {
                 imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 imageView.widthAnchor.constraint(equalToConstant: 200),
-                imageView.heightAnchor.constraint(equalToConstant: 200),
+                imageView.heightAnchor.constraint(equalToConstant: 200)
             ])
         }
 
         override public func viewDidDisappear(_ animated: Bool) {
             super.viewDidDisappear(animated)
 
-            if (captureSession?.isRunning == true) {
+            if captureSession?.isRunning == true {
                 captureSession.stopRunning()
             }
 
@@ -303,7 +303,8 @@ public struct CodeScannerView: UIViewControllerRepresentable {
                 return
             }
 
-            // Focus to the correct point, make continiuous focus and exposure so the point stays sharp when moving the device closer
+            // Focus to the correct point, make continiuous focus and exposure
+            //  so the point stays sharp when moving the device closer
             device.focusPointOfInterest = focusPoint
             device.focusMode = .continuousAutoFocus
             device.exposurePointOfInterest = focusPoint
@@ -320,7 +321,13 @@ public struct CodeScannerView: UIViewControllerRepresentable {
     public var simulatedData = ""
     public var completion: (Result<String, ScanError>) -> Void
 
-    public init(codeTypes: [AVMetadataObject.ObjectType], scanMode: ScanMode = .once, showViewfinder: Bool = false, scanInterval: Double = 2.0, simulatedData: String = "", completion: @escaping (Result<String, ScanError>) -> Void) {
+    public init(codeTypes: [AVMetadataObject.ObjectType],
+                scanMode: ScanMode = .once,
+                showViewfinder: Bool = false,
+                scanInterval: Double = 2.0,
+                simulatedData: String = "",
+                completion: @escaping (Result<String, ScanError>) -> Void)
+    {
         self.codeTypes = codeTypes
         self.scanMode = scanMode
         self.showViewfinder = showViewfinder
@@ -346,7 +353,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
 
 struct CodeScannerView_Previews: PreviewProvider {
     static var previews: some View {
-        CodeScannerView(codeTypes: [.qr]) { result in
+        CodeScannerView(codeTypes: [.qr]) { _ in
             // do nothing
         }
     }

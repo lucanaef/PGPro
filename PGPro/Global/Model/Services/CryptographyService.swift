@@ -100,7 +100,7 @@ class CryptographyService {
         guard let messageData = message.data(using: .ascii) else { throw CryptographyError.invalidMessage }
 
         // Handle PASSPHRASE
-        if (keyRequiresPassphrase) {
+        if keyRequiresPassphrase {
             guard passphrase != nil else {
                 throw CryptographyError.requiresPassphrase
             }
@@ -134,7 +134,6 @@ class CryptographyService {
         }
         return true
     }
-
 
     static func decryptionContacts(for message: String) -> [Contact] {
 

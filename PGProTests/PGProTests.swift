@@ -47,7 +47,7 @@ class PGProTests: XCTestCase {
 
         do {
             let keyData = try key.export() as NSData
-            guard (keyData.length > 0) else {
+            guard keyData.length > 0 else {
                 throw PGProTestsHelper.TestsError.keyGeneratonError
             }
             contact.keyData = keyData
@@ -57,20 +57,11 @@ class PGProTests: XCTestCase {
 
         /// Encrypt and decrypt message
         let message = PGProTestsHelper.randomString(of: 2048)
-
         do {
-            let encryptedMessage = try CryptographyService.encrypt(message: message, for: [contact])
-
-            do {
-                let decryptedMessage = try CryptographyService.decrypt(message: encryptedMessage, by: contact, withPassphrase: nil)
-
-                XCTAssertEqual(message, decryptedMessage)
-
-            } catch (let error) {
-                throw error
-            }
-
-        } catch (let error) {
+            let encryptedMsg = try CryptographyService.encrypt(message: message, for: [contact])
+            let decryptedMsg = try CryptographyService.decrypt(message: encryptedMsg, by: contact, withPassphrase: nil)
+            XCTAssertEqual(message, decryptedMsg)
+        } catch let error {
             throw error
         }
 
@@ -97,7 +88,7 @@ class PGProTests: XCTestCase {
 
             do {
                 let keyData = try key.export() as NSData
-                guard (keyData.length > 0) else {
+                guard keyData.length > 0 else {
                     throw PGProTestsHelper.TestsError.keyGeneratonError
                 }
                 contact.keyData = keyData
@@ -110,23 +101,14 @@ class PGProTests: XCTestCase {
 
             /// Encrypt and decrypt message
             do {
-                let encryptedMessage = try CryptographyService.encrypt(message: message, for: [contact])
-
-                do {
-                    let decryptedMessage = try CryptographyService.decrypt(message: encryptedMessage, by: contact, withPassphrase: passphrase)
-
-                    XCTAssertEqual(message, decryptedMessage)
-
-                } catch (let error) {
-                    throw error
-                }
-
-            } catch (let error) {
+                let encryptedMsg = try CryptographyService.encrypt(message: message, for: [contact])
+                let decryptedMsg = try CryptographyService.decrypt(message: encryptedMsg, by: contact, withPassphrase: passphrase)
+                XCTAssertEqual(message, decryptedMsg)
+            } catch {
                 throw error
             }
 
-
-        } catch (let error) {
+        } catch {
             throw error
         }
     }
@@ -135,7 +117,7 @@ class PGProTests: XCTestCase {
         for key in PGProTestsKeys.keys {
             do {
                 try importEncryptDecrypt(id: key.id, from: key.url, passphrase: key.passphrase, isSupported: key.isSupported)
-            } catch (let error) {
+            } catch {
                 throw error
             }
         }
