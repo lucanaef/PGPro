@@ -145,7 +145,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         guard let section = Settings.Sections(rawValue: indexPath.section) else {
             Log.s("IndexPath \(indexPath) out of bounds!")
             return
@@ -171,7 +170,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 }
             }
             tableView.deselectRow(at: indexPath, animated: true)
-
         case .action(let actionType):
             if actionType == Setting.ActionType.destructive {
                 let dialogMessage = UIAlertController(title: "Are you sure?",
@@ -197,10 +195,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 setting.action?()
             }
             tableView.deselectRow(at: indexPath, animated: true)
-
         case .preference:
             break
-
         case .link:
             AppStoreReviewService.incrementReviewWorthyActionCount()
             guard let url = setting.url else {
@@ -209,7 +205,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
             UIApplication.shared.open(url)
             tableView.deselectRow(at: indexPath, animated: true)
-
         case .segue:
             guard let viewController = setting.viewController else {
                 Log.s("Cell not properly configured!")

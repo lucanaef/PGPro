@@ -33,28 +33,28 @@ class PGProTestsKeys {
     }
 
     static let keys: [TestKeyURL] = [
-        /** User ID:    PGProWithoutEmail <>
+        /* User ID:    PGProWithoutEmail <>
          *  Key ID:     CD832F8D
          *  Key Alg.:   RSA; 4096 bit
          *  Note:       Key has no email address
          */
         TestKeyURL(id: 1),
 
-        /** User ID:    PGPro 2 <2@test.pgpro.app>
+        /* User ID:    PGPro 2 <2@test.pgpro.app>
          *  Key ID:     4972679B
          *  Key Alg.:   DSA and Elgamal; 3072 bit
          *  Note:       -
          */
         TestKeyURL(id: 2, passphrase: "2.test.pgpro.app"),
 
-        /** User ID:    Daniel harrington <harrington0703@gmail.com>
+        /* User ID:    Daniel harrington <harrington0703@gmail.com>
          *  Key ID:     ?
          *  Key Alg.:   ?
          *  Note:       https://github.com/lucanaef/PGPro/issues/35
          */
         // TestKeyURL(id: 3), ¡ missing passphrase !
 
-        /** User ID:    Foo Bar <foo@bar.com>
+        /* User ID:    Foo Bar <foo@bar.com>
          *  Key ID:     4C8002FC
          *  Key Alg.:   RSA; 4096 bit
          *  Note:       private.gpg-key.txt from https://github.com/lucanaef/PGPro/issues/17
@@ -63,7 +63,7 @@ class PGProTestsKeys {
          */
         TestKeyURL(id: 4, passphrase: "very secure passphrase!", isSupported: false),
 
-        /** User ID:    Foo Bar <foo@bar.com>
+        /* User ID:    Foo Bar <foo@bar.com>
          *  Key ID:     4C8002FC
          *  Key Alg.:   RSA; 4096 bit
          *  Note:       private.master.gpg-key.txt from https://github.com/lucanaef/PGPro/issues/17

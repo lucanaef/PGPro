@@ -29,14 +29,14 @@ class KeychainViewController: UIViewController {
     private var filteredContacts = [Contact]()
 
     lazy var keychainTableView: UITableView = {
-        let tv = UITableView()
+        let tableView = UITableView()
 
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.delegate = self
-        tv.dataSource = self
-        tv.register(KeychainTableViewCell.self, forCellReuseIdentifier: "KeychainTableViewCell")
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(KeychainTableViewCell.self, forCellReuseIdentifier: "KeychainTableViewCell")
 
-        return tv
+        return tableView
     }()
 
     lazy var searchController: UISearchController = {

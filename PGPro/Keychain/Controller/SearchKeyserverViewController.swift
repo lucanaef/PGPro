@@ -32,13 +32,13 @@ class SearchKeyserverViewController: UIViewController {
     var selectedRows: [Int] = []
 
     lazy var tableView: UITableView = {
-        let tv = UITableView()
+        let tableView = UITableView()
 
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.delegate = self
-        tv.dataSource = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
 
-        return tv
+        return tableView
     }()
 
     lazy var searchController: UISearchController = {
@@ -66,7 +66,7 @@ class SearchKeyserverViewController: UIViewController {
 
         self.title = "Search Keyserver"
 
-        /// Add buttons to navigation controller
+        // Add buttons to navigation controller
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Close",
             style: .plain,
@@ -80,10 +80,10 @@ class SearchKeyserverViewController: UIViewController {
             action: #selector(addContactDone(sender:))
         )
 
-        /// Add search bar to super view
+        // Add search bar to super view
         navigationItem.searchController = searchController
 
-        /// Add table view to super view
+        // Add table view to super view
         view.addSubview(tableView)
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true

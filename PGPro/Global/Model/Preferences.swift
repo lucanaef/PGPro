@@ -35,15 +35,11 @@ class Preferences {
     }
 
     static var mailIntegrationEnabled: Bool {
-        get {
-            UserDefaults.standard.bool(forKey: UserDefaultsKeys.mailIntegration)
-        }
+        UserDefaults.standard.bool(forKey: UserDefaultsKeys.mailIntegration)
     }
 
     static var biometricAuthentication: Bool {
-        get {
-            UserDefaults.standard.bool(forKey: UserDefaultsKeys.biometricAuthentication)
-        }
+        UserDefaults.standard.bool(forKey: UserDefaultsKeys.biometricAuthentication)
     }
 
     static var numRatings: Int {
