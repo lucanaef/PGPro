@@ -33,6 +33,7 @@
 		8137AC712332AC1C007483EA /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137AC702332AC1C007483EA /* String+Email.swift */; };
 		81417F6824A0F43900732A62 /* GenerateKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81417F6724A0F43900732A62 /* GenerateKeyViewController.swift */; };
 		81453BAC247BA59C00613F18 /* CryptographyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453BAB247BA59C00613F18 /* CryptographyService.swift */; };
+		814DB5D52824568000A44F1D /* MimeParsingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB5D42824568000A44F1D /* MimeParsingService.swift */; };
 		815097C3247D7F3C00022E0F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815097C2247D7F3C00022E0F /* Logger.swift */; };
 		815A63B12636F33E001BD30A /* PGProTestsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A63B02636F33E001BD30A /* PGProTestsHelper.swift */; };
 		815A63B92636FB22001BD30A /* PGProTestsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A63B82636FB22001BD30A /* PGProTestsKeys.swift */; };
@@ -129,6 +130,7 @@
 		8137AC702332AC1C007483EA /* String+Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
 		81417F6724A0F43900732A62 /* GenerateKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKeyViewController.swift; sourceTree = "<group>"; };
 		81453BAB247BA59C00613F18 /* CryptographyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyService.swift; sourceTree = "<group>"; };
+		814DB5D42824568000A44F1D /* MimeParsingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeParsingService.swift; sourceTree = "<group>"; };
 		815097C2247D7F3C00022E0F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		815A63B02636F33E001BD30A /* PGProTestsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTestsHelper.swift; sourceTree = "<group>"; };
 		815A63B82636FB22001BD30A /* PGProTestsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTestsKeys.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				819EB2BE2444EC7800D10100 /* ITunesInterface.swift */,
 				81453BAB247BA59C00613F18 /* CryptographyService.swift */,
 				812D582A2667FE220062547F /* KeychainService.swift */,
+				814DB5D42824568000A44F1D /* MimeParsingService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -722,6 +725,7 @@
 				8120EF4C249EA293007F3420 /* IsoCountries.swift in Sources */,
 				81E33AE623265A4E00241E4A /* Contact+CoreDataClass.swift in Sources */,
 				815B9E57266CD06C00BEA572 /* Contact+Key.swift in Sources */,
+				814DB5D52824568000A44F1D /* MimeParsingService.swift in Sources */,
 				8194386123E35CCF008B518E /* AppStoreReviewService.swift in Sources */,
 				81A0918A241D0F98004C91FB /* VerifyingKeyserverInterface.swift in Sources */,
 				81F95FF72502A4BF00786238 /* ZBase32.swift in Sources */,
