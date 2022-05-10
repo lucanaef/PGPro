@@ -33,6 +33,7 @@
 		8137AC712332AC1C007483EA /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137AC702332AC1C007483EA /* String+Email.swift */; };
 		81417F6824A0F43900732A62 /* GenerateKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81417F6724A0F43900732A62 /* GenerateKeyViewController.swift */; };
 		81453BAC247BA59C00613F18 /* CryptographyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81453BAB247BA59C00613F18 /* CryptographyService.swift */; };
+		8148C97B282AB6D2007FF138 /* MailIntegrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8148C97A282AB6D2007FF138 /* MailIntegrationViewController.swift */; };
 		814DB5D52824568000A44F1D /* MimeParsingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB5D42824568000A44F1D /* MimeParsingService.swift */; };
 		815097C3247D7F3C00022E0F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815097C2247D7F3C00022E0F /* Logger.swift */; };
 		815A63B12636F33E001BD30A /* PGProTestsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A63B02636F33E001BD30A /* PGProTestsHelper.swift */; };
@@ -130,6 +131,7 @@
 		8137AC702332AC1C007483EA /* String+Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
 		81417F6724A0F43900732A62 /* GenerateKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKeyViewController.swift; sourceTree = "<group>"; };
 		81453BAB247BA59C00613F18 /* CryptographyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyService.swift; sourceTree = "<group>"; };
+		8148C97A282AB6D2007FF138 /* MailIntegrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailIntegrationViewController.swift; sourceTree = "<group>"; };
 		814DB5D42824568000A44F1D /* MimeParsingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeParsingService.swift; sourceTree = "<group>"; };
 		815097C2247D7F3C00022E0F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		815A63B02636F33E001BD30A /* PGProTestsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTestsHelper.swift; sourceTree = "<group>"; };
@@ -341,6 +343,7 @@
 			children = (
 				8120EF51249F8AB5007F3420 /* SettingsViewController.swift */,
 				8120EF57249FB5A4007F3420 /* LicensesViewController.swift */,
+				8148C97A282AB6D2007FF138 /* MailIntegrationViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -736,6 +739,7 @@
 				815097C3247D7F3C00022E0F /* Logger.swift in Sources */,
 				81417F6824A0F43900732A62 /* GenerateKeyViewController.swift in Sources */,
 				81E4631C231029A4008DC317 /* AppDelegate.swift in Sources */,
+				8148C97B282AB6D2007FF138 /* MailIntegrationViewController.swift in Sources */,
 				8114B8A02315B664001DBAC5 /* KeychainViewController.swift in Sources */,
 				812CC5E8266BF45F00256B8F /* Contact+Keychain.swift in Sources */,
 				8194D96E23E1F292000D47C3 /* Navajo.swift in Sources */,
@@ -999,7 +1003,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 262;
 				DEVELOPMENT_TEAM = Q7BD4XD9Q7;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1012,7 +1016,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2021.4;
+				MARKETING_VERSION = 2022.1;
 				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -1028,7 +1032,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 262;
 				DEVELOPMENT_TEAM = Q7BD4XD9Q7;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1041,7 +1045,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2021.4;
+				MARKETING_VERSION = 2022.1;
 				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;

@@ -185,12 +185,20 @@ class DecryptionViewController: UIViewController {
     private func present(_ message: String) {
         let decryptedMessageViewController = DecryptedMessageViewController()
         decryptedMessageViewController.show(message)
-
+        
         // Embed view in a new navigation controller as a
         //  workaround to https://forums.developer.apple.com/thread/121861
         let decryptedMessageNavigation = UINavigationController()
         decryptedMessageNavigation.setViewControllers([decryptedMessageViewController], animated: false)
         decryptedMessageNavigation.modalPresentationStyle = .automatic
+
+        // https://stackoverflow.com/a/69135729
+        if #available(iOS 15, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
 
         self.present(decryptedMessageNavigation, animated: true, completion: nil)
     }

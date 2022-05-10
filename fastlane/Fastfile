@@ -23,7 +23,7 @@ platform :ios do
   lane :beta do
     ensure_git_status_clean
     increment_build_number(build_number: number_of_commits)
-    build_app
+    build_app(scheme: "PGPro")
     upload_to_testflight
   end 
 end
