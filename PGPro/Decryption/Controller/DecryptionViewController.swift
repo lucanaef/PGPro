@@ -185,7 +185,7 @@ class DecryptionViewController: UIViewController {
     private func present(_ message: String) {
         let decryptedMessageViewController = DecryptedMessageViewController()
         decryptedMessageViewController.show(message)
-        
+
         // Embed view in a new navigation controller as a
         //  workaround to https://forums.developer.apple.com/thread/121861
         let decryptedMessageNavigation = UINavigationController()
