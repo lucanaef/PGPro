@@ -5,11 +5,10 @@
 
 import Foundation
 import UIKit
+import SPAlert
 
 extension UIViewController {
-    func alert(text: String) {
-        let alertController = UIAlertController(title: text, message: nil, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-        self.present(alertController, animated: true, completion: nil)
+    func alert(text: String, haptic: SPAlertHaptic = .warning, completion: (() -> Void)? = nil) {
+        SPAlert.present(message: text, haptic: haptic, completion: completion)
     }
 }

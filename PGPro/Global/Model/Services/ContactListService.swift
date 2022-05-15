@@ -19,16 +19,6 @@ import Foundation
 import CoreData
 import ObjectivePGP
 
-/// Return type when adding keys to the contact list
-struct ContactListResult {
-    /// Number of successfuly added contacts
-    var successful: Int
-    /// Number omitted contacts due to unsupported keys
-    var unsupported: Int
-    /// Number omitted contacts due to duplicate email addresses
-    var duplicates: Int
-}
-
 class ContactListService {
 
     private init() {}
@@ -211,5 +201,4 @@ class ContactListService {
         }
         return count
     }
-
 }

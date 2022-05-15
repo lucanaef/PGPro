@@ -29,7 +29,6 @@ class SearchKeyserverViewController: UIViewController {
             }
         }
     }
-    var selectedRows: [Int] = []
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -44,6 +43,7 @@ class SearchKeyserverViewController: UIViewController {
     lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
+        searchController.automaticallyShowsCancelButton = false
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
 
@@ -73,12 +73,6 @@ class SearchKeyserverViewController: UIViewController {
             target: self,
             action: #selector(addContactCancel(sender:))
         )
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Import",
-            style: .done,
-            target: self,
-            action: #selector(addContactDone(sender:))
-        )
 
         // Add search bar to super view
         navigationItem.searchController = searchController
@@ -92,36 +86,8 @@ class SearchKeyserverViewController: UIViewController {
     }
 
     @objc
-    func addContactDone(sender: UIBarButtonItem) {
-        if selectedRows.isEmpty {
-            alert(text: "No Keys Selected!")
-        } else {
-            var selectedKeys: [Key] = []
-            for row in selectedRows { selectedKeys.append(foundKeys[row].0) }
-
-            let result: ContactListResult = ContactListService.importFrom(selectedKeys)
-            alert(result)
-        }
-    }
-
-    @objc
     func addContactCancel(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
-    }
-
-    private func alert(_ result: ContactListResult) {
-
-        let successful = "\(result.successful) key\(result.successful == 1 ? "" : "s") successfully imported"
-        let unsupported = "\(result.unsupported) unsupported key\(result.unsupported == 1 ? "" : "s") skipped"
-        let duplicates = "\(result.duplicates) duplicate key\(result.duplicates == 1 ? "" : "s") skipped"
-
-        let alert = UIAlertController(title: "Import Result",
-                                      message: "\(successful) \n \(unsupported) \n \(duplicates)",
-                                      preferredStyle: UIAlertController.Style.alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
-
     }
 
 }
@@ -157,23 +123,20 @@ extension SearchKeyserverViewController: UITableViewDelegate, UITableViewDataSou
             cell.detailTextLabel!.text = key.keyID.longIdentifier.insertSeparator(" ", atEvery: 4) + " – " + source
         }
 
-        if selectedRows.contains(indexPath.row) {
-            cell.accessoryType = UITableViewCell.AccessoryType.checkmark
-        } else {
-            cell.accessoryType = UITableViewCell.AccessoryType.none
-        }
-
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectedRows.contains(indexPath.row) {
-            guard let firstOccurence = selectedRows.firstIndex(of: indexPath.row) else { return }
-            selectedRows.remove(at: firstOccurence)
-        } else {
-            selectedRows.append(indexPath.row)
+
+        let selectedKey = foundKeys[indexPath.row].0
+        let result: ContactListResult = ContactListService.importFrom([selectedKey])
+
+        self.alert(result) {
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
         }
-        self.tableView.reloadData()
+
     }
 }
 
@@ -212,12 +175,12 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
             }
 
         case .success(let keys):
+            self.foundKeys = []
             for key in keys {
                 self.foundKeys.append((key, source))
             }
         }
 
-        self.selectedRows = []
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.tableView.reloadData()
         }

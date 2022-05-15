@@ -68,7 +68,10 @@ class Licenses {
                 at: URL(string: "https://github.com/miximka/MimeParser/blob/master/LICENSE")!),
         License(for: "EmptyDataSet-Swift",
                 describedBy: "A drop-in UITableView/UICollectionView superclass category for showing empty datasets whenever the view has no content to display.",
-                at: URL(string: "https://github.com/Xiaoye220/EmptyDataSet-Swift/blob/master/LICENSE")!)
+                at: URL(string: "https://github.com/Xiaoye220/EmptyDataSet-Swift/blob/master/LICENSE")!),
+        License(for: "SPAlert",
+                describedBy: "Native alert from Apple Music & Feedback. Contains Done, Heart & Message and other presets. Support SwiftUI.",
+                at: URL(string: "https://github.com/ivanvorobei/SPAlert/blob/main/LICENSE")!)
     ]
 
 }

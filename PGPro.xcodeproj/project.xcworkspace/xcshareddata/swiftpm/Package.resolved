@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "spalert",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ivanvorobei/SPAlert",
+      "state" : {
+        "revision" : "5fd3e2923d26f0f0b40f0e6c10fca458a61a73c4",
+        "version" : "4.2.0"
+      }
+    },
+    {
       "identity" : "swifttrycatch",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/seanparsons/SwiftTryCatch.git",

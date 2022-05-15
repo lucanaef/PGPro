@@ -47,6 +47,8 @@
 		8181920A231D45C500BB7BBB /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81819209231D45C500BB7BBB /* ContactDetailViewController.swift */; };
 		81820DFF250285BF00D5BC97 /* WebKeyDirectoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81820DFE250285BF00D5BC97 /* WebKeyDirectoryService.swift */; };
 		81852059283107EF000C1F6F /* EmptyDataSet-Swift in Frameworks */ = {isa = PBXBuildFile; productRef = 81852058283107EF000C1F6F /* EmptyDataSet-Swift */; };
+		8185205B28311B4C000C1F6F /* ContactListResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8185205A28311B4C000C1F6F /* ContactListResult.swift */; };
+		8185205E28311B88000C1F6F /* SPAlert in Frameworks */ = {isa = PBXBuildFile; productRef = 8185205D28311B88000C1F6F /* SPAlert */; };
 		8188E5532502DE98001B2476 /* Data+hexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5522502DE98001B2476 /* Data+hexString.swift */; };
 		8188E5552502E4A0001B2476 /* String+InsecureHashing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5542502E4A0001B2476 /* String+InsecureHashing.swift */; };
 		8194386123E35CCF008B518E /* AppStoreReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8194386023E35CCF008B518E /* AppStoreReviewService.swift */; };
@@ -147,6 +149,7 @@
 		81819203231D334200BB7BBB /* ExampleDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleDataService.swift; sourceTree = "<group>"; };
 		81819209231D45C500BB7BBB /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 		81820DFE250285BF00D5BC97 /* WebKeyDirectoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKeyDirectoryService.swift; sourceTree = "<group>"; };
+		8185205A28311B4C000C1F6F /* ContactListResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListResult.swift; sourceTree = "<group>"; };
 		8188E5522502DE98001B2476 /* Data+hexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+hexString.swift"; sourceTree = "<group>"; };
 		8188E5542502E4A0001B2476 /* String+InsecureHashing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+InsecureHashing.swift"; sourceTree = "<group>"; };
 		8194386023E35CCF008B518E /* AppStoreReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreReviewService.swift; sourceTree = "<group>"; };
@@ -203,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81E28319256A7F0300F9F801 /* ObjectivePGP in Frameworks */,
+				8185205E28311B88000C1F6F /* SPAlert in Frameworks */,
 				81852059283107EF000C1F6F /* EmptyDataSet-Swift in Frameworks */,
 				8194D97123E2E359000D47C3 /* SwiftTryCatch in Frameworks */,
 				8135BB5128230C33000CA445 /* MimeParser in Frameworks */,
@@ -319,6 +323,7 @@
 				81FC11FA2598ECA700F8CD51 /* AuthenticationService.swift */,
 				81B594F623241400004893A0 /* PersistenceService.swift */,
 				81B594E923212251004893A0 /* ContactListService.swift */,
+				8185205A28311B4C000C1F6F /* ContactListResult.swift */,
 				81819203231D334200BB7BBB /* ExampleDataService.swift */,
 				8194386023E35CCF008B518E /* AppStoreReviewService.swift */,
 				81B69913241A8CB900636FD4 /* KeyConstructionService.swift */,
@@ -581,6 +586,7 @@
 				81E28318256A7F0300F9F801 /* ObjectivePGP */,
 				8135BB5028230C33000CA445 /* MimeParser */,
 				81852058283107EF000C1F6F /* EmptyDataSet-Swift */,
+				8185205D28311B88000C1F6F /* SPAlert */,
 			);
 			productName = PGPro;
 			productReference = 81E46318231029A4008DC317 /* PGPro.app */;
@@ -624,6 +630,7 @@
 				81E28317256A7F0300F9F801 /* XCRemoteSwiftPackageReference "ObjectivePGP" */,
 				8135BB4F28230C33000CA445 /* XCRemoteSwiftPackageReference "MimeParser" */,
 				81852057283107EF000C1F6F /* XCRemoteSwiftPackageReference "EmptyDataSet-Swift" */,
+				8185205C28311B88000C1F6F /* XCRemoteSwiftPackageReference "SPAlert" */,
 			);
 			productRefGroup = 81E46319231029A4008DC317 /* Products */;
 			projectDirPath = "";
@@ -753,6 +760,7 @@
 				8114B8A4231815D5001DBAC5 /* EncryptionViewController.swift in Sources */,
 				81B594E8232038F1004893A0 /* KeySelectionTableViewCell.swift in Sources */,
 				8188E5552502E4A0001B2476 /* String+InsecureHashing.swift in Sources */,
+				8185205B28311B4C000C1F6F /* ContactListResult.swift in Sources */,
 				8137AC712332AC1C007483EA /* String+Email.swift in Sources */,
 				8120EF56249FA4CB007F3420 /* Preferences.swift in Sources */,
 				81B6EA622482B4E000008A5C /* License.swift in Sources */,
@@ -1116,6 +1124,14 @@
 				kind = branch;
 			};
 		};
+		8185205C28311B88000C1F6F /* XCRemoteSwiftPackageReference "SPAlert" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ivanvorobei/SPAlert";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/seanparsons/SwiftTryCatch.git";
@@ -1144,6 +1160,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 81852057283107EF000C1F6F /* XCRemoteSwiftPackageReference "EmptyDataSet-Swift" */;
 			productName = "EmptyDataSet-Swift";
+		};
+		8185205D28311B88000C1F6F /* SPAlert */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8185205C28311B88000C1F6F /* XCRemoteSwiftPackageReference "SPAlert" */;
+			productName = SPAlert;
 		};
 		8194D97023E2E359000D47C3 /* SwiftTryCatch */ = {
 			isa = XCSwiftPackageProductDependency;

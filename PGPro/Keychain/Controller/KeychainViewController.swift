@@ -174,21 +174,6 @@ class KeychainViewController: UIViewController {
         alert(result)
     }
 
-    private func alert(_ result: ContactListResult) {
-
-        let successful = "\(result.successful) key\(result.successful == 1 ? "" : "s") successfully imported"
-        let unsupported = "\(result.unsupported) unsupported key\(result.unsupported == 1 ? "" : "s") skipped"
-        let duplicates = "\(result.duplicates) duplicate key\(result.duplicates == 1 ? "" : "s") skipped"
-
-        let alert = UIAlertController(title: "Import Result",
-                                      message: "\(successful) \n \(unsupported) \n \(duplicates)",
-                                      preferredStyle: UIAlertController.Style.alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
-
-    }
-
     private func importKeysFilePicker() {
         let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeData as String], in: .import)
         documentPicker.delegate = self
