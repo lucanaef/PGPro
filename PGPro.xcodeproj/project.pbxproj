@@ -46,6 +46,7 @@
 		81819204231D334200BB7BBB /* ExampleDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81819203231D334200BB7BBB /* ExampleDataService.swift */; };
 		8181920A231D45C500BB7BBB /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81819209231D45C500BB7BBB /* ContactDetailViewController.swift */; };
 		81820DFF250285BF00D5BC97 /* WebKeyDirectoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81820DFE250285BF00D5BC97 /* WebKeyDirectoryService.swift */; };
+		81852059283107EF000C1F6F /* EmptyDataSet-Swift in Frameworks */ = {isa = PBXBuildFile; productRef = 81852058283107EF000C1F6F /* EmptyDataSet-Swift */; };
 		8188E5532502DE98001B2476 /* Data+hexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5522502DE98001B2476 /* Data+hexString.swift */; };
 		8188E5552502E4A0001B2476 /* String+InsecureHashing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5542502E4A0001B2476 /* String+InsecureHashing.swift */; };
 		8194386123E35CCF008B518E /* AppStoreReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8194386023E35CCF008B518E /* AppStoreReviewService.swift */; };
@@ -202,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81E28319256A7F0300F9F801 /* ObjectivePGP in Frameworks */,
+				81852059283107EF000C1F6F /* EmptyDataSet-Swift in Frameworks */,
 				8194D97123E2E359000D47C3 /* SwiftTryCatch in Frameworks */,
 				8135BB5128230C33000CA445 /* MimeParser in Frameworks */,
 			);
@@ -578,6 +580,7 @@
 				8194D97023E2E359000D47C3 /* SwiftTryCatch */,
 				81E28318256A7F0300F9F801 /* ObjectivePGP */,
 				8135BB5028230C33000CA445 /* MimeParser */,
+				81852058283107EF000C1F6F /* EmptyDataSet-Swift */,
 			);
 			productName = PGPro;
 			productReference = 81E46318231029A4008DC317 /* PGPro.app */;
@@ -620,6 +623,7 @@
 				8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */,
 				81E28317256A7F0300F9F801 /* XCRemoteSwiftPackageReference "ObjectivePGP" */,
 				8135BB4F28230C33000CA445 /* XCRemoteSwiftPackageReference "MimeParser" */,
+				81852057283107EF000C1F6F /* XCRemoteSwiftPackageReference "EmptyDataSet-Swift" */,
 			);
 			productRefGroup = 81E46319231029A4008DC317 /* Products */;
 			projectDirPath = "";
@@ -1104,6 +1108,14 @@
 				kind = branch;
 			};
 		};
+		81852057283107EF000C1F6F /* XCRemoteSwiftPackageReference "EmptyDataSet-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Xiaoye220/EmptyDataSet-Swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/seanparsons/SwiftTryCatch.git";
@@ -1127,6 +1139,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8135BB4F28230C33000CA445 /* XCRemoteSwiftPackageReference "MimeParser" */;
 			productName = MimeParser;
+		};
+		81852058283107EF000C1F6F /* EmptyDataSet-Swift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81852057283107EF000C1F6F /* XCRemoteSwiftPackageReference "EmptyDataSet-Swift" */;
+			productName = "EmptyDataSet-Swift";
 		};
 		8194D97023E2E359000D47C3 /* SwiftTryCatch */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -45,6 +45,30 @@ class KeySelectionViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(KeySelectionTableViewCell.self, forCellReuseIdentifier: "KeySelectionTableViewCell")
 
+        tableView.emptyDataSetView { view in
+            let keySymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light, scale: .medium)
+            let keySymbol = UIImage(systemName: "key", withConfiguration: keySymbolConfiguration)
+
+            var titleLabelString: String {
+                switch self.type {
+                case .privateKey: return "No Private Keys in Keychain"
+                case .publicKey: return "No Public Keys in Keychain"
+                default: return "Keychain is Empty"
+                }
+            }
+
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(systemName: "person.2.fill")?.withTintColor(.secondaryLabel, renderingMode: .alwaysOriginal)
+
+            let detailLabelString = NSMutableAttributedString(string: "Tap the '+' on the '")
+            detailLabelString.append(NSAttributedString(attachment: imageAttachment))
+            detailLabelString.append(NSAttributedString(string: " Keychain' tab to add keys"))
+
+            view.titleLabelString(NSAttributedString(string: titleLabelString))
+                .detailLabelString(detailLabelString)
+                .image(keySymbol?.withTintColor(.secondaryLabel, renderingMode: .alwaysOriginal))
+            }
+
         return tableView
     }()
 

@@ -18,6 +18,7 @@
 import UIKit
 import MobileCoreServices
 import ObjectivePGP
+import EmptyDataSet_Swift
 
 class KeychainViewController: UIViewController {
 
@@ -35,6 +36,15 @@ class KeychainViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(KeychainTableViewCell.self, forCellReuseIdentifier: "KeychainTableViewCell")
+
+        tableView.emptyDataSetView { view in
+            let keySymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light, scale: .medium)
+            let keySymbol = UIImage(systemName: "key", withConfiguration: keySymbolConfiguration)
+
+            view.titleLabelString(NSAttributedString(string: "Keychain is Empty"))
+                .detailLabelString(NSAttributedString(string: "Tap the '+' to add keys"))
+                .image(keySymbol?.withTintColor(.secondaryLabel, renderingMode: .alwaysOriginal))
+        }
 
         return tableView
     }()
@@ -58,6 +68,7 @@ class KeychainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         contacts = ContactListService.get(ofType: .both)
 
         NotificationCenter.default.addObserver(self,
