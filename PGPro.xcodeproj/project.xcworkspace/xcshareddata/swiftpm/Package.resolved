@@ -44,6 +44,15 @@
         "branch" : "master",
         "revision" : "6a177252cfa2ef649b0aa7b2d16ab221386ca51c"
       }
+    },
+    {
+      "identity" : "thirdpartymailer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vtourraine/ThirdPartyMailer",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0d9a82956105dd60a19caf5c8628669e9af91a05"
+      }
     }
   ],
   "version" : 2

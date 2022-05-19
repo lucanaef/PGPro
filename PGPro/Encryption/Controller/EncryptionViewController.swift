@@ -248,7 +248,7 @@ class EncryptionViewController: UIViewController {
             case CryptographyError.invalidMessage:
                 alert(text: "Message is invalid!")
             case CryptographyError.frameworkError(let frameworkError):
-                alert(text: "Encryption failed!")
+                alert(text: "Encryption failed (Framework Error)!")
                 Log.e(frameworkError)
             default:
                 alert(text: "Encryption failed!")
@@ -257,17 +257,48 @@ class EncryptionViewController: UIViewController {
             return
         }
 
-        if Constants.User.canSendMail && Preferences.mailIntegrationEnabled {
-            let addresses = encryptionContacts.map { $0.email }
+        if Preferences.mailIntegrationEnabled {
+            let recipients = encryptionContacts.map { $0.email }
+
             // Present native mail integration
-            let mailComposeViewController = MFMailComposeViewController()
-            mailComposeViewController.mailComposeDelegate = self as MFMailComposeViewControllerDelegate
-            mailComposeViewController.delegate = self as UINavigationControllerDelegate
+//            let mailComposeViewController = MFMailComposeViewController()
+//            mailComposeViewController.mailComposeDelegate = self as MFMailComposeViewControllerDelegate
+//            mailComposeViewController.delegate = self as UINavigationControllerDelegate
+//
+//            mailComposeViewController.setToRecipients(addresses)
+//            mailComposeViewController.setMessageBody(encryptedMessage, isHTML: false)
+//
+//            present(mailComposeViewController, animated: true, completion: nil)
 
-            mailComposeViewController.setToRecipients(addresses)
-            mailComposeViewController.setMessageBody(encryptedMessage, isHTML: false)
+            do {
+                try MailIntegration.compose(recipients: recipients, body: encryptedMessage)
+            } catch let error as MailIntegrationError {
+                switch error {
+                case .noSelectedClient:
+                    alert(text: "No mail client selected! Mail Integration will be disabled.")
+                    MailIntegration.isEnabled = false
+                    Log.e(error)
+                case .cannotComposeWhileDisabled:
+                    alert(text: "Failed to compose email!")
+                    MailIntegration.isEnabled = false
+                    Log.e(error)
 
-            present(mailComposeViewController, animated: true, completion: nil)
+                    // Fallback
+                    let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
+                    activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?.first
+                    self.present(activityVC, animated: true, completion: nil)
+                }
+            } catch {
+                alert(text: "Failed to compose email! Mail Integration will be disabled.")
+                MailIntegration.isEnabled = false
+                Log.e(error)
+
+                // Fallback
+                let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
+                activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?.first
+                self.present(activityVC, animated: true, completion: nil)
+            }
+
         } else {
             let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
             activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?.first

@@ -60,7 +60,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if let section = Settings.Sections(rawValue: section), section == .preferences {
-            if !Constants.User.canSendMail || !Constants.User.canUseBiometrics {
+            if !Constants.User.canUseBiometrics {
                 return "Disabled preferences are not available on this device."
             }
         }

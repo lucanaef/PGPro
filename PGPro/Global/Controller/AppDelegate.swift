@@ -173,11 +173,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func launch() {
         ContactListService.loadPersistentData()
 
-        // Check if device currently can send mail
-        if !Constants.User.canSendMail {
-            UserDefaults.standard.set(false, forKey: Preferences.UserDefaultsKeys.mailIntegration)
-        }
-
         self.window?.rootViewController = self.buildTabBarController()
         self.window?.makeKeyAndVisible()
     }

@@ -12,6 +12,7 @@
 		8114B8A4231815D5001DBAC5 /* EncryptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8114B8A3231815D5001DBAC5 /* EncryptionViewController.swift */; };
 		8114B8A6231822D9001DBAC5 /* KeychainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8114B8A5231822D9001DBAC5 /* KeychainTableViewCell.swift */; };
 		8114B8DB23194F92001DBAC5 /* PGPro.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8114B8D923194F92001DBAC5 /* PGPro.xcdatamodeld */; };
+		811570D32832D94C0054A009 /* MailIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811570D22832D94C0054A009 /* MailIntegration.swift */; };
 		8120EF4C249EA293007F3420 /* IsoCountries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF4B249EA293007F3420 /* IsoCountries.swift */; };
 		8120EF4E249EA2F0007F3420 /* IsoCountryCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF4D249EA2F0007F3420 /* IsoCountryCodes.swift */; };
 		8120EF50249F7882007F3420 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120EF4F249F7882007F3420 /* Settings.swift */; };
@@ -22,6 +23,7 @@
 		812CC5E8266BF45F00256B8F /* Contact+Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812CC5E7266BF45F00256B8F /* Contact+Keychain.swift */; };
 		812D582B2667FE220062547F /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D582A2667FE220062547F /* KeychainService.swift */; };
 		812E9E692635D279008C910C /* PGProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E9E682635D279008C910C /* PGProTests.swift */; };
+		8130E0002837E1C4000873B7 /* UIImage+resized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8130DFFF2837E1C4000873B7 /* UIImage+resized.swift */; };
 		81323BEA24A2440D00ADAABA /* GenerateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81323BE924A2440D00ADAABA /* GenerateKey.swift */; };
 		8135BB4A282308CB000CA445 /* 5.asc in Resources */ = {isa = PBXBuildFile; fileRef = 8135BB45282308CB000CA445 /* 5.asc */; };
 		8135BB4B282308CB000CA445 /* 4.asc in Resources */ = {isa = PBXBuildFile; fileRef = 8135BB46282308CB000CA445 /* 4.asc */; };
@@ -49,6 +51,7 @@
 		81852059283107EF000C1F6F /* EmptyDataSet-Swift in Frameworks */ = {isa = PBXBuildFile; productRef = 81852058283107EF000C1F6F /* EmptyDataSet-Swift */; };
 		8185205B28311B4C000C1F6F /* ContactListResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8185205A28311B4C000C1F6F /* ContactListResult.swift */; };
 		8185205E28311B88000C1F6F /* SPAlert in Frameworks */ = {isa = PBXBuildFile; productRef = 8185205D28311B88000C1F6F /* SPAlert */; };
+		818520672831824B000C1F6F /* ThirdPartyMailer in Frameworks */ = {isa = PBXBuildFile; productRef = 818520662831824B000C1F6F /* ThirdPartyMailer */; };
 		8188E5532502DE98001B2476 /* Data+hexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5522502DE98001B2476 /* Data+hexString.swift */; };
 		8188E5552502E4A0001B2476 /* String+InsecureHashing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188E5542502E4A0001B2476 /* String+InsecureHashing.swift */; };
 		8194386123E35CCF008B518E /* AppStoreReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8194386023E35CCF008B518E /* AppStoreReviewService.swift */; };
@@ -111,6 +114,7 @@
 		8114B8B323193174001DBAC5 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		8114B8B52319317E001DBAC5 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		8114B8DA23194F92001DBAC5 /* PGPro.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PGPro.xcdatamodel; sourceTree = "<group>"; };
+		811570D22832D94C0054A009 /* MailIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailIntegration.swift; sourceTree = "<group>"; };
 		8120576625260CA600473E8B /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		8120EF4B249EA293007F3420 /* IsoCountries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsoCountries.swift; sourceTree = "<group>"; };
 		8120EF4D249EA2F0007F3420 /* IsoCountryCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsoCountryCodes.swift; sourceTree = "<group>"; };
@@ -124,6 +128,7 @@
 		812E9E662635D279008C910C /* PGProTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PGProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		812E9E682635D279008C910C /* PGProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTests.swift; sourceTree = "<group>"; };
 		812E9E6A2635D279008C910C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8130DFFF2837E1C4000873B7 /* UIImage+resized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+resized.swift"; sourceTree = "<group>"; };
 		81323BE924A2440D00ADAABA /* GenerateKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKey.swift; sourceTree = "<group>"; };
 		8135BB45282308CB000CA445 /* 5.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 5.asc; sourceTree = "<group>"; };
 		8135BB46282308CB000CA445 /* 4.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 4.asc; sourceTree = "<group>"; };
@@ -206,6 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81E28319256A7F0300F9F801 /* ObjectivePGP in Frameworks */,
+				818520672831824B000C1F6F /* ThirdPartyMailer in Frameworks */,
 				8185205E28311B88000C1F6F /* SPAlert in Frameworks */,
 				81852059283107EF000C1F6F /* EmptyDataSet-Swift in Frameworks */,
 				8194D97123E2E359000D47C3 /* SwiftTryCatch in Frameworks */,
@@ -266,6 +272,7 @@
 			children = (
 				8120EF4F249F7882007F3420 /* Settings.swift */,
 				81B6EA612482B4E000008A5C /* License.swift */,
+				811570D22832D94C0054A009 /* MailIntegration.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -313,6 +320,7 @@
 				810AE9D4248D421400DF17D2 /* UIView+pinEdges.swift */,
 				81E33B0123279B4900241E4A /* UIViewController+alert.swift */,
 				81B40A1823A79423008B4EDE /* UILabel+UIImage.swift */,
+				8130DFFF2837E1C4000873B7 /* UIImage+resized.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -587,6 +595,7 @@
 				8135BB5028230C33000CA445 /* MimeParser */,
 				81852058283107EF000C1F6F /* EmptyDataSet-Swift */,
 				8185205D28311B88000C1F6F /* SPAlert */,
+				818520662831824B000C1F6F /* ThirdPartyMailer */,
 			);
 			productName = PGPro;
 			productReference = 81E46318231029A4008DC317 /* PGPro.app */;
@@ -631,6 +640,7 @@
 				8135BB4F28230C33000CA445 /* XCRemoteSwiftPackageReference "MimeParser" */,
 				81852057283107EF000C1F6F /* XCRemoteSwiftPackageReference "EmptyDataSet-Swift" */,
 				8185205C28311B88000C1F6F /* XCRemoteSwiftPackageReference "SPAlert" */,
+				818520652831824B000C1F6F /* XCRemoteSwiftPackageReference "ThirdPartyMailer" */,
 			);
 			productRefGroup = 81E46319231029A4008DC317 /* Products */;
 			projectDirPath = "";
@@ -738,6 +748,7 @@
 				81B594F723241400004893A0 /* PersistenceService.swift in Sources */,
 				8120EF4C249EA293007F3420 /* IsoCountries.swift in Sources */,
 				81E33AE623265A4E00241E4A /* Contact+CoreDataClass.swift in Sources */,
+				8130E0002837E1C4000873B7 /* UIImage+resized.swift in Sources */,
 				815B9E57266CD06C00BEA572 /* Contact+Key.swift in Sources */,
 				814DB5D52824568000A44F1D /* MimeParsingService.swift in Sources */,
 				8194386123E35CCF008B518E /* AppStoreReviewService.swift in Sources */,
@@ -761,6 +772,7 @@
 				81B594E8232038F1004893A0 /* KeySelectionTableViewCell.swift in Sources */,
 				8188E5552502E4A0001B2476 /* String+InsecureHashing.swift in Sources */,
 				8185205B28311B4C000C1F6F /* ContactListResult.swift in Sources */,
+				811570D32832D94C0054A009 /* MailIntegration.swift in Sources */,
 				8137AC712332AC1C007483EA /* String+Email.swift in Sources */,
 				8120EF56249FA4CB007F3420 /* Preferences.swift in Sources */,
 				81B6EA622482B4E000008A5C /* License.swift in Sources */,
@@ -942,7 +954,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -999,7 +1011,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1132,6 +1144,14 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		818520652831824B000C1F6F /* XCRemoteSwiftPackageReference "ThirdPartyMailer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vtourraine/ThirdPartyMailer";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		8194D96F23E2E359000D47C3 /* XCRemoteSwiftPackageReference "SwiftTryCatch" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/seanparsons/SwiftTryCatch.git";
@@ -1165,6 +1185,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8185205C28311B88000C1F6F /* XCRemoteSwiftPackageReference "SPAlert" */;
 			productName = SPAlert;
+		};
+		818520662831824B000C1F6F /* ThirdPartyMailer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 818520652831824B000C1F6F /* XCRemoteSwiftPackageReference "ThirdPartyMailer" */;
+			productName = ThirdPartyMailer;
 		};
 		8194D97023E2E359000D47C3 /* SwiftTryCatch */ = {
 			isa = XCSwiftPackageProductDependency;

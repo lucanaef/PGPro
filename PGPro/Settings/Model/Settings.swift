@@ -249,8 +249,7 @@ class Settings {
                                       }
     let mailIntegration     = Setting(title: "Mail Integration",
                                       symbol: "envelope",
-                                      forKey: Preferences.UserDefaultsKeys.mailIntegration,
-                                      enabled: Constants.User.canSendMail)
+                                      to: MailIntegrationViewController())
     let authentication      = Setting(title: "App Launch Authentication",
                                       symbol: AuthenticationService.symbolName,
                                       forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
