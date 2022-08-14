@@ -32,7 +32,19 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>265</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>sparrow</string>
+		<string>googlegmail</string>
+		<string>x-dispatch</string>
+		<string>readdle-spark</string>
+		<string>airmail</string>
+		<string>ms-outlook</string>
+		<string>ymail</string>
+		<string>fastmail</string>
+		<string>protonmail</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
@@ -70,18 +82,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>LSApplicationQueriesSchemes</key>
-        <array>
-            <string>sparrow</string>
-            <string>googlegmail</string>
-            <string>x-dispatch</string>
-            <string>readdle-spark</string>
-            <string>airmail</string>
-            <string>ms-outlook</string>
-            <string>ymail</string>
-            <string>fastmail</string>
-            <string>protonmail</string>
-        </array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>

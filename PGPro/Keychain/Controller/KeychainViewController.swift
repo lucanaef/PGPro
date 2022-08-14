@@ -261,23 +261,38 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            if isFiltering() {
-                let cntct = filteredContacts[indexPath.row]
+            let alert = UIAlertController(title: "Are you sure?", message: "Are you sure you want to delete this key? This action cannot be undone.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(
+                title: "Delete",
+                style: .destructive,
+                handler: { _ in
+                    if self.isFiltering() {
+                        let cntct = self.filteredContacts[indexPath.row]
 
-                filteredContacts.remove(at: indexPath.row)
-                keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+                        self.filteredContacts.remove(at: indexPath.row)
+                        self.keychainTableView.deleteRows(at: [indexPath], with: .bottom)
 
-                ContactListService.remove(cntct)
-                contacts = ContactListService.get(ofType: .both)
+                        ContactListService.remove(cntct)
+                        self.contacts = ContactListService.get(ofType: .both)
 
-            } else {
-                // Remove from storage and update local list
-                ContactListService.remove(contacts[indexPath.row])
-                contacts = ContactListService.get(ofType: .both)
+                    } else {
+                        // Remove from storage and update local list
+                        ContactListService.remove(self.contacts[indexPath.row])
+                        self.contacts = ContactListService.get(ofType: .both)
 
-                // Remove from view and update view
-                keychainTableView.deleteRows(at: [indexPath], with: .bottom)
-            }
+                        // Remove from view and update view
+                        self.keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+                    }
+            }))
+
+            alert.addAction(UIAlertAction(
+                title: "Cancel",
+                style: .cancel,
+                handler: { _ in
+                    return
+            }))
+
+            present(alert, animated: true, completion: nil)
         }
     }
 

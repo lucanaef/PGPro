@@ -44,7 +44,6 @@ class MailIntegration {
             }
         }
         set {
-            Log.i("Selected Mail Client: \(newValue?.name)")
             Preferences.mailIntegrationClientName = newValue?.name
         }
     }
