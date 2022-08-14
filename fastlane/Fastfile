@@ -25,4 +25,10 @@ platform :ios do
     build_app(scheme: "PGPro")
     upload_to_testflight
   end 
+  
+  lane :release do
+    increment_build_number(build_number: number_of_commits)
+    build_app(scheme: "PGPro")
+    upload_to_app_store
+  end 
 end
