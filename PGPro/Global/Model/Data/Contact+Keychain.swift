@@ -40,7 +40,7 @@ extension Contact {
             try KeychainService.set(passphrase, forKey: fingerprint)
             let key = try getUserDefaultsKey(for: fingerprint)
             UserDefaults.standard.set(true, forKey: key)
-        } catch (let error) {
+        } catch let error {
             throw error
         }
     }
@@ -57,7 +57,7 @@ extension Contact {
             guard passphraseIsStored else { return .failure(ContactKeychainError.passphraseNotStored) }
             let passphrase = try KeychainService.get(fingerprint)
             return .success(passphrase)
-        } catch (let error) {
+        } catch let error {
             return .failure(error)
         }
 
@@ -74,7 +74,7 @@ extension Contact {
             try KeychainService.delete(fingerprint)
             let key = try getUserDefaultsKey(for: fingerprint)
             UserDefaults.standard.set(false, forKey: key)
-        } catch (let error) {
+        } catch let error {
             throw error
         }
     }
@@ -89,7 +89,7 @@ extension Contact {
         do {
             let key = try getUserDefaultsKey(for: fingerprint)
             return UserDefaults.standard.bool(forKey: key)
-        } catch (let error) {
+        } catch let error {
             throw error
         }
     }

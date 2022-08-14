@@ -18,9 +18,10 @@
 import UIKit
 import MobileCoreServices
 import ObjectivePGP
+import EmptyDataSet_Swift
 
 class KeychainViewController: UIViewController {
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -29,14 +30,23 @@ class KeychainViewController: UIViewController {
     private var filteredContacts = [Contact]()
 
     lazy var keychainTableView: UITableView = {
-        let tv = UITableView()
+        let tableView = UITableView()
 
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.delegate = self
-        tv.dataSource = self
-        tv.register(KeychainTableViewCell.self, forCellReuseIdentifier: "KeychainTableViewCell")
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(KeychainTableViewCell.self, forCellReuseIdentifier: "KeychainTableViewCell")
 
-        return tv
+        tableView.emptyDataSetView { view in
+            let keySymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 50, weight: .light, scale: .medium)
+            let keySymbol = UIImage(systemName: "key", withConfiguration: keySymbolConfiguration)
+
+            view.titleLabelString(NSAttributedString(string: "Keychain is Empty"))
+                .detailLabelString(NSAttributedString(string: "Tap the '+' to add keys"))
+                .image(keySymbol?.withTintColor(.secondaryLabel, renderingMode: .alwaysOriginal))
+        }
+
+        return tableView
     }()
 
     lazy var searchController: UISearchController = {
@@ -55,9 +65,10 @@ class KeychainViewController: UIViewController {
 
         return searchController
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         contacts = ContactListService.get(ofType: .both)
 
         NotificationCenter.default.addObserver(self,
@@ -84,7 +95,7 @@ class KeychainViewController: UIViewController {
         keychainTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         keychainTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
-    
+
     @objc
     func reloadData() {
         DispatchQueue.main.async {
@@ -145,7 +156,7 @@ class KeychainViewController: UIViewController {
         var readKeys = [Key]()
         do {
             readKeys = try KeyConstructionService.fromString(keyString: clipboardString)
-        } catch (let error) {
+        } catch let error {
             var message: String
             switch error {
             case KeyConstructionService.KeyConstructionError.invalidFormat:
@@ -163,22 +174,6 @@ class KeychainViewController: UIViewController {
         alert(result)
     }
 
-
-    private func alert(_ result: ContactListResult) {
-
-        let successful = "\(result.successful) key\(result.successful == 1 ? "" : "s") successfully imported"
-        let unsupported = "\(result.unsupported) unsupported key\(result.unsupported == 1 ? "" : "s") skipped"
-        let duplicates = "\(result.duplicates) duplicate key\(result.duplicates == 1 ? "" : "s") skipped"
-
-        let alert = UIAlertController(title: "Import Result",
-                                      message: "\(successful) \n \(unsupported) \n \(duplicates)",
-                                      preferredStyle: UIAlertController.Style.alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
-
-    }
-
     private func importKeysFilePicker() {
         let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeData as String], in: .import)
         documentPicker.delegate = self
@@ -189,7 +184,7 @@ class KeychainViewController: UIViewController {
     private func filterContactsforSearchText(searchText: String) {
         filteredContacts = contacts.filter({ (contact: Contact) -> Bool in
             // return every contact if no search text speficied
-            if (searchController.searchBar.text?.isEmpty ?? true) {
+            if searchController.searchBar.text?.isEmpty ?? true {
                 return true
             }
 
@@ -242,7 +237,7 @@ extension KeychainViewController: UIDocumentPickerDelegate {
 // MARK: - Table View
 
 extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltering() {
             return filteredContacts.count
@@ -250,7 +245,7 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
             return contacts.count
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cntct = contacts[indexPath.row]
         if isFiltering() {
@@ -263,29 +258,44 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell() // Dummy return value
         }
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete) {
-            if isFiltering() {
-                let cntct = filteredContacts[indexPath.row]
+        if editingStyle == .delete {
+            let alert = UIAlertController(title: "Are you sure?", message: "Are you sure you want to delete this key? This action cannot be undone.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(
+                title: "Delete",
+                style: .destructive,
+                handler: { _ in
+                    if self.isFiltering() {
+                        let cntct = self.filteredContacts[indexPath.row]
 
-                filteredContacts.remove(at: indexPath.row)
-                keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+                        self.filteredContacts.remove(at: indexPath.row)
+                        self.keychainTableView.deleteRows(at: [indexPath], with: .bottom)
 
-                ContactListService.remove(cntct)
-                contacts = ContactListService.get(ofType: .both)
-                
-            } else {
-                // Remove from storage and update local list
-                ContactListService.remove(contacts[indexPath.row])
-                contacts = ContactListService.get(ofType: .both)
+                        ContactListService.remove(cntct)
+                        self.contacts = ContactListService.get(ofType: .both)
 
-                // Remove from view and update view
-                keychainTableView.deleteRows(at: [indexPath], with: .bottom)
-            }
+                    } else {
+                        // Remove from storage and update local list
+                        ContactListService.remove(self.contacts[indexPath.row])
+                        self.contacts = ContactListService.get(ofType: .both)
+
+                        // Remove from view and update view
+                        self.keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+                    }
+            }))
+
+            alert.addAction(UIAlertAction(
+                title: "Cancel",
+                style: .cancel,
+                handler: { _ in
+                    return
+            }))
+
+            present(alert, animated: true, completion: nil)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var contact = contacts[indexPath.row]
         if isFiltering() {

@@ -62,7 +62,16 @@ class Licenses {
                 at: URL(string: "https://github.com/funky-monkey/IsoCountryCodes")!),
         License(for: "CodeScanner",
                 describedBy: "A SwiftUI view that is able to scan barcodes, QR codes, and more",
-                at: URL(string: "https://github.com/twostraws/CodeScanner/blob/main/LICENSE")!)
+                at: URL(string: "https://github.com/twostraws/CodeScanner/blob/main/LICENSE")!),
+        License(for: "MimeParser",
+                describedBy: "MimeParser is a simple MIME parsing library written in Swift",
+                at: URL(string: "https://github.com/miximka/MimeParser/blob/master/LICENSE")!),
+        License(for: "EmptyDataSet-Swift",
+                describedBy: "A drop-in UITableView/UICollectionView superclass category for showing empty datasets whenever the view has no content to display.",
+                at: URL(string: "https://github.com/Xiaoye220/EmptyDataSet-Swift/blob/master/LICENSE")!),
+        License(for: "SPAlert",
+                describedBy: "Native alert from Apple Music & Feedback. Contains Done, Heart & Message and other presets. Support SwiftUI.",
+                at: URL(string: "https://github.com/ivanvorobei/SPAlert/blob/main/LICENSE")!)
     ]
 
 }

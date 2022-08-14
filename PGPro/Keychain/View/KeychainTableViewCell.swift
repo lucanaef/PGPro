@@ -36,11 +36,10 @@ class KeychainTableViewCell: UITableViewCell {
         self.textLabel?.text = contact.name
         self.detailTextLabel?.text = contact.email
 
-
         var icon = UIImage(systemName: contact.keySymbol,
                            withConfiguration: UIImage.SymbolConfiguration(pointSize: 27, weight: .light))
         let currentDate = Date(), keyExpirationDate = contact.key.expirationDate ?? currentDate
-        if (keyExpirationDate < currentDate) { // Key expired
+        if keyExpirationDate < currentDate { // Key expired
             icon = icon?.withTintColor(.red, renderingMode: .alwaysOriginal)
         }
         self.imageView?.image = icon

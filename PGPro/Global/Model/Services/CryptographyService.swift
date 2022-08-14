@@ -100,7 +100,7 @@ class CryptographyService {
         guard let messageData = message.data(using: .ascii) else { throw CryptographyError.invalidMessage }
 
         // Handle PASSPHRASE
-        if (keyRequiresPassphrase) {
+        if keyRequiresPassphrase {
             guard passphrase != nil else {
                 throw CryptographyError.requiresPassphrase
             }
@@ -120,7 +120,9 @@ class CryptographyService {
                                                             passphraseForKey: {(_) -> (String?) in return passphrase})
             guard let decryptedMessage = String(data: decryptedMessageData, encoding: .utf8) else { throw CryptographyError.failedDecryption }
             AppStoreReviewService.incrementReviewWorthyActionCount()
-            return decryptedMessage
+
+            // Handle MIME PARSING
+            return MimeParsingService.parse(decryptedMessage)
         } catch {
             throw CryptographyError.frameworkError(error)
         }
@@ -134,7 +136,6 @@ class CryptographyService {
         }
         return true
     }
-
 
     static func decryptionContacts(for message: String) -> [Contact] {
 

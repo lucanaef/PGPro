@@ -54,9 +54,8 @@ class DecryptedMessageViewController: UIViewController {
 
     @objc
     private func cancel(sender: UIBarButtonItem) {
-        // Ask for review after decryption
-        let twoSecondsFromNow = DispatchTime.now() + 2.0
-        DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
+        // Ask for review two seconds after decryption
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             AppStoreReviewService.requestReviewIfAppropriate()
         }
         dismiss(animated: true, completion: nil)

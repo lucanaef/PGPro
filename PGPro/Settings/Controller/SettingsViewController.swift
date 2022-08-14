@@ -60,7 +60,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if let section = Settings.Sections(rawValue: section), section == .preferences {
-            if (!Constants.User.canSendMail || !Constants.User.canUseBiometrics) {
+            if !Constants.User.canUseBiometrics {
                 return "Disabled preferences are not available on this device."
             }
         }
@@ -90,13 +90,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         cell.imageView?.image = UIImage(systemName: setting.symbolName)
 
         switch setting.type {
-        case .Activity:
+        case .activity:
             cell.accessoryView = UIActivityIndicatorView(style: .medium)
 
-        case .Action:
+        case .action:
             break
 
-        case .Preference:
+        case .preference:
             let toggle = PassableUISwitch()
             toggle.onTintColor = .secondaryLabel
             toggle.addTarget(self, action: #selector(self.switchStateDidChange(_:)), for: .valueChanged)
@@ -120,10 +120,10 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             cell.accessoryView = toggle
             cell.selectionStyle = .none
 
-        case .Link:
+        case .link:
             cell.accessoryType = .disclosureIndicator
 
-        case .Segue:
+        case .segue:
             cell.accessoryType = .disclosureIndicator
 
         }
@@ -145,7 +145,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         guard let section = Settings.Sections(rawValue: indexPath.section) else {
             Log.s("IndexPath \(indexPath) out of bounds!")
             return
@@ -157,7 +156,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
 
         switch setting.type {
-        case .Activity:
+        case .activity:
             let cell = tableView.cellForRow(at: indexPath)
             guard let activityIndecator = cell?.accessoryView as? UIActivityIndicatorView else {
                 Log.s("Cell not properly configured!")
@@ -171,9 +170,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 }
             }
             tableView.deselectRow(at: indexPath, animated: true)
-
-        case .Action(let actionType):
-            if (actionType == Setting.ActionType.destructive) {
+        case .action(let actionType):
+            if actionType == Setting.ActionType.destructive {
                 let dialogMessage = UIAlertController(title: "Are you sure?",
                                                       message: "",
                                                       preferredStyle: .alert)
@@ -197,11 +195,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 setting.action?()
             }
             tableView.deselectRow(at: indexPath, animated: true)
-
-        case .Preference:
+        case .preference:
             break
-
-        case .Link:
+        case .link:
             AppStoreReviewService.incrementReviewWorthyActionCount()
             guard let url = setting.url else {
                 Log.s("Cell not properly configured!")
@@ -209,8 +205,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
             UIApplication.shared.open(url)
             tableView.deselectRow(at: indexPath, animated: true)
-
-        case .Segue:
+        case .segue:
             guard let viewController = setting.viewController else {
                 Log.s("Cell not properly configured!")
                 return

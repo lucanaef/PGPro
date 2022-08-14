@@ -81,7 +81,7 @@ class VerifyingKeyserverInterface {
     static private func GET(url: URL, completion: @escaping((Result<[Key], VKIError>) -> Void)) {
 
         URLSession.shared.dataTask(with: url) { data, res, error in
-            if (error != nil) {
+            if error != nil {
                 completion(.failure(.noConnection))
                 return
             }
@@ -91,13 +91,13 @@ class VerifyingKeyserverInterface {
             }
 
             /// Handle critical HTTP status codes
-            if (httpResponse.statusCode == 404) {
+            if httpResponse.statusCode == 404 {
                 completion(.failure(.keyNotFound))
                 return
-            } else if (httpResponse.statusCode == 429) {
+            } else if httpResponse.statusCode == 429 {
                 completion(.failure(.rateLimiting))
                 return
-            } else if (httpResponse.statusCode == 503) {
+            } else if httpResponse.statusCode == 503 {
                 completion(.failure(.serverDatabaseMaintenance))
                 return
             }
@@ -122,7 +122,7 @@ class VerifyingKeyserverInterface {
                 }, finallyBlock: {
             })
 
-            if (readKeys.isEmpty) {
+            if readKeys.isEmpty {
                 completion(.failure(.keyNotFound))
                 return
             }

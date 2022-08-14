@@ -82,9 +82,9 @@ class AuthenticationViewController: UIViewController {
 
     @objc
     func authenticatedLaunch() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         authenticateAction {
-            appDelegate.launch()
+            let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            appDelegate?.launch()
         }
     }
 

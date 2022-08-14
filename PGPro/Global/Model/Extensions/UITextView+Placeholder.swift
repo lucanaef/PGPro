@@ -49,6 +49,7 @@ extension UITextView: UITextViewDelegate {
             return placeholderText
         }
         set {
+            // swiftlint:disable:next force_cast
             if let placeholderLabel = self.viewWithTag(100) as! UILabel? {
                 placeholderLabel.text = newValue
                 placeholderLabel.sizeToFit()
@@ -69,6 +70,7 @@ extension UITextView: UITextViewDelegate {
 
     /// Resize the placeholder UILabel to make sure it's in the same position as the UITextView text
     private func resizePlaceholder() {
+        // swiftlint:disable:next force_cast
         if let placeholderLabel = self.viewWithTag(100) as! UILabel? {
             let labelX = self.textContainerInset.left + textContainer.lineFragmentPadding
             let labelY = self.textContainerInset.top - 2

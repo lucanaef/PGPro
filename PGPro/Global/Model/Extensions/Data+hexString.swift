@@ -12,10 +12,10 @@ extension Data {
     init?(hexString: String) {
         let len = hexString.count / 2
         var data = Data(capacity: len)
-        for i in 0..<len {
-            let j = hexString.index(hexString.startIndex, offsetBy: i*2)
-            let k = hexString.index(j, offsetBy: 2)
-            let bytes = hexString[j..<k]
+        for byte in 0..<len {
+            let leftHalf = hexString.index(hexString.startIndex, offsetBy: byte*2)
+            let rightHalf = hexString.index(leftHalf, offsetBy: 2)
+            let bytes = hexString[leftHalf..<rightHalf]
             if var num = UInt8(bytes, radix: 16) {
                 data.append(&num, count: 1)
             } else {
@@ -24,5 +24,5 @@ extension Data {
         }
         self = data
     }
-    
+
 }

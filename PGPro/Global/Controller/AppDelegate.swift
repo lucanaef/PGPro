@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let decryptionVC = DecryptionViewController()
     let keychainVC = KeychainViewController()
     let settingsVC = SettingsViewController()
-    
+
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if !hasLaunchedBefore {
             firstLaunch()
         } else {
-            if (Preferences.biometricAuthentication) {
+            if Preferences.biometricAuthentication {
                 let authController = AuthenticationViewController()
                 window?.rootViewController = authController
                 window?.makeKeyAndVisible()
@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
 
         // Check if file type is supported
-        guard (url.pathExtension == "asc") else { return false }
+        guard url.pathExtension == "asc" else { return false }
 
         // Load file contents
         var fileContants: String?
@@ -86,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         let decryptionVC = actualVC as? DecryptionViewController
 
                         if let decryptionVC = decryptionVC {
-                            while (decryptionVC.viewIfLoaded == nil) {  }
+                            while decryptionVC.viewIfLoaded == nil {  }
                             decryptionVC.alert(result)
                         }
                     }
@@ -119,15 +119,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PersistenceService.save()
     }
 
-
-
     // MARK: - Helper functions
 
     private func buildTabBarController() -> UITabBarController {
 
         let tabBarController = UITabBarController()
         let viewControllers = [encryptionVC, decryptionVC, keychainVC, settingsVC]
-        let navigationViewControllers = viewControllers.map{ UINavigationController.init(rootViewController: $0) }
+        let navigationViewControllers = viewControllers.map { UINavigationController.init(rootViewController: $0) }
         tabBarController.viewControllers = navigationViewControllers
 
         let encryptionTabImage = UIImage(systemName: "lock.fill")
@@ -174,11 +172,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func launch() {
         ContactListService.loadPersistentData()
-
-        // Check if device currently can send mail
-        if (!Constants.User.canSendMail) {
-            UserDefaults.standard.set(false, forKey: Preferences.UserDefaultsKeys.mailIntegration)
-        }
 
         self.window?.rootViewController = self.buildTabBarController()
         self.window?.makeKeyAndVisible()

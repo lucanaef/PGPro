@@ -22,21 +22,21 @@ import ObjectivePGP
      Generate example entries for screenshots and debugging
 */
 class ExampleDataService {
-    
+
     private init() {}
-    
+
     static func createExampleDataset() {
         let keyGen = KeyGenerator()
         let exampleContacts: [(String, String, String?, Bool, Bool)] = [
         //   NAME                   EMAIL ADDRESS                 PASSPHRASE    HAS PUBLIC KEY      HAS PRIVATE KEY
-            ("Winston Smith",       "winston.smith@pgpro.app",    nil,          true,               true),
-            ("O'Brien",             "obrien@pgpro.app",           nil,          true,               false),
-            ("Julia",               "julia@pgpro.app",            "jules",      true,               true),
-            ("Mr. Charrington",     "mr.charrington@pgpro.app",   nil,          false,              true),
-            ("Syme",                "syme@pgpro.app",             nil,          false,              true),
-            ("Parsons",             "parsons@pgpro.app",          nil,          false,              true),
-            ("Emmanuel Goldstein",  "e.goldstein@pgpro.app",      nil,          false,              true),
-            ("Tillotson",           "tillotson@pgpro.app",        "",           true,               true)
+            ("Winston Smith", "winston.smith@pgpro.app", nil, true, true),
+            ("O'Brien", "obrien@pgpro.app", nil, true, false),
+            ("Julia", "julia@pgpro.app", "jules", true, true),
+            ("Mr. Charrington", "mr.charrington@pgpro.app", nil, false, true),
+            ("Syme", "syme@pgpro.app", nil, false, true),
+            ("Parsons", "parsons@pgpro.app", nil, false, true),
+            ("Emmanuel Goldstein", "e.goldstein@pgpro.app", nil, false, true),
+            ("Tillotson", "tillotson@pgpro.app", "", true, true)
         ]
 
         for index in exampleContacts.indices {

@@ -24,7 +24,7 @@ extension Contact: Comparable {
     }
 
     public static func < (lhs: Contact, rhs: Contact) -> Bool {
-        if (lhs.name != rhs.name) {
+        if lhs.name != rhs.name {
             return lhs.name < rhs.name
         } else {
             return lhs.email < rhs.email

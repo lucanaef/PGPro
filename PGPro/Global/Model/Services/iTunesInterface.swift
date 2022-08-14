@@ -17,18 +17,18 @@
 
 import Foundation
 
-class iTunesInterface {
+class ITunesInterface {
 
     private init() {}
 
-    enum apiError: Error {
+    enum ApiError: Error {
         case networkError
         case invalidResponse
         case parsingError
         case otherError
     }
 
-    static func requestJSON(localizedFor country: IsoCountryInfo? = nil, completion: @escaping((Result<NSArray, apiError>) -> Void)) {
+    static func requestJSON(localizedFor country: IsoCountryInfo? = nil, completion: @escaping((Result<NSArray, ApiError>) -> Void)) {
 
         var baseURL = "https://itunes.apple.com/lookup?id=\(Constants.PGPro.appID)"
         if let countryCode = country?.alpha2 {
@@ -36,12 +36,12 @@ class iTunesInterface {
         }
 
         guard let url = URL(string: baseURL) else {
-            completion(.failure(apiError.otherError))
+            completion(.failure(ApiError.otherError))
             return
         }
 
         URLSession.shared.dataTask(with: url) { data, _, error in
-            if (error != nil) {
+            if error != nil {
                 completion(.failure(.networkError))
                 return
             }

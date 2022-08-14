@@ -18,7 +18,7 @@
 import UIKit
 
 class DecryptionViewController: UIViewController {
-    
+
     private let cellIdentifier = "DecryptionViewController"
 
     private var decryptionContact: Contact?
@@ -50,7 +50,7 @@ class DecryptionViewController: UIViewController {
 
         return textView
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self,
@@ -182,7 +182,6 @@ class DecryptionViewController: UIViewController {
         }
     }
 
-
     private func present(_ message: String) {
         let decryptedMessageViewController = DecryptedMessageViewController()
         decryptedMessageViewController.show(message)
@@ -193,20 +192,15 @@ class DecryptionViewController: UIViewController {
         decryptedMessageNavigation.setViewControllers([decryptedMessageViewController], animated: false)
         decryptedMessageNavigation.modalPresentationStyle = .automatic
 
+        // https://stackoverflow.com/a/69135729
+        if #available(iOS 15, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
+
         self.present(decryptedMessageNavigation, animated: true, completion: nil)
-    }
-
-    func alert(_ result: ContactListResult) {
-        let successful = "\(result.successful) key\(result.successful == 1 ? "" : "s") successfully imported"
-        let unsupported = "\(result.unsupported) unsupported key\(result.unsupported == 1 ? "" : "s") skipped"
-        let duplicates = "\(result.duplicates) duplicate key\(result.duplicates == 1 ? "" : "s") skipped"
-
-        let alert = UIAlertController(title: "Import Result",
-                                      message: "\(successful) \n \(unsupported) \n \(duplicates)",
-                                      preferredStyle: UIAlertController.Style.alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
     }
 
 }
@@ -233,7 +227,7 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
         var cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
         cell.selectionStyle = .none
 
-        switch (indexPath.row) {
+        switch indexPath.row {
         case DecryptionRows.keySelection.rawValue:
             cell.textLabel?.text = selectionLabel
             cell.accessoryType = .disclosureIndicator
@@ -264,7 +258,7 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch (indexPath.row) {
+        switch indexPath.row {
         case DecryptionRows.keySelection.rawValue:
             let keySelectionViewController = KeySelectionViewController()
             keySelectionViewController.set(toType: .privateKey)
@@ -285,7 +279,7 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
             keyRequiresAskingForPassphrase = false
         }
 
-        switch (indexPath.row) {
+        switch indexPath.row {
         case DecryptionRows.passphrase.rawValue:
             return (keyRequiresAskingForPassphrase ? 44 : 0)
         case DecryptionRows.message.rawValue:
@@ -303,7 +297,7 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension DecryptionViewController: KeySelectionDelegate {
-    
+
     func update(selected: [Contact], for type: Constants.KeyType) {
         decryptionContact = selected.isEmpty ? nil : selected[0]
         self.updateView()

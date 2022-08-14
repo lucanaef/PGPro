@@ -8,7 +8,7 @@
 
 import UIKit
 
-//@IBDesignable
+// @IBDesignable
 /// A UITableViewCell with a UITextField inside
 open class FDTextFieldTableViewCell: UITableViewCell {
     open var textField = UITextField()

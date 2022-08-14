@@ -20,12 +20,12 @@ import UIKit
 import MessageUI
 
 class EncryptionViewController: UIViewController {
-    
+
     @IBOutlet weak var keySelectionLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
-    
+
     private var encryptionContacts = [Contact]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self,
@@ -64,18 +64,18 @@ class EncryptionViewController: UIViewController {
     private func updateView() {
         var label = "Select Public Keys..."
         let count = encryptionContacts.count
-        
-        if (count == 1) {
+
+        if count == 1 {
             label = encryptionContacts[0].userID
-        } else if (count > 0) {
+        } else if count > 0 {
             label = encryptionContacts[0].name
-            
+
             let tail = encryptionContacts.dropFirst()
             for ctct in tail {
                 label.append(", " + ctct.name)
             }
         }
-        
+
         keySelectionLabel.text = label
     }
 
@@ -115,7 +115,7 @@ class EncryptionViewController: UIViewController {
         encryptionContacts = [Contact]()
         updateView()
     }
-    
+
     @objc
     private func encrypt() {
         guard let text = textView.text else { return }
@@ -143,7 +143,7 @@ class EncryptionViewController: UIViewController {
             return
         }
 
-        // TODO: clean up code below, add setting to deactivate
+        #warning("TODO: clean up code below, add setting to deactivate")
         if !MFMailComposeViewController.canSendMail() {
             let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
             activityVC.popoverPresentationController?.sourceView = self.view
@@ -160,9 +160,8 @@ class EncryptionViewController: UIViewController {
         }
     }
 
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 0) {
+        if indexPath.row == 0 {
             let keySelectionViewController = KeySelectionViewController()
             keySelectionViewController.set(toType: .publicKey)
             keySelectionViewController.delegate = self
@@ -171,9 +170,9 @@ class EncryptionViewController: UIViewController {
             super.tableView(tableView, didSelectRowAt: indexPath)
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.row == 1) {
+        if indexPath.row == 1 {
             /* Message Row*/
             var height = self.view.frame.height
             height -= 44 // Key Selection Row Height
@@ -185,17 +184,17 @@ class EncryptionViewController: UIViewController {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
-    
+
 }
 
 extension EncryptionViewController: MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
-    
+
     func mailComposeController(_ controller: MFMailComposeViewController,
                                didFinishWith result: MFMailComposeResult,
                                error: Error?) {
         controller.dismiss(animated: true)
     }
-    
+
 }
 
 extension EncryptionViewController: KeySelectionDelegate {

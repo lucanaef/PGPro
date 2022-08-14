@@ -17,7 +17,6 @@
 
 import Foundation
 
-
 /**
     Utilities for handling zBase32 encoding.
     See https://tools.ietf.org/html/rfc6189#section-5.1.6
@@ -35,35 +34,35 @@ public class ZBase32 {
         let remainderLength = data.count % 5
         let normalizedLength = data.count - remainderLength
 
-        for i in stride(from: 0, to: normalizedLength, by: 5) {
-            result.append(alphabet[((Int(data[i]) & 0xff) >> 3) & 0x1f])
-            result.append(alphabet[(((Int(data[i]) & 0xff) << 2) | ((Int(data[i + 1]) & 0xff) >> 6)) & 0x1f])
-            result.append(alphabet[((Int(data[i + 1]) & 0xff) >> 1) & 0x1f])
-            result.append(alphabet[(((Int(data[i + 1]) & 0xff) << 4) | ((Int(data[i + 2]) & 0xff) >> 4)) & 0x1f])
-            result.append(alphabet[(((Int(data[i + 2]) & 0xff) << 1) | ((Int(data[i + 3]) & 0xff) >> 7)) & 0x1f])
-            result.append(alphabet[((Int(data[i + 3]) & 0xff) >> 2) & 0x1f])
-            result.append(alphabet[(((Int(data[i + 3]) & 0xff) << 3) | ((Int(data[i + 4]) & 0xff) >> 5)) & 0x1f])
-            result.append(alphabet[(Int(data[i + 4]) & 0xff) & 0x1f])
+        for idx in stride(from: 0, to: normalizedLength, by: 5) {
+            result.append(alphabet[((Int(data[idx]) & 0xff) >> 3) & 0x1f])
+            result.append(alphabet[(((Int(data[idx]) & 0xff) << 2) | ((Int(data[idx + 1]) & 0xff) >> 6)) & 0x1f])
+            result.append(alphabet[((Int(data[idx + 1]) & 0xff) >> 1) & 0x1f])
+            result.append(alphabet[(((Int(data[idx + 1]) & 0xff) << 4) | ((Int(data[idx + 2]) & 0xff) >> 4)) & 0x1f])
+            result.append(alphabet[(((Int(data[idx + 2]) & 0xff) << 1) | ((Int(data[idx + 3]) & 0xff) >> 7)) & 0x1f])
+            result.append(alphabet[((Int(data[idx + 3]) & 0xff) >> 2) & 0x1f])
+            result.append(alphabet[(((Int(data[idx + 3]) & 0xff) << 3) | ((Int(data[idx + 4]) & 0xff) >> 5)) & 0x1f])
+            result.append(alphabet[(Int(data[idx + 4]) & 0xff) & 0x1f])
         }
 
-        switch (remainderLength) {
+        switch remainderLength {
         case 1:
             result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
             result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 2) & 0x1f])
-            if (padded) { result.append("======") }
+            if padded { result.append("======") }
         case 2:
             result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
             result.append(alphabet[(((Int(data[normalizedLength]) & 0xff) << 2) | ((Int(data[normalizedLength + 1]) & 0xff) >> 6)) & 0x1f])
             result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) >> 1) & 0x1f])
             result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) << 4) & 0x1f])
-            if (padded) { result.append("====") }
+            if padded { result.append("====") }
         case 3:
             result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
             result.append(alphabet[(((Int(data[normalizedLength]) & 0xff) << 2) | ((Int(data[normalizedLength + 1]) & 0xff) >> 6)) & 0x1f])
             result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) >> 1) & 0x1f])
             result.append(alphabet[(((Int(data[normalizedLength + 1]) & 0xff) << 4) | ((Int(data[normalizedLength + 2]) & 0xff) >> 4)) & 0x1f])
             result.append(alphabet[((Int(data[normalizedLength + 2]) & 0xff) << 1) & 0x1f])
-            if (padded) { result.append("===") }
+            if padded { result.append("===") }
         case 4:
             result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
             result.append(alphabet[(((Int(data[normalizedLength]) & 0xff) << 2) | ((Int(data[normalizedLength + 1]) & 0xff) >> 6)) & 0x1f])
@@ -72,7 +71,7 @@ public class ZBase32 {
             result.append(alphabet[(((Int(data[normalizedLength + 2]) & 0xff) << 1) | ((Int(data[normalizedLength + 3]) & 0xff) >> 7)) & 0x1f])
             result.append(alphabet[((Int(data[normalizedLength + 3]) & 0xff) >> 2) & 0x1f])
             result.append(alphabet[((Int(data[normalizedLength + 3]) & 0xff) << 3) & 0x1f])
-            if (padded) { result.append("=") }
+            if padded { result.append("=") }
         default:
             break
         }
@@ -81,7 +80,6 @@ public class ZBase32 {
     }
 
 }
-
 
 extension Data {
 

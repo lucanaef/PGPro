@@ -16,34 +16,48 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ThirdPartyMailer
 
 class Preferences {
+
+    static private let defaults = UserDefaults.standard
 
     enum UserDefaultsKeys {
         static var numRatings = "numRatings"
         static var launchedBefore = "launchedBefore"
         static var mailIntegration = "preference.mailIntegration"
+        static var mailIntegrationClient = "preference.mailIntegrationClient"
         static var biometricAuthentication = "preference.biometricAuthentication"
         static var reviewWorthyActions = "reviewWorthyActionCount"
     }
 
     static func setToDefault() {
-        UserDefaults.standard.set(true,  forKey: UserDefaultsKeys.launchedBefore)
-        UserDefaults.standard.set(0,     forKey: UserDefaultsKeys.numRatings)
-        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.mailIntegration)
-        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.biometricAuthentication)
+        defaults.set(true, forKey: UserDefaultsKeys.launchedBefore)
+        defaults.set(0, forKey: UserDefaultsKeys.numRatings)
+        defaults.set(false, forKey: UserDefaultsKeys.mailIntegration)
+        defaults.set(false, forKey: UserDefaultsKeys.biometricAuthentication)
     }
 
     static var mailIntegrationEnabled: Bool {
         get {
-            UserDefaults.standard.bool(forKey: UserDefaultsKeys.mailIntegration)
+            MailIntegration.isEnabled
+        }
+        set {
+            MailIntegration.isEnabled = newValue
+        }
+    }
+
+    static var mailIntegrationClientName: String? {
+        get {
+            defaults.string(forKey: Preferences.UserDefaultsKeys.mailIntegrationClient)
+        }
+        set {
+            defaults.set(newValue, forKey: Preferences.UserDefaultsKeys.mailIntegrationClient)
         }
     }
 
     static var biometricAuthentication: Bool {
-        get {
-            UserDefaults.standard.bool(forKey: UserDefaultsKeys.biometricAuthentication)
-        }
+        UserDefaults.standard.bool(forKey: UserDefaultsKeys.biometricAuthentication)
     }
 
     static var numRatings: Int {
@@ -54,6 +68,5 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.numRatings)
         }
     }
-
 
 }

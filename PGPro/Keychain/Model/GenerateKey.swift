@@ -37,27 +37,27 @@ class GenerateKey {
 
     func generate() throws {
         // Sanitize Inputs
-        if (passphrase == "") {
+        if passphrase == "" {
             passphrase = nil
         }
-        if (confirmedPassphrase == "") {
+        if confirmedPassphrase == "" {
             confirmedPassphrase = nil
         }
 
         // Validate Inputs
         guard let name = name else { throw GenerateKeyError.nameNil }
         guard let email = email else { throw GenerateKeyError.emailAddressNil }
-        guard (name != "") else { throw GenerateKeyError.nameEmpty }
-        guard (email != "") else { throw GenerateKeyError.emailAddressEmpty }
+        guard name != "" else { throw GenerateKeyError.nameEmpty }
+        guard email != "" else { throw GenerateKeyError.emailAddressEmpty }
         guard email.isValidEmail() else { throw GenerateKeyError.emailAddressInvalid }
-        guard (passphrase == confirmedPassphrase) else { throw GenerateKeyError.passphraseMismatch }
+        guard passphrase == confirmedPassphrase else { throw GenerateKeyError.passphraseMismatch }
 
         // Generate Key
         let key = KeyGenerator().generate(for: "\(name) <\(email)>", passphrase: passphrase)
 
         // Create Contact
         let result = ContactListService.add(name: name, email: email, key: key)
-        if (result.duplicates == 1) {
+        if result.duplicates == 1 {
             throw GenerateKeyError.nonUnique
         } else {
             AppStoreReviewService.incrementReviewWorthyActionCount()
@@ -144,6 +144,5 @@ class GenerateKey {
             }
         }
     }
-
 
 }

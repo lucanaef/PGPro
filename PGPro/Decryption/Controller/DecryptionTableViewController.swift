@@ -18,13 +18,13 @@
 import UIKit
 
 class DecryptionViewController: UITableViewController {
-    
+
     @IBOutlet weak private var titleLabel: UILabel!
     @IBOutlet weak private var passphraseTextField: UITextField!
     @IBOutlet weak private var textView: UITextView!
-    
+
     private var decryptionContact: Contact?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self,
@@ -38,7 +38,7 @@ class DecryptionViewController: UITableViewController {
     func setMessageField(to message: String?) {
         textView.text = message
     }
-    
+
     @objc
     private func updateView() {
         var label = "Select Private Key..."
@@ -74,7 +74,7 @@ class DecryptionViewController: UITableViewController {
         decryptionContact = nil
         updateView()
     }
-    
+
     @objc
     private func decrypt() {
         guard let encryptedMessage = textView.text else { return }
@@ -110,7 +110,6 @@ class DecryptionViewController: UITableViewController {
             return
         }
     }
-
 
     private func present(_ message: String) {
         let decryptedMessageViewController = DecryptedMessageViewController()
@@ -150,12 +149,12 @@ class DecryptionViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 0) { // Private Key Selection
+        if indexPath.row == 0 { // Private Key Selection
             let keySelectionViewController = KeySelectionViewController()
             keySelectionViewController.set(toType: .privateKey)
             keySelectionViewController.delegate = self
             navigationController?.pushViewController(keySelectionViewController, animated: true)
-        } else if (indexPath.row == 2) { // Paste from Clipboard
+        } else if indexPath.row == 2 { // Paste from Clipboard
             textView.text = UIPasteboard.general.string
             tableView.deselectRow(at: indexPath, animated: true)
         } else {
@@ -168,9 +167,9 @@ class DecryptionViewController: UITableViewController {
         let keyRequiresPassphrase = decryptionContact?.keyRequiresPassphrase ?? false
         if !keyRequiresPassphrase, indexPath.row == 1 {  return 0 }
 
-        if (indexPath.row == 3) { // (Full-height) Message Row
+        if indexPath.row == 3 { // (Full-height) Message Row
             var height = self.view.frame.height
-            if (!keyRequiresPassphrase) {
+            if !keyRequiresPassphrase {
                 height -= 88
             } else {
                 height -= 132
@@ -186,7 +185,6 @@ class DecryptionViewController: UITableViewController {
         }
     }
 }
-
 
 extension DecryptionViewController: KeySelectionDelegate {
 

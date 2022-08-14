@@ -59,7 +59,7 @@ class EncryptionViewController: UIViewController {
 
         return textView
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self,
@@ -113,12 +113,12 @@ class EncryptionViewController: UIViewController {
         var signatureLabel = "Add Signature..."
 
         let encryptionCount = encryptionContacts.count
-        
-        if (encryptionCount == 1) {
+
+        if encryptionCount == 1 {
             encryptionLabel = encryptionContacts[0].userID
-        } else if (encryptionCount > 1) {
+        } else if encryptionCount > 1 {
             encryptionLabel = encryptionContacts[0].name
-            
+
             let tail = encryptionContacts.dropFirst()
             for ctct in tail {
                 encryptionLabel.append(", " + ctct.name)
@@ -195,7 +195,7 @@ class EncryptionViewController: UIViewController {
         signatureContact = nil
         updateView()
     }
-    
+
     @objc
     private func encrypt() {
         guard let text = textView.text else { return }
@@ -248,7 +248,7 @@ class EncryptionViewController: UIViewController {
             case CryptographyError.invalidMessage:
                 alert(text: "Message is invalid!")
             case CryptographyError.frameworkError(let frameworkError):
-                alert(text: "Encryption failed!")
+                alert(text: "Encryption failed (Framework Error)!")
                 Log.e(frameworkError)
             default:
                 alert(text: "Encryption failed!")
@@ -257,24 +257,55 @@ class EncryptionViewController: UIViewController {
             return
         }
 
-        if (Constants.User.canSendMail && Preferences.mailIntegrationEnabled) {
-            let addresses = encryptionContacts.map { $0.email }
+        if Preferences.mailIntegrationEnabled {
+            let recipients = encryptionContacts.map { $0.email }
+
             // Present native mail integration
-            let mailComposeViewController = MFMailComposeViewController()
-            mailComposeViewController.mailComposeDelegate = self as MFMailComposeViewControllerDelegate
-            mailComposeViewController.delegate = self as UINavigationControllerDelegate
+//            let mailComposeViewController = MFMailComposeViewController()
+//            mailComposeViewController.mailComposeDelegate = self as MFMailComposeViewControllerDelegate
+//            mailComposeViewController.delegate = self as UINavigationControllerDelegate
+//
+//            mailComposeViewController.setToRecipients(addresses)
+//            mailComposeViewController.setMessageBody(encryptedMessage, isHTML: false)
+//
+//            present(mailComposeViewController, animated: true, completion: nil)
 
-            mailComposeViewController.setToRecipients(addresses)
-            mailComposeViewController.setMessageBody(encryptedMessage, isHTML: false)
+            do {
+                try MailIntegration.compose(recipients: recipients, body: encryptedMessage)
+            } catch let error as MailIntegrationError {
+                switch error {
+                case .noSelectedClient:
+                    alert(text: "No mail client selected! Mail Integration will be disabled.")
+                    MailIntegration.isEnabled = false
+                    Log.e(error)
+                case .cannotComposeWhileDisabled:
+                    alert(text: "Failed to compose email!")
+                    MailIntegration.isEnabled = false
+                    Log.e(error)
 
-            present(mailComposeViewController, animated: true, completion: nil)
+                    // Fallback
+                    let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
+                    activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?.first
+                    self.present(activityVC, animated: true, completion: nil)
+                }
+            } catch {
+                alert(text: "Failed to compose email! Mail Integration will be disabled.")
+                MailIntegration.isEnabled = false
+                Log.e(error)
+
+                // Fallback
+                let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
+                activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?.first
+                self.present(activityVC, animated: true, completion: nil)
+            }
+
         } else {
             let activityVC = UIActivityViewController(activityItems: [encryptedMessage], applicationActivities: nil)
             activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?.first
             self.present(activityVC, animated: true, completion: nil)
         }
     }
-    
+
 }
 
 extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
@@ -299,7 +330,7 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
         var cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
         cell.selectionStyle = .none
 
-        switch (indexPath.row) {
+        switch indexPath.row {
         case EncryptionRows.encryptionContacts.rawValue:
             cell.textLabel?.text = encryptionKeysSelectionLabel
             cell.accessoryType = .disclosureIndicator
@@ -328,7 +359,7 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch (indexPath.row) {
+        switch indexPath.row {
         case EncryptionRows.encryptionContacts.rawValue:
             let encryptionContactSelectionVC = KeySelectionViewController()
             encryptionContactSelectionVC.set(toType: .publicKey)
@@ -345,7 +376,7 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch (indexPath.row) {
+        switch indexPath.row {
         case EncryptionRows.passphrase.rawValue:
             return passphraseRequired ? 44 : 0
         case EncryptionRows.message.rawValue:
@@ -364,13 +395,13 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension EncryptionViewController: MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
-    
+
     func mailComposeController(_ controller: MFMailComposeViewController,
                                didFinishWith result: MFMailComposeResult,
                                error: Error?) {
         controller.dismiss(animated: true)
     }
-    
+
 }
 
 extension EncryptionViewController: KeySelectionDelegate {

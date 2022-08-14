@@ -69,7 +69,4 @@ extension LicensesViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-
-
-
 }

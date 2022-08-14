@@ -36,12 +36,11 @@ class AppStoreReviewService {
         let defaults = UserDefaults.standard
 
         let actionCount = defaults.integer(forKey: Preferences.UserDefaultsKeys.reviewWorthyActions)
-        if (actionCount >= minimumReviewWorthyActionCount) {
+        if actionCount >= minimumReviewWorthyActionCount {
             SKStoreReviewController.requestReview()
             minimumReviewWorthyActionCount += 10
             defaults.set(0, forKey: Preferences.UserDefaultsKeys.reviewWorthyActions)
         }
     }
-
 
 }

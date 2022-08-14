@@ -29,21 +29,21 @@ class SearchKeyserverViewController: UIViewController {
             }
         }
     }
-    var selectedRows: [Int] = []
 
     lazy var tableView: UITableView = {
-        let tv = UITableView()
+        let tableView = UITableView()
 
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.delegate = self
-        tv.dataSource = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
 
-        return tv
+        return tableView
     }()
 
     lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
+        searchController.automaticallyShowsCancelButton = false
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
 
@@ -58,7 +58,6 @@ class SearchKeyserverViewController: UIViewController {
         searchController.searchBar.showsBookmarkButton = true
         searchController.searchBar.setImage(UIImage(systemName: "qrcode"), for: .bookmark, state: .normal)
 
-
         return searchController
     }()
 
@@ -67,24 +66,18 @@ class SearchKeyserverViewController: UIViewController {
 
         self.title = "Search Keyserver"
 
-        /// Add buttons to navigation controller
+        // Add buttons to navigation controller
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Close",
             style: .plain,
             target: self,
             action: #selector(addContactCancel(sender:))
         )
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Import",
-            style: .done,
-            target: self,
-            action: #selector(addContactDone(sender:))
-        )
 
-        /// Add search bar to super view
+        // Add search bar to super view
         navigationItem.searchController = searchController
 
-        /// Add table view to super view
+        // Add table view to super view
         view.addSubview(tableView)
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -93,36 +86,8 @@ class SearchKeyserverViewController: UIViewController {
     }
 
     @objc
-    func addContactDone(sender: UIBarButtonItem) {
-        if (selectedRows.isEmpty) {
-            alert(text: "No Keys Selected!")
-        } else {
-            var selectedKeys: [Key] = []
-            for row in selectedRows { selectedKeys.append(foundKeys[row].0) }
-
-            let result: ContactListResult = ContactListService.importFrom(selectedKeys)
-            alert(result)
-        }
-    }
-
-    @objc
     func addContactCancel(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
-    }
-
-    private func alert(_ result: ContactListResult) {
-
-        let successful = "\(result.successful) key\(result.successful == 1 ? "" : "s") successfully imported"
-        let unsupported = "\(result.unsupported) unsupported key\(result.unsupported == 1 ? "" : "s") skipped"
-        let duplicates = "\(result.duplicates) duplicate key\(result.duplicates == 1 ? "" : "s") skipped"
-
-        let alert = UIAlertController(title: "Import Result",
-                                      message: "\(successful) \n \(unsupported) \n \(duplicates)",
-                                      preferredStyle: UIAlertController.Style.alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
-
     }
 
 }
@@ -146,7 +111,7 @@ extension SearchKeyserverViewController: UITableViewDelegate, UITableViewDataSou
         let source = foundKeys[indexPath.row].1
 
         var primaryUser: User?
-        if (key.isSecret) {
+        if key.isSecret {
             guard let privateKey = key.secretKey else { return cell }
             primaryUser = privateKey.primaryUser
         } else {
@@ -158,23 +123,20 @@ extension SearchKeyserverViewController: UITableViewDelegate, UITableViewDataSou
             cell.detailTextLabel!.text = key.keyID.longIdentifier.insertSeparator(" ", atEvery: 4) + " – " + source
         }
 
-        if selectedRows.contains(indexPath.row) {
-            cell.accessoryType = UITableViewCell.AccessoryType.checkmark
-        } else {
-            cell.accessoryType = UITableViewCell.AccessoryType.none
-        }
-
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectedRows.contains(indexPath.row) {
-            guard let firstOccurence = selectedRows.firstIndex(of: indexPath.row) else { return }
-            selectedRows.remove(at: firstOccurence)
-        } else {
-            selectedRows.append(indexPath.row)
+
+        let selectedKey = foundKeys[indexPath.row].0
+        let result: ContactListResult = ContactListService.importFrom([selectedKey])
+
+        self.alert(result) {
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
         }
-        self.tableView.reloadData()
+
     }
 }
 
@@ -213,12 +175,12 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
             }
 
         case .success(let keys):
+            self.foundKeys = []
             for key in keys {
                 self.foundKeys.append((key, source))
             }
         }
 
-        self.selectedRows = []
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.tableView.reloadData()
         }
@@ -256,11 +218,11 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
             WebKeyDirectoryService.getByEmail(email: searchBarText) { result in
                 self.switchWKDResult(result: result)
             }
-        } else if (searchBarText.count <= 18) { // case: key id
+        } else if searchBarText.count <= 18 { // case: key id
             VerifyingKeyserverInterface.getByKeyID(keyID: searchBarText) { (result) in
                 self.switchVKIResult(result: result)
             }
-        } else if (searchBarText.count > 18) { // case: fingerprint
+        } else if searchBarText.count > 18 { // case: fingerprint
             VerifyingKeyserverInterface.getByFingerprint(fingerprint: searchBarText) { (result) in
                 self.switchVKIResult(result: result)
             }
