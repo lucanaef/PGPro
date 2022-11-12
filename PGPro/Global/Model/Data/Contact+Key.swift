@@ -69,31 +69,15 @@ extension Contact {
     }
 
     func getArmoredKey(as type: PGPKeyType) -> String? {
+        guard let keyData = try? key.export(keyType: type) else { return nil }
+
         switch type {
         case .public:
-            do {
-                let publicKeyData = try key.export(keyType: .public)
-                return Armor.armored(publicKeyData, as: .publicKey)
-            } catch { return nil }
-
+            return Armor.armored(keyData, as: .publicKey)
         case .secret:
-            do {
-                let privateKeyData = try key.export(keyType: .secret)
-
-                // Include public key if one is applicaable.
-                // Note that it's possible to export private key without matching public key pair. See Issue #77.
-                var armoredPublicKeyData: String? {
-                    guard let publicKeyData = try? key.export(keyType: .public) else { return nil }
-                    return Armor.armored(publicKeyData, as: .publicKey)
-                }
-
-                return (armoredPublicKeyData ?? "") + Armor.armored(privateKeyData, as: .secretKey)
-            } catch { return nil }
-
+            return Armor.armored(keyData, as: .secretKey)
         default:
             return nil
         }
-
     }
-
 }
