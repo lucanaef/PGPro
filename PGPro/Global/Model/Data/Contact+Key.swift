@@ -78,9 +78,16 @@ extension Contact {
 
         case .secret:
             do {
-                let publicKeyData = try key.export(keyType: .public)
                 let privateKeyData = try key.export(keyType: .secret)
-                return Armor.armored(publicKeyData, as: .publicKey) + Armor.armored(privateKeyData, as: .secretKey)
+
+                // Include public key if one is applicaable.
+                // Note that it's possible to export private key without matching public key pair. See Issue #77.
+                var armoredPublicKeyData: String? {
+                    guard let publicKeyData = try? key.export(keyType: .public) else { return nil }
+                    return Armor.armored(publicKeyData, as: .publicKey)
+                }
+
+                return (armoredPublicKeyData ?? "") + Armor.armored(privateKeyData, as: .secretKey)
             } catch { return nil }
 
         default:
