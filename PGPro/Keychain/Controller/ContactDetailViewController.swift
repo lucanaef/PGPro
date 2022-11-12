@@ -97,6 +97,25 @@ class ContactDetailViewController: UIViewController {
             optionMenu.addAction(cancelAction)
 
             present(optionMenu, animated: true, completion: nil)
+        } else if contactDetails?.keyType == "Private" {
+            let optionMenu = UIAlertController(title: nil,
+                                               message: "Select Key to Share",
+                                               preferredStyle: .actionSheet)
+            optionMenu.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+
+            let sharePrivateKey = UIAlertAction(title: "Private Key", style: .destructive) { _ -> Void in
+                let activityItem = self.contactDetails?.armoredPrivateKey as Any
+                optionMenu.dismiss(animated: true, completion: nil)
+                self.share(activityItems: [activityItem])
+            }
+            optionMenu.addAction(sharePrivateKey)
+
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ -> Void in
+                optionMenu.dismiss(animated: true, completion: nil)
+                return
+            }
+            optionMenu.addAction(cancelAction)
+            present(optionMenu, animated: true, completion: nil)
         } else {
             let activityItem = contactDetails?.armoredPublicKey as Any
             self.share(activityItems: [activityItem])
