@@ -32,7 +32,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>278</string>
+	<string>289</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>sparrow</string>
