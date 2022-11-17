@@ -1041,7 +1041,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2022.1;
+				MARKETING_VERSION = 2022.2;
 				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -1070,7 +1070,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2022.1;
+				MARKETING_VERSION = 2022.2;
 				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
