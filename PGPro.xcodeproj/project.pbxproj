@@ -580,7 +580,7 @@
 			buildConfigurationList = 81E4632C231029A5008DC317 /* Build configuration list for PBXNativeTarget "PGPro" */;
 			buildPhases = (
 				81E46314231029A4008DC317 /* Sources */,
-				8135BB41282302EA000CA445 /* ShellScript */,
+				8135BB41282302EA000CA445 /* Run SwiftLint */,
 				81E46315231029A4008DC317 /* Frameworks */,
 				81E46316231029A4008DC317 /* Resources */,
 			);
@@ -685,7 +685,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8135BB41282302EA000CA445 /* ShellScript */ = {
+		8135BB41282302EA000CA445 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -694,6 +694,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run SwiftLint";
 			outputFileListPaths = (
 			);
 			outputPaths = (

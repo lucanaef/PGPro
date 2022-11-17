@@ -70,34 +70,48 @@ class ContactDetailViewController: UIViewController {
 
     @objc
     func setShare() {
-        if contactDetails?.keyType == "Public & Private" {
-            let optionMenu = UIAlertController(title: nil,
-                                               message: "Select Key to Share",
-                                               preferredStyle: .actionSheet)
-            optionMenu.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+        let optionMenu = UIAlertController(title: nil, message: "Select Key to Share", preferredStyle: .actionSheet)
+        optionMenu.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
-            let sharePublicKey = UIAlertAction(title: "Public Key", style: .default) { _ -> Void in
-                let activityItem = self.contactDetails?.armoredPublicKey as Any
-                optionMenu.dismiss(animated: true, completion: nil)
-                self.share(activityItems: [activityItem])
-            }
-            optionMenu.addAction(sharePublicKey)
+        let sharePublicKeyAction = UIAlertAction(title: "Public Key", style: .default) { _ in
+            let activityItem = self.contactDetails?.armoredPublicKey as Any
+            optionMenu.dismiss(animated: true, completion: nil)
+            self.share(activityItems: [activityItem])
+        }
 
-            let sharePrivateKey = UIAlertAction(title: "Private Key", style: .destructive) { _ -> Void in
-                let activityItem = self.contactDetails?.armoredPrivateKey as Any
-                optionMenu.dismiss(animated: true, completion: nil)
-                self.share(activityItems: [activityItem])
-            }
-            optionMenu.addAction(sharePrivateKey)
+        let sharePrivateKeyAction = UIAlertAction(title: "Private Key", style: .destructive) { _ in
+            let activityItem = self.contactDetails?.armoredPrivateKey as Any
+            optionMenu.dismiss(animated: true, completion: nil)
+            self.share(activityItems: [activityItem])
+        }
 
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ -> Void in
-                optionMenu.dismiss(animated: true, completion: nil)
-                return
-            }
+        let shareBothAction = UIAlertAction(title: "Share Both", style: .destructive) { _ in
+            let activityItem = (self.contactDetails?.armoredPublicKey ?? "") + (self.contactDetails?.armoredPrivateKey ?? "") as Any
+            optionMenu.dismiss(animated: true, completion: nil)
+            self.share(activityItems: [activityItem])
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ -> Void in
+            optionMenu.dismiss(animated: true, completion: nil)
+            return
+        }
+
+        switch contactDetails?.keyType {
+        case "Public & Private":
+            optionMenu.addAction(sharePublicKeyAction)
+            optionMenu.addAction(sharePrivateKeyAction)
+            optionMenu.addAction(shareBothAction)
             optionMenu.addAction(cancelAction)
-
             present(optionMenu, animated: true, completion: nil)
-        } else {
+        case "Private":
+            optionMenu.addAction(sharePrivateKeyAction)
+            optionMenu.addAction(cancelAction)
+            present(optionMenu, animated: true, completion: nil)
+        case "Public":
+            optionMenu.addAction(sharePublicKeyAction)
+            optionMenu.addAction(cancelAction)
+            present(optionMenu, animated: true, completion: nil)
+        default:
             let activityItem = contactDetails?.armoredPublicKey as Any
             self.share(activityItems: [activityItem])
         }
