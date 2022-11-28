@@ -23,29 +23,37 @@ import ObjectivePGP
 */
 class ExampleDataService {
 
+    private struct ExampleContact {
+        let name: String
+        let emailAddress: String
+        let passphrase: String?
+        let hasPublicKey: Bool
+        let hasPrivateKey: Bool
+    }
+
     private init() {}
 
     static func createExampleDataset() {
         let keyGen = KeyGenerator()
-        let exampleContacts: [(String, String, String?, Bool, Bool)] = [
+        let exampleContacts: [ExampleContact] = [
         //   NAME                   EMAIL ADDRESS                 PASSPHRASE    HAS PUBLIC KEY      HAS PRIVATE KEY
-            ("Winston Smith", "winston.smith@pgpro.app", nil, true, true),
-            ("O'Brien", "obrien@pgpro.app", nil, true, false),
-            ("Julia", "julia@pgpro.app", "jules", true, true),
-            ("Mr. Charrington", "mr.charrington@pgpro.app", nil, false, true),
-            ("Syme", "syme@pgpro.app", nil, false, true),
-            ("Parsons", "parsons@pgpro.app", nil, false, true),
-            ("Emmanuel Goldstein", "e.goldstein@pgpro.app", nil, false, true),
-            ("Tillotson", "tillotson@pgpro.app", "", true, true)
+            ExampleContact(name: "Winston Smith", emailAddress: "winston.smith@pgpro.app", passphrase: nil, hasPublicKey: true, hasPrivateKey: true),
+            ExampleContact(name: "O'Brien", emailAddress: "obrien@pgpro.app", passphrase: nil, hasPublicKey: true, hasPrivateKey: false),
+            ExampleContact(name: "Julia", emailAddress: "julia@pgpro.app", passphrase: "jules", hasPublicKey: true, hasPrivateKey: true),
+            ExampleContact(name: "Mr. Charrington", emailAddress: "mr.charrington@pgpro.app", passphrase: nil, hasPublicKey: false, hasPrivateKey: true),
+            ExampleContact(name: "Syme", emailAddress: "syme@pgpro.app", passphrase: nil, hasPublicKey: false, hasPrivateKey: true),
+            ExampleContact(name: "Parsons", emailAddress: "parsons@pgpro.app", passphrase: nil, hasPublicKey: false, hasPrivateKey: true),
+            ExampleContact(name: "Emmanuel Goldstein", emailAddress: "e.goldstein@pgpro.app", passphrase: nil, hasPublicKey: false, hasPrivateKey: true),
+            ExampleContact(name: "Tillotson", emailAddress: "tillotson@pgpro.app", passphrase: "", hasPublicKey: true, hasPrivateKey: true)
         ]
 
         for index in exampleContacts.indices {
-            let (name, email, passphrase, hasPublicKey, hasPrivateKey) = exampleContacts[index]
-            let genKey = keyGen.generate(for: email, passphrase: passphrase)
-            let publicKey = hasPublicKey ? genKey.publicKey : nil
-            let privateKey = hasPrivateKey ? genKey.secretKey : nil
+            let contact = exampleContacts[index]
+            let genKey = keyGen.generate(for: contact.emailAddress, passphrase: contact.passphrase)
+            let publicKey = contact.hasPublicKey ? genKey.publicKey : nil
+            let privateKey = contact.hasPrivateKey ? genKey.secretKey : nil
             let key = Key(secretKey: privateKey, publicKey: publicKey)
-            _ = ContactListService.add(name: name, email: email, key: key)
+            _ = ContactListService.add(name: contact.name, email: contact.emailAddress, key: key)
         }
     }
 
