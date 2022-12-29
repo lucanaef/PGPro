@@ -150,11 +150,21 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
             switch error {
             case .invalidFormat:
                 DispatchQueue.main.async {
-                    self.alert(text: "Invalid Format")
+                    self.alert(
+                        text: NSLocalizedString(
+                            "Invalid Format",
+                            comment: "The error prompt for invalid format after searching on keyserver."
+                        )
+                    )
                 }
             case .invalidResponse:
                 DispatchQueue.main.async {
-                    self.alert(text: "Failed to get valid response from keyserver!")
+                    self.alert(
+                        text: NSLocalizedString(
+                            "Failed to get valid response from keyserver!",
+                            comment: "The error prompt for invalid response after searching on keyserver."
+                        )
+                    )
                 }
             case .keyNotFound:
                 break
@@ -162,15 +172,30 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
                 break
             case .noConnection:
                 DispatchQueue.main.async {
-                    self.alert(text: "No Connection to Keyserver!")
+                    self.alert(
+                        text: NSLocalizedString(
+                            "No Connection to Keyserver!",
+                            comment: "The error prompt for no connection after searching on keyserver."
+                        )
+                    )
                 }
             case .rateLimiting:
                 DispatchQueue.main.async {
-                    self.alert(text: "Error due to Rate Limiting")
+                    self.alert(
+                        text: NSLocalizedString(
+                            "Error due to Rate Limiting",
+                            comment: "The error prompt for rate limiting after searching on keyserver."
+                        )
+                    )
                 }
             case .serverDatabaseMaintenance:
                 DispatchQueue.main.async {
-                    self.alert(text: "Keyserver is under Database Maintenanc")
+                    self.alert(
+                        text: NSLocalizedString(
+                            "Keyserver is under Database Maintenance",
+                            comment: "The error prompt for database maintanence after searching on keyserver."
+                        )
+                    )
                 }
             }
 
@@ -194,7 +219,12 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
             switch error {
             case .keyNotSupported:
                 DispatchQueue.main.async {
-                    self.alert(text: "Found non-supported key!")
+                    self.alert(
+                        text: NSLocalizedString(
+                            "Found non-supported key!",
+                            comment: "Prompt for non-supported key after switching web key directory."
+                        )
+                    )
                 }
             default:
                 break
@@ -240,14 +270,14 @@ extension SearchKeyserverViewController: UISearchBarDelegate {
         switch result {
         case .success(let code):
             guard code.contains("OPENPGP4FPR:") else {
-                self.alert(text: "Invalid QR Code!")
+                self.alert(text: NSLocalizedString("Invalid QR Code!", comment: "Prompt for error scannig QR code for keyserver due to format being invalid."))
                 return
             }
             let parsedCode = code.replacingOccurrences(of: "OPENPGP4FPR:", with: "")
             searchController.searchBar.text = parsedCode
             searchBarSearchButtonClicked(searchController.searchBar)
         case .failure:
-            self.alert(text: "Scan failed!")
+            self.alert(text: NSLocalizedString("Scan failed!", comment: "Prompt for error scannig QR code for keyserver due to other failure."))
         }
     }
 

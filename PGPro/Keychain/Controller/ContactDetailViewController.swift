@@ -169,9 +169,9 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
         let section = Sections(rawValue: section)
         switch section {
         case .contact:
-            return "User Info"
+            return NSLocalizedString("User Info", comment: "The section header of the user info section in keychain tab")
         case .key:
-            return "Primary Key"
+            return NSLocalizedString("Primary Key", comment: "The section header of the primary key section in keychain tab")
         default:
             Log.s("indexPath out of bounds!")
             return nil
@@ -230,9 +230,20 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
             case ContactDetails.RenameError.cantBeNil:
                 Log.e("Failed to rename contact: \(error)")
             case ContactDetails.RenameError.cantBeEmpty:
-                alert(text: "Name can't be empty!")
+                alert(
+                    text: NSLocalizedString(
+                        "Name can't be empty!",
+                        comment: "The alert prompted when attempting to rename contact with an empty name."
+                    )
+
+                )
             case ContactDetails.RenameError.alreadyExists:
-                alert(text: "A contact with this name and email address already exists!")
+                alert(
+                    text: NSLocalizedString(
+                        "A contact with this name and email address already exists!",
+                        comment: "The alert prompted when attempting to rename contact with a duplicate name and/or address."
+                    )
+                )
             default:
                 Log.e("Failed to rename contact: \(error)")
             }
@@ -251,14 +262,24 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
             switch row {
             case .name:
                 let nameCell = FDTextFieldTableViewCell(style: .value1, reuseIdentifier: "FDTextFieldTableViewCell")
-                nameCell.textLabel?.text = "Name"
+                nameCell.textLabel?.text = NSLocalizedString(
+                    "Name",
+                    comment: """
+                    The title of the name cell in contact details.
+                    """
+                )
                 nameCell.textField.text = contactDetails?.name
                 nameCell.textField.textColor = .secondaryLabel
                 nameCell.textField.clearButtonMode = .whileEditing
                 nameCell.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
                 cell = nameCell
             case .email:
-                cell.textLabel?.text = "Email"
+                cell.textLabel?.text = NSLocalizedString(
+                    "Email",
+                    comment: """
+                    The title of the email cell in contact details.
+                    """
+                )
                 cell.detailTextLabel?.text = contactDetails?.email
             default:
                 Log.s("indexPath out of bounds!")
@@ -268,15 +289,35 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
             let row = KeySection(rawValue: indexPath.row)
             switch row {
             case .id:
-                cell.textLabel?.text = "ID"
+                cell.textLabel?.text = NSLocalizedString(
+                    "ID",
+                    comment: """
+                    The title of the ID cell in key section within contact details.
+                    """
+                )
                 cell.detailTextLabel?.text = contactDetails?.keyID
             case .type:
-                cell.textLabel?.text = "Type"
+                cell.textLabel?.text = NSLocalizedString(
+                    "Type",
+                    comment: """
+                    The title of the type cell in key section within contact details.
+                    """
+                )
                 cell.detailTextLabel?.text = contactDetails?.keyType
             case .expires:
-                cell.textLabel?.text = "Expires"
+                cell.textLabel?.text = NSLocalizedString(
+                    "Expires",
+                    comment: """
+                    The title of the expires cell in key section within contact details.
+                    """
+                )
                 let date = contactDetails?.keyExpirationDate
-                cell.detailTextLabel?.text = "Never"
+                cell.detailTextLabel?.text = NSLocalizedString(
+                    "Never",
+                    comment: """
+                    The description of a never-expiring key in key section within contact details.
+                    """
+                )
                 if let date = date {
                     cell.detailTextLabel?.text = formatter.string(for: date)
                     if date < Date() {
@@ -285,7 +326,12 @@ extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegat
                 }
             case .fingerprint:
                 cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
-                cell.textLabel?.text = "Fingerprint"
+                cell.textLabel?.text = NSLocalizedString(
+                    "Fingerprint",
+                    comment: """
+                    The title of the fingerprint cell in contact details.
+                    """
+                )
                 cell.detailTextLabel?.text = contactDetails?.keyFingerprint
                 cell.detailTextLabel?.textColor = .secondaryLabel
             default:

@@ -26,7 +26,12 @@ class DecryptedMessageViewController: UIViewController {
         super.viewDidLoad()
 
         // Navigation bar
-        self.title = "Decrypted Message"
+        self.title = NSLocalizedString(
+            "Decrypted Message",
+            comment: """
+            The text of the navigation bar within decrypted message view controller.
+            """
+        )
         let leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,
             target: self,

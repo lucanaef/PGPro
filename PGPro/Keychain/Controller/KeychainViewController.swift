@@ -77,7 +77,12 @@ class KeychainViewController: UIViewController {
                                                object: nil
         )
 
-        self.title = "Keychain"
+        self.title = NSLocalizedString(
+            "Keychain",
+            comment: """
+            The title of the keychain view controller.
+            """
+        )
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
@@ -111,7 +116,13 @@ class KeychainViewController: UIViewController {
                                            preferredStyle: .actionSheet)
         optionMenu.popoverPresentationController?.barButtonItem = sender
 
-        let generateKey = UIAlertAction(title: "Generate Key Pair", style: .default) { _ -> Void in
+        let generateKey = UIAlertAction(
+            title: NSLocalizedString(
+                "Generate Key Pair",
+                comment: "The option to generate key pair in the popover menu from '+' button"
+            ),
+            style: .default
+        ) { _ -> Void in
             optionMenu.dismiss(animated: true, completion: nil)
             let generateKeyViewController = GenerateKeyViewController()
             let navController = UINavigationController(rootViewController: generateKeyViewController)
@@ -119,7 +130,13 @@ class KeychainViewController: UIViewController {
         }
         optionMenu.addAction(generateKey)
 
-        let searchKeyserver = UIAlertAction(title: "Search on Keyserver", style: .default) { _ -> Void in
+        let searchKeyserver = UIAlertAction(
+            title: NSLocalizedString(
+                "Search on Keyserver",
+                comment: "The option to search on keyserver in the popover menu from '+' button"
+            ),
+            style: .default
+        ) { _ -> Void in
             optionMenu.dismiss(animated: true, completion: nil)
             let searchKeyserverViewController = SearchKeyserverViewController()
             let navController = UINavigationController(rootViewController: searchKeyserverViewController)
@@ -127,19 +144,41 @@ class KeychainViewController: UIViewController {
         }
         optionMenu.addAction(searchKeyserver)
 
-        let importKeyFromFile = UIAlertAction(title: "Import Keys from File", style: .default) { _ -> Void in
+        let importKeyFromFile = UIAlertAction(
+            title: NSLocalizedString(
+                "Import Keys from File",
+                comment: "The option to import keys from file on keyserver in the popover menu from '+' button"
+            ),
+            style: .default
+        ) { _ -> Void in
             self.importKeysFilePicker()
             optionMenu.dismiss(animated: true)
         }
         optionMenu.addAction(importKeyFromFile)
 
-        let addKeyFromClipboard = UIAlertAction(title: "Add Key from Clipboard", style: .default) { _ -> Void in
+        let addKeyFromClipboard = UIAlertAction(
+            title: NSLocalizedString(
+                "Add Key from Clipboard",
+                comment: """
+                The option to add key from clipboard in the popover menu from '+' button.
+                """
+            ),
+            style: .default
+        ) { _ -> Void in
             self.addKeyFromClipboard()
             optionMenu.dismiss(animated: true)
         }
         optionMenu.addAction(addKeyFromClipboard)
 
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ -> Void in
+        let cancel = UIAlertAction(
+            title: NSLocalizedString(
+                "Cancel",
+                comment: """
+                The option to add key from clipboard in the popover menu from '+' button.
+                """
+            ),
+            style: .cancel
+        ) { _ -> Void in
             optionMenu.dismiss(animated: true)
         }
         optionMenu.addAction(cancel)
@@ -149,7 +188,14 @@ class KeychainViewController: UIViewController {
 
     private func addKeyFromClipboard() {
         guard let clipboardString = UIPasteboard.general.string else {
-            alert(text: "Clipboard is Empty!")
+            alert(
+                text: NSLocalizedString(
+                    "Clipboard is Empty!",
+                    comment: """
+                    The prompt saying the clipboard is empty when attempting to copying keys from clipboard.
+                    """
+                )
+            )
             return
         }
 
@@ -160,11 +206,26 @@ class KeychainViewController: UIViewController {
             var message: String
             switch error {
             case KeyConstructionService.KeyConstructionError.invalidFormat:
-                message = "Clipboard contains invalid key!"
+                message = NSLocalizedString(
+                    "Clipboard contains invalid key!",
+                    comment: """
+                    The prompt saying the clipboard contains invalid key when attempting to copying keys from clipboard.
+                    """
+                )
             case KeyConstructionService.KeyConstructionError.keyNotSupported:
-                message = "Clipboard contains unsupported key!"
+                message = NSLocalizedString(
+                    "Clipboard contains unsupported key!",
+                    comment: """
+                    The prompt saying the clipboard contains unsupported key when attempting to copying keys from clipboard.
+                    """
+                )
             default:
-                message = "No valid Key found in Clipboard!"
+                message = NSLocalizedString(
+                    "No valid Key found in Clipboard!",
+                    comment: """
+                    The prompt saying the no valid key is found in clipboard when attempting to copying keys from clipboard.
+                    """
+                )
             }
             alert(text: message)
             return
@@ -261,32 +322,60 @@ extension KeychainViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let alert = UIAlertController(title: "Are you sure?", message: "Are you sure you want to delete this key? This action cannot be undone.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(
-                title: "Delete",
-                style: .destructive,
-                handler: { _ in
-                    if self.isFiltering() {
-                        let cntct = self.filteredContacts[indexPath.row]
+            let alert = UIAlertController(
+                title: NSLocalizedString(
+                    "Are you sure?",
+                    comment: """
+                    The title of the confirmation dialogue when attempting to delete a keychain entry.
+                    """
+                ),
+                message: NSLocalizedString(
+                    "Are you sure you want to delete this key? This action cannot be undone.",
+                    comment: """
+                    The description of the confirmation dialogue when attempting to delete a keychain entry.
+                    """
+                ),
+                preferredStyle: .alert
+            )
 
-                        self.filteredContacts.remove(at: indexPath.row)
-                        self.keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+            alert.addAction(
+                UIAlertAction(
+                    title: NSLocalizedString(
+                        "Delete",
+                        comment: """
+                        The title of option to delete a keychain entry.
+                        """
+                    ),
+                    style: .destructive,
+                    handler: { _ in
+                        if self.isFiltering() {
+                            let cntct = self.filteredContacts[indexPath.row]
 
-                        ContactListService.remove(cntct)
-                        self.contacts = ContactListService.get(ofType: .both)
+                            self.filteredContacts.remove(at: indexPath.row)
+                            self.keychainTableView.deleteRows(at: [indexPath], with: .bottom)
 
-                    } else {
-                        // Remove from storage and update local list
-                        ContactListService.remove(self.contacts[indexPath.row])
-                        self.contacts = ContactListService.get(ofType: .both)
+                            ContactListService.remove(cntct)
+                            self.contacts = ContactListService.get(ofType: .both)
 
-                        // Remove from view and update view
-                        self.keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+                        } else {
+                            // Remove from storage and update local list
+                            ContactListService.remove(self.contacts[indexPath.row])
+                            self.contacts = ContactListService.get(ofType: .both)
+
+                            // Remove from view and update view
+                            self.keychainTableView.deleteRows(at: [indexPath], with: .bottom)
+                        }
                     }
-            }))
+                )
+            )
 
             alert.addAction(UIAlertAction(
-                title: "Cancel",
+                title: NSLocalizedString(
+                    "Cancel",
+                    comment: """
+                    The title of option to delete a keychain entry.
+                    """
+                ),
                 style: .cancel,
                 handler: { _ in
                     return

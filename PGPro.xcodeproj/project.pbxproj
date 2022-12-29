@@ -86,6 +86,7 @@
 		81F95FF72502A4BF00786238 /* ZBase32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F95FF62502A4BF00786238 /* ZBase32.swift */; };
 		81FC11F52598DDD800F8CD51 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC11F42598DDD800F8CD51 /* AuthenticationViewController.swift */; };
 		81FC11FB2598ECA700F8CD51 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC11FA2598ECA700F8CD51 /* AuthenticationService.swift */; };
+		EFEF65A229333959007818A0 /* en.xcloc in Resources */ = {isa = PBXBuildFile; fileRef = EFEF65A129333959007818A0 /* en.xcloc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,6 +190,7 @@
 		81F95FF62502A4BF00786238 /* ZBase32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZBase32.swift; sourceTree = "<group>"; };
 		81FC11F42598DDD800F8CD51 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		81FC11FA2598ECA700F8CD51 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
+		EFEF65A129333959007818A0 /* en.xcloc */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = en.xcloc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -519,6 +521,7 @@
 			children = (
 				81C80A7F232E4FB200574E3F /* Info.plist */,
 				81E33AE82326B5B000241E4A /* Global */,
+				EFEF65A029333959007818A0 /* Localizations */,
 				81E33AE92326B5CA00241E4A /* Encryption */,
 				81E33AEA2326B5D900241E4A /* Decryption */,
 				81E33AEB2326B5EA00241E4A /* Keychain */,
@@ -534,6 +537,14 @@
 				81BDE4C12327CD2600E77ED7 /* Controller */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		EFEF65A029333959007818A0 /* Localizations */ = {
+			isa = PBXGroup;
+			children = (
+				EFEF65A129333959007818A0 /* en.xcloc */,
+			);
+			path = Localizations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -678,6 +689,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81E46328231029A5008DC317 /* LaunchScreen.storyboard in Resources */,
+				EFEF65A229333959007818A0 /* en.xcloc in Resources */,
 				81E46325231029A5008DC317 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
