@@ -69,17 +69,19 @@ class GenerateKeyViewController: UIViewController {
         } catch let error {
             switch error {
             case GenerateKeyError.nameNil, GenerateKeyError.nameEmpty:
-                alert(text: "Name can't be empty!")
+                alert(text: NSLocalizedString("Name can't be empty!", comment: "The error text after adding contact, prompting an empty name"))
             case GenerateKeyError.emailAddressNil, GenerateKeyError.emailAddressEmpty:
-                alert(text: "Email address can't be empty!")
+                alert(text: NSLocalizedString("Email address can't be empty!", comment: "The error text after adding contact, prompting an empty email"))
             case GenerateKeyError.emailAddressInvalid:
-                alert(text: "Email address invalid!")
+                alert(text: NSLocalizedString("Email address invalid!", comment: "The error text after adding contact, prompting an invalid email"))
             case GenerateKeyError.passphraseMismatch:
-                alert(text: "Passphrases don't match!")
+                alert(text: NSLocalizedString("Passphrases don't match!", comment: "The error text after adding contact, prompting an nonmatching passphrases"))
             case GenerateKeyError.nonUnique:
-                alert(text: "Contact not unique!")
+                alert(text: NSLocalizedString("Contact not unique!", comment: "The error text after adding contact, prompting an nonmatching passphrases"))
             default:
-                alert(text: "Key generation failed!")
+                alert(
+                    text: NSLocalizedString("Key generation failed!", comment: "The error text after adding contact, prompting a general failure of key generation")
+                )
                 Log.e(error)
             }
         }

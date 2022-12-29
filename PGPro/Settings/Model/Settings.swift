@@ -224,7 +224,9 @@ class Settings {
                         try keyring.export().write(to: fileURL, options: .completeFileProtection)
                     } catch {
                         Log.e("Export failed!")
-                        viewController.alert(text: "Export failed!")
+                        viewController.alert(
+                            text: NSLocalizedString("Export failed!", comment: "The error prompt when exporting keychain failed.")
+                        )
                         return
                     }
                     var filesToShare: [Any] = [fileURL]
@@ -236,44 +238,66 @@ class Settings {
                     }
                     viewController.present(activityViewController, animated: true, completion: nil)
                 } else {
-                    viewController.alert(text: "Export failed!")
+                    viewController.alert(
+                        text: NSLocalizedString("Export failed!", comment: "The error prompt when exporting keychain failed.")
+                    )
                 }
             }
         }
         completion()
     }
-    let deleteAllKeys       = Setting(title: "Delete Keychain",
-                                      symbol: "trash",
-                                      actionType: Setting.ActionType.destructive) {
-                                        ContactListService.deleteAllData()
-                                      }
-    let mailIntegration     = Setting(title: "Mail Integration",
-                                      symbol: "envelope",
-                                      to: MailIntegrationViewController())
-    let authentication      = Setting(title: "App Launch Authentication",
-                                      symbol: AuthenticationService.symbolName,
-                                      forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
-                                      enabled: Constants.User.canUseBiometrics)
-    let reportIssue         = Setting(title: "Report Issue",
-                                      symbol: "ladybug",
-                                      withURL: URL(string: "https://github.com/lucanaef/PGPro/issues")!)
-    let joinBeta            = Setting(title: "Join the PGPro Beta",
-                                      symbol: "airplane",
-                                      withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!)
-    let askForRating        = Setting(title: "Please Rate PGPro",
-                                      symbol: "heart",
-                                      subtitle: "\(Constants.PGPro.numRatings) PEOPLE HAVE RATED PGPRO IN YOUR REGION",
-                                      withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!)
-    let faq                 = Setting(title: "Frequently Asked Questions",
-                                      symbol: "questionmark.circle",
-                                      withURL: URL(string: "https://pgpro.app/faq/")!)
-    let contribute          = Setting(title: "Contribute on GitHub",
-                                      symbol: "chevron.left.slash.chevron.right",
-                                      withURL: URL(string: "https://github.com/lucanaef/PGPro")!)
-    let privacyPolicy       = Setting(title: "Privacy Policy",
-                                      symbol: "eye.slash",
-                                      withURL: URL(string: "https://pgpro.app/privacypolicy/")!)
-    let licenses            = Setting(title: "Licenses",
-                                      symbol: "scroll",
-                                      to: LicensesViewController())
+    let deleteAllKeys = Setting(
+        title: NSLocalizedString("Delete Keychain", comment: "The option to delete all keychains in settings"),
+        symbol: "trash",
+        actionType: Setting.ActionType.destructive
+    ) {
+        ContactListService.deleteAllData()
+    }
+    let mailIntegration = Setting(
+        title: NSLocalizedString("Mail Integration", comment: "The option to set up mail integration in settings"),
+        symbol: "envelope",
+        to: MailIntegrationViewController()
+    )
+    let authentication = Setting(
+        title: NSLocalizedString("App Launch Authentication", comment: "The option to set up authentication in settings"),
+        symbol: AuthenticationService.symbolName,
+        forKey: Preferences.UserDefaultsKeys.biometricAuthentication,
+        enabled: Constants.User.canUseBiometrics
+    )
+    let reportIssue = Setting(
+        title: NSLocalizedString("Report Issue", comment: "The option to report issue in settings"),
+        symbol: "ladybug",
+        withURL: URL(string: "https://github.com/lucanaef/PGPro/issues")!
+    )
+    let joinBeta = Setting(
+        title: NSLocalizedString("Join the PGPro Beta", comment: "The option to join PGPro Beta"),
+        symbol: "airplane",
+        withURL: URL(string: "https://testflight.apple.com/join/BNawuaNF")!
+    )
+    let askForRating = Setting(
+        title: NSLocalizedString("Please Rate PGPro", comment: "The option to ask for rating"),
+        symbol: "heart",
+        subtitle: String(format: NSLocalizedString("%d PEOPLE HAVE RATED PGPRO IN YOUR REGION", comment: "The format of subtitle of ask for rating option"), Constants.PGPro.numRatings),
+        withURL: URL(string: "https://itunes.apple.com/app/id\(Constants.PGPro.appID)?action=write-review")!
+    )
+    let faq = Setting(
+        title: NSLocalizedString("Frequently Asked Questions", comment: "The option to go to FAQs"),
+        symbol: "questionmark.circle",
+        withURL: URL(string: "https://pgpro.app/faq/")!
+    )
+    let contribute = Setting(
+        title: NSLocalizedString("Contribute on GitHub", comment: "The option to contribute on GitHub"),
+        symbol: "chevron.left.slash.chevron.right",
+        withURL: URL(string: "https://github.com/lucanaef/PGPro")!
+    )
+    let privacyPolicy = Setting(
+        title: NSLocalizedString("Privacy Policy", comment: "The option for privacy policy"),
+        symbol: "eye.slash",
+        withURL: URL(string: "https://pgpro.app/privacypolicy/")!
+    )
+    let licenses = Setting(
+        title: NSLocalizedString("Licenses", comment: "The option for licenses"),
+        symbol: "scroll",
+        to: LicensesViewController()
+    )
 }

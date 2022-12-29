@@ -84,8 +84,18 @@ class EncryptionViewController: UIViewController {
     }
 
     private func setupView() {
-        self.tabBarItem.title = "Encryption"
-        self.navigationItem.title = "Encrypt Message"
+        self.tabBarItem.title = NSLocalizedString(
+            "Encryption",
+            comment: """
+            The tab bar item title of the 'Encryption' tab.
+            """
+        )
+        self.navigationItem.title = NSLocalizedString(
+            "Encrypt Message",
+            comment: """
+            The navigation title of the 'Encryption' tab.
+            """
+        )
         self.navigationController?.navigationBar.prefersLargeTitles = true
         let encryptButton = UIBarButtonItem(
             image: UIImage(systemName: "envelope.fill")?.withTintColor(UIColor.label),
@@ -109,8 +119,18 @@ class EncryptionViewController: UIViewController {
 
     @objc
     private func updateView() {
-        var encryptionLabel = "Select Contacts..."
-        var signatureLabel = "Add Signature..."
+        var encryptionLabel = NSLocalizedString(
+            "Select Contacts...",
+            comment: """
+            The placeholder label to prompt the selection of a destination contact within encryption tab.
+            """
+        )
+        var signatureLabel = NSLocalizedString(
+            "Add Signature...",
+            comment: """
+            The placeholder label to prompt the selection of a contact used for signature within encryption tab.
+            """
+        )
 
         let encryptionCount = encryptionContacts.count
 
@@ -136,21 +156,44 @@ class EncryptionViewController: UIViewController {
 
     @objc
     private func clearView() {
-        let dialogMessage = UIAlertController(title: "Delete this message",
-                                              message: "",
-                                              preferredStyle: .alert)
+        let dialogMessage = UIAlertController(
+            title: NSLocalizedString(
+                "Delete this message",
+                comment: """
+                The confirmation dialogue text to delete the message that would have been encrypted.
+                """
+            ),
+            message: "",
+            preferredStyle: .alert
+        )
 
         // Create OK button with action handler
-        let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
+        let confirm = UIAlertAction(
+            title: NSLocalizedString(
+                "Confirm",
+                comment: """
+                The button to confirm the clearing of text within encryption tab.
+                """
+            ),
+            style: .destructive
+        ) { (_) -> Void in
             self.resetSelection()
             self.signatureKeyPassphrase = nil
             self.textView.text = ""
             self.textView.textViewDidChange(self.textView)
             self.tableView.reloadData()
-        })
+        }
 
         // Create Cancel button with action handlder
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) -> Void in
+        let cancel = UIAlertAction(
+            title: NSLocalizedString(
+                "Cancel",
+                comment: """
+                The button to cancel the clearing of text within encryption tab.
+                """
+            ),
+            style: .cancel
+        ) { (_) -> Void in
             return
         }
 
@@ -196,11 +239,19 @@ class EncryptionViewController: UIViewController {
         updateView()
     }
 
+    // swiftlint:disable function_body_length
     @objc
     private func encrypt() {
         guard let text = textView.text else { return }
         guard !encryptionContacts.isEmpty else {
-            alert(text: "Select Public Keys First!")
+            alert(
+                text: NSLocalizedString(
+                    "Select Public Keys First!",
+                    comment: """
+                    An alert that is prompted when user attempts to encrypt without a public key.
+                    """
+                )
+            )
             return
         }
 
@@ -213,18 +264,39 @@ class EncryptionViewController: UIViewController {
                 // Check that encryption contacts don't contain private keys
                 let noPrivateKeys = encryptionContacts.filter { $0.key.isSecret }.isEmpty
                 guard noPrivateKeys else {
-                    alert(text: "PGPro does not support signing messages if the encryption contacts include private keys.")
+                    alert(
+                        text: NSLocalizedString(
+                            "PGPro does not support signing messages if the encryption contacts include private keys.",
+                            comment: """
+                            The alert text prompted when user attempts to select a contact with private keys in the encryption tab.
+                            """
+                        )
+                    )
                     return
                 }
 
                 // Check that there is a valid non-nil passphrase for the signing key
                 if passphraseRequired {
                     guard let signatureKeyPassphrase = signatureKeyPassphrase else {
-                        alert(text: "Signing requires the passphrase of the private Key!")
+                        alert(
+                            text: NSLocalizedString(
+                                "Signing requires the passphrase of the private Key!",
+                                comment: """
+                                The alert text prompted when user misses the passphrase in the encryption tab.
+                                """
+                            )
+                        )
                         return
                     }
                     guard CryptographyService.passphraseIsCorrect(signatureKeyPassphrase, for: signatureContact.key) else {
-                        alert(text: "Incorrect Passphrase!")
+                        alert(
+                            text: NSLocalizedString(
+                                "Incorrect Passphrase!",
+                                comment: """
+                                The alert text prompted when the passphrase does not match in the encryption tab.
+                                """
+                            )
+                        )
                         return
                     }
                 }
@@ -244,14 +316,44 @@ class EncryptionViewController: UIViewController {
         } catch {
             switch error {
             case CryptographyError.emptyMessage:
-                alert(text: "Please enter message first!")
+                alert(
+                    text: NSLocalizedString(
+                        "Please enter message first!",
+                        comment: """
+                        The alert text prompted when the message is empty in the encryption tab.
+                        """
+                    )
+                )
             case CryptographyError.invalidMessage:
-                alert(text: "Message is invalid!")
+                alert(
+                    text: NSLocalizedString(
+                        "Message is invalid!",
+                        comment: """
+                        The alert text prompted when the message is invalid in the encryption tab.
+                        """
+                    )
+                )
             case CryptographyError.frameworkError(let frameworkError):
-                alert(text: "Encryption failed (Framework Error)!")
+                alert(
+                    text: NSLocalizedString(
+                        "Encryption failed (Framework Error)!",
+                        comment: """
+                        The alert text prompted when the message encryption encountered an error
+                        happened within the framework in the encryption tab.
+                        """
+                    )
+
+                )
                 Log.e(frameworkError)
             default:
-                alert(text: "Encryption failed!")
+                alert(
+                    text: NSLocalizedString(
+                        "Encryption failed!",
+                        comment: """
+                        The alert text prompted when the message encryption encountered an unknown error in the encryption tab.
+                        """
+                    )
+                )
                 Log.e(error)
             }
             return
@@ -275,11 +377,25 @@ class EncryptionViewController: UIViewController {
             } catch let error as MailIntegrationError {
                 switch error {
                 case .noSelectedClient:
-                    alert(text: "No mail client selected! Mail Integration will be disabled.")
+                    alert(
+                        text: NSLocalizedString(
+                            "No mail client selected! Mail Integration will be disabled.",
+                            comment: """
+                            The alert text prompted when the user attempts to send a mail but there is no selected client.
+                            """
+                        )
+                    )
                     MailIntegration.isEnabled = false
                     Log.e(error)
                 case .cannotComposeWhileDisabled:
-                    alert(text: "Failed to compose email!")
+                    alert(
+                        text: NSLocalizedString(
+                            "Failed to compose email!",
+                            comment: """
+                            The alert text prompted when failed to compose mail because the function is disabled.
+                            """
+                        )
+                    )
                     MailIntegration.isEnabled = false
                     Log.e(error)
 
@@ -289,7 +405,14 @@ class EncryptionViewController: UIViewController {
                     self.present(activityVC, animated: true, completion: nil)
                 }
             } catch {
-                alert(text: "Failed to compose email! Mail Integration will be disabled.")
+                alert(
+                    text: NSLocalizedString(
+                        "Failed to compose email! Mail Integration will be disabled.",
+                        comment: """
+                        The alert text prompted when failed to compose mail.
+                        """
+                    )
+                )
                 MailIntegration.isEnabled = false
                 Log.e(error)
 
@@ -339,7 +462,7 @@ extension EncryptionViewController: UITableViewDataSource, UITableViewDelegate {
             cell.accessoryType = .disclosureIndicator
         case EncryptionRows.passphrase.rawValue:
             let passphraseCell = FullTextFieldTableViewCell(style: .value1, reuseIdentifier: "FDTextFieldTableViewCell")
-            passphraseCell.textField.placeholder = "Passphrase"
+            passphraseCell.textField.placeholder = NSLocalizedString("Passphrase", comment: "The placeholder text of the passphrase text field")
             passphraseCell.textField.text = signatureKeyPassphrase
             passphraseCell.textField.clearButtonMode = .never
             passphraseCell.textField.textContentType = .password

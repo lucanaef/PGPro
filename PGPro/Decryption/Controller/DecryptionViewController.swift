@@ -26,7 +26,12 @@ class DecryptionViewController: UIViewController {
         didSet { updateView() }
     }
     private var passphrase: String?
-    private var selectionLabel = "Select Private Key..."
+    private var selectionLabel = NSLocalizedString(
+        "Select Private Key...",
+        comment: """
+        The label of select private key option in the decrypt tab.
+        """
+    )
 
     lazy private var tableView: UITableView = {
         let tableView = UITableView()
@@ -71,8 +76,18 @@ class DecryptionViewController: UIViewController {
     }
 
     private func setupView() {
-        self.tabBarItem.title = "Decryption"
-        self.navigationItem.title = "Decrypt Message"
+        self.tabBarItem.title = NSLocalizedString(
+            "Decryption",
+            comment: """
+            The title of the bar item of select private key option in the decrypt tab.
+            """
+        )
+        self.navigationItem.title = NSLocalizedString(
+            "Decrypt Message",
+            comment: """
+            The navigation title of the decrypt tab.
+            """
+        )
         self.navigationController?.navigationBar.prefersLargeTitles = true
         let decryptButton = UIBarButtonItem(
             image: UIImage(systemName: "envelope.open.fill")?.withTintColor(UIColor.label),
@@ -95,7 +110,13 @@ class DecryptionViewController: UIViewController {
 
     @objc
     private func updateView() {
-        var label = "Select Private Key..."
+        var label = NSLocalizedString(
+            "Select Private Key...",
+            comment: """
+            The label to prompt user to choose a private key within the decrypt tab
+            """
+        )
+
         if let decryptionContact = decryptionContact {
             label = decryptionContact.userID
         }
@@ -106,27 +127,52 @@ class DecryptionViewController: UIViewController {
 
     @objc
     private func clearView() {
-       let dialogMessage = UIAlertController(title: "Delete this message",
-                                             message: "",
-                                             preferredStyle: .alert)
+        let dialogMessage = UIAlertController(
+            title: NSLocalizedString(
+                "Delete this message",
+                comment: """
+                The confirmation dialogue text to delete the message that would have been decrypted.
+                """
+            ),
+            message: "",
+            preferredStyle: .alert
+        )
 
-       // Create OK button with action handler
-       let confirm = UIAlertAction(title: "Confirm", style: .destructive, handler: { (_) -> Void in
+        // Create OK button with action handler
+        let confirm = UIAlertAction(
+            title: NSLocalizedString(
+                "Confirm",
+                comment: """
+                The button to confirm the clearing of text within decrypttion tab.
+                """
+            ),
+            style: .destructive
+        ) { (_) -> Void in
             self.decryptionContact = nil
             self.encryptedMessage = nil
             self.passphrase = nil
             self.updateView()
-       })
+        }
 
-       // Create Cancel button with action handlder
-       let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) -> Void in return }
+        // Create Cancel button with action handlder
+        let cancel = UIAlertAction(
+            title: NSLocalizedString(
+                "Cancel",
+                comment: """
+                The button to cancel the clearing of text within decrypttion tab.
+                """
+            ),
+            style: .cancel
+        ) { (_) -> Void in
+            return
+        }
 
-       // Add Confirm and Cancel button to dialog message
-       dialogMessage.addAction(confirm)
-       dialogMessage.addAction(cancel)
+        // Add Confirm and Cancel button to dialog message
+        dialogMessage.addAction(confirm)
+        dialogMessage.addAction(cancel)
 
-       // Present dialog message to user
-       self.present(dialogMessage, animated: true, completion: nil)
+        // Present dialog message to user
+        self.present(dialogMessage, animated: true, completion: nil)
     }
 
     @objc
@@ -139,7 +185,14 @@ class DecryptionViewController: UIViewController {
     private func decrypt() {
         guard let encryptedMessage = encryptedMessage else { return }
         guard let decryptionContact = decryptionContact else {
-            alert(text: "No Private Key Selected!")
+            alert(
+                text: NSLocalizedString(
+                    "No Private Key Selected!",
+                    comment: """
+                    The button to cancel the clearing of text within decrypttion tab.
+                    """
+                )
+            )
             return
         }
 
@@ -155,27 +208,79 @@ class DecryptionViewController: UIViewController {
         }
 
         do {
-            let decryptedMessage = try CryptographyService.decrypt(message: encryptedMessage,
-                                                                   by: decryptionContact,
-                                                                   withPassphrase: passphrase)
+            let decryptedMessage = try CryptographyService.decrypt(
+                message: encryptedMessage,
+                by: decryptionContact,
+                withPassphrase: passphrase
+            )
             present(decryptedMessage)
         } catch let error {
             switch error {
             case CryptographyError.emptyMessage:
-                alert(text: "Please enter message first!")
+                alert(
+                    text: NSLocalizedString(
+                        "Please enter message first!",
+                        comment: """
+                        The alert text prompted when the message is empty in the decryption tab.
+                        """
+                    )
+                )
             case CryptographyError.invalidMessage:
-                alert(text: "Message is invalid!")
+                alert(
+                    text: NSLocalizedString(
+                        "Message is invalid!",
+                        comment: """
+                        The alert text prompted when the message is invalid in the decryption tab.
+                        """
+                    )
+                )
             case CryptographyError.requiresPassphrase:
-                alert(text: "Decryption requires passphrase!")
+                alert(
+                    text: NSLocalizedString(
+                        "Decryption requires passphrase!",
+                        comment: """
+                        The alert text prompted when the decryption requires a passphrase in the decryption tab.
+                        """
+                    )
+                )
             case CryptographyError.wrongPassphrase:
-                alert(text: "Wrong passphrase!")
+                alert(
+                    text: NSLocalizedString(
+                        "Wrong passphrase!",
+                        comment: """
+                        The alert text prompted when the passphrase is incorrect in the decryption tab.
+                        """
+                    )
+                )
             case CryptographyError.frameworkError(let frameworkError):
-                alert(text: "Decryption failed!")
+                alert(
+                    text: NSLocalizedString(
+                        "Decryption failed!",
+                        comment: """
+                        The alert text prompted when the decryption failed (due to framework error)
+                        in the decryption tab.
+                        """
+                    )
+                )
                 Log.e(frameworkError)
             case CryptographyError.failedDecryption:
-                alert(text: "Decryption failed!")
+                alert(
+                    text: NSLocalizedString(
+                        "Decryption failed!",
+                        comment: """
+                        The alert text prompted when the decryption failed in the decryption tab.
+                        """
+                    )
+                )
             default:
-                alert(text: "Decryption failed!")
+                alert(
+                    text: NSLocalizedString(
+                        "Decryption failed!",
+                        comment: """
+                        The alert text prompted when the decryption failed in the decryption tab.
+                        """
+                    )
+                )
                 Log.e(error)
             }
             return
@@ -233,7 +338,7 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
             cell.accessoryType = .disclosureIndicator
         case DecryptionRows.passphrase.rawValue:
             let passphraseCell = FullTextFieldTableViewCell(style: .value1, reuseIdentifier: "FDTextFieldTableViewCell")
-            passphraseCell.textField.placeholder = "Passphrase"
+            passphraseCell.textField.placeholder = NSLocalizedString("Passphrase", comment: "The placeholder text of the passphrase text field")
             passphraseCell.textField.text = passphrase
             passphraseCell.textField.clearButtonMode = .never
             passphraseCell.textField.textContentType = .password
@@ -241,7 +346,12 @@ extension DecryptionViewController: UITableViewDataSource, UITableViewDelegate {
             passphraseCell.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             cell = passphraseCell
         case DecryptionRows.pasteFromClipboard.rawValue:
-            cell.textLabel?.text = " Paste from Clipboard"
+            cell.textLabel?.text = NSLocalizedString(
+                " Paste from Clipboard",
+                comment: """
+                The text that prompts the option of pasting from clipboard
+                """
+            )
             if let symbol = UIImage(systemName: "doc.on.clipboard"), let imageView = cell.imageView {
                 imageView.image = symbol.withTintColor(UIColor.label)
             }
