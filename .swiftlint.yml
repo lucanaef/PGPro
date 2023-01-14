@@ -1,5 +1,38 @@
-# SwiftLint Configuration
-# https://github.com/realm/SwiftLint
+opt_in_rules:
+  - closure_end_indentation
+  - closure_spacing
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
+  - contains_over_first_not_nil
+  - convenience_type
+  - empty_collection_literal
+  - empty_count
+  - empty_string
+  - explicit_init
+  - fallthrough
+  - fatal_error_message
+  - first_where
+  - flatmap_over_map_reduce
+  - identical_operands
+  - modifier_order
+  - multiline_literal_brackets
+  - nslocalizedstring_key
+  - number_separator
+  - overridden_super_call
+  - prefer_zero_over_explicit_init
+  - sorted_first_last
+  - sorted_imports
+  - static_operator
+  - toggle_bool
+  - unavailable_function
+  - untyped_error_in_catch
+  - unused_import
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace_between_cases
+  - vertical_whitespace_closing_braces
+  - vertical_whitespace_opening_braces
+  - yoda_condition
 
-disabled_rules:
-  - line_length
+line_length:
+  warning: 200
+  error: 500

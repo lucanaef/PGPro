@@ -1,30 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "emptydataset-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Xiaoye220/EmptyDataSet-Swift",
-      "state" : {
-        "branch" : "master",
-        "revision" : "ffaa10404b3c7582532887adc7a0f8558f656673"
-      }
-    },
-    {
-      "identity" : "mimeparser",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/miximka/MimeParser",
-      "state" : {
-        "branch" : "master",
-        "revision" : "07eb0fc2f4386767ef8a8204963f8122a0889663"
-      }
-    },
-    {
       "identity" : "objectivepgp",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/ObjectivePGP.git",
+      "location" : "https://github.com/krzyzanowskim/ObjectivePGP",
       "state" : {
         "branch" : "main",
-        "revision" : "0dc7ca7ffe193095dc37456b0c75be167a2026f4"
+        "revision" : "4475c8707dbbe7deb34788ece859bd1d8944011d"
       }
     },
     {
@@ -32,26 +14,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ivanvorobei/SPAlert",
       "state" : {
-        "revision" : "5fd3e2923d26f0f0b40f0e6c10fca458a61a73c4",
-        "version" : "4.2.0"
-      }
-    },
-    {
-      "identity" : "swifttrycatch",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/seanparsons/SwiftTryCatch.git",
-      "state" : {
-        "branch" : "master",
-        "revision" : "6a177252cfa2ef649b0aa7b2d16ab221386ca51c"
+        "branch" : "main",
+        "revision" : "979a716b640b9e277b28f15f99ed35733694c844"
       }
     },
     {
       "identity" : "thirdpartymailer",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vtourraine/ThirdPartyMailer",
+      "location" : "https://github.com/vtourraine/ThirdPartyMailer.git",
       "state" : {
         "branch" : "main",
-        "revision" : "0d9a82956105dd60a19caf5c8628669e9af91a05"
+        "revision" : "53e6b1ac9eb5147ca07d23a8f520dda439b775ea"
       }
     }
   ],
