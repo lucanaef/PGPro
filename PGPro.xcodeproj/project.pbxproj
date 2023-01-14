@@ -795,7 +795,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PGPro/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = PGPro;
+				INFOPLIST_KEY_CFBundleDisplayName = "PGPro Beta";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) Biometric Authentication";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -830,7 +830,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PGPro/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = PGPro;
+				INFOPLIST_KEY_CFBundleDisplayName = "PGPro Beta";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) Biometric Authentication";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
