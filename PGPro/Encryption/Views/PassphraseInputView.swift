@@ -19,14 +19,30 @@ import ObjectivePGP
 import SwiftUI
 
 struct PassphraseInputView: View {
+    @Environment(\.dismiss) var dismiss
+
     var contacts: [Contact]
     @Binding var passphraseForKey: [Key: String]
+
+    var onDismiss: (() -> Void)?
+
+    private var allPassphrasesCorrectlyEntered: Bool {
+        contacts.filter({ $0.requiresPassphrase }).allSatisfy { contact in
+            if let key = contact.primaryKey, let passphrase = passphraseForKey[key] {
+                return OpenPGP.verifyPassphrase(passphrase, for: key)
+            } else {
+                return false
+            }
+        }
+    }
 
     var body: some View {
         NavigationView {
             Form {
                 ForEach(contacts) { contact in
-                    SinglePassphraseInputView(contact: contact, passphraseForKey: $passphraseForKey)
+                    SinglePassphraseInputView(contact: contact, passphraseForKey: $passphraseForKey) {
+                        if allPassphrasesCorrectlyEntered { dismiss() }
+                    }
                 }
             }
             .background(Color(UIColor.systemGroupedBackground))
@@ -39,6 +55,8 @@ struct PassphraseInputView: View {
 
         @Binding var passphraseForKey: [Key: String]
 
+        var onComplete: (() -> Void)?
+
         @State private var passphrase: String = ""
         @State private var passphraseIsCorrect: Bool?
 
@@ -47,6 +65,7 @@ struct PassphraseInputView: View {
                 passphraseIsCorrect = nil
             } else if let key = contact.primaryKey {
                 passphraseIsCorrect = OpenPGP.verifyPassphrase(passphrase, for: key)
+                if passphraseIsCorrect ?? false { onComplete?() }
             } else {
                 Log.e("Failed to unwrap primary key for contact \(contact.id)")
                 passphraseIsCorrect = nil
