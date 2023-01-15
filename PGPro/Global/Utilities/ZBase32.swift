@@ -27,6 +27,7 @@ public class ZBase32 {
 
     private static let alphabet = Array("ybndrfg8ejkmcpqxot1uwisza345h769")
 
+    // swiftlint:disable function_body_length
     public static func encode(_ data: Data, appendPadding padded: Bool) -> String {
         var result = String()
 
@@ -81,6 +82,7 @@ public class ZBase32 {
 
         return result
     }
+    // swiftlint:enable function_body_length
 }
 
 extension Data {

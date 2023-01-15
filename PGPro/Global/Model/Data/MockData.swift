@@ -20,6 +20,7 @@ import Foundation
 class MockData {
     private init() {}
 
+    // swiftlint:disable large_tuple
     private static let users: [(String, String, String)] = [
         ("Winston Smith", "winston.smith@pgpro.app", "winston"),
         ("O'Brien", "obrien@pgpro.app", "obrien"),
@@ -30,6 +31,7 @@ class MockData {
         ("Emmanuel Goldstein", "e.goldstein@pgpro.app", "emmanuel"),
         ("Tillotson", "tillotson@pgpro.app", "tillotson")
     ]
+    // swiftlint:enable large_tuple
 
     static var contacts: [Contact] {
         var data: [Contact] = []
