@@ -179,10 +179,11 @@ struct EncryptionView: View {
                 Button(action: {
                     // Ask for passphrases if required
                     presentingPassphraseInput = viewModel.passphraseInputRequired
-                    Log.d("viewModel.signers.filter({ $0.requiresPassphrase }).count = \(viewModel.signers.filter({ $0.requiresPassphrase }).count)")
-                    Log.d("viewModel.passphraseForKey.count = \(viewModel.passphraseForKey.count)")
-                    // TODO: Call OpenPGP.encrypt(...) and present result
-                    print("Encrypt...")
+
+                    // Check if all required passphrases are known
+                    if !viewModel.somePassphrasesRequired {
+                        encryptMessage()
+                    }
                 }, label: {
                     Text("Encrypt")
                         .frame(maxWidth: .infinity)
@@ -190,9 +191,12 @@ struct EncryptionView: View {
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .padding(.vertical)
-                .disabled(!viewModel.readyForEncryption)
+                .disabled(!viewModel.readyForEncryptionOrPassphrases)
                 .sheet(isPresented: $presentingPassphraseInput) {
-                    PassphraseInputView(contacts: viewModel.signers.filter({ $0.requiresPassphrase }), passphraseForKey: $viewModel.passphraseForKey)
+                    PassphraseInputView(contacts: viewModel.signers.filter({ $0.requiresPassphrase }), passphraseForKey: $viewModel.passphraseForKey, onDismiss: {
+                        encryptMessage()
+                    })
+                    .interactiveDismissDisabled(true)
                 }
             }
             .padding()
@@ -200,6 +204,12 @@ struct EncryptionView: View {
             .navigationTitle("Encryption")
             .ignoresSafeArea(.keyboard)
         }
+    }
+
+    private func encryptMessage() {
+        // TODO: Present result or error
+        let encryptedMessage = viewModel.encrypt()
+        Log.d(encryptedMessage)
     }
 }
 

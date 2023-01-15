@@ -29,14 +29,43 @@ class EncryptionViewModel: ObservableObject {
     let placeholder = "Type here to enter your message..."
     @Published var message: String = "Type here to enter your message..."
 
-    var readyForEncryption: Bool {
+    var readyForEncryptionOrPassphrases: Bool {
         !recipients.isEmpty && !message.isEmpty && message != placeholder
     }
 
     @Published var passphraseInputRequired: Bool = false
 
+    var somePassphrasesRequired: Bool {
+        return !signers.filter({ $0.requiresPassphrase }).allSatisfy({ contact in
+            if let key = contact.primaryKey, let passphrase = passphrase(for: key) {
+                return OpenPGP.verifyPassphrase(passphrase, for: key)
+            } else {
+                Log.d("returning false...")
+                return false
+            }
+        })
+    }
+
     var passphraseForKey: [Key: String] = [:]
     func passphrase(for key: Key) -> String? {
         return passphraseForKey[key]
+    }
+
+    func encrypt() -> String? {
+        guard !somePassphrasesRequired else {
+            Log.e("Not all required passphrases entered.")
+            return nil
+        }
+
+        do {
+            let encryptedMessage = try OpenPGP.encrypt(message: message,
+                                                       for: Array(recipients),
+                                                       signed: Array(signers),
+                                                       passphraseForKey: passphrase)
+            return encryptedMessage
+        } catch {
+            Log.e(error)
+            return nil
+        }
     }
 }

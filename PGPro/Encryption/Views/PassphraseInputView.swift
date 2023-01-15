@@ -41,7 +41,10 @@ struct PassphraseInputView: View {
             Form {
                 ForEach(contacts) { contact in
                     SinglePassphraseInputView(contact: contact, passphraseForKey: $passphraseForKey) {
-                        if allPassphrasesCorrectlyEntered { dismiss() }
+                        if allPassphrasesCorrectlyEntered {
+                            dismiss()
+                            onDismiss?()
+                        }
                     }
                 }
             }
