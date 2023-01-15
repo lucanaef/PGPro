@@ -20,9 +20,16 @@ import SwiftUI
 struct EncryptionView: View {
     @StateObject private var viewModel = EncryptionViewModel()
 
+    @AppStorage(UserDefaultsKeys.mailIntegrationEnabled) var mailIntegrationEnabled: Bool = false
+
     @FocusState private var presentingKeyboard: Bool
 
     @State private var presentingPassphraseInput: Bool = false
+    @State private var presentingCopiedToClipboard: Bool = false
+    @State private var presentingEncryptionError: Bool = false
+    @State private var presentingMailComposeError: Bool = false
+
+    @State private var encryptionErrorMessage: String?
 
     private struct HeaderView: View {
         var title: String
@@ -203,13 +210,50 @@ struct EncryptionView: View {
             .background(Color(UIColor.systemGroupedBackground))
             .navigationTitle("Encryption")
             .ignoresSafeArea(.keyboard)
+            .SPAlert(isPresent: $presentingCopiedToClipboard,
+                     title: "Copied to Clipboard!",
+                     duration: 2.0,
+                     dismissOnTap: true,
+                     preset: .done,
+                     haptic: .success)
+            .SPAlert(isPresent: $presentingEncryptionError,
+                     title: "Encryption failed!",
+                     message: encryptionErrorMessage,
+                     duration: 2.0,
+                     dismissOnTap: true,
+                     preset: .error,
+                     haptic: .error)
+            .SPAlert(isPresent: $presentingMailComposeError,
+                     title: "Failed to compose email!",
+                     duration: 2.0,
+                     dismissOnTap: true,
+                     preset: .error,
+                     haptic: .error)
         }
     }
 
     private func encryptMessage() {
-        // TODO: Present result or error
-        let encryptedMessage = viewModel.encrypt()
-        Log.d(encryptedMessage)
+        do {
+            let encryptedMessage = try viewModel.encrypt()
+
+            if mailIntegrationEnabled {
+                // Compose email
+                do {
+                    try MailIntegration.compose(recipients: viewModel.recipients.map({ $0.email }).filter({ $0.isValidEmail }), body: encryptedMessage)
+                } catch {
+                    // Present error
+                    presentingMailComposeError = true
+                }
+            } else {
+                // Copy encrypted message to clipboard
+                UIPasteboard.general.string = encryptedMessage
+                presentingCopiedToClipboard = true
+            }
+        } catch {
+            // Present error
+            encryptionErrorMessage = error.localizedDescription
+            presentingEncryptionError = true
+        }
     }
 }
 

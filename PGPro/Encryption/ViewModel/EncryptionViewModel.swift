@@ -51,21 +51,7 @@ class EncryptionViewModel: ObservableObject {
         return passphraseForKey[key]
     }
 
-    func encrypt() -> String? {
-        guard !somePassphrasesRequired else {
-            Log.e("Not all required passphrases entered.")
-            return nil
-        }
-
-        do {
-            let encryptedMessage = try OpenPGP.encrypt(message: message,
-                                                       for: Array(recipients),
-                                                       signed: Array(signers),
-                                                       passphraseForKey: passphrase)
-            return encryptedMessage
-        } catch {
-            Log.e(error)
-            return nil
-        }
+    func encrypt() throws -> String {
+        return try OpenPGP.encrypt(message: message, for: Array(recipients), signed: Array(signers), passphraseForKey: passphrase)
     }
 }
