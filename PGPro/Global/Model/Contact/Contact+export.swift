@@ -49,7 +49,7 @@ extension Contact {
                 let url = FileManager.default.temporaryDirectory
                         .appendingPathComponent("keychain")
                         .appendingPathExtension("gpg")
-                try keyring.export().write(to: url)
+                try keyring.export().write(to: url, options: .completeFileProtection)
                 return .success(url)
             } catch {
                 Log.e(error)
