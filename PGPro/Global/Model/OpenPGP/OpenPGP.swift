@@ -97,6 +97,7 @@ class OpenPGP {
     // MARK: Decryption
 
     static func decrypt(message: String, for contact: Contact, withPassphrase passphrase: String? = nil) throws -> String {
+        // TODO: Implement
         return ""
     }
 
