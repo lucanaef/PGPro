@@ -51,8 +51,10 @@ struct MailIntegrationPreferenceView: View {
                                     .resizable()
                                     .frame(width: 30.0, height: 30.0)
                                     .shadow(radius: 0.5)
+                                    .grayscale(MailIntegration.isAvailable(client) ? 0.0 : 1.0)
                                 VStack(alignment: .leading) {
                                     Text(client.name)
+                                        .foregroundColor(MailIntegration.isAvailable(client) ? Color(UIColor.label) : .gray)
                                     if !MailIntegration.isAvailable(client) {
                                         Text("Not installed")
                                             .font(.caption)
