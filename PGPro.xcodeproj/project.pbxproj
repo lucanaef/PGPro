@@ -48,6 +48,7 @@
 		819CD9FF290E9AB3006B4804 /* Color+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9FE290E9AB3006B4804 /* Color+RawRepresentable.swift */; };
 		81A0F58E290D31F30091C3B9 /* KeychainCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A0F58D290D31F30091C3B9 /* KeychainCardView.swift */; };
 		81A60B4628FFE17500177647 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A60B4528FFE17500177647 /* MainView.swift */; };
+		81AEC9C929746C7800AC31C1 /* Contact+export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEC9C829746C7800AC31C1 /* Contact+export.swift */; };
 		81B2D10A29213DA800DB92D9 /* Contact+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B2D10929213DA800DB92D9 /* Contact+Equatable.swift */; };
 		81C9D70A292045FF00BCA788 /* Contact+add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D709292045FF00BCA788 /* Contact+add.swift */; };
 		81C9D70C292054F300BCA788 /* String+slice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D70B292054F300BCA788 /* String+slice.swift */; };
@@ -112,6 +113,7 @@
 		819CD9FE290E9AB3006B4804 /* Color+RawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+RawRepresentable.swift"; sourceTree = "<group>"; };
 		81A0F58D290D31F30091C3B9 /* KeychainCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainCardView.swift; sourceTree = "<group>"; };
 		81A60B4528FFE17500177647 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		81AEC9C829746C7800AC31C1 /* Contact+export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+export.swift"; sourceTree = "<group>"; };
 		81B2D10929213DA800DB92D9 /* Contact+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Equatable.swift"; sourceTree = "<group>"; };
 		81C9D709292045FF00BCA788 /* Contact+add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+add.swift"; sourceTree = "<group>"; };
 		81C9D70B292054F300BCA788 /* String+slice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+slice.swift"; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 				8193DA7B29118E9900F103D5 /* Contact+Identifiable.swift */,
 				8193DA83291190ED00F103D5 /* Contact+OpenPGP.swift */,
 				81C9D709292045FF00BCA788 /* Contact+add.swift */,
+				81AEC9C829746C7800AC31C1 /* Contact+export.swift */,
 			);
 			path = Contact;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 				8178B4B628FEF4710027AACF /* SettingsView.swift in Sources */,
 				8157F56D292BCDA7001EA784 /* EncryptionViewModel.swift in Sources */,
 				8193DA822911907300F103D5 /* OpenPGP.swift in Sources */,
+				81AEC9C929746C7800AC31C1 /* Contact+export.swift in Sources */,
 				81DC4F2129203F8F00C1AE11 /* KeyserverSearchResultCardView.swift in Sources */,
 				81ECDA6C290D6E5C00BD7640 /* InitialsView.swift in Sources */,
 				8157F56F292BCE47001EA784 /* PassphraseInputView.swift in Sources */,
