@@ -15,10 +15,37 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import SPAlert
 import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.openURL) var openURL
+
+    @State private var exportingKeychain: Bool = false
+    @State private var keychainExportFailed: Bool = false
+    @State private var keychainExportFailedErrorMessage: String? = nil
+    @State private var keychainExportURL: URL? = nil
+    
+    @State private var presentingKeychainExport: Bool = false
+
+    private func exportKeychain() {
+        exportingKeychain = true
+
+        let result = Contact.exportAll()
+        switch result {
+        case .success(let url):
+            Log.i("Export successful: url = \(url)")
+            exportingKeychain = false
+            keychainExportURL = url
+            presentingKeychainExport = true
+
+        case .failure(let error):
+            Log.e(error)
+            exportingKeychain = false
+            keychainExportFailedErrorMessage = error.localizedDescription
+            keychainExportFailed = true
+        }
+    }
 
     var body: some View {
         NavigationView {
@@ -26,8 +53,7 @@ struct SettingsView: View {
                 Section("Data") {
                     Group {
                         Button {
-                            // TODO: Implement
-                            print("Button pressed")
+                            exportKeychain()
                         } label: {
                             Label("Export Keychain", systemImage: "square.and.arrow.up.fill")
                                 .labelStyle(ColorfulIconLabelStyle(color: .green))
@@ -122,6 +148,25 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+            .SPAlert(isPresent: $exportingKeychain,
+                     title: "Exporting Keychain...",
+                     preset: .spinner)
+            .SPAlert(isPresent: $keychainExportFailed,
+                     title: "Export failed!",
+                     message: keychainExportFailedErrorMessage,
+                     duration: 2.0,
+                     dismissOnTap: true,
+                     preset: .error,
+                     haptic: .error)
+            .fileMover(isPresented: $presentingKeychainExport,
+                       file: keychainExportURL) { result in
+                switch result {
+                case .success(let url):
+                    Log.i("Keychain export file moved successfully to \(url.absoluteString)")
+                case .failure(let error):
+                    Log.e("Failed to move keychain export file! \(error.localizedDescription)")
+                }
+            }
         }
     }
 }

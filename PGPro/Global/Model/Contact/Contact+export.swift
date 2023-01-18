@@ -33,7 +33,7 @@ extension Contact {
         }
     }
 
-    func exportAll() -> Result<URL, Error> {
+    static func exportAll() -> Result<URL, Error> {
         if let fetchRequest = Contact.fetchRequest() as? NSFetchRequest<Contact> {
             do {
                 // Collect keys in ephemeral keyring
