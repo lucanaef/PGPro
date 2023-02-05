@@ -16,6 +16,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import MimeParser
 import ObjectivePGP
 
 class OpenPGP {
@@ -96,9 +97,66 @@ class OpenPGP {
 
     // MARK: Decryption
 
-    static func decrypt(message: String, for contact: Contact, withPassphrase passphrase: String? = nil) throws -> String {
-        // TODO: Implement
-        return ""
+    struct DecryptionResult {
+        var message: DecryptionResultValue
+        var signatures: String
+    }
+    
+    enum DecryptionResultValue {
+        case plain(value: String)
+        case mime(value: Mime)
+    }
+
+    static func decrypt(message: String, for contact: Contact, withPassphrase passphrase: String? = nil) throws -> DecryptionResult {
+        // Parse Ciphertext
+        guard !message.isEmpty else {
+            Log.e("Message string cannot be empty.")
+            throw OpenPGPError.emptyMessage
+        }
+
+        guard let range = message.range(of: #"-----BEGIN PGP MESSAGE-----(.|\s)*-----END PGP MESSAGE-----"#, options: .regularExpression) else {
+            Log.e("Message string must contain '-----BEGIN PGP MESSAGE----- [...] -----END PGP MESSAGE-----'.")
+            throw OpenPGPError.invalidMessage
+        }
+
+        guard let messageData = String(message[range]).data(using: .ascii) else {
+            Log.e("Message must be an ASCII string.")
+            throw OpenPGPError.invalidMessage
+        }
+
+        // Check Passphrase
+        guard let key = contact.primaryKey else {
+            throw OpenPGPError.failedDecryption(description: "Unable to get key from contact.")
+        }
+
+        if contact.requiresPassphrase {
+            guard let passphrase else {
+                Log.e("Decryption key requires passphrase.")
+                throw OpenPGPError.requiresPassphrase
+            }
+
+            guard verifyPassphrase(passphrase, for: key) else {
+                throw OpenPGPError.requiresPassphrase
+            }
+        }
+
+        // Decrypt Ciphertext
+        do {
+            let decryptedMessageData = try ObjectivePGP.decrypt(messageData, andVerifySignature: false, using: [key], passphraseForKey: { _ in passphrase })
+
+            guard let decryptedMessage = String(data: decryptedMessageData, encoding: .utf8) else {
+                throw OpenPGPError.failedDecryption(description: "Decrypted message is not UTF-8.")
+            }
+
+            // Try to parse plaintext
+            if let parsedMessage = try? MimeParser().parse(decryptedMessage) {
+                return DecryptionResult(message: .mime(value: parsedMessage), signatures: "")
+            } else {
+                return DecryptionResult(message: .plain(value: decryptedMessage), signatures: "")
+            }
+        } catch {
+            throw OpenPGPError.frameworkError(error)
+        }
     }
 
     // MARK: Public Helper Functions
