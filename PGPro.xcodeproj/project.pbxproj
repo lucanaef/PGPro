@@ -50,6 +50,7 @@
 		81A60B4628FFE17500177647 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A60B4528FFE17500177647 /* MainView.swift */; };
 		81AEC9C929746C7800AC31C1 /* Contact+export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEC9C829746C7800AC31C1 /* Contact+export.swift */; };
 		81B2D10A29213DA800DB92D9 /* Contact+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B2D10929213DA800DB92D9 /* Contact+Equatable.swift */; };
+		81BB3F52298FFD7B006C12EB /* KeychainEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BB3F51298FFD7B006C12EB /* KeychainEmptyView.swift */; };
 		81C9D70A292045FF00BCA788 /* Contact+add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D709292045FF00BCA788 /* Contact+add.swift */; };
 		81C9D70C292054F300BCA788 /* String+slice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9D70B292054F300BCA788 /* String+slice.swift */; };
 		81CF5448290D98FF000ECBC3 /* LicencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CF5447290D98FF000ECBC3 /* LicencesView.swift */; };
@@ -115,6 +116,7 @@
 		81A60B4528FFE17500177647 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		81AEC9C829746C7800AC31C1 /* Contact+export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+export.swift"; sourceTree = "<group>"; };
 		81B2D10929213DA800DB92D9 /* Contact+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Equatable.swift"; sourceTree = "<group>"; };
+		81BB3F51298FFD7B006C12EB /* KeychainEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainEmptyView.swift; sourceTree = "<group>"; };
 		81C9D709292045FF00BCA788 /* Contact+add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+add.swift"; sourceTree = "<group>"; };
 		81C9D70B292054F300BCA788 /* String+slice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+slice.swift"; sourceTree = "<group>"; };
 		81CF5447290D98FF000ECBC3 /* LicencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicencesView.swift; sourceTree = "<group>"; };
@@ -454,6 +456,7 @@
 			children = (
 				81A0F58D290D31F30091C3B9 /* KeychainCardView.swift */,
 				8178B4B728FEF47C0027AACF /* KeychainView.swift */,
+				81BB3F51298FFD7B006C12EB /* KeychainEmptyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -637,6 +640,7 @@
 				81EC15902911B6E40060CDB2 /* GenerateKeyPairValidationError.swift in Sources */,
 				8178B4BE28FEF9F80027AACF /* UserAvatarView.swift in Sources */,
 				8178B4B428FEF4680027AACF /* DecryptionView.swift in Sources */,
+				81BB3F52298FFD7B006C12EB /* KeychainEmptyView.swift in Sources */,
 				813F44CE290DD17000A69C75 /* Navajo.swift in Sources */,
 				8193DA6E291181C100F103D5 /* DataController.swift in Sources */,
 				81A0F58E290D31F30091C3B9 /* KeychainCardView.swift in Sources */,

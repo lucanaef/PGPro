@@ -48,29 +48,35 @@ struct KeychainView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                Section {
-                    ForEach(contacts.filter({ $0.isPrivateKey })) { contact in
-                        NavigationLink(destination: KeyDetailView(viewModel: KeyDetailViewModel(contact))) {
-                            KeychainCardView(contact: contact)
-                                .padding(2)
+            Group {
+                if contacts.isEmpty {
+                    KeychainEmptyView()
+                } else {
+                    List {
+                        Section {
+                            ForEach(contacts.filter({ $0.isPrivateKey })) { contact in
+                                NavigationLink(destination: KeyDetailView(viewModel: KeyDetailViewModel(contact))) {
+                                    KeychainCardView(contact: contact)
+                                        .padding(2)
+                                }
+                            }
+                            .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
+                        } header: {
+                            Text("Private Keys")
                         }
-                    }
-                    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
-                } header: {
-                    Text("Private Keys")
-                }
 
-                Section {
-                    ForEach(contacts.filter({ $0.isPublicKey && !$0.isPrivateKey })) { contact in
-                        NavigationLink(destination: KeyDetailView(viewModel: KeyDetailViewModel(contact))) {
-                            KeychainCardView(contact: contact)
-                                .padding(2)
+                        Section {
+                            ForEach(contacts.filter({ $0.isPublicKey && !$0.isPrivateKey })) { contact in
+                                NavigationLink(destination: KeyDetailView(viewModel: KeyDetailViewModel(contact))) {
+                                    KeychainCardView(contact: contact)
+                                        .padding(2)
+                                }
+                            }
+                            .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
+                        } header: {
+                            Text("Public Keys")
                         }
                     }
-                    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
-                } header: {
-                    Text("Public Keys")
                 }
             }
             .navigationTitle("Keychain")
