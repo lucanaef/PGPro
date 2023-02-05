@@ -31,6 +31,8 @@
 		8178B4B628FEF4710027AACF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B528FEF4710027AACF /* SettingsView.swift */; };
 		8178B4B828FEF47C0027AACF /* KeychainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B728FEF47C0027AACF /* KeychainView.swift */; };
 		8178B4BE28FEF9F80027AACF /* UserAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4BD28FEF9F80027AACF /* UserAvatarView.swift */; };
+		8183609629903E54006F2B6E /* MimeParser in Frameworks */ = {isa = PBXBuildFile; productRef = 8183609529903E54006F2B6E /* MimeParser */; };
+		8183609B29903E9F006F2B6E /* SPAlert in Frameworks */ = {isa = PBXBuildFile; productRef = 8183609A29903E9F006F2B6E /* SPAlert */; };
 		8193DA6C29117F2F00F103D5 /* PGPro.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8193DA6A29117F2F00F103D5 /* PGPro.xcdatamodeld */; };
 		8193DA6E291181C100F103D5 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193DA6D291181C100F103D5 /* DataController.swift */; };
 		8193DA712911843400F103D5 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193DA702911843400F103D5 /* Contact.swift */; };
@@ -41,7 +43,6 @@
 		8193DA862911962300F103D5 /* String+insertedSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193DA852911962300F103D5 /* String+insertedSeparator.swift */; };
 		819CD9E5290E704B006B4804 /* TapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9E4290E704B006B4804 /* TapticEngine.swift */; };
 		819CD9F0290E75A0006B4804 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9EF290E75A0006B4804 /* UserDefaultsKeys.swift */; };
-		819CD9F5290E861D006B4804 /* SPAlert in Frameworks */ = {isa = PBXBuildFile; productRef = 819CD9F4290E861D006B4804 /* SPAlert */; };
 		819CD9F7290E8648006B4804 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9F6290E8648006B4804 /* Authentication.swift */; };
 		819CD9F9290E877D006B4804 /* AuthenticationPreferenceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9F8290E877D006B4804 /* AuthenticationPreferenceViewModel.swift */; };
 		819CD9FB290E8959006B4804 /* LaunchAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9FA290E8958006B4804 /* LaunchAuthenticationView.swift */; };
@@ -144,9 +145,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				819CD9F5290E861D006B4804 /* SPAlert in Frameworks */,
 				8193DA7F2911903900F103D5 /* ObjectivePGP in Frameworks */,
 				8122A915290EDE4D0027F36D /* ThirdPartyMailer in Frameworks */,
+				8183609B29903E9F006F2B6E /* SPAlert in Frameworks */,
+				8183609629903E54006F2B6E /* MimeParser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +284,7 @@
 			children = (
 				8178B4A028FEF3880027AACF /* PGPro */,
 				8178B49F28FEF3880027AACF /* Products */,
+				8183609729903E73006F2B6E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -317,6 +320,13 @@
 				81DC4F182920262400C1AE11 /* Logger.swift */,
 			);
 			path = "UI Elements";
+			sourceTree = "<group>";
+		};
+		8183609729903E73006F2B6E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		8193DA6829117E7600F103D5 /* Data */ = {
@@ -528,9 +538,10 @@
 			);
 			name = PGPro;
 			packageProductDependencies = (
-				819CD9F4290E861D006B4804 /* SPAlert */,
 				8122A914290EDE4D0027F36D /* ThirdPartyMailer */,
 				8193DA7E2911903900F103D5 /* ObjectivePGP */,
+				8183609529903E54006F2B6E /* MimeParser */,
+				8183609A29903E9F006F2B6E /* SPAlert */,
 			);
 			productName = "pgpro-redesign";
 			productReference = 8178B49E28FEF3880027AACF /* PGPro.app */;
@@ -564,6 +575,7 @@
 				819CD9F3290E861D006B4804 /* XCRemoteSwiftPackageReference "SPAlert" */,
 				8122A913290EDE4D0027F36D /* XCRemoteSwiftPackageReference "ThirdPartyMailer" */,
 				8193DA7D2911903900F103D5 /* XCRemoteSwiftPackageReference "ObjectivePGP" */,
+				8183609429903E54006F2B6E /* XCRemoteSwiftPackageReference "MimeParser" */,
 			);
 			productRefGroup = 8178B49F28FEF3880027AACF /* Products */;
 			projectDirPath = "";
@@ -890,24 +902,32 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/vtourraine/ThirdPartyMailer.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 2.1.0;
+			};
+		};
+		8183609429903E54006F2B6E /* XCRemoteSwiftPackageReference "MimeParser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/miximka/MimeParser";
+			requirement = {
+				kind = exactVersion;
+				version = 0.2.5;
 			};
 		};
 		8193DA7D2911903900F103D5 /* XCRemoteSwiftPackageReference "ObjectivePGP" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzyzanowskim/ObjectivePGP";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 0.99.2;
 			};
 		};
 		819CD9F3290E861D006B4804 /* XCRemoteSwiftPackageReference "SPAlert" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ivanvorobei/SPAlert";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 4.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -918,15 +938,20 @@
 			package = 8122A913290EDE4D0027F36D /* XCRemoteSwiftPackageReference "ThirdPartyMailer" */;
 			productName = ThirdPartyMailer;
 		};
+		8183609529903E54006F2B6E /* MimeParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8183609429903E54006F2B6E /* XCRemoteSwiftPackageReference "MimeParser" */;
+			productName = MimeParser;
+		};
+		8183609A29903E9F006F2B6E /* SPAlert */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 819CD9F3290E861D006B4804 /* XCRemoteSwiftPackageReference "SPAlert" */;
+			productName = SPAlert;
+		};
 		8193DA7E2911903900F103D5 /* ObjectivePGP */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8193DA7D2911903900F103D5 /* XCRemoteSwiftPackageReference "ObjectivePGP" */;
 			productName = ObjectivePGP;
-		};
-		819CD9F4290E861D006B4804 /* SPAlert */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 819CD9F3290E861D006B4804 /* XCRemoteSwiftPackageReference "SPAlert" */;
-			productName = SPAlert;
 		};
 /* End XCSwiftPackageProductDependency section */
 

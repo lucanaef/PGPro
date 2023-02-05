@@ -1,12 +1,21 @@
 {
   "pins" : [
     {
+      "identity" : "mimeparser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/miximka/MimeParser",
+      "state" : {
+        "revision" : "07eb0fc2f4386767ef8a8204963f8122a0889663",
+        "version" : "0.2.5"
+      }
+    },
+    {
       "identity" : "objectivepgp",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/ObjectivePGP",
       "state" : {
-        "branch" : "main",
-        "revision" : "4475c8707dbbe7deb34788ece859bd1d8944011d"
+        "revision" : "0dc7ca7ffe193095dc37456b0c75be167a2026f4",
+        "version" : "0.99.2"
       }
     },
     {
@@ -14,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ivanvorobei/SPAlert",
       "state" : {
-        "branch" : "main",
-        "revision" : "979a716b640b9e277b28f15f99ed35733694c844"
+        "revision" : "5fd3e2923d26f0f0b40f0e6c10fca458a61a73c4",
+        "version" : "4.2.0"
       }
     },
     {
@@ -23,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vtourraine/ThirdPartyMailer.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "53e6b1ac9eb5147ca07d23a8f520dda439b775ea"
+        "revision" : "44c1cfaa6969963f22691aa67f88a69e3b6d651f",
+        "version" : "2.1.0"
       }
     }
   ],
