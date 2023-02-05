@@ -23,9 +23,9 @@ struct SettingsView: View {
 
     @State private var exportingKeychain: Bool = false
     @State private var keychainExportFailed: Bool = false
-    @State private var keychainExportFailedErrorMessage: String? = nil
-    @State private var keychainExportURL: URL? = nil
-    
+    @State private var keychainExportFailedErrorMessage: String?
+    @State private var keychainExportURL: URL?
+
     @State private var presentingKeychainExport: Bool = false
 
     private func exportKeychain() {
@@ -163,6 +163,7 @@ struct SettingsView: View {
                 switch result {
                 case .success(let url):
                     Log.i("Keychain export file moved successfully to \(url.absoluteString)")
+
                 case .failure(let error):
                     Log.e("Failed to move keychain export file! \(error.localizedDescription)")
                 }
