@@ -26,12 +26,16 @@ opt_in_rules:
   - toggle_bool
   - unavailable_function
   - untyped_error_in_catch
-  - unused_import
   - vertical_parameter_alignment_on_call
   - vertical_whitespace_between_cases
   - vertical_whitespace_closing_braces
   - vertical_whitespace_opening_braces
   - yoda_condition
+  - switch_case_alignment:
+      indented_cases: true
+
+analyzer_rules:
+  - unused_import
 
 line_length:
   warning: 200
