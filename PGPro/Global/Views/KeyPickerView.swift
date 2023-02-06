@@ -24,6 +24,7 @@ struct KeyPickerView: View {
     enum KeyPickerType {
         case publicKeys
         case privateKeys
+        case privateKey
     }
 
     @Binding var selection: Set<Contact>
@@ -34,7 +35,7 @@ struct KeyPickerView: View {
         case .publicKeys:
             return fetchedContacts.filter({ $0.isPublicKey }).sorted(by: { $0.name <= $1.name })
 
-        case .privateKeys:
+        case .privateKey, .privateKeys:
             return fetchedContacts.filter({ $0.isPrivateKey }).sorted(by: { $0.name <= $1.name })
         }
     }
@@ -43,6 +44,9 @@ struct KeyPickerView: View {
         if selection.contains(contact) {
             selection.remove(contact)
         } else {
+            if type == .privateKey {
+                selection.removeAll()
+            }
             selection.insert(contact)
         }
     }

@@ -31,19 +31,6 @@ struct EncryptionView: View {
 
     @State private var encryptionErrorMessage: String?
 
-    private struct HeaderView: View {
-        var title: String
-
-        var body: some View {
-            Text(title)
-                .font(Font.system(.body).smallCaps())
-                .foregroundColor(Color.secondary)
-
-            Divider()
-                .padding(.bottom, 8)
-        }
-    }
-
     var body: some View {
         NavigationView {
             VStack {

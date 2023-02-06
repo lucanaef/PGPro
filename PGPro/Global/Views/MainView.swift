@@ -30,7 +30,7 @@ struct MainView: View {
                 .tabItem {
                     Label("Encryption", systemImage: "lock.fill")
                 }
-            DecryptionView()
+            DecryptionInputView()
                 .tabItem {
                     Label("Decryption", systemImage: "lock.open.fill")
                 }

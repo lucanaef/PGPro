@@ -17,18 +17,15 @@
 
 import SwiftUI
 
-struct DecryptionView: View {
-    @State var decryptionResult: OpenPGP.DecryptionResult?
-
+struct DecryptionInputView: View {
     var body: some View {
         NavigationView {
             Group {
                 VStack {
                     Spacer()
 
-                    Button {
-                        #warning("Implement button action.")
-                        print("button pressed")
+                    NavigationLink {
+                        DecryptionView()
                     } label: {
                         Text("Paste from Clipboard")
                             .frame(maxWidth: .infinity)
@@ -81,17 +78,14 @@ struct DecryptionView: View {
                 }
                 .padding(50)
                 .background(Color(UIColor.systemGroupedBackground))
-                .sheet(item: $decryptionResult) { result in
-                    DecryptionResultView(decryptionResult: result)
-                }
             }
             .navigationTitle("Decryption")
         }
     }
 }
 
-struct DecryptionView_Previews: PreviewProvider {
+struct DecryptionInputView_Previews: PreviewProvider {
     static var previews: some View {
-        DecryptionView()
+        DecryptionInputView()
     }
 }

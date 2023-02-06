@@ -23,12 +23,14 @@
 		8157F56D292BCDA7001EA784 /* EncryptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8157F56C292BCDA7001EA784 /* EncryptionViewModel.swift */; };
 		8157F56F292BCE47001EA784 /* PassphraseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8157F56E292BCE47001EA784 /* PassphraseInputView.swift */; };
 		8161BF742990F5F900766FC0 /* DecryptionResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8161BF732990F5F900766FC0 /* DecryptionResultView.swift */; };
+		8161BF7729914E3900766FC0 /* DecryptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8161BF7629914E3900766FC0 /* DecryptionView.swift */; };
+		8161BF79299153B300766FC0 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8161BF78299153B300766FC0 /* HeaderView.swift */; };
 		816C2F0B2912FE85005A84B6 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816C2F0A2912FE85005A84B6 /* MockData.swift */; };
 		816C2F0D291301B7005A84B6 /* KeyDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816C2F0C291301B7005A84B6 /* KeyDetailViewModel.swift */; };
 		8178B4A228FEF3880027AACF /* PGProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4A128FEF3880027AACF /* PGProApp.swift */; };
 		8178B4A628FEF3890027AACF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8178B4A528FEF3890027AACF /* Assets.xcassets */; };
 		8178B4B228FEF4510027AACF /* EncryptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B128FEF4510027AACF /* EncryptionView.swift */; };
-		8178B4B428FEF4680027AACF /* DecryptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B328FEF4680027AACF /* DecryptionView.swift */; };
+		8178B4B428FEF4680027AACF /* DecryptionInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B328FEF4680027AACF /* DecryptionInputView.swift */; };
 		8178B4B628FEF4710027AACF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B528FEF4710027AACF /* SettingsView.swift */; };
 		8178B4B828FEF47C0027AACF /* KeychainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B728FEF47C0027AACF /* KeychainView.swift */; };
 		8178B4BE28FEF9F80027AACF /* UserAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4BD28FEF9F80027AACF /* UserAvatarView.swift */; };
@@ -91,13 +93,15 @@
 		8157F56C292BCDA7001EA784 /* EncryptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionViewModel.swift; sourceTree = "<group>"; };
 		8157F56E292BCE47001EA784 /* PassphraseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseInputView.swift; sourceTree = "<group>"; };
 		8161BF732990F5F900766FC0 /* DecryptionResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionResultView.swift; sourceTree = "<group>"; };
+		8161BF7629914E3900766FC0 /* DecryptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionView.swift; sourceTree = "<group>"; };
+		8161BF78299153B300766FC0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		816C2F0A2912FE85005A84B6 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		816C2F0C291301B7005A84B6 /* KeyDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyDetailViewModel.swift; sourceTree = "<group>"; };
 		8178B49E28FEF3880027AACF /* PGPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PGPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8178B4A128FEF3880027AACF /* PGProApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProApp.swift; sourceTree = "<group>"; };
 		8178B4A528FEF3890027AACF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8178B4B128FEF4510027AACF /* EncryptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionView.swift; sourceTree = "<group>"; };
-		8178B4B328FEF4680027AACF /* DecryptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionView.swift; sourceTree = "<group>"; };
+		8178B4B328FEF4680027AACF /* DecryptionInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionInputView.swift; sourceTree = "<group>"; };
 		8178B4B528FEF4710027AACF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8178B4B728FEF47C0027AACF /* KeychainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainView.swift; sourceTree = "<group>"; };
 		8178B4BD28FEF9F80027AACF /* UserAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvatarView.swift; sourceTree = "<group>"; };
@@ -181,6 +185,7 @@
 				81A60B4528FFE17500177647 /* MainView.swift */,
 				813F44D0290DD66200A69C75 /* KeyPickerView.swift */,
 				819CD9FA290E8958006B4804 /* LaunchAuthenticationView.swift */,
+				8161BF78299153B300766FC0 /* HeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -279,6 +284,16 @@
 				81CF5445290D979E000ECBC3 /* Views */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		8161BF75299120B000766FC0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8178B4B328FEF4680027AACF /* DecryptionInputView.swift */,
+				8161BF7629914E3900766FC0 /* DecryptionView.swift */,
+				8161BF732990F5F900766FC0 /* DecryptionResultView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		8178B49528FEF3880027AACF = {
@@ -428,8 +443,7 @@
 		81CF5441290D93AA000ECBC3 /* Decryption */ = {
 			isa = PBXGroup;
 			children = (
-				8178B4B328FEF4680027AACF /* DecryptionView.swift */,
-				8161BF732990F5F900766FC0 /* DecryptionResultView.swift */,
+				8161BF75299120B000766FC0 /* Views */,
 			);
 			path = Decryption;
 			sourceTree = "<group>";
@@ -654,7 +668,7 @@
 				816C2F0B2912FE85005A84B6 /* MockData.swift in Sources */,
 				81EC15902911B6E40060CDB2 /* GenerateKeyPairValidationError.swift in Sources */,
 				8178B4BE28FEF9F80027AACF /* UserAvatarView.swift in Sources */,
-				8178B4B428FEF4680027AACF /* DecryptionView.swift in Sources */,
+				8178B4B428FEF4680027AACF /* DecryptionInputView.swift in Sources */,
 				81BB3F52298FFD7B006C12EB /* KeychainEmptyView.swift in Sources */,
 				813F44CE290DD17000A69C75 /* Navajo.swift in Sources */,
 				8193DA6E291181C100F103D5 /* DataController.swift in Sources */,
@@ -666,6 +680,7 @@
 				81DC4F1F2920355C00C1AE11 /* URLSession+keys.swift in Sources */,
 				81ECDA6A290D60CF00BD7640 /* GenerateKeyPairView.swift in Sources */,
 				81B2D10A29213DA800DB92D9 /* Contact+Equatable.swift in Sources */,
+				8161BF7729914E3900766FC0 /* DecryptionView.swift in Sources */,
 				813FD276292693FA00F55FCC /* ProtonMailAPI.swift in Sources */,
 				816C2F0D291301B7005A84B6 /* KeyDetailViewModel.swift in Sources */,
 				813F44D1290DD66200A69C75 /* KeyPickerView.swift in Sources */,
@@ -681,6 +696,7 @@
 				81CF544A290D995B000ECBC3 /* MailIntegrationPreferenceView.swift in Sources */,
 				8157F56B292BC4B1001EA784 /* OpenPGPError.swift in Sources */,
 				81DC4F192920262400C1AE11 /* Logger.swift in Sources */,
+				8161BF79299153B300766FC0 /* HeaderView.swift in Sources */,
 				81DC4F102920227F00C1AE11 /* ZBase32.swift in Sources */,
 				8193DA7C29118E9900F103D5 /* Contact+Identifiable.swift in Sources */,
 				81C9D70C292054F300BCA788 /* String+slice.swift in Sources */,
