@@ -22,6 +22,7 @@
 		8157F56B292BC4B1001EA784 /* OpenPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8157F56A292BC4B1001EA784 /* OpenPGPError.swift */; };
 		8157F56D292BCDA7001EA784 /* EncryptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8157F56C292BCDA7001EA784 /* EncryptionViewModel.swift */; };
 		8157F56F292BCE47001EA784 /* PassphraseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8157F56E292BCE47001EA784 /* PassphraseInputView.swift */; };
+		8161BF742990F5F900766FC0 /* DecryptionResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8161BF732990F5F900766FC0 /* DecryptionResultView.swift */; };
 		816C2F0B2912FE85005A84B6 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816C2F0A2912FE85005A84B6 /* MockData.swift */; };
 		816C2F0D291301B7005A84B6 /* KeyDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816C2F0C291301B7005A84B6 /* KeyDetailViewModel.swift */; };
 		8178B4A228FEF3880027AACF /* PGProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4A128FEF3880027AACF /* PGProApp.swift */; };
@@ -89,6 +90,7 @@
 		8157F56A292BC4B1001EA784 /* OpenPGPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenPGPError.swift; sourceTree = "<group>"; };
 		8157F56C292BCDA7001EA784 /* EncryptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionViewModel.swift; sourceTree = "<group>"; };
 		8157F56E292BCE47001EA784 /* PassphraseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseInputView.swift; sourceTree = "<group>"; };
+		8161BF732990F5F900766FC0 /* DecryptionResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionResultView.swift; sourceTree = "<group>"; };
 		816C2F0A2912FE85005A84B6 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		816C2F0C291301B7005A84B6 /* KeyDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyDetailViewModel.swift; sourceTree = "<group>"; };
 		8178B49E28FEF3880027AACF /* PGPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PGPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -427,6 +429,7 @@
 			isa = PBXGroup;
 			children = (
 				8178B4B328FEF4680027AACF /* DecryptionView.swift */,
+				8161BF732990F5F900766FC0 /* DecryptionResultView.swift */,
 			);
 			path = Decryption;
 			sourceTree = "<group>";
@@ -682,6 +685,7 @@
 				8193DA7C29118E9900F103D5 /* Contact+Identifiable.swift in Sources */,
 				81C9D70C292054F300BCA788 /* String+slice.swift in Sources */,
 				819CD9FB290E8959006B4804 /* LaunchAuthenticationView.swift in Sources */,
+				8161BF742990F5F900766FC0 /* DecryptionResultView.swift in Sources */,
 				81C9D70A292045FF00BCA788 /* Contact+add.swift in Sources */,
 				8122A917290EDE5E0027F36D /* MailIntegration.swift in Sources */,
 			);

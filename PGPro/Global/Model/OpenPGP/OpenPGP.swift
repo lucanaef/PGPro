@@ -97,11 +97,12 @@ class OpenPGP {
 
     // MARK: Decryption
 
-    struct DecryptionResult {
+    struct DecryptionResult: Identifiable {
+        var id = UUID()
         var message: DecryptionResultValue
         var signatures: String
     }
-    
+
     enum DecryptionResultValue {
         case plain(value: String)
         case mime(value: Mime)

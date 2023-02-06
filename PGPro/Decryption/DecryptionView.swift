@@ -18,6 +18,8 @@
 import SwiftUI
 
 struct DecryptionView: View {
+    @State var decryptionResult: OpenPGP.DecryptionResult?
+
     var body: some View {
         NavigationView {
             Group {
@@ -79,6 +81,9 @@ struct DecryptionView: View {
                 }
                 .padding(50)
                 .background(Color(UIColor.systemGroupedBackground))
+                .sheet(item: $decryptionResult) { result in
+                    DecryptionResultView(decryptionResult: result)
+                }
             }
             .navigationTitle("Decryption")
         }
