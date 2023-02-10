@@ -50,6 +50,13 @@ struct PassphraseInputView: View {
             }
             .background(Color(UIColor.systemGroupedBackground))
             .navigationBarTitle("Passphrase Required")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
         }
     }
 
