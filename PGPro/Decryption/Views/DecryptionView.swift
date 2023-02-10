@@ -108,7 +108,7 @@ struct DecryptionView: View {
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
             .padding(.vertical)
-            .disabled(true)
+            .disabled(!viewModel.readyForDecryptionOrPassphrases)
         }
         .padding()
         .navigationTitle("Decryption")
