@@ -56,7 +56,14 @@ struct KeyserverSearchView: View {
                                 }
                         }
                     }
-                    .searchable(text: $searchText, prompt: "Search by Email, Fingerprint or Key ID")
+                    .searchable(text: $searchText, prompt: "Search by Email, Fingerprint or Key ID", suggestions: {
+                        Button {
+                            #warning("TODO: Implement")
+                        } label: {
+                            Label("Scan QR Code", systemImage: "qrcode")
+                        }
+
+                    })
                     .onSubmit(of: .search) {
                         Task {
                             await viewModel.search(for: searchText)
