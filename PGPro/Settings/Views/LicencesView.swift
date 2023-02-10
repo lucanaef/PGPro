@@ -25,34 +25,30 @@ struct LicencesView: View {
             Button {
                 openURL(license.licenseURL)
             } label: {
-                HStack(alignment: .center) {
-                    VStack(alignment: .leading) {
-                        HStack(alignment: .center) {
-                            Text(license.title)
-                                .foregroundColor(.primary)
-                                .fontWeight(.semibold)
+                VStack(alignment: .leading) {
+                    HStack(alignment: .center) {
+                        Text(license.title)
+                            .foregroundColor(.primary)
+                            .fontWeight(.semibold)
 
-                            if let type = license.licenseType {
-                                Text(type.description)
-                                    .padding(.vertical, 2.0)
-                                    .padding(.horizontal, 8.0)
-                                    .font(.caption2)
-                                    .monospaced()
-                                    .foregroundColor(.white)
-                                    .background(type.color)
-                                    .cornerRadius(25)
-                            }
+                        Spacer()
+
+                        if let type = license.licenseType {
+                            Text(type.description)
+                                .padding(.vertical, 2.0)
+                                .padding(.horizontal, 8.0)
+                                .font(.caption2)
+                                .monospaced()
+                                .foregroundColor(.white)
+                                .background(type.color)
+                                .cornerRadius(25)
                         }
-
-                        Text(license.subtitle)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .lineLimit(1)
                     }
 
-                    Spacer()
-
-                    Image(systemName: "chevron.forward")
+                    Text(license.subtitle)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
                 }
             }
         }
