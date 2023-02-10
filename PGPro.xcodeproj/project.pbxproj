@@ -12,6 +12,7 @@
 		8122A917290EDE5E0027F36D /* MailIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122A916290EDE5E0027F36D /* MailIntegration.swift */; };
 		812A07252996CA1500FA9DB9 /* PlaceholderTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A07242996CA1500FA9DB9 /* PlaceholderTextEditor.swift */; };
 		812A07272996DAA000FA9DB9 /* CodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A07262996DAA000FA9DB9 /* CodeScannerView.swift */; };
+		812A07292996E60100FA9DB9 /* String+isOpenPGPCiphertext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A07282996E60100FA9DB9 /* String+isOpenPGPCiphertext.swift */; };
 		813F44C4290DBA6800A69C75 /* AuthenticationPreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F44C3290DBA6800A69C75 /* AuthenticationPreferenceView.swift */; };
 		813F44C6290DBBE000A69C75 /* AppearancePreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F44C5290DBBE000A69C75 /* AppearancePreferenceView.swift */; };
 		813F44C8290DC45300A69C75 /* KeyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F44C7290DC45300A69C75 /* KeyDetailView.swift */; };
@@ -85,6 +86,7 @@
 		8122A916290EDE5E0027F36D /* MailIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailIntegration.swift; sourceTree = "<group>"; };
 		812A07242996CA1500FA9DB9 /* PlaceholderTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextEditor.swift; sourceTree = "<group>"; };
 		812A07262996DAA000FA9DB9 /* CodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeScannerView.swift; sourceTree = "<group>"; };
+		812A07282996E60100FA9DB9 /* String+isOpenPGPCiphertext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+isOpenPGPCiphertext.swift"; sourceTree = "<group>"; };
 		813F44C3290DBA6800A69C75 /* AuthenticationPreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationPreferenceView.swift; sourceTree = "<group>"; };
 		813F44C5290DBBE000A69C75 /* AppearancePreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearancePreferenceView.swift; sourceTree = "<group>"; };
 		813F44C7290DC45300A69C75 /* KeyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyDetailView.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 				81DC4F142920240000C1AE11 /* String+InsecureHashing.swift */,
 				81DC4F162920244600C1AE11 /* Data+hexString.swift */,
 				81C9D70B292054F300BCA788 /* String+slice.swift */,
+				812A07282996E60100FA9DB9 /* String+isOpenPGPCiphertext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -673,6 +676,7 @@
 				81EC158B2911B4F80060CDB2 /* KeychainCardViewModel.swift in Sources */,
 				8178B4B228FEF4510027AACF /* EncryptionView.swift in Sources */,
 				813F44C6290DBBE000A69C75 /* AppearancePreferenceView.swift in Sources */,
+				812A07292996E60100FA9DB9 /* String+isOpenPGPCiphertext.swift in Sources */,
 				813FD26929227F1000F55FCC /* KeyserverSearchResult.swift in Sources */,
 				8178B4A228FEF3880027AACF /* PGProApp.swift in Sources */,
 				81DC4F172920244600C1AE11 /* Data+hexString.swift in Sources */,

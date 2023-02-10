@@ -26,9 +26,25 @@ struct DecryptionView: View {
                 HeaderView(title: "Message")
 
                 if let ciphertext = viewModel.ciphertext {
-                    ScrollView {
-                        Text(ciphertext)
-                            .font(.caption.monospaced())
+                    ZStack {
+                        ScrollView {
+                            Text(ciphertext)
+                                .font(.caption.monospaced())
+                        }
+
+                        if !ciphertext.isOpenPGPCiphertext {
+                            HStack {
+                                Spacer()
+
+                                Label("Invalid OpenPGP Message", systemImage: "exclamationmark.triangle.fill")
+                                    .padding()
+                                    .foregroundColor(.primary)
+                                    .background(Color.red.opacity(0.8))
+                                    .cornerRadius(15)
+
+                                Spacer()
+                            }
+                        }
                     }
                 } else {
                     VStack(alignment: .center) {
@@ -121,27 +137,6 @@ struct DecryptionView: View {
 }
 
 struct DecryptionView_Previews: PreviewProvider {
-    private static var ciphertext = """
-    -----BEGIN PGP MESSAGE-----
-    Version: ObjectivePGP
-    Comment: https://www.objectivepgp.com
-    Charset: UTF-8
-
-    wcFMA7O6h8EEUPukAQ//dWFv6mSXjwZkwaS6bCRmWMwSW4DVoxbeKzmFvXGT00Npt9VuhUZpwxbM
-    wsgn8mbDLxYyDc440Z0Z87h6+PuWTzgl1iDALMNoA2RK85no3g5j5H4Y5/RUaJ+25STYviAfh9dT
-    0OOzfvxlJatzO945cU4+wOjrHG/rt3JdGsEi6tYCLIBnep2JwpdFr1tjhypOHUjOWK5yWBEDowCe
-    15xHxAbJ0zXYEAtTwWvt4ibVQByls1sVPzwZ2n8v6DBrD/Y2CD5WYlddAaW9lN1V1aRGZygvd1qI
-    emI4N1Cdlgdr2kYSOSo3HnrWxtwmzeVxXkXVOkNlKALKMhGckU9rR/EwKdLjX3f0nDbjwJ65aZ29
-    Y+iaW1ADk78j7ahJRhGPrkkEGRdJF1HMinmw2f7c/SAnAH4a5fuHK/GT/t8anctABnO5wq+9hfEg
-    f2S/7VXZbPI2lmh4DMzD4i3W9f1npiqASqdRjZAl5DMqdqnpnXZ19iVPQTUXjTZapcwsPoMTQkLO
-    JpFP3JiuLnedFeARLzLNUWxnfD6qusYMNAv2Z8VcSYVz3sEgiQEHXc+/DgDHKVewd+j6JC21N7iJ
-    9aQpxRrxu7yXdaxJemwX5RL7s577SxDfK+X50xYLXRLuFa+YVzpqM0+v8hZLcAjEZPIfPXO5XKyb
-    eSCMQV8ecv7/oRqRwDzSSQHIA2GzZtpSZTeBk/1jTMkSFF64Rj6rn7e/M4sju3oR80JtVmF9e4cH
-    bPbsOah6vz3rg6HC7ga5H+Nt9RQ0ZvIjeW4oEO9+mGo=
-    =NLAu
-    -----END PGP MESSAGE-----
-    """
-
     static var previews: some View {
         DecryptionView()
     }

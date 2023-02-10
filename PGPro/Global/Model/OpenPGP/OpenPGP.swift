@@ -32,6 +32,8 @@ class OpenPGP {
         return keys.first!
     }
 
+    private static let openPGPRegex = #"-----BEGIN PGP MESSAGE-----(.|\s)*-----END PGP MESSAGE-----"#
+
     // MARK: - Key Generation
 
     enum KeyGenerationError: Error, CustomStringConvertible {
@@ -115,7 +117,7 @@ class OpenPGP {
             throw OpenPGPError.emptyMessage
         }
 
-        guard let range = message.range(of: #"-----BEGIN PGP MESSAGE-----(.|\s)*-----END PGP MESSAGE-----"#, options: .regularExpression) else {
+        guard let range = message.range(of: openPGPRegex, options: .regularExpression) else {
             Log.e("Message string must contain '-----BEGIN PGP MESSAGE----- [...] -----END PGP MESSAGE-----'.")
             throw OpenPGPError.invalidMessage
         }
@@ -169,6 +171,14 @@ class OpenPGP {
             return false
         }
         return true
+    }
+
+    static func isValidCiphertext(_ string: String) -> Bool {
+        if string.range(of: openPGPRegex, options: .regularExpression) != nil {
+            return true
+        } else {
+            return false
+        }
     }
 
     // MARK: Private Helper Functions

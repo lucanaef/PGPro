@@ -1,5 +1,5 @@
 //
-//  DecryptionViewModel.swift
+//  String+isOpenPGPCiphertext.swift
 //  PGPro
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -17,12 +17,8 @@
 
 import Foundation
 
-class DecryptionViewModel: ObservableObject {
-    @Published var ciphertext: String?
-    @Published var decryptionKey: Set<Contact> = Set()
-    @Published var decryptionResult: OpenPGP.DecryptionResult?
-
-    var readyForDecryptionOrPassphrases: Bool {
-        !(ciphertext?.isEmpty ?? true) && (ciphertext?.isOpenPGPCiphertext ?? false) && !decryptionKey.isEmpty
+extension String {
+    var isOpenPGPCiphertext: Bool {
+        return OpenPGP.isValidCiphertext(self)
     }
 }
