@@ -37,7 +37,9 @@ struct DecryptionView: View {
                             Spacer()
                             PasteButton(payloadType: String.self) { strings in
                                 if let clipboard = strings.first {
-                                    viewModel.ciphertext = clipboard
+                                    DispatchQueue.main.async {
+                                        viewModel.ciphertext = clipboard
+                                    }
                                 }
                             }
                             Spacer()
