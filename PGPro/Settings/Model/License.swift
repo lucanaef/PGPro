@@ -65,7 +65,7 @@ class Licenses {
         License(for: "ObjectivePGP",
                 describedBy: "OpenPGP library for iOS and macOS",
                 at: URL(string: "https://objectivepgp.com/LICENSE.txt")!,
-                type: .custom(label: "Dual-License")),
+                type: .custom(label: "Dual License")),
         License(for: "SwiftTryCatch",
                 describedBy: "Adds Objective-C try-catch support for Swift",
                 at: URL(string: "https://github.com/seanparsons/SwiftTryCatch/blob/master/LICENSE")!,
