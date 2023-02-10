@@ -53,20 +53,34 @@ struct KeyPickerView: View {
 
     var body: some View {
         VStack {
-            List {
-                ForEach(selectableContacts) { contact in
-                    KeychainCardView(contact: contact, selected: selection.contains(contact))
-                        .padding(2)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            TapticEngine.impact.feedback(.light)
-                            toggleSelection(for: contact)
-                        }
+            if selectableContacts.isEmpty {
+                VStack(alignment: .center) {
+                    Image(systemName: "lock.rectangle.stack")
+                        .foregroundColor(.gray)
+                        .font(.system(size: 50, weight: .light))
+                        .padding()
+                    Text("Keychain Is Empty")
+                        .foregroundColor(.gray)
+                        .font(.headline)
+                    Text("Tap '\(Image(systemName: "plus.circle.fill"))' on '\(Image(systemName: "person.2.fill")) Keychain' to Add Keys")
+                        .foregroundColor(.gray)
                 }
+            } else {
+                List {
+                    ForEach(selectableContacts) { contact in
+                        KeychainCardView(contact: contact, selected: selection.contains(contact))
+                            .padding(2)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                TapticEngine.impact.feedback(.light)
+                                toggleSelection(for: contact)
+                            }
+                    }
+                }
+                .background(Color(UIColor.systemGroupedBackground))
             }
         }
         .navigationTitle(withTitle)
-        .background(Color(UIColor.systemGroupedBackground))
     }
 }
 
