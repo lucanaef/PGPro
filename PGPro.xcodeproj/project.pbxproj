@@ -51,6 +51,7 @@
 		819CD9FB290E8959006B4804 /* LaunchAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9FA290E8958006B4804 /* LaunchAuthenticationView.swift */; };
 		819CD9FF290E9AB3006B4804 /* Color+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9FE290E9AB3006B4804 /* Color+RawRepresentable.swift */; };
 		81A0F58E290D31F30091C3B9 /* KeychainCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A0F58D290D31F30091C3B9 /* KeychainCardView.swift */; };
+		81A3F7A8299686D500C9DBBC /* DecryptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A3F7A7299686D500C9DBBC /* DecryptionViewModel.swift */; };
 		81A60B4628FFE17500177647 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A60B4528FFE17500177647 /* MainView.swift */; };
 		81AEC9C929746C7800AC31C1 /* Contact+export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEC9C829746C7800AC31C1 /* Contact+export.swift */; };
 		81B2D10A29213DA800DB92D9 /* Contact+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B2D10929213DA800DB92D9 /* Contact+Equatable.swift */; };
@@ -120,6 +121,7 @@
 		819CD9FC290E9130006B4804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		819CD9FE290E9AB3006B4804 /* Color+RawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+RawRepresentable.swift"; sourceTree = "<group>"; };
 		81A0F58D290D31F30091C3B9 /* KeychainCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainCardView.swift; sourceTree = "<group>"; };
+		81A3F7A7299686D500C9DBBC /* DecryptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionViewModel.swift; sourceTree = "<group>"; };
 		81A60B4528FFE17500177647 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		81AEC9C829746C7800AC31C1 /* Contact+export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+export.swift"; sourceTree = "<group>"; };
 		81B2D10929213DA800DB92D9 /* Contact+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Equatable.swift"; sourceTree = "<group>"; };
@@ -418,6 +420,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		81A3F7A6299686C200C9DBBC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				81A3F7A7299686D500C9DBBC /* DecryptionViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		81CF543F290D9387000ECBC3 /* Global */ = {
 			isa = PBXGroup;
 			children = (
@@ -443,6 +453,7 @@
 		81CF5441290D93AA000ECBC3 /* Decryption */ = {
 			isa = PBXGroup;
 			children = (
+				81A3F7A6299686C200C9DBBC /* ViewModel */,
 				8161BF75299120B000766FC0 /* Views */,
 			);
 			path = Decryption;
@@ -674,6 +685,7 @@
 				8193DA6E291181C100F103D5 /* DataController.swift in Sources */,
 				81A0F58E290D31F30091C3B9 /* KeychainCardView.swift in Sources */,
 				819CD9E5290E704B006B4804 /* TapticEngine.swift in Sources */,
+				81A3F7A8299686D500C9DBBC /* DecryptionViewModel.swift in Sources */,
 				81DC4F13292022F600C1AE11 /* WebKeyDirectory.swift in Sources */,
 				8193DA6C29117F2F00F103D5 /* PGPro.xcdatamodeld in Sources */,
 				813F44C4290DBA6800A69C75 /* AuthenticationPreferenceView.swift in Sources */,

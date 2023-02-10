@@ -18,17 +18,14 @@
 import SwiftUI
 
 struct DecryptionView: View {
-    @State var ciphertext: String?
-    @State var decryptionResult: OpenPGP.DecryptionResult?
-
-    @State var decryptionKey: Set<Contact> = Set()
+    @StateObject private var viewModel = DecryptionViewModel()
 
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 0) {
                 HeaderView(title: "Message")
 
-                if let ciphertext {
+                if let ciphertext = viewModel.ciphertext {
                     ScrollView {
                         Text(ciphertext)
                             .font(.caption.monospaced())
@@ -40,7 +37,7 @@ struct DecryptionView: View {
                             Spacer()
                             PasteButton(payloadType: String.self) { strings in
                                 if let clipboard = strings.first {
-                                    self.ciphertext = clipboard
+                                    viewModel.ciphertext = clipboard
                                 }
                             }
                             Spacer()
@@ -57,9 +54,9 @@ struct DecryptionView: View {
 
                 ScrollView(.horizontal) {
                     HStack {
-                        ForEach(Array(decryptionKey)) { contact in
+                        ForEach(Array(viewModel.decryptionKey)) { contact in
                             NavigationLink {
-                                KeyPickerView(withTitle: "Select Decryption Key", type: .privateKey, selection: $decryptionKey)
+                                KeyPickerView(withTitle: "Select Decryption Key", type: .privateKey, selection: $viewModel.decryptionKey)
                             } label: {
                                 ZStack {
                                     RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
@@ -80,9 +77,9 @@ struct DecryptionView: View {
                             }
                         }
 
-                        if decryptionKey.isEmpty {
+                        if viewModel.decryptionKey.isEmpty {
                             NavigationLink {
-                                KeyPickerView(withTitle: "Select Decryption Key", type: .privateKey, selection: $decryptionKey)
+                                KeyPickerView(withTitle: "Select Decryption Key", type: .privateKey, selection: $viewModel.decryptionKey)
                             } label: {
                                 ZStack {
                                     RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
@@ -115,7 +112,7 @@ struct DecryptionView: View {
         }
         .padding()
         .navigationTitle("Decryption")
-        .sheet(item: $decryptionResult) { result in
+        .sheet(item: $viewModel.decryptionResult) { result in
             DecryptionResultView(decryptionResult: result)
         }
     }
@@ -144,6 +141,6 @@ struct DecryptionView_Previews: PreviewProvider {
     """
 
     static var previews: some View {
-        DecryptionView(ciphertext: ciphertext)
+        DecryptionView()
     }
 }
