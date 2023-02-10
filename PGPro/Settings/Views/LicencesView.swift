@@ -20,8 +20,20 @@ import SwiftUI
 struct LicencesView: View {
     @Environment(\.openURL) var openURL
 
+    private var licenses: [License] {
+        Licenses.allLicenses.sorted { rhs, lhs in
+            if rhs.title == "PGPro" {
+                return true
+            } else if lhs.title == "PGPro" {
+                return false
+            } else {
+                return rhs.title < lhs.title
+            }
+        }
+    }
+
     var body: some View {
-        List(Licenses.allLicenses, id: \.title) { license in
+        List(licenses, id: \.title) { license in
             Button {
                 openURL(license.licenseURL)
             } label: {
