@@ -39,18 +39,18 @@ struct InitialsView: View {
             .split(separator: " ").map({ String($0) })
 
         switch names.count {
-        case 0:
-            return nil
-
-        case 1:
-            return names.first!.first?.uppercased()
-
-        default:
-            if let firstNamefirstLetter = names.first!.first, let lastNamefirstLetter = names.last!.first {
-                return (String(firstNamefirstLetter) + String(lastNamefirstLetter)).uppercased()
-            } else {
+            case 0:
                 return nil
-            }
+
+            case 1:
+                return names.first!.first?.uppercased()
+
+            default:
+                if let firstNamefirstLetter = names.first!.first, let lastNamefirstLetter = names.last!.first {
+                    return (String(firstNamefirstLetter) + String(lastNamefirstLetter)).uppercased()
+                } else {
+                    return nil
+                }
         }
     }
 }

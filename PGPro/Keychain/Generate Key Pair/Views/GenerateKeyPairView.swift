@@ -103,20 +103,20 @@ struct GenerateKeyPairView: View {
                 }
                 .onSubmit {
                     switch focusedField {
-                    case .name:
-                        focusedField = .email
+                        case .name:
+                            focusedField = .email
 
-                    case .email:
-                        focusedField = .passphrase
+                        case .email:
+                            focusedField = .passphrase
 
-                    case .passphrase:
-                        focusedField = .passphraseConfirm
+                        case .passphrase:
+                            focusedField = .passphraseConfirm
 
-                    case .passphraseConfirm:
-                        focusedField = nil
+                        case .passphraseConfirm:
+                            focusedField = nil
 
-                    case .none:
-                        focusedField = nil
+                        case .none:
+                            focusedField = nil
                     }
                 }
 
@@ -124,14 +124,14 @@ struct GenerateKeyPairView: View {
                     presentingSpinner = true
                     let result = viewModel.generateKey()
                     switch result {
-                    case .failure(let error):
-                        presentingSpinner = false
-                        errorMessage = error.localizedDescription
-                        presentingErrorMessage = true
+                        case .failure(let error):
+                            presentingSpinner = false
+                            errorMessage = error.localizedDescription
+                            presentingErrorMessage = true
 
-                    case .success:
-                        presentingSpinner = false
-                        presentingSuccessMessage = true
+                        case .success:
+                            presentingSpinner = false
+                            presentingSuccessMessage = true
                     }
                 }, label: {
                     Text("Generate")

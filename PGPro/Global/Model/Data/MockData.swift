@@ -38,21 +38,21 @@ class MockData {
         for user in users {
             let keyGenerationResult = OpenPGP.generateKey(for: user.0, email: user.1, passphrase: user.2)
             switch keyGenerationResult {
-            case .failure:
-                continue
-
-            case .success(let key):
-                let moc = DataController.shared.container.viewContext
-                let contact = Contact(context: moc)
-                contact.name = user.0
-                contact.email = user.1
-                do {
-                    contact.keyData = try key.export() as NSData
-                    data.append(contact)
-                } catch {
-                    Log.e(error)
+                case .failure:
                     continue
-                }
+
+                case .success(let key):
+                    let moc = DataController.shared.container.viewContext
+                    let contact = Contact(context: moc)
+                    contact.name = user.0
+                    contact.email = user.1
+                    do {
+                        contact.keyData = try key.export() as NSData
+                        data.append(contact)
+                    } catch {
+                        Log.e(error)
+                        continue
+                    }
             }
         }
 

@@ -63,11 +63,11 @@ class WebKeyDirectory {
 
         // Construct URL based on chosen methode
         switch method {
-        case .advanced:
-            return URL(string: "https://openpgpkey." + domain + "/.well-known/openpgpkey/" + domain + "/hu/" + encodedLocal)
+            case .advanced:
+                return URL(string: "https://openpgpkey." + domain + "/.well-known/openpgpkey/" + domain + "/hu/" + encodedLocal)
 
-        case .direct:
-            return URL(string: "https://" + domain + "/.well-known/openpgpkey/hu/" + encodedLocal)
+            case .direct:
+                return URL(string: "https://" + domain + "/.well-known/openpgpkey/hu/" + encodedLocal)
         }
     }
 }

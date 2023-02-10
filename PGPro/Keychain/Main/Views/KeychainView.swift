@@ -126,33 +126,33 @@ struct KeychainView: View {
             }
             .fileImporter(isPresented: $presentingFileImporter, allowedContentTypes: [.data], onCompletion: { result in
                 switch result {
-                case .success(let fileURL):
-                    do {
-                        guard fileURL.startAccessingSecurityScopedResource() else {
-                            Log.e("fileURL.startAccessingSecurityScopedResource() failed!")
+                    case .success(let fileURL):
+                        do {
+                            guard fileURL.startAccessingSecurityScopedResource() else {
+                                Log.e("fileURL.startAccessingSecurityScopedResource() failed!")
+                                presentingFileImporter = false
+                                importFailed = true
+                                return
+                            }
+                            let data = try Data(contentsOf: fileURL)
+                            let keys = try OpenPGP.keys(from: data)
+
+                            let result = Contact.add(from: keys)
+                            importMessage = result.description
+                            if result.successful > 0 {
+                                importSuccessful = true
+                            } else {
+                                importFailed = true
+                            }
+                        } catch {
+                            Log.e(error)
                             presentingFileImporter = false
                             importFailed = true
-                            return
                         }
-                        let data = try Data(contentsOf: fileURL)
-                        let keys = try OpenPGP.keys(from: data)
 
-                        let result = Contact.add(from: keys)
-                        importMessage = result.description
-                        if result.successful > 0 {
-                            importSuccessful = true
-                        } else {
-                            importFailed = true
-                        }
-                    } catch {
+                    case .failure(let error):
                         Log.e(error)
-                        presentingFileImporter = false
                         importFailed = true
-                    }
-
-                case .failure(let error):
-                    Log.e(error)
-                    importFailed = true
                 }
             })
             .SPAlert(isPresent: $importFailed,

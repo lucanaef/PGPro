@@ -22,12 +22,12 @@ enum KeyserverSearchResultOrigin: CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .webKeyDirectory:
-            return "Web Key Directory"
-        case .openpgpdotorg:
-            return "keys.openpgp.org"
-        case .protonmailAPI:
-            return "Proton Mail API"
+            case .webKeyDirectory:
+                return "Web Key Directory"
+            case .openpgpdotorg:
+                return "keys.openpgp.org"
+            case .protonmailAPI:
+                return "Proton Mail API"
         }
     }
 }

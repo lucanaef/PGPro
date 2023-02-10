@@ -61,35 +61,35 @@ extension Contact {
 
     func exportKey(of type: PGPKeyType) -> String? {
         switch type {
-        case .public:
-            do {
-                if let publicKeyData = try primaryKey?.export(keyType: .public) {
-                    return Armor.armored(publicKeyData, as: .publicKey)
-                } else {
+            case .public:
+                do {
+                    if let publicKeyData = try primaryKey?.export(keyType: .public) {
+                        return Armor.armored(publicKeyData, as: .publicKey)
+                    } else {
+                        return nil
+                    }
+                } catch {
+                    Log.e(error)
                     return nil
                 }
-            } catch {
-                Log.e(error)
-                return nil
-            }
 
-        case .secret:
-            do {
-                if let publicKeyData = try primaryKey?.export(keyType: .public),
-                    let privateKeyData = try primaryKey?.export(keyType: .secret) {
-                    return Armor.armored(publicKeyData, as: .publicKey) + Armor.armored(privateKeyData, as: .secretKey)
-                } else {
+            case .secret:
+                do {
+                    if let publicKeyData = try primaryKey?.export(keyType: .public),
+                        let privateKeyData = try primaryKey?.export(keyType: .secret) {
+                        return Armor.armored(publicKeyData, as: .publicKey) + Armor.armored(privateKeyData, as: .secretKey)
+                    } else {
+                        return nil
+                    }
+                } catch {
+                    Log.e(error)
                     return nil
                 }
-            } catch {
-                Log.e(error)
-                return nil
-            }
 
-        case .unknown:
-            return nil
-        @unknown default:
-            return nil
+            case .unknown:
+                return nil
+            @unknown default:
+                return nil
         }
     }
 }

@@ -27,8 +27,8 @@ extension Contact {
 
         var errorDescription: String {
             switch self {
-            case .fetchRequestFailed:
-                return "Failed to build fetchRequest."
+                case .fetchRequestFailed:
+                    return "Failed to build fetchRequest."
             }
         }
     }

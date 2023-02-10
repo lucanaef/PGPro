@@ -35,14 +35,14 @@ open class TapticEngine {
 
             let feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle
             switch style {
-            case .light:
-                feedbackStyle = .light
+                case .light:
+                    feedbackStyle = .light
 
-            case .medium:
-                feedbackStyle = .medium
+                case .medium:
+                    feedbackStyle = .medium
 
-            case .heavy:
-                feedbackStyle = .heavy
+                case .heavy:
+                    feedbackStyle = .heavy
             }
             let generator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: feedbackStyle)
             generator.prepare()
@@ -129,17 +129,17 @@ open class TapticEngine {
 
             let feedbackType: UINotificationFeedbackGenerator.FeedbackType
             switch type {
-            case .success:
-                feedbackType = .success
+                case .success:
+                    feedbackType = .success
 
-            case .warning:
-                feedbackType = .warning
+                case .warning:
+                    feedbackType = .warning
 
-            case .error:
-                feedbackType = .error
-            }
-            generator.notificationOccurred(feedbackType)
-            generator.prepare()
+                case .error:
+                    feedbackType = .error
+                }
+                generator.notificationOccurred(feedbackType)
+                generator.prepare()
         }
 
         public func prepare() {

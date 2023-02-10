@@ -32,11 +32,11 @@ struct KeyPickerView: View {
     @FetchRequest(sortDescriptors: []) var fetchedContacts: FetchedResults<Contact>
     var selectableContacts: [Contact] {
         switch type {
-        case .publicKeys:
-            return fetchedContacts.filter({ $0.isPublicKey }).sorted(by: { $0.name <= $1.name })
+            case .publicKeys:
+                return fetchedContacts.filter({ $0.isPublicKey }).sorted(by: { $0.name <= $1.name })
 
-        case .privateKey, .privateKeys:
-            return fetchedContacts.filter({ $0.isPrivateKey }).sorted(by: { $0.name <= $1.name })
+            case .privateKey, .privateKeys:
+                return fetchedContacts.filter({ $0.isPrivateKey }).sorted(by: { $0.name <= $1.name })
         }
     }
 

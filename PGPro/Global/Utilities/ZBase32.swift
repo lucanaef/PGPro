@@ -45,38 +45,38 @@ public class ZBase32 {
         }
 
         switch remainderLength {
-        case 1:
-            result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
-            result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 2) & 0x1f])
-            if padded { result.append("======") }
+            case 1:
+                result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
+                result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 2) & 0x1f])
+                if padded { result.append("======") }
 
-        case 2:
-            result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
-            result.append(alphabet[(((Int(data[normalizedLength]) & 0xff) << 2) | ((Int(data[normalizedLength + 1]) & 0xff) >> 6)) & 0x1f])
-            result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) >> 1) & 0x1f])
-            result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) << 4) & 0x1f])
-            if padded { result.append("====") }
+            case 2:
+                result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
+                result.append(alphabet[(((Int(data[normalizedLength]) & 0xff) << 2) | ((Int(data[normalizedLength + 1]) & 0xff) >> 6)) & 0x1f])
+                result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) >> 1) & 0x1f])
+                result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) << 4) & 0x1f])
+                if padded { result.append("====") }
 
-        case 3:
-            result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
-            result.append(alphabet[(((Int(data[normalizedLength]) & 0xff) << 2) | ((Int(data[normalizedLength + 1]) & 0xff) >> 6)) & 0x1f])
-            result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) >> 1) & 0x1f])
-            result.append(alphabet[(((Int(data[normalizedLength + 1]) & 0xff) << 4) | ((Int(data[normalizedLength + 2]) & 0xff) >> 4)) & 0x1f])
-            result.append(alphabet[((Int(data[normalizedLength + 2]) & 0xff) << 1) & 0x1f])
-            if padded { result.append("===") }
+            case 3:
+                result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
+                result.append(alphabet[(((Int(data[normalizedLength]) & 0xff) << 2) | ((Int(data[normalizedLength + 1]) & 0xff) >> 6)) & 0x1f])
+                result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) >> 1) & 0x1f])
+                result.append(alphabet[(((Int(data[normalizedLength + 1]) & 0xff) << 4) | ((Int(data[normalizedLength + 2]) & 0xff) >> 4)) & 0x1f])
+                result.append(alphabet[((Int(data[normalizedLength + 2]) & 0xff) << 1) & 0x1f])
+                if padded { result.append("===") }
 
-        case 4:
-            result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
-            result.append(alphabet[(((Int(data[normalizedLength]) & 0xff) << 2) | ((Int(data[normalizedLength + 1]) & 0xff) >> 6)) & 0x1f])
-            result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) >> 1) & 0x1f])
-            result.append(alphabet[(((Int(data[normalizedLength + 1]) & 0xff) << 4) | ((Int(data[normalizedLength + 2]) & 0xff) >> 4)) & 0x1f])
-            result.append(alphabet[(((Int(data[normalizedLength + 2]) & 0xff) << 1) | ((Int(data[normalizedLength + 3]) & 0xff) >> 7)) & 0x1f])
-            result.append(alphabet[((Int(data[normalizedLength + 3]) & 0xff) >> 2) & 0x1f])
-            result.append(alphabet[((Int(data[normalizedLength + 3]) & 0xff) << 3) & 0x1f])
-            if padded { result.append("=") }
+            case 4:
+                result.append(alphabet[((Int(data[normalizedLength]) & 0xff) >> 3) & 0x1f])
+                result.append(alphabet[(((Int(data[normalizedLength]) & 0xff) << 2) | ((Int(data[normalizedLength + 1]) & 0xff) >> 6)) & 0x1f])
+                result.append(alphabet[((Int(data[normalizedLength + 1]) & 0xff) >> 1) & 0x1f])
+                result.append(alphabet[(((Int(data[normalizedLength + 1]) & 0xff) << 4) | ((Int(data[normalizedLength + 2]) & 0xff) >> 4)) & 0x1f])
+                result.append(alphabet[(((Int(data[normalizedLength + 2]) & 0xff) << 1) | ((Int(data[normalizedLength + 3]) & 0xff) >> 7)) & 0x1f])
+                result.append(alphabet[((Int(data[normalizedLength + 3]) & 0xff) >> 2) & 0x1f])
+                result.append(alphabet[((Int(data[normalizedLength + 3]) & 0xff) << 3) & 0x1f])
+                if padded { result.append("=") }
 
-        default:
-            break
+            default:
+                break
         }
 
         return result

@@ -58,12 +58,12 @@ struct LaunchAuthenticationView: View {
     private func authenticate() {
         Authentication.requestAuthentication { result in
             switch result {
-            case .success:
-                userIsNotAuthenticated = false
+                case .success:
+                    userIsNotAuthenticated = false
 
-            case .failure(let error):
-                errorMessage = error.localizedDescription
-                presentingAlert = true
+                case .failure(let error):
+                    errorMessage = error.localizedDescription
+                    presentingAlert = true
             }
         }
     }

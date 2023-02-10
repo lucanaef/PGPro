@@ -95,25 +95,25 @@ struct PassphraseInputView: View {
                 }
             } footer: {
                 switch passphraseIsCorrect {
-                case .none:
-                    EmptyView()
+                    case .none:
+                        EmptyView()
 
-                case .some(let isCorrect):
-                    switch isCorrect {
-                    case true:
-                        HStack {
-                            Image(systemName: "checkmark.circle.fill")
-                            Text("Passphrase correct")
-                        }
-                        .foregroundColor(.green)
+                    case .some(let isCorrect):
+                        switch isCorrect {
+                            case true:
+                                HStack {
+                                    Image(systemName: "checkmark.circle.fill")
+                                    Text("Passphrase correct")
+                                }
+                                .foregroundColor(.green)
 
-                    case false:
-                        HStack {
-                            Image(systemName: "xmark.circle.fill")
-                            Text("Passphrase incorrect")
-                        }
-                        .foregroundColor(.red)
-                    }
+                            case false:
+                                HStack {
+                                    Image(systemName: "xmark.circle.fill")
+                                    Text("Passphrase incorrect")
+                                }
+                                .foregroundColor(.red)
+                            }
                 }
             }
         }

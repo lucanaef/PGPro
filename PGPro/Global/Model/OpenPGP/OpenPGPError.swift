@@ -28,20 +28,20 @@ enum OpenPGPError: Error, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .emptyMessage:
-            return "Message can't be empty."
-        case .invalidMessage:
-            return "Message invalid."
-        case .requiresPassphrase:
-            return "Missing passphrase required."
-        case .wrongPassphrase:
-            return "Wrong passphrase."
-        case .frameworkError(let error):
-            return "Framework Error: \(error.localizedDescription)"
-        case .failedEncryption(let description):
-            return "Encryption failed. \(description)"
-        case .failedDecryption(let description):
-            return "Decryption failed. \(description)"
+            case .emptyMessage:
+                return "Message can't be empty."
+            case .invalidMessage:
+                return "Message invalid."
+            case .requiresPassphrase:
+                return "Missing passphrase required."
+            case .wrongPassphrase:
+                return "Wrong passphrase."
+            case .frameworkError(let error):
+                return "Framework Error: \(error.localizedDescription)"
+            case .failedEncryption(let description):
+                return "Encryption failed. \(description)"
+            case .failedDecryption(let description):
+                return "Decryption failed. \(description)"
         }
     }
 }

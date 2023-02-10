@@ -47,30 +47,30 @@ class GenerateKeyPairViewModel: ObservableObject {
         let strength = Navajo.passwordStrength(forEntropy: passphraseEntropy)
 
         switch strength {
-        case .veryWeak:
-            return Color(UIColor(red: 0.75, green: 0.22, blue: 0.17, alpha: 1.0))
+            case .veryWeak:
+                return Color(UIColor(red: 0.75, green: 0.22, blue: 0.17, alpha: 1.0))
 
-        case .weak:
-            return Color(UIColor(red: 0.90, green: 0.49, blue: 0.13, alpha: 1.0))
+            case .weak:
+                return Color(UIColor(red: 0.90, green: 0.49, blue: 0.13, alpha: 1.0))
 
-        case .reasonable:
-            return Color(UIColor(red: 1.00, green: 0.75, blue: 0.28, alpha: 1.0))
+            case .reasonable:
+                return Color(UIColor(red: 1.00, green: 0.75, blue: 0.28, alpha: 1.0))
 
-        case .strong:
-            return Color(UIColor(red: 0.13, green: 0.81, blue: 0.44, alpha: 1.0))
+            case .strong:
+                return Color(UIColor(red: 0.13, green: 0.81, blue: 0.44, alpha: 1.0))
 
-        case .veryStrong:
-            return Color(UIColor(red: 0.03, green: 0.68, blue: 0.38, alpha: 1.0))
+            case .veryStrong:
+                return Color(UIColor(red: 0.03, green: 0.68, blue: 0.38, alpha: 1.0))
         }
     }
 
     var generateButtonEnabled: Bool {
         switch validateInput() {
-        case .failure:
-            return false
+            case .failure:
+                return false
 
-        case .success:
-            return true
+            case .success:
+                return true
         }
     }
 
@@ -109,17 +109,17 @@ class GenerateKeyPairViewModel: ObservableObject {
         // Generate key
         let keyGenerationResult = OpenPGP.generateKey(for: name, email: email, passphrase: passphrase)
         switch keyGenerationResult {
-        case .failure(let error):
-            return .failure(error)
+            case .failure(let error):
+                return .failure(error)
 
-        case .success(let key):
-            // Add key to keychain
-            let success = Contact.add(name: name, email: email, key: key)
-            if success {
-                return .success(())
-            } else {
-                return .failure(GenerateKeyPairError.importFailed)
-            }
+            case .success(let key):
+                // Add key to keychain
+                let success = Contact.add(name: name, email: email, key: key)
+                if success {
+                    return .success(())
+                } else {
+                    return .failure(GenerateKeyPairError.importFailed)
+                }
         }
     }
 }

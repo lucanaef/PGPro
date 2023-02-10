@@ -50,19 +50,19 @@ class VerifyingKeyserver {
 
     private func constructURL(for string: String, scheme: VKIScheme) -> URL? {
         switch scheme {
-        case .fingerprint:
-            let joinedFingerprint = string.components(separatedBy: .whitespaces).joined()
-            return baseURL.appending(component: "/vks/v1/by-fingerprint/").appending(component: joinedFingerprint)
+            case .fingerprint:
+                let joinedFingerprint = string.components(separatedBy: .whitespaces).joined()
+                return baseURL.appending(component: "/vks/v1/by-fingerprint/").appending(component: joinedFingerprint)
 
-        case .keyID:
-            let joinedKeyID = string.components(separatedBy: .whitespaces).joined()
-            return baseURL.appending(component: "/vks/v1/by-keyid/").appending(component: joinedKeyID)
+            case .keyID:
+                let joinedKeyID = string.components(separatedBy: .whitespaces).joined()
+                return baseURL.appending(component: "/vks/v1/by-keyid/").appending(component: joinedKeyID)
 
-        case .email:
-            guard string.isValidEmail else {
-                return nil
-            }
-            return baseURL.appending(component: "/vks/v1/by-email/").appending(component: string)
+            case .email:
+                guard string.isValidEmail else {
+                    return nil
+                }
+                return baseURL.appending(component: "/vks/v1/by-email/").appending(component: string)
         }
     }
 }

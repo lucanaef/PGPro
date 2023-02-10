@@ -22,16 +22,16 @@ struct DecryptionResultView: View {
 
     var body: some View {
         switch decryptionResult.message {
-        case .plain(value: let message):
-            Text(message)
-
-        case .mime(value: let mime):
-            if let message = try? mime.decodedContentString() {
+            case .plain(value: let message):
                 Text(message)
-            } else {
-                Text("Failed to decode mime content.")
-                    .foregroundColor(.red)
-            }
+
+            case .mime(value: let mime):
+                if let message = try? mime.decodedContentString() {
+                    Text(message)
+                } else {
+                    Text("Failed to decode mime content.")
+                        .foregroundColor(.red)
+                }
         }
     }
 }

@@ -41,9 +41,9 @@ class OpenPGP {
 
         var description: String {
             switch self {
-            case .invalidInputName: return "Invalid Input: Name"
-            case .invalidInputEmail: return "Invalid Input: Email"
-            case .invalidInputPassphrase: return "Invalid Input: Passphrase"
+                case .invalidInputName: return "Invalid Input: Name"
+                case .invalidInputEmail: return "Invalid Input: Email"
+                case .invalidInputPassphrase: return "Invalid Input: Passphrase"
             }
         }
     }

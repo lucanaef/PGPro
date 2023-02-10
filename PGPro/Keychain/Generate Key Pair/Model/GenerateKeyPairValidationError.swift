@@ -26,20 +26,20 @@ enum GenerateKeyPairError: Error, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .nameEmpty:
-            return "Name cannot be empty."
-        case .emailAddressEmpty:
-            return "Email address cannot be empty."
-        case .emailAddressInvalid:
-            return "Email address is invalid."
-        case .passphraseEmpty:
-            return "Passphrase cannot be empty."
-        case .passphraseConfirmEmpty:
-            return "Please confirm the passphrase."
-        case .passphraseMismatch:
-            return "Passphrases do not match."
-        case .importFailed:
-            return "Failed to import key."
+            case .nameEmpty:
+                return "Name cannot be empty."
+            case .emailAddressEmpty:
+                return "Email address cannot be empty."
+            case .emailAddressInvalid:
+                return "Email address is invalid."
+            case .passphraseEmpty:
+                return "Passphrase cannot be empty."
+            case .passphraseConfirmEmpty:
+                return "Please confirm the passphrase."
+            case .passphraseMismatch:
+                return "Passphrases do not match."
+            case .importFailed:
+                return "Failed to import key."
         }
     }
 }

@@ -33,17 +33,17 @@ struct SettingsView: View {
 
         let result = Contact.exportAll()
         switch result {
-        case .success(let url):
-            Log.i("Export successful: url = \(url)")
-            exportingKeychain = false
-            keychainExportURL = url
-            presentingKeychainExport = true
+            case .success(let url):
+                Log.i("Export successful: url = \(url)")
+                exportingKeychain = false
+                keychainExportURL = url
+                presentingKeychainExport = true
 
-        case .failure(let error):
-            Log.e(error)
-            exportingKeychain = false
-            keychainExportFailedErrorMessage = error.localizedDescription
-            keychainExportFailed = true
+            case .failure(let error):
+                Log.e(error)
+                exportingKeychain = false
+                keychainExportFailedErrorMessage = error.localizedDescription
+                keychainExportFailed = true
         }
     }
 
@@ -161,11 +161,11 @@ struct SettingsView: View {
             .fileMover(isPresented: $presentingKeychainExport,
                        file: keychainExportURL) { result in
                 switch result {
-                case .success(let url):
-                    Log.i("Keychain export file moved successfully to \(url.absoluteString)")
+                    case .success(let url):
+                        Log.i("Keychain export file moved successfully to \(url.absoluteString)")
 
-                case .failure(let error):
-                    Log.e("Failed to move keychain export file! \(error.localizedDescription)")
+                    case .failure(let error):
+                        Log.e("Failed to move keychain export file! \(error.localizedDescription)")
                 }
             }
         }

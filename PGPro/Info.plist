@@ -19,5 +19,7 @@
             <key>UISceneConfigurations</key>
             <dict/>
         </dict>
+    <key>NSCameraUsageDescription</key>
+        <string>PGPro uses the camera to scan QR codes.</string>
 </dict>
 </plist>
