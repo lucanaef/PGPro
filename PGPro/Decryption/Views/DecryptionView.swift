@@ -121,7 +121,7 @@ struct DecryptionView: View {
 }
 
 struct DecryptionView_Previews: PreviewProvider {
-    static private var ciphertext = """
+    private static var ciphertext = """
     -----BEGIN PGP MESSAGE-----
     Version: ObjectivePGP
     Comment: https://www.objectivepgp.com

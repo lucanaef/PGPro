@@ -18,7 +18,6 @@
 import Foundation
 
 class DecryptionViewModel: ObservableObject {
-
     @Published var ciphertext: String?
     @Published var decryptionKey: Set<Contact> = Set()
     @Published var decryptionResult: OpenPGP.DecryptionResult?

@@ -30,7 +30,7 @@ struct LicencesView: View {
                         HStack(alignment: .center) {
                             Text(license.title)
                                 .foregroundColor(.primary)
-                                .fontWeight(0.0)
+                                .fontWeight(.semibold)
 
                             if let type = license.licenseType {
                                 Text(type.description)
@@ -43,7 +43,7 @@ struct LicencesView: View {
                                     .cornerRadius(25)
                             }
                         }
-                        
+
                         Text(license.subtitle)
                             .font(.caption)
                             .foregroundColor(.secondary)

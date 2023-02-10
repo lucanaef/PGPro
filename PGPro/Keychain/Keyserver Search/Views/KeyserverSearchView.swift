@@ -62,7 +62,6 @@ struct KeyserverSearchView: View {
                         } label: {
                             Label("Scan QR Code", systemImage: "qrcode")
                         }
-
                     })
                     .onSubmit(of: .search) {
                         Task {
