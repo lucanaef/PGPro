@@ -73,41 +73,35 @@ struct DecryptionView: View {
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(Array(viewModel.decryptionKey)) { contact in
-                            NavigationLink {
-                                KeyPickerView(withTitle: "Select Decryption Key", type: .privateKey, selection: $viewModel.decryptionKey)
-                            } label: {
-                                ZStack {
-                                    RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
-                                        .fill(Color.accentColor)
-                                        .frame(maxHeight: 40.0)
+                            ZStack {
+                                RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
+                                    .fill(Color.accentColor)
+                                    .frame(maxHeight: 40.0)
 
-                                    VStack(alignment: .leading) {
-                                        Text(verbatim: contact.name)
-                                            .font(.caption)
-                                            .bold()
-                                            .foregroundColor(.white)
-                                        Text(verbatim: contact.email)
-                                            .font(.caption)
-                                            .foregroundColor(.white)
-                                    }
-                                    .padding(.horizontal)
+                                VStack(alignment: .leading) {
+                                    Text(verbatim: contact.name)
+                                        .font(.caption)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                    Text(verbatim: contact.email)
+                                        .font(.caption)
+                                        .foregroundColor(.white)
                                 }
+                                .padding(.horizontal)
                             }
                         }
 
-                        if viewModel.decryptionKey.isEmpty {
-                            NavigationLink {
-                                KeyPickerView(withTitle: "Select Decryption Key", type: .privateKey, selection: $viewModel.decryptionKey)
-                            } label: {
-                                ZStack {
-                                    RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
-                                        .strokeBorder(Color.accentColor, lineWidth: 2)
-                                        .frame(width: 40.0, height: 40.0, alignment: .center)
+                        NavigationLink {
+                            KeyPickerView(withTitle: "Select Decryption Key", type: .privateKey, selection: $viewModel.decryptionKey)
+                        } label: {
+                            ZStack {
+                                RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
+                                    .strokeBorder(Color.accentColor, lineWidth: 2)
+                                    .frame(width: 40.0, height: 40.0, alignment: .center)
 
-                                    Image(systemName: "plus")
-                                        .font(.system(.body, design: .rounded, weight: .bold))
-                                        .foregroundColor(Color.accentColor)
-                                }
+                                Image(systemName: "plus")
+                                    .font(.system(.body, design: .rounded, weight: .bold))
+                                    .foregroundColor(Color.accentColor)
                             }
                         }
                     }

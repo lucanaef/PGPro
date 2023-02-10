@@ -196,6 +196,7 @@
 				8161BF78299153B300766FC0 /* HeaderView.swift */,
 				812A07242996CA1500FA9DB9 /* PlaceholderTextEditor.swift */,
 				812A07262996DAA000FA9DB9 /* CodeScannerView.swift */,
+				8157F56E292BCE47001EA784 /* PassphraseInputView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -493,7 +494,6 @@
 			isa = PBXGroup;
 			children = (
 				8178B4B128FEF4510027AACF /* EncryptionView.swift */,
-				8157F56E292BCE47001EA784 /* PassphraseInputView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
