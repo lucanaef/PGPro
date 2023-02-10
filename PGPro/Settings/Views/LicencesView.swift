@@ -25,15 +25,36 @@ struct LicencesView: View {
             Button {
                 openURL(license.licenseURL)
             } label: {
-                VStack(alignment: .leading) {
-                    Text(license.title)
-                        .foregroundColor(.primary)
-                    Text(license.subtitle)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
+                HStack(alignment: .center) {
+                    VStack(alignment: .leading) {
+                        HStack(alignment: .center) {
+                            Text(license.title)
+                                .foregroundColor(.primary)
+                                .fontWeight(0.0)
+
+                            if let type = license.licenseType {
+                                Text(type.description)
+                                    .padding(.vertical, 2.0)
+                                    .padding(.horizontal, 8.0)
+                                    .font(.caption2)
+                                    .monospaced()
+                                    .foregroundColor(.white)
+                                    .background(type.color)
+                                    .cornerRadius(25)
+                            }
+                        }
+                        
+                        Text(license.subtitle)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                    }
+                    .padding(2)
+
+                    Spacer()
+
+                    Image(systemName: "chevron.forward")
                 }
-                .padding(2)
             }
         }
         .navigationTitle("Licences")
