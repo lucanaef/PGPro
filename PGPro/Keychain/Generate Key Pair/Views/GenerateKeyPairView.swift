@@ -59,6 +59,7 @@ struct GenerateKeyPairView: View {
 
                                 TextField("Email Address", text: $viewModel.email)
                                     .keyboardType(.emailAddress)
+                                    .autocapitalization(.none)
                                     .focused($focusedField, equals: .email)
                             }
                         }
