@@ -49,7 +49,6 @@ struct LicencesView: View {
                             .foregroundColor(.secondary)
                             .lineLimit(1)
                     }
-                    .padding(2)
 
                     Spacer()
 
