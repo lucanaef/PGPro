@@ -16,6 +16,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import ObjectivePGP
+import SPAlert
 import SwiftUI
 
 struct KeyserverSearchView: View {
@@ -24,8 +25,13 @@ struct KeyserverSearchView: View {
     @StateObject private var viewModel = KeyserverSearchViewModel()
     @State private var searchText = ""
 
+    @State private var presentingCodeScannerView: Bool = false
+
     @State private var importSuccessful: Bool = false
     @State private var importFailed: Bool = false
+
+    @State private var presentingErrorDialog: Bool = false
+    @State private var errorMessage: String?
 
     var body: some View {
         NavigationView {
@@ -58,7 +64,7 @@ struct KeyserverSearchView: View {
                     }
                     .searchable(text: $searchText, prompt: "Search by Email, Fingerprint or Key ID", suggestions: {
                         Button {
-                            #warning("TODO: Implement")
+                            presentingCodeScannerView = true
                         } label: {
                             Label("Scan QR Code", systemImage: "qrcode")
                         }
@@ -74,6 +80,38 @@ struct KeyserverSearchView: View {
                             .progressViewStyle(CircularProgressViewStyle())
                     }
                 }
+                .sheet(isPresented: $presentingCodeScannerView) {
+                    CodeScannerView(codeTypes: [.qr]) { scanResult in
+                        switch scanResult {
+                            case .failure(let error):
+                                Log.e(error)
+                                presentingCodeScannerView = false
+                                errorMessage = error.localizedDescription
+                                presentingErrorDialog = true
+                                return
+
+                            case .success(let code):
+                                guard code.contains("OPENPGP4FPR:") else {
+                                    Log.e("Invalid QR Code.")
+                                    presentingCodeScannerView = false
+                                    errorMessage = "Invalid QR Code"
+                                    presentingErrorDialog = true
+                                    return
+                                }
+
+                                let parsedCode = code.replacingOccurrences(of: "OPENPGP4FPR:", with: "")
+                                searchText = parsedCode
+                                presentingCodeScannerView = false
+                        }
+                    }
+                }
+                .SPAlert(isPresent: $presentingErrorDialog,
+                         title: "Failed to scan QR code!",
+                         message: errorMessage,
+                         dismissOnTap: true,
+                         preset: .error,
+                         haptic: .error
+                )
             }
             .background(Color(UIColor.systemGroupedBackground))
             .navigationTitle("Search Keyserver")
