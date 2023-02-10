@@ -84,15 +84,9 @@ struct EncryptionView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     HeaderView(title: "Message")
 
-                    TextEditor(text: $viewModel.message)
+                    PlaceholderTextEditor(placeholder: viewModel.placeholder, text: $viewModel.message)
                         .multilineTextAlignment(.leading)
                         .scrollContentBackground(.hidden)
-                        .foregroundColor(viewModel.message == viewModel.placeholder ? .gray : .primary)
-                        .onTapGesture {
-                            if viewModel.message == viewModel.placeholder {
-                                viewModel.message = ""
-                            }
-                        }
                         .focused($presentingKeyboard)
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {

@@ -27,7 +27,7 @@ class EncryptionViewModel: ObservableObject {
     }
 
     let placeholder = "Type here to enter your message..."
-    @Published var message: String = "Type here to enter your message..."
+    @Published var message: String = ""
 
     var readyForEncryptionOrPassphrases: Bool {
         !recipients.isEmpty && !message.isEmpty && message != placeholder
@@ -40,7 +40,6 @@ class EncryptionViewModel: ObservableObject {
             if let key = contact.primaryKey, let passphrase = passphrase(for: key) {
                 return OpenPGP.verifyPassphrase(passphrase, for: key)
             } else {
-                Log.d("returning false...")
                 return false
             }
         })

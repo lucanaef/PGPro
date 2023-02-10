@@ -10,6 +10,7 @@
 		8122A912290ED8DD0027F36D /* String+isValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122A911290ED8DD0027F36D /* String+isValidEmail.swift */; };
 		8122A915290EDE4D0027F36D /* ThirdPartyMailer in Frameworks */ = {isa = PBXBuildFile; productRef = 8122A914290EDE4D0027F36D /* ThirdPartyMailer */; };
 		8122A917290EDE5E0027F36D /* MailIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122A916290EDE5E0027F36D /* MailIntegration.swift */; };
+		812A07252996CA1500FA9DB9 /* PlaceholderTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A07242996CA1500FA9DB9 /* PlaceholderTextEditor.swift */; };
 		813F44C4290DBA6800A69C75 /* AuthenticationPreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F44C3290DBA6800A69C75 /* AuthenticationPreferenceView.swift */; };
 		813F44C6290DBBE000A69C75 /* AppearancePreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F44C5290DBBE000A69C75 /* AppearancePreferenceView.swift */; };
 		813F44C8290DC45300A69C75 /* KeyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F44C7290DC45300A69C75 /* KeyDetailView.swift */; };
@@ -81,6 +82,7 @@
 /* Begin PBXFileReference section */
 		8122A911290ED8DD0027F36D /* String+isValidEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+isValidEmail.swift"; sourceTree = "<group>"; };
 		8122A916290EDE5E0027F36D /* MailIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailIntegration.swift; sourceTree = "<group>"; };
+		812A07242996CA1500FA9DB9 /* PlaceholderTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextEditor.swift; sourceTree = "<group>"; };
 		813F44C3290DBA6800A69C75 /* AuthenticationPreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationPreferenceView.swift; sourceTree = "<group>"; };
 		813F44C5290DBBE000A69C75 /* AppearancePreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearancePreferenceView.swift; sourceTree = "<group>"; };
 		813F44C7290DC45300A69C75 /* KeyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyDetailView.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				813F44D0290DD66200A69C75 /* KeyPickerView.swift */,
 				819CD9FA290E8958006B4804 /* LaunchAuthenticationView.swift */,
 				8161BF78299153B300766FC0 /* HeaderView.swift */,
+				812A07242996CA1500FA9DB9 /* PlaceholderTextEditor.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -712,6 +715,7 @@
 				81DC4F102920227F00C1AE11 /* ZBase32.swift in Sources */,
 				8193DA7C29118E9900F103D5 /* Contact+Identifiable.swift in Sources */,
 				81C9D70C292054F300BCA788 /* String+slice.swift in Sources */,
+				812A07252996CA1500FA9DB9 /* PlaceholderTextEditor.swift in Sources */,
 				819CD9FB290E8959006B4804 /* LaunchAuthenticationView.swift in Sources */,
 				8161BF742990F5F900766FC0 /* DecryptionResultView.swift in Sources */,
 				81C9D70A292045FF00BCA788 /* Contact+add.swift in Sources */,
