@@ -89,6 +89,10 @@ class Licenses {
         License(for: "TapticEngine",
                 describedBy: "TapticEngine generates haptic feedback vibrations on iOS device.",
                 at: URL(string: "https://github.com/WorldDownTown/TapticEngine/blob/master/LICENSE")!,
+                type: .mit),
+        License(for: "ThirdPartyMailer",
+                describedBy: "Interact with third-party iOS mail clients, using custom URL schemes.",
+                at: URL(string: "https://github.com/vtourraine/ThirdPartyMailer/blob/main/LICENSE.txt")!,
                 type: .mit)
     ]
 }
