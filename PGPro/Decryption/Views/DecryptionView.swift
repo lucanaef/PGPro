@@ -112,7 +112,7 @@ struct DecryptionView: View {
             Divider()
 
             Button(action: {
-                #warning("TODO: Implement.")
+                viewModel.decrypt()
             }, label: {
                 Text("Decrypt")
                     .frame(maxWidth: .infinity)

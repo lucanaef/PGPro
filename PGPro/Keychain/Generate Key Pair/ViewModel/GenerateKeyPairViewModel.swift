@@ -38,9 +38,7 @@ class GenerateKeyPairViewModel: ObservableObject {
     }
 
     var passphraseStrength: CGFloat {
-        let strengthVal = min(128.0, passphraseEntropy) / 128.0
-        print(strengthVal)
-        return CGFloat(strengthVal)
+        CGFloat(min(128.0, passphraseEntropy) / 128.0)
     }
 
     var passphraseStrengthColor: Color {

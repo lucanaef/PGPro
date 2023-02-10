@@ -25,4 +25,23 @@ class DecryptionViewModel: ObservableObject {
     var readyForDecryptionOrPassphrases: Bool {
         !(ciphertext?.isEmpty ?? true) && (ciphertext?.isOpenPGPCiphertext ?? false) && !decryptionKey.isEmpty
     }
+
+    func decrypt() {
+        #warning("Decryption with passphrase not implemented!")
+        guard let ciphertext else {
+            Log.e("Ciphertext cannot be empty!")
+            return
+        }
+
+        if let contact = decryptionKey.first {
+            do {
+                self.decryptionResult = try OpenPGP.decrypt(message: ciphertext, for: contact)
+            } catch {
+                Log.e(error)
+                return
+            }
+        } else {
+            Log.e("Failed to unwrap first (and only) decryption key.")
+        }
+    }
 }
