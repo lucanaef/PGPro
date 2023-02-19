@@ -97,7 +97,27 @@ struct DecryptionInputView: View {
                          preset: .error,
                          haptic: .error)
                 .onOpenURL { url in
-                    Log.d("Call to .onOpenURL with url = \(url.debugDescription)")
+                    guard url.pathExtension.lowercased() == "asc" else {
+                        let error = "Only `.asc` files can be opened."
+                        Log.e(error)
+                        errorMessage = error
+                        presentingError = true
+                        return
+                    }
+
+                    if let fileContent = try? String(contentsOf: url, encoding: .ascii) {
+                        #warning("TODO: Handle case where file contains a key")
+                        guard fileContent.isOpenPGPCiphertext else {
+                            let error = "File is not an OpenPGP message."
+                            Log.e(error)
+                            errorMessage = error
+                            presentingError = true
+                            return
+                        }
+
+                        ciphertext = fileContent
+                        presentingDecryptionView = true
+                    }
                 }
                 .onDrop(of: [UTType.asc], isTargeted: nil, perform: { providers in
                     if let provider = providers.first {
