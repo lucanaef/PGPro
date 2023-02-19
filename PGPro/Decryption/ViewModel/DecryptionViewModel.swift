@@ -33,6 +33,8 @@ class DecryptionViewModel: ObservableObject {
         !(ciphertext?.isEmpty ?? true) && (ciphertext?.isOpenPGPCiphertext ?? false) && !decryptionKey.isEmpty
     }
 
+    // MARK: - Passphrase Handling
+
     @Published var passphraseInputRequired: Bool = false
 
     var somePassphrasesRequired: Bool {
@@ -50,6 +52,8 @@ class DecryptionViewModel: ObservableObject {
         return passphraseForKey[key]
     }
 
+    // MARK: - Decryption
+
     func decrypt() {
         guard let ciphertext else {
             Log.e("Ciphertext cannot be empty!")
@@ -66,5 +70,16 @@ class DecryptionViewModel: ObservableObject {
         } else {
             Log.e("Failed to unwrap first (and only) decryption key.")
         }
+    }
+
+    // MARK: - Clearing
+
+    func clear() {
+        self.ciphertext = nil
+        self.decryptionKey.removeAll()
+    }
+
+    var isClear: Bool {
+        self.ciphertext == nil && self.decryptionKey.isEmpty
     }
 }

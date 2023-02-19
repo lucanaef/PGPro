@@ -50,7 +50,7 @@ struct DecryptionResultView: View {
                 }
 
                 Spacer()
-                
+
                 Divider()
                     .padding(.bottom)
 

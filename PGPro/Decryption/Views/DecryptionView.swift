@@ -22,7 +22,7 @@ struct DecryptionView: View {
 
     @State private var presentingPassphraseInput: Bool = false
 
-    private var getCiphertext: (() -> (String?))?
+    @State private var getCiphertext: (() -> (String?))?
     init(withCiphertext: (() -> (String?))? = nil) {
         self.getCiphertext = withCiphertext
     }
@@ -143,10 +143,18 @@ struct DecryptionView: View {
         }
         .padding()
         .navigationTitle("Decryption")
-        .sheet(item: $viewModel.decryptionResult) { result in
-            DecryptionResultView(decryptionResult: result)
-                .interactiveDismissDisabled()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Clear") {
+                    getCiphertext = nil
+                    viewModel.clear()
+                }
+                .opacity(viewModel.isClear ? 0 : 1)
+            }
         }
+        .fullScreenCover(item: $viewModel.decryptionResult, content: { result in
+            DecryptionResultView(decryptionResult: result)
+        })
         .onAppear {
             if let ciphertext = getCiphertext?() {
                 viewModel.ciphertext = ciphertext
