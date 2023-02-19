@@ -121,7 +121,7 @@ struct KeyserverSearchView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Spacer()
-                    
+
                     Button("Cancel", role: .cancel) {
                         presentationMode.wrappedValue.dismiss()
                     }

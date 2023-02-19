@@ -88,37 +88,37 @@ struct PassphraseInputView: View {
         var body: some View {
             Section {
                 KeychainCardView(contact: contact)
-                SecureField("Passphrase", text: $passphrase)
-                    .textContentType(.password)
-                    .onSubmit {
-                        if let key = contact.primaryKey {
-                            passphraseForKey[key] = passphrase
-                            checkPassphrase()
-                        } else {
-                            Log.e("Failed to unwrap primary key for contact \(contact.id)")
+                if passphraseIsCorrect != .some(true) {
+                    SecureField("Passphrase", text: $passphrase)
+                        .textContentType(.password)
+                        .onSubmit {
+                            if let key = contact.primaryKey {
+                                passphraseForKey[key] = passphrase
+                                checkPassphrase()
+                            } else {
+                                Log.e("Failed to unwrap primary key for contact \(contact.id)")
+                            }
                         }
-                    }
+                }
             } footer: {
                 switch passphraseIsCorrect {
                     case .none:
                         EmptyView()
 
                     case .some(let isCorrect):
-                        switch isCorrect {
-                            case true:
-                                HStack {
-                                    Image(systemName: "checkmark.circle.fill")
-                                    Text("Passphrase correct")
-                                }
-                                .foregroundColor(.green)
-
-                            case false:
-                                HStack {
-                                    Image(systemName: "xmark.circle.fill")
-                                    Text("Passphrase incorrect")
-                                }
-                                .foregroundColor(.red)
+                        if isCorrect {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                Text("Passphrase correct")
                             }
+                            .foregroundColor(.green)
+                        } else {
+                            HStack {
+                                Image(systemName: "xmark.circle.fill")
+                                Text("Passphrase incorrect")
+                            }
+                            .foregroundColor(.red)
+                        }
                 }
             }
         }
