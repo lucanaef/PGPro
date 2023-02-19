@@ -99,6 +99,9 @@ struct DecryptionInputView: View {
                          dismissOnTap: true,
                          preset: .error,
                          haptic: .error)
+                .onOpenURL { url in
+                    Log.d("Call to .onOpenURL with url = \(url.debugDescription)")
+                }
                 .fileImporter(isPresented: $presentingFileImporter,
                               allowedContentTypes: [.text, .plainText, .utf8PlainText, .utf16ExternalPlainText, .utf16PlainText],
                               allowsMultipleSelection: false) { result in
