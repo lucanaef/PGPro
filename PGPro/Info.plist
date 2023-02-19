@@ -14,12 +14,33 @@
 		<string>fastmail</string>
 		<string>protonmail</string>
 	</array>
-    <key>UIApplicationSceneManifest</key>
-        <dict>
-            <key>UISceneConfigurations</key>
-            <dict/>
-        </dict>
-    <key>NSCameraUsageDescription</key>
-        <string>PGPro uses the camera to scan QR codes.</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UISceneConfigurations</key>
+		<dict/>
+	</dict>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>ASCII-Armored File</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
+			<key>UTTypeIdentifier</key>
+			<string>app.pgpro.asc</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>ASC</string>
+					<string>asc</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>

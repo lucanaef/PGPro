@@ -12,7 +12,7 @@
     {
       "identity" : "objectivepgp",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/ObjectivePGP",
+      "location" : "https://github.com/krzyzanowskim/ObjectivePGP.git",
       "state" : {
         "revision" : "0dc7ca7ffe193095dc37456b0c75be167a2026f4",
         "version" : "0.99.2"
@@ -30,7 +30,7 @@
     {
       "identity" : "thirdpartymailer",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vtourraine/ThirdPartyMailer.git",
+      "location" : "https://github.com/vtourraine/ThirdPartyMailer",
       "state" : {
         "revision" : "44c1cfaa6969963f22691aa67f88a69e3b6d651f",
         "version" : "2.1.0"

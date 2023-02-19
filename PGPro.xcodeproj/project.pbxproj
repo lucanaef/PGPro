@@ -861,8 +861,8 @@
 				INFOPLIST_FILE = PGPro/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "PGPro β";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) Biometric Authentication";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "PGPro uses the camera to scan QR codes.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "PGPro Biometric Authentication";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -896,8 +896,8 @@
 				INFOPLIST_FILE = PGPro/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "PGPro β";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) Biometric Authentication";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "PGPro uses the camera to scan QR codes.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "PGPro Biometric Authentication";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
