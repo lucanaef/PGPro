@@ -134,12 +134,15 @@ struct DecryptionView: View {
                     viewModel.decrypt()
                 })
                 .interactiveDismissDisabled(true)
+                .accentColor(Color.accentColor)
             }
         }
         .padding()
         .navigationTitle("Decryption")
         .sheet(item: $viewModel.decryptionResult) { result in
             DecryptionResultView(decryptionResult: result)
+                .interactiveDismissDisabled()
+                .accentColor(Color.accentColor)
         }
     }
 }

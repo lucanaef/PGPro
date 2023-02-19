@@ -103,6 +103,18 @@ class OpenPGP {
         var id = UUID()
         var message: DecryptionResultValue
         var signatures: String
+
+        var plaintext: String? {
+            if case let .plain(plaintext) = self.message {
+                return plaintext
+            } else if case let .mime(mime) = self.message {
+                if let plaintext = try? mime.decodedContentString() {
+                    return plaintext
+                }
+            }
+
+            return nil
+        }
     }
 
     enum DecryptionResultValue {

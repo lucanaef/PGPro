@@ -49,7 +49,7 @@ struct PassphraseInputView: View {
                 }
             }
             .background(Color(UIColor.systemGroupedBackground))
-            .navigationBarTitle("Passphrase Required")
+            .navigationBarTitle("Passphrase")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
