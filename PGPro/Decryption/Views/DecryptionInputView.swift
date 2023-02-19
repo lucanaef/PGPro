@@ -76,12 +76,9 @@ struct DecryptionInputView: View {
                     }
                     .accentColor(Color.secondary)
 
-                    /*
-                    #warning("Implement drag-and-drop area")
                     Label("You can also drag-and-drop a file here.", systemImage: "info.circle")
                         .font(.footnote)
                         .foregroundColor(Color.secondary)
-                     */
 
                     Spacer()
                 }
@@ -102,9 +99,34 @@ struct DecryptionInputView: View {
                 .onOpenURL { url in
                     Log.d("Call to .onOpenURL with url = \(url.debugDescription)")
                 }
-                .fileImporter(isPresented: $presentingFileImporter,
-                              allowedContentTypes: [.text, .plainText, .utf8PlainText, .utf16ExternalPlainText, .utf16PlainText],
-                              allowsMultipleSelection: false) { result in
+                .onDrop(of: [UTType.asc], isTargeted: nil, perform: { providers in
+                    if let provider = providers.first {
+                        _ = provider.loadDataRepresentation(for: UTType.asc) { (data, error) in
+                            if let data {
+                                ciphertext = String(bytes: data, encoding: .ascii)
+                                presentingDecryptionView = true
+                            } else if let error {
+                                Log.e(error)
+                                errorMessage = error.localizedDescription
+                                presentingError = true
+                            } else {
+                                let error = "Failed to load data."
+                                Log.e(error)
+                                errorMessage = error
+                                presentingError = true
+                            }
+                        }
+
+                        return true
+                    } else {
+                        let error = "Drag-and-Drop failed!"
+                        Log.e(error)
+                        errorMessage = error
+                        presentingError = true
+                        return false
+                    }
+                })
+                .fileImporter(isPresented: $presentingFileImporter, allowedContentTypes: [UTType.asc], allowsMultipleSelection: false) { result in
                     switch result {
                         case .success(let urls):
                             if let fileURL = urls.first {

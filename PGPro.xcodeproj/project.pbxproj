@@ -53,6 +53,7 @@
 		819CD9F9290E877D006B4804 /* AuthenticationPreferenceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9F8290E877D006B4804 /* AuthenticationPreferenceViewModel.swift */; };
 		819CD9FB290E8959006B4804 /* LaunchAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9FA290E8958006B4804 /* LaunchAuthenticationView.swift */; };
 		819CD9FF290E9AB3006B4804 /* Color+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CD9FE290E9AB3006B4804 /* Color+RawRepresentable.swift */; };
+		81A016D829A287C700D83234 /* UTType+asc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A016D729A287C700D83234 /* UTType+asc.swift */; };
 		81A0F58E290D31F30091C3B9 /* KeychainCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A0F58D290D31F30091C3B9 /* KeychainCardView.swift */; };
 		81A3F7A8299686D500C9DBBC /* DecryptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A3F7A7299686D500C9DBBC /* DecryptionViewModel.swift */; };
 		81A60B4628FFE17500177647 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A60B4528FFE17500177647 /* MainView.swift */; };
@@ -126,6 +127,7 @@
 		819CD9FA290E8958006B4804 /* LaunchAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAuthenticationView.swift; sourceTree = "<group>"; };
 		819CD9FC290E9130006B4804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		819CD9FE290E9AB3006B4804 /* Color+RawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+RawRepresentable.swift"; sourceTree = "<group>"; };
+		81A016D729A287C700D83234 /* UTType+asc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UTType+asc.swift"; sourceTree = "<group>"; };
 		81A0F58D290D31F30091C3B9 /* KeychainCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainCardView.swift; sourceTree = "<group>"; };
 		81A3F7A7299686D500C9DBBC /* DecryptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionViewModel.swift; sourceTree = "<group>"; };
 		81A60B4528FFE17500177647 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 				81DC4F162920244600C1AE11 /* Data+hexString.swift */,
 				81C9D70B292054F300BCA788 /* String+slice.swift */,
 				812A07282996E60100FA9DB9 /* String+isOpenPGPCiphertext.swift */,
+				81A016D729A287C700D83234 /* UTType+asc.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -681,6 +684,7 @@
 				8178B4A228FEF3880027AACF /* PGProApp.swift in Sources */,
 				81DC4F172920244600C1AE11 /* Data+hexString.swift in Sources */,
 				81CF5448290D98FF000ECBC3 /* LicencesView.swift in Sources */,
+				81A016D829A287C700D83234 /* UTType+asc.swift in Sources */,
 				81CF5451290DA021000ECBC3 /* KeyserverSearchView.swift in Sources */,
 				81CF544F290D9C6F000ECBC3 /* ColorfulIconLabelStyle.swift in Sources */,
 				81DC4F152920240000C1AE11 /* String+InsecureHashing.swift in Sources */,
