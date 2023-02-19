@@ -20,6 +20,8 @@ import SwiftUI
 struct GenerateKeyPairView: View {
     @Environment(\.presentationMode) var presentationMode
 
+    @AppStorage(UserDefaultsKeys.accentColor) var accentColor: String = Color.accentColor.rawValue
+
     @StateObject private var viewModel = GenerateKeyPairViewModel()
 
     @FocusState private var focusedField: GenerateKeyPairViewModel.Field?
@@ -191,6 +193,7 @@ struct GenerateKeyPairView: View {
                     }
                 }
             }
+            .accentColor(Color(rawValue: accentColor))
         }
     }
 }

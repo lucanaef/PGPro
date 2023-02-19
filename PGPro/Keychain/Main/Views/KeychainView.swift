@@ -20,8 +20,6 @@ import SwiftUI
 struct KeychainView: View {
     @FetchRequest(sortDescriptors: []) var fetchedContacts: FetchedResults<Contact>
 
-    @AppStorage(UserDefaultsKeys.accentColor) var selectedAccentColor: String = Color.accentColor.rawValue
-
     @State private var searchText = ""
 
     @State private var importSuccessful: Bool = false
@@ -118,11 +116,9 @@ struct KeychainView: View {
             }
             .fullScreenCover(isPresented: $presentingGenerateKeyPair) {
                 GenerateKeyPairView()
-                    .accentColor(Color(rawValue: selectedAccentColor))
             }
             .fullScreenCover(isPresented: $presentingKeyserverSearch) {
                 KeyserverSearchView()
-                    .accentColor(Color(rawValue: selectedAccentColor))
             }
             .fileImporter(isPresented: $presentingFileImporter, allowedContentTypes: [.data], onCompletion: { result in
                 switch result {

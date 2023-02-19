@@ -22,6 +22,8 @@ import SwiftUI
 struct KeyserverSearchView: View {
     @Environment(\.presentationMode) var presentationMode
 
+    @AppStorage(UserDefaultsKeys.accentColor) var accentColor: String = Color.accentColor.rawValue
+
     @StateObject private var viewModel = KeyserverSearchViewModel()
     @State private var searchText = ""
 
@@ -127,6 +129,7 @@ struct KeyserverSearchView: View {
                     }
                 }
             }
+            .accentColor(Color(rawValue: accentColor))
         }
     }
 }

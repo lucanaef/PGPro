@@ -20,6 +20,8 @@ import SwiftUI
 struct DecryptionResultView: View {
     @Environment(\.dismiss) var dismiss
 
+    @AppStorage(UserDefaultsKeys.accentColor) var accentColor: String = Color.accentColor.rawValue
+
     var decryptionResult: OpenPGP.DecryptionResult
 
     var body: some View {
@@ -48,30 +50,32 @@ struct DecryptionResultView: View {
                 }
 
                 Spacer()
+                
                 Divider()
-                Spacer()
+                    .padding(.bottom)
 
                 HStack {
                     if let plaintext = decryptionResult.plaintext {
                         ShareLink(item: plaintext) {
                             Label("Share", systemImage: "square.and.arrow.up")
-                                .padding(6.0)
                         }
                         .buttonStyle(.bordered)
+                        .controlSize(.large)
                     }
 
                     Button {
                         dismiss()
                     } label: {
                         Text("Done")
-                            .padding(6.0)
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
                 }
             }
             .padding()
             .navigationTitle("Decryption")
+            .accentColor(Color(rawValue: accentColor))
         }
     }
 }

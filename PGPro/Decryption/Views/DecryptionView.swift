@@ -139,7 +139,6 @@ struct DecryptionView: View {
                     viewModel.decrypt()
                 })
                 .interactiveDismissDisabled(true)
-                .accentColor(Color.accentColor)
             }
         }
         .padding()
@@ -147,7 +146,6 @@ struct DecryptionView: View {
         .sheet(item: $viewModel.decryptionResult) { result in
             DecryptionResultView(decryptionResult: result)
                 .interactiveDismissDisabled()
-                .accentColor(Color.accentColor)
         }
         .onAppear {
             if let ciphertext = getCiphertext?() {

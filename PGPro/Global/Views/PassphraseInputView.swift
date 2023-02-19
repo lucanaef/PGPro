@@ -21,6 +21,8 @@ import SwiftUI
 struct PassphraseInputView: View {
     @Environment(\.dismiss) var dismiss
 
+    @AppStorage(UserDefaultsKeys.accentColor) var accentColor: String = Color.accentColor.rawValue
+
     var contacts: [Contact]
     @Binding var passphraseForKey: [Key: String]
 
@@ -57,6 +59,7 @@ struct PassphraseInputView: View {
                     }
                 }
             }
+            .accentColor(Color(rawValue: accentColor))
         }
     }
 
