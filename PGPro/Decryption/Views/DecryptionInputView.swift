@@ -16,16 +16,25 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct DecryptionInputView: View {
+    @State private var ciphertext: String?
+
+    @State private var presentingFileImporter: Bool = false
+    @State private var presentingDecryptionView: Bool = false
+
+    @State private var presentingError: Bool = false
+    @State private var errorMessage: String?
+
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 VStack {
                     Spacer()
 
-                    NavigationLink {
-                        DecryptionView()
+                    Button {
+                        presentingDecryptionView = true
                     } label: {
                         Text("Paste from Clipboard")
                             .frame(maxWidth: .infinity)
@@ -36,8 +45,7 @@ struct DecryptionInputView: View {
 
                     HStack {
                         Button {
-                            #warning("Implement button action.")
-                            print("button pressed")
+                            presentingFileImporter = true
                         } label: {
                             VStack {
                                 Image(systemName: "folder")
@@ -78,6 +86,50 @@ struct DecryptionInputView: View {
                 }
                 .padding(50)
                 .background(Color(UIColor.systemGroupedBackground))
+                .navigationDestination(isPresented: $presentingDecryptionView, destination: {
+                    DecryptionView {
+                        return ciphertext
+                    }
+                })
+                .SPAlert(isPresent: $presentingError,
+                         title: "Decryption failed!",
+                         message: errorMessage,
+                         duration: 2.0,
+                         dismissOnTap: true,
+                         preset: .error,
+                         haptic: .error)
+                .fileImporter(isPresented: $presentingFileImporter,
+                              allowedContentTypes: [.text, .plainText, .utf8PlainText, .utf16ExternalPlainText, .utf16PlainText],
+                              allowsMultipleSelection: false) { result in
+                    switch result {
+                        case .success(let urls):
+                            if let fileURL = urls.first {
+                                if fileURL.startAccessingSecurityScopedResource() {
+                                    do {
+                                        let fileContants = try String(contentsOf: fileURL, encoding: .ascii)
+                                        ciphertext = fileContants
+                                        presentingDecryptionView = true
+                                    } catch {
+                                        Log.e(error)
+                                        errorMessage = error.localizedDescription
+                                        presentingError = true
+                                    }
+                                }
+
+                                fileURL.stopAccessingSecurityScopedResource()
+                            } else {
+                                let error = "Failed to get file URL from file importer"
+                                Log.e(error)
+                                errorMessage = error
+                                presentingError = true
+                            }
+
+                        case .failure(let error):
+                            Log.e(error)
+                            errorMessage = error.localizedDescription
+                            presentingError = true
+                    }
+                }
             }
             .navigationTitle("Decryption")
         }

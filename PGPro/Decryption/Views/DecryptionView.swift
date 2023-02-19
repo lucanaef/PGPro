@@ -22,6 +22,11 @@ struct DecryptionView: View {
 
     @State private var presentingPassphraseInput: Bool = false
 
+    private var getCiphertext: (() -> (String?))?
+    init(withCiphertext: (() -> (String?))? = nil) {
+        self.getCiphertext = withCiphertext
+    }
+
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 0) {
@@ -143,6 +148,11 @@ struct DecryptionView: View {
             DecryptionResultView(decryptionResult: result)
                 .interactiveDismissDisabled()
                 .accentColor(Color.accentColor)
+        }
+        .onAppear {
+            if let ciphertext = getCiphertext?() {
+                viewModel.ciphertext = ciphertext
+            }
         }
     }
 }

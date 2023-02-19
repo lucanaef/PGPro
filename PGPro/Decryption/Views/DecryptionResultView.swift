@@ -33,11 +33,16 @@ struct DecryptionResultView: View {
                             Text(message)
 
                         case .mime(value: let mime):
-                            if let message = try? mime.decodedContentString() {
+                            if let message = try? mime.1.decodedContentString() {
                                 Text(message)
                             } else {
-                                Text("Failed to decode mime content.")
-                                    .foregroundColor(.red)
+                                Label("Failed to decode mime content.", systemImage: "exclamationmark.triangle.fill")
+                                    .padding()
+                                    .foregroundColor(.primary)
+                                    .background(Color.red.opacity(0.8))
+                                    .cornerRadius(15)
+
+                                Text(mime.0)
                             }
                     }
                 }

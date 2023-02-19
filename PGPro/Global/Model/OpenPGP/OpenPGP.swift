@@ -108,8 +108,10 @@ class OpenPGP {
             if case let .plain(plaintext) = self.message {
                 return plaintext
             } else if case let .mime(mime) = self.message {
-                if let plaintext = try? mime.decodedContentString() {
+                if let plaintext = try? mime.1.decodedContentString() {
                     return plaintext
+                } else {
+                    return mime.0
                 }
             }
 
@@ -119,7 +121,7 @@ class OpenPGP {
 
     enum DecryptionResultValue {
         case plain(value: String)
-        case mime(value: Mime)
+        case mime(value: (String, Mime))
     }
 
     static func decrypt(message: String, for contact: Contact, withPassphrase passphrase: String? = nil) throws -> DecryptionResult {
@@ -165,7 +167,7 @@ class OpenPGP {
 
             // Try to parse plaintext
             if let parsedMessage = try? MimeParser().parse(decryptedMessage) {
-                return DecryptionResult(message: .mime(value: parsedMessage), signatures: "")
+                return DecryptionResult(message: .mime(value: (decryptedMessage, parsedMessage)), signatures: "")
             } else {
                 return DecryptionResult(message: .plain(value: decryptedMessage), signatures: "")
             }
