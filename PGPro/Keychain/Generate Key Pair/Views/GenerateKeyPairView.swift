@@ -51,6 +51,7 @@ struct GenerateKeyPairView: View {
 
                             VStack {
                                 TextField("Name", text: $viewModel.name)
+                                    .textContentType(.name)
                                     .keyboardType(.namePhonePad)
                                     .bold(!viewModel.name.isEmpty)
                                     .focused($focusedField, equals: .name)
@@ -58,6 +59,7 @@ struct GenerateKeyPairView: View {
                                 Divider()
 
                                 TextField("Email Address", text: $viewModel.email)
+                                    .textContentType(.username)
                                     .keyboardType(.emailAddress)
                                     .autocapitalization(.none)
                                     .focused($focusedField, equals: .email)
@@ -69,9 +71,11 @@ struct GenerateKeyPairView: View {
 
                     Section {
                         SecureField("Passphrase", text: $viewModel.passphrase)
+                            .textContentType(.newPassword)
                             .focused($focusedField, equals: .passphrase)
 
                         SecureField("Confirm Passphrase", text: $viewModel.passphraseConfirm)
+                            .textContentType(.password)
                             .focused($focusedField, equals: .passphraseConfirm)
                             .overlay(alignment: .bottomLeading) {
                                 VStack(alignment: .leading) {
