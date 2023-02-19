@@ -34,6 +34,7 @@ struct DecryptionInputView: View {
                     Spacer()
 
                     Button {
+                        ciphertext = UIPasteboard.general.string
                         presentingDecryptionView = true
                     } label: {
                         Text("Paste from Clipboard")
