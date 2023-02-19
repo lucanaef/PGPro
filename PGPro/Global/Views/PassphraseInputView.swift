@@ -54,7 +54,7 @@ struct PassphraseInputView: View {
             .navigationBarTitle("Passphrase")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button("Cancel", role: .cancel) {
                         dismiss()
                     }
                 }

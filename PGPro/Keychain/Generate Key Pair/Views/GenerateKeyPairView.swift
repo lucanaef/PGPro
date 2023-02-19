@@ -173,13 +173,11 @@ struct GenerateKeyPairView: View {
             .navigationTitle("Generate Key Pair")
             .ignoresSafeArea(.keyboard)
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
                     Spacer()
-
-                    Button(role: .cancel) {
+                    
+                    Button("Cancel", role: .cancel) {
                         presentationMode.wrappedValue.dismiss()
-                    } label: {
-                        Text("Cancel")
                     }
                 }
 
