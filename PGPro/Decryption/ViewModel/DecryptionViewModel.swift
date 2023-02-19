@@ -16,26 +16,49 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ObjectivePGP
 
 class DecryptionViewModel: ObservableObject {
     @Published var ciphertext: String?
-    @Published var decryptionKey: Set<Contact> = Set()
+
+    @Published var decryptionKey: Set<Contact> = Set() {
+        didSet {
+            passphraseInputRequired = decryptionKey.contains { $0.requiresPassphrase }
+        }
+    }
+
     @Published var decryptionResult: OpenPGP.DecryptionResult?
 
     var readyForDecryptionOrPassphrases: Bool {
         !(ciphertext?.isEmpty ?? true) && (ciphertext?.isOpenPGPCiphertext ?? false) && !decryptionKey.isEmpty
     }
 
+    @Published var passphraseInputRequired: Bool = false
+
+    var somePassphrasesRequired: Bool {
+        return !decryptionKey.filter({ $0.requiresPassphrase }).allSatisfy({ contact in
+            if let key = contact.primaryKey, let passphrase = passphrase(for: key) {
+                return OpenPGP.verifyPassphrase(passphrase, for: key)
+            } else {
+                return false
+            }
+        })
+    }
+
+    var passphraseForKey: [Key: String] = [:]
+    func passphrase(for key: Key) -> String? {
+        return passphraseForKey[key]
+    }
+
     func decrypt() {
-        #warning("Decryption with passphrase not implemented!")
         guard let ciphertext else {
             Log.e("Ciphertext cannot be empty!")
             return
         }
 
-        if let contact = decryptionKey.first {
+        if let contact = decryptionKey.first, let key = contact.primaryKey {
             do {
-                self.decryptionResult = try OpenPGP.decrypt(message: ciphertext, for: contact)
+                self.decryptionResult = try OpenPGP.decrypt(message: ciphertext, for: contact, withPassphrase: passphrase(for: key))
             } catch {
                 Log.e(error)
                 return

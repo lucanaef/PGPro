@@ -20,6 +20,8 @@ import SwiftUI
 struct DecryptionView: View {
     @StateObject private var viewModel = DecryptionViewModel()
 
+    @State private var presentingPassphraseInput: Bool = false
+
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 0) {
@@ -112,7 +114,13 @@ struct DecryptionView: View {
             Divider()
 
             Button(action: {
-                viewModel.decrypt()
+                // Ask for passphrases if required
+                presentingPassphraseInput = viewModel.passphraseInputRequired
+
+                // Check if all required passphrases are known
+                if !viewModel.somePassphrasesRequired {
+                    viewModel.decrypt()
+                }
             }, label: {
                 Text("Decrypt")
                     .frame(maxWidth: .infinity)
@@ -121,6 +129,12 @@ struct DecryptionView: View {
             .controlSize(.large)
             .padding(.vertical)
             .disabled(!viewModel.readyForDecryptionOrPassphrases)
+            .sheet(isPresented: $presentingPassphraseInput) {
+                PassphraseInputView(contacts: viewModel.decryptionKey.filter({ $0.requiresPassphrase }), passphraseForKey: $viewModel.passphraseForKey, onDismiss: {
+                    viewModel.decrypt()
+                })
+                .interactiveDismissDisabled(true)
+            }
         }
         .padding()
         .navigationTitle("Decryption")
