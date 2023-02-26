@@ -19,10 +19,10 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct DecryptionInputView: View {
-    @State private var ciphertext: String?
+    @EnvironmentObject private var routerPath: RouterPath
 
     @State private var presentingFileImporter: Bool = false
-    @State private var presentingDecryptionView: Bool = false
+    @State private var presentingShareSheetInfo: Bool = false
 
     @State private var presentingError: Bool = false
     @State private var errorMessage: String?
@@ -33,10 +33,7 @@ struct DecryptionInputView: View {
                 VStack {
                     Spacer()
 
-                    Button {
-                        ciphertext = UIPasteboard.general.string
-                        presentingDecryptionView = true
-                    } label: {
+                    NavigationLink(value: RouterPath.DecryptionTabPath.decryption(ciphertext: UIPasteboard.general.string)) {
                         Text("Paste from Clipboard")
                             .frame(maxWidth: .infinity)
                             .frame(height: 20.0)
@@ -60,8 +57,7 @@ struct DecryptionInputView: View {
                         .controlSize(.large)
 
                         Button {
-                            #warning("Implement button action.")
-                            print("button pressed")
+                            presentingShareSheetInfo = true
                         } label: {
                             VStack {
                                 Image(systemName: "square.and.arrow.up")
@@ -84,11 +80,20 @@ struct DecryptionInputView: View {
                 }
                 .padding(50)
                 .background(Color(UIColor.systemGroupedBackground))
-                .navigationDestination(isPresented: $presentingDecryptionView, destination: {
-                    DecryptionView {
-                        return ciphertext
+                .sheet(isPresented: $presentingShareSheetInfo) {
+                    DecryptionShareSheetHelpView()
+                }
+                .navigationDestination(for: RouterPath.DecryptionTabPath.self) { destination in
+                    switch destination {
+                        case .decryption(let ciphertext):
+                            DecryptionView(ciphertext: ciphertext)
+
+                        default:
+                            EmptyView().onAppear {
+                                Log.e("Cannot router to destination \(destination)")
+                            }
                     }
-                })
+                }
                 .SPAlert(isPresent: $presentingError,
                          title: "Decryption failed!",
                          message: errorMessage,
@@ -115,36 +120,11 @@ struct DecryptionInputView: View {
                             return
                         }
 
-                        ciphertext = fileContent
-                        presentingDecryptionView = true
+                        routerPath.decryptionTab.append(.decryption(ciphertext: fileContent))
                     }
                 }
                 .onDrop(of: [UTType.asc], isTargeted: nil, perform: { providers in
-                    if let provider = providers.first {
-                        _ = provider.loadDataRepresentation(for: UTType.asc) { (data, error) in
-                            if let data {
-                                ciphertext = String(bytes: data, encoding: .ascii)
-                                presentingDecryptionView = true
-                            } else if let error {
-                                Log.e(error)
-                                errorMessage = error.localizedDescription
-                                presentingError = true
-                            } else {
-                                let error = "Failed to load data."
-                                Log.e(error)
-                                errorMessage = error
-                                presentingError = true
-                            }
-                        }
-
-                        return true
-                    } else {
-                        let error = "Drag-and-Drop failed!"
-                        Log.e(error)
-                        errorMessage = error
-                        presentingError = true
-                        return false
-                    }
+                    performOnDrop(providers: providers)
                 })
                 .fileImporter(isPresented: $presentingFileImporter, allowedContentTypes: [UTType.asc], allowsMultipleSelection: false) { result in
                     switch result {
@@ -153,8 +133,7 @@ struct DecryptionInputView: View {
                                 if fileURL.startAccessingSecurityScopedResource() {
                                     do {
                                         let fileContants = try String(contentsOf: fileURL, encoding: .ascii)
-                                        ciphertext = fileContants
-                                        presentingDecryptionView = true
+                                        routerPath.decryptionTab.append(.decryption(ciphertext: fileContants))
                                     } catch {
                                         Log.e(error)
                                         errorMessage = error.localizedDescription
@@ -178,6 +157,40 @@ struct DecryptionInputView: View {
                 }
             }
             .navigationTitle("Decryption")
+        }
+    }
+
+    private func performOnDrop(providers: [NSItemProvider]) -> Bool {
+        if let provider = providers.first {
+            _ = provider.loadDataRepresentation(for: UTType.asc) { (data, error) in
+                if let data {
+                    let ciphertext = String(bytes: data, encoding: .ascii)
+                    Task { @MainActor in
+                        routerPath.decryptionTab.append(.decryption(ciphertext: ciphertext))
+                    }
+                } else if let error {
+                    Log.e(error)
+                    Task { @MainActor in
+                        errorMessage = error.localizedDescription
+                        presentingError = true
+                    }
+                } else {
+                    let error = "Failed to load data."
+                    Log.e(error)
+                    Task { @MainActor in
+                        errorMessage = error
+                        presentingError = true
+                    }
+                }
+            }
+
+            return true
+        } else {
+            let error = "Drag-and-Drop failed!"
+            Log.e(error)
+            errorMessage = error
+            presentingError = true
+            return false
         }
     }
 }

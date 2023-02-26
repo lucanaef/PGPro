@@ -18,30 +18,35 @@
 import SwiftUI
 
 struct MainView: View {
-    /**
-     `userIsNotAuthenticated` is initially true <-> App Launch Authentication is required
-     Whether this is hacky or elegant is up to you to decice.
-     */
+    @EnvironmentObject private var routerPath: RouterPath
+
     @State var userIsNotAuthenticated: Bool = UserDefaults.standard.bool(forKey: UserDefaultsKeys.authenticationEnabled)
 
     var body: some View {
-        TabView {
+        TabView(selection: $routerPath.selectedTab) {
             EncryptionView()
                 .tabItem {
                     Label("Encryption", systemImage: "lock.fill")
                 }
+                .tag(RouterPath.Tab.encryption)
+
             DecryptionInputView()
                 .tabItem {
                     Label("Decryption", systemImage: "lock.open.fill")
                 }
+                .tag(RouterPath.Tab.decryption)
+
             KeychainView()
                 .tabItem {
                     Label("Keychain", systemImage: "person.2.fill")
                 }
+                .tag(RouterPath.Tab.keychain)
+
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
+                .tag(RouterPath.Tab.settings)
         }
         .fullScreenCover(isPresented: $userIsNotAuthenticated) {
             LaunchAuthenticationView(userIsNotAuthenticated: $userIsNotAuthenticated)

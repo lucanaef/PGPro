@@ -22,9 +22,9 @@ struct DecryptionView: View {
 
     @State private var presentingPassphraseInput: Bool = false
 
-    @State private var getCiphertext: (() -> (String?))
-    init(withCiphertext: @escaping (() -> (String?))) {
-        self.getCiphertext = withCiphertext
+    @State private var initialCiphertext: String?
+    init(ciphertext: String? = nil) {
+        initialCiphertext = ciphertext
     }
 
     var body: some View {
@@ -146,7 +146,7 @@ struct DecryptionView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Clear") {
-                    getCiphertext = { return nil }
+                    initialCiphertext = nil
                     viewModel.clear()
                 }
                 .opacity(viewModel.isClear ? 0 : 1)
@@ -156,7 +156,7 @@ struct DecryptionView: View {
             DecryptionResultView(decryptionResult: result)
         })
         .onAppear {
-            if let ciphertext = getCiphertext() {
+            if let ciphertext = initialCiphertext {
                 viewModel.ciphertext = ciphertext
             }
         }
@@ -165,8 +165,6 @@ struct DecryptionView: View {
 
 struct DecryptionView_Previews: PreviewProvider {
     static var previews: some View {
-        DecryptionView {
-            return nil
-        }
+        DecryptionView()
     }
 }

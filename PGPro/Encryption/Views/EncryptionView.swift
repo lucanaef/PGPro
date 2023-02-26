@@ -18,6 +18,8 @@
 import SwiftUI
 
 struct EncryptionView: View {
+    @EnvironmentObject private var routerPath: RouterPath
+
     @StateObject private var viewModel = EncryptionViewModel()
 
     @AppStorage(UserDefaultsKeys.mailIntegrationEnabled) var mailIntegrationEnabled: Bool = false
@@ -32,7 +34,7 @@ struct EncryptionView: View {
     @State private var encryptionErrorMessage: String?
 
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $routerPath.encryptionTab) {
             VStack {
                 // Recipients
                 VStack(alignment: .leading, spacing: 0) {
@@ -62,9 +64,7 @@ struct EncryptionView: View {
                                     }
                             }
 
-                            NavigationLink {
-                                KeyPickerView(withTitle: "Select Recipients", type: .publicKeys, selection: $viewModel.recipients)
-                            } label: {
+                            NavigationLink(value: RouterPath.EncryptionTabPath.recipients) {
                                 ZStack {
                                     Circle()
                                         .strokeBorder(Color.accentColor, lineWidth: 2)
@@ -144,9 +144,7 @@ struct EncryptionView: View {
                                 }
                             }
 
-                            NavigationLink {
-                                KeyPickerView(withTitle: "Select Signing Keys", type: .privateKeys, selection: $viewModel.signers)
-                            } label: {
+                            NavigationLink(value: RouterPath.EncryptionTabPath.signatures) {
                                 ZStack {
                                     RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
                                         .strokeBorder(Color.accentColor, lineWidth: 2)
@@ -190,6 +188,15 @@ struct EncryptionView: View {
             .padding()
             .background(Color(UIColor.systemGroupedBackground))
             .navigationTitle("Encryption")
+            .navigationDestination(for: RouterPath.EncryptionTabPath.self) { destination in
+                switch destination {
+                    case .recipients:
+                        KeyPickerView(withTitle: "Select Recipients", type: .publicKeys, selection: $viewModel.recipients)
+
+                    case .signatures:
+                        KeyPickerView(withTitle: "Select Signing Keys", type: .privateKeys, selection: $viewModel.signers)
+                }
+            }
             .ignoresSafeArea(.keyboard)
             .SPAlert(isPresent: $presentingCopiedToClipboard,
                      title: "Copied to Clipboard!",

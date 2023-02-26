@@ -20,6 +20,7 @@ import SwiftUI
 @main
 struct PGProApp: App {
     @StateObject private var dataController = DataController.shared
+    @StateObject private var routerPath = RouterPath()
 
     @AppStorage(UserDefaultsKeys.accentColor) var selectedAccentColor: String = Color.accentColor.rawValue
 
@@ -27,6 +28,7 @@ struct PGProApp: App {
         WindowGroup {
             MainView()
                 .environment(\.managedObjectContext, dataController.container.viewContext)
+                .environmentObject(routerPath)
                 .accentColor(Color(rawValue: selectedAccentColor))
         }
     }
