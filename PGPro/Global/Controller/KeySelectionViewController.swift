@@ -105,7 +105,12 @@ class KeySelectionViewController: UIViewController {
         case .privateKey:
             self.title = "Select Private Key"
         default:
-            self.title = "Select Contacts"
+            self.title = NSLocalizedString(
+                "Select Contacts...",
+                comment: """
+                The placeholder label to prompt the selection of a destination contact within encryption tab.
+                """
+            )
         }
     }
 

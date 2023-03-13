@@ -208,7 +208,13 @@ class Settings {
     }
 
     // MARK: - Actual Settings
-    let exportKeychain = Setting(title: "Export Keychain", symbol: "square.and.arrow.up") { viewController, completion in
+    let exportKeychain = Setting(
+        title: NSLocalizedString(
+            "Export Keychain",
+            comment: "The option in settings to export keychains"
+        ),
+        symbol: "square.and.arrow.up"
+    ) { viewController, completion in
         DispatchQueue.global(qos: .default).async {
             let keyring = Keyring()
             var keys: [Key] = []

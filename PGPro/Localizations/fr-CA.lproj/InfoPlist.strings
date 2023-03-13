@@ -1,0 +1,12 @@
+/* (No Comment) */
+"Armored ASCII File" = "Fichier ASCII blindé";
+
+/* Bundle name */
+"CFBundleName" = "PGPro";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "PGPro a besoin de la caméra pour scanner les codes QR";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "PGPro utilise FaceID pour l'authentification";
+

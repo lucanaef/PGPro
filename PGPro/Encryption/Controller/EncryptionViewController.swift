@@ -34,8 +34,18 @@ class EncryptionViewController: UIViewController {
         }
     }
 
-    private var encryptionKeysSelectionLabel = "Select Contacts..."
-    private var signatureKeysSelectionLabel = "Add Signature..."
+    private var encryptionKeysSelectionLabel = NSLocalizedString(
+        "Select Contacts...",
+        comment: """
+        The Encryption Key label in Encryption tab to prompt the user to add a contact.
+        """
+    )
+    private var signatureKeysSelectionLabel = NSLocalizedString(
+        "Add Signature...",
+        comment: """
+        The Add Signature label in Encryption tab to prompt the user to add a signature.
+        """
+    )
 
     lazy private var tableView: UITableView = {
         let tableView = UITableView()
@@ -80,7 +90,12 @@ class EncryptionViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        textView.placeholder = "Type Message to Encrypt..."
+        textView.placeholder = NSLocalizedString(
+            "Type Message to Encrypt...",
+            comment: """
+            The placeholder label within the text area in Encryption tab.
+            """
+        )
     }
 
     private func setupView() {
