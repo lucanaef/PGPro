@@ -143,7 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let decryptionTabImage = UIImage(systemName: "lock.open.fill")
         let decryptionTab = UITabBarItem(
             title: NSLocalizedString(
-                "Descryption",
+                "Decryption",
                 comment: "The name of the decryption tab bar."
             ),
             image: decryptionTabImage,

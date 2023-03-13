@@ -1,0 +1,269 @@
+/* The text that prompts the option of pasting from clipboard */
+" Paste from Clipboard" = "Coller depuis le presse-papiers";
+
+/* The format of subtitle of ask for rating option */
+"%d PEOPLE HAVE RATED PGPRO IN YOUR REGION" = "%d PERSONNES ONT ÉVALUÉ PGPRO DANS VOTRE RÉGION";
+
+/* The alert prompted when attempting to rename contact with a duplicate name and/or address. */
+"A contact with this name and email address already exists!" = "Un contact avec ce nom et cette adresse électronique existe déjà!";
+
+/* The option to add key from clipboard in the popover menu from '+' button. */
+"Add Key from Clipboard" = "Ajouter une clé du presse-papiers";
+
+/* The placeholder label to prompt the selection of a contact used for signature within encryption tab. */
+"Add Signature..." = "Ajouter une signature...";
+
+/* The option to set up authentication in settings */
+"App Launch Authentication" = "Lancement de l'application authentification";
+
+/* The description of the confirmation dialogue when attempting to delete a keychain entry. */
+"Are you sure you want to delete this key? This action cannot be undone." = "Êtes-vous sûr de vouloir supprimer cette clé? Cette action ne peut pas être annulée.";
+
+/* The title of the confirmation dialogue when attempting to delete a keychain entry. */
+"Are you sure?" = "Êtes-vous sûr?";
+
+/* The button to cancel the clearing of text within decrypttion tab.
+   The button to cancel the clearing of text within encryption tab.
+   The option to add key from clipboard in the popover menu from '+' button.
+   The title of option to delete a keychain entry. */
+"Cancel" = "Annuler";
+
+/* The prompt saying the clipboard contains invalid key when attempting to copying keys from clipboard. */
+"Clipboard contains invalid key!" = "Le presse-papiers contient une clé invalide!";
+
+/* The prompt saying the clipboard contains unsupported key when attempting to copying keys from clipboard. */
+"Clipboard contains unsupported key!" = "Le presse-papiers contient une clé non prise en charge!";
+
+/* The prompt saying the clipboard is empty when attempting to copying keys from clipboard. */
+"Clipboard is Empty!" = "Le presse-papiers est vide!";
+
+/* The button to confirm the clearing of text within decrypttion tab.
+   The button to confirm the clearing of text within encryption tab. */
+"Confirm" = "Confirmer";
+
+/* The error text after adding contact, prompting an nonmatching passphrases */
+"Contact not unique!" = "Contact non unique!";
+
+/* The option to contribute on GitHub */
+"Contribute on GitHub" = "Contribuer sur GitHub";
+
+/* The navigation title of the decrypt tab. */
+"Decrypt Message" = "Decrypter le message";
+
+/* The text of the navigation bar within decrypted message view controller. */
+"Decrypted Message" = "Message déchiffré";
+
+/* The title of the bar item of select private key option in the decrypt tab. */
+"Decryption" = "Decryption";
+
+/* The alert text prompted when the decryption failed (due to framework error)
+in the decryption tab.
+   The alert text prompted when the decryption failed in the decryption tab. */
+"Decryption failed!" = "La déchiffrement a échoué!";
+
+/* The alert text prompted when the decryption requires a passphrase in the decryption tab. */
+"Decryption requires passphrase!" = "La déchiffrement nécessite un mot de passe!";
+
+/* The title of option to delete a keychain entry. */
+"Delete" = "Supprimer";
+
+/* The option to delete all keychains in settings */
+"Delete Keychain" = "Supprimer le trousseau de clés";
+
+/* The confirmation dialogue text to delete the message that would have been decrypted.
+   The confirmation dialogue text to delete the message that would have been encrypted. */
+"Delete this message" = "Supprimer ce message";
+
+/* The name of the decryption tab bar. */
+"Descryption" = "Description";
+
+/* The title of the email cell in contact details. */
+"Email" = "Courriel";
+
+/* The error text after adding contact, prompting an empty email */
+"Email address can't be empty!" = "Adresse e-mail ne peut pas être vide!";
+
+/* The error text after adding contact, prompting an invalid email */
+"Email address invalid!" = "Adresse e-mail invalide!";
+
+/* The navigation title of the 'Encryption' tab. */
+"Encrypt Message" = "Chiffrer le message";
+
+/* The name of the encryption tab bar.
+   The tab bar item title of the 'Encryption' tab. */
+"Encryption" = "Encryption";
+
+/* The alert text prompted when the message encryption encountered an error
+happened within the framework in the encryption tab. */
+"Encryption failed (Framework Error)!" = "Échec de l'encryptage (Erreur Framework) !";
+
+/* The alert text prompted when the message encryption encountered an unknown error in the encryption tab. */
+"Encryption failed!" = "Encryption failed\" n'a pas pu être chiffré!";
+
+/* The error prompt for rate limiting after searching on keyserver. */
+"Error due to Rate Limiting" = "Erreur due à une limitation de taux.";
+
+/* The title of the expires cell in key section within contact details. */
+"Expires" = "Expire";
+
+/* The error prompt when exporting keychain failed. */
+"Export failed!" = "Échec de l'exportation!";
+
+/* The option in settings to export keychains */
+"Export Keychain" = "Exporter le trousseau d'accès";
+
+/* The alert text prompted when failed to compose mail because the function is disabled. */
+"Failed to compose email!" = "Impossible de composer l'email!";
+
+/* The alert text prompted when failed to compose mail. */
+"Failed to compose email! Mail Integration will be disabled." = "Impossible de composer le message électronique! L'intégration du courrier sera désactivée.";
+
+/* The error prompt for invalid response after searching on keyserver. */
+"Failed to get valid response from keyserver!" = "Impossible d'obtenir une réponse valide du serveur de clés!";
+
+/* The title of the fingerprint cell in contact details. */
+"Fingerprint" = "Empreinte digitale";
+
+/* Prompt for non-supported key after switching web key directory. */
+"Found non-supported key!" = "Found non-supported key!";
+
+/* The option to go to FAQs */
+"Frequently Asked Questions" = "Questions fréquemment posées";
+
+/* The option to generate key pair in the popover menu from '+' button */
+"Generate Key Pair" = "Générer une paire de clés";
+
+/* The title of the ID cell in key section within contact details. */
+"ID" = "ID";
+
+/* The option to import keys from file on keyserver in the popover menu from '+' button */
+"Import Keys from File" = "Importer les clés à partir du fichier";
+
+/* The alert text prompted when the passphrase does not match in the encryption tab. */
+"Incorrect Passphrase!" = "Passphrase incorrect!";
+
+/* The error prompt for invalid format after searching on keyserver. */
+"Invalid Format" = "Format invalide";
+
+/* Prompt for error scannig QR code for keyserver due to format being invalid. */
+"Invalid QR Code!" = "Code QR invalide!";
+
+/* The option to join PGPro Beta */
+"Join the PGPro Beta" = "Rejoignez la version bêta de PGPro.";
+
+/* The error text after adding contact, prompting a general failure of key generation */
+"Key generation failed!" = "La génération de la clé a échoué!";
+
+/* The name of the keychain tab bar.
+   The title of the keychain view controller. */
+"Keychain" = "Porte-clés";
+
+/* The error prompt for database maintanence after searching on keyserver. */
+"Keyserver is under Database Maintenance" = "Keyserver est en maintenance de base de données";
+
+/* The option for licenses */
+"Licenses" = "Licences";
+
+/* The option to set up mail integration in settings */
+"Mail Integration" = "Intégration de courrier";
+
+/* The alert text prompted when the message is invalid in the decryption tab.
+   The alert text prompted when the message is invalid in the encryption tab. */
+"Message is invalid!" = "Le message est invalide!";
+
+/* The title of the name cell in contact details. */
+"Name" = "Nom";
+
+/* The alert prompted when attempting to rename contact with an empty name.
+   The error text after adding contact, prompting an empty name */
+"Name can't be empty!" = "Le nom ne peut pas être vide!";
+
+/* Navajo - Reasonable */
+"NAVAJO_REASONABLE" = "Raisonnable";
+
+/* Navajo - Strong */
+"NAVAJO_STRONG" = "Fort";
+
+/* Navajo - Very Strong */
+"NAVAJO_VERY_STRONG" = "Très fort";
+
+/* Navajo - Very weak */
+"NAVAJO_VERY_WEAK" = "Très faible";
+
+/* Navajo - Weak */
+"NAVAJO_WEAK" = "Faible";
+
+/* The description of a never-expiring key in key section within contact details. */
+"Never" = "Jamais";
+
+/* The error prompt for no connection after searching on keyserver. */
+"No Connection to Keyserver!" = "Connexion au serveur de clés impossible!";
+
+/* The alert text prompted when the user attempts to send a mail but there is no selected client. */
+"No mail client selected! Mail Integration will be disabled." = "Client de courrier non sélectionné! L'intégration du courrier sera désactivée.";
+
+/* The button to cancel the clearing of text within decrypttion tab. */
+"No Private Key Selected!" = "Aucune clé privée sélectionnée!";
+
+/* The prompt saying the no valid key is found in clipboard when attempting to copying keys from clipboard. */
+"No valid Key found in Clipboard!" = "Aucune clé valide trouvée dans le presse-papiers!";
+
+/* The placeholder text of the passphrase text field */
+"Passphrase" = "Mot de passe";
+
+/* The error text after adding contact, prompting an nonmatching passphrases */
+"Passphrases don't match!" = "Les phrases secrètes ne correspondent pas!";
+
+/* The alert text prompted when user attempts to select a contact with private keys in the encryption tab. */
+"PGPro does not support signing messages if the encryption contacts include private keys." = "PGPro ne prend pas en charge la signature de messages si les contacts de chiffrement incluent des clés privées.";
+
+/* The alert text prompted when the message is empty in the decryption tab.
+   The alert text prompted when the message is empty in the encryption tab. */
+"Please enter message first!" = "Veuillez entrer d'abord un message!";
+
+/* The option to ask for rating */
+"Please Rate PGPro" = "Veuillez évaluer PGPro";
+
+/* The section header of the primary key section in keychain tab */
+"Primary Key" = "Clé primaire";
+
+/* The option for privacy policy */
+"Privacy Policy" = "Politique de confidentialité";
+
+/* The option to report issue in settings */
+"Report Issue" = "Signaler un problème";
+
+/* Prompt for error scannig QR code for keyserver due to other failure. */
+"Scan failed!" = "Échec de la numérisation!";
+
+/* The option to search on keyserver in the popover menu from '+' button */
+"Search on Keyserver" = "Recherche sur le serveur de clés";
+
+/* The placeholder label to prompt the selection of a destination contact within encryption tab. */
+"Select Contacts..." = "Sélectionner des contacts...";
+
+/* The label of select private key option in the decrypt tab.
+   The label to prompt user to choose a private key within the decrypt tab */
+"Select Private Key..." = "Sélectionnez une clé privée...";
+
+/* An alert that is prompted when user attempts to encrypt without a public key. */
+"Select Public Keys First!" = "Sélectionnez d'abord les clés publiques!";
+
+/* The name of the settings tab bar. */
+"Settings" = "Paramètres";
+
+/* The alert text prompted when user misses the passphrase in the encryption tab. */
+"Signing requires the passphrase of the private Key!" = "La signature nécessite le mot de passe de la clé privée!";
+
+/* The title of the type cell in key section within contact details. */
+"Type" = "Type";
+
+/* The placeholder label within the text area in Encryption tab. */
+"Type Message to Encrypt..." = "Tapez le message à chiffrer...";
+
+/* The section header of the user info section in keychain tab */
+"User Info" = "Infos d'utilisateur";
+
+/* The alert text prompted when the passphrase is incorrect in the decryption tab. */
+"Wrong passphrase!" = "Mauvais mot de passe!";
+
