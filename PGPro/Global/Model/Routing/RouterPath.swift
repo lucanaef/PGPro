@@ -49,6 +49,4 @@ class RouterPath: ObservableObject {
 
     // MARK: - Tab: Settings
 
-    // @Published public var path: [RouterDestinations] = []
-
 }

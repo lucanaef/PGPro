@@ -27,6 +27,8 @@ struct DecryptionView: View {
     @State private var presentingFileImporter: Bool = false
     @State private var presentingPassphraseInput: Bool = false
 
+    @State private var isTargetedForDrop: Bool = false
+
     @State private var presentingError: Bool = false
     @State private var errorMessage: String?
 
@@ -41,67 +43,77 @@ struct DecryptionView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     HeaderView(title: "Message")
 
-                    if let ciphertext = viewModel.ciphertext {
-                        ZStack {
-                            ScrollView {
-                                Text(ciphertext)
-                                    .font(.caption.monospaced())
-                            }
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 5)
+                            .foregroundColor(isTargetedForDrop ? Color.accentColor.opacity(0.5) : Color(UIColor.systemBackground))
 
-                            if !ciphertext.isOpenPGPCiphertext {
-                                HStack {
-                                    Spacer()
+                        Group {
+                            if let ciphertext = viewModel.ciphertext {
+                                ZStack {
+                                    ScrollView {
+                                        Text(ciphertext)
+                                            .font(.caption.monospaced())
+                                    }
 
-                                    Label("Invalid OpenPGP Message", systemImage: "exclamationmark.triangle.fill")
-                                        .padding()
-                                        .foregroundColor(.primary)
-                                        .background(Color.red.opacity(0.8))
-                                        .cornerRadius(15)
+                                    if !ciphertext.isOpenPGPCiphertext {
+                                        HStack {
+                                            Spacer()
 
-                                    Spacer()
-                                }
-                            }
-                        }
-                    } else {
-                        VStack(alignment: .center) {
-                            Spacer()
+                                            Label("Invalid OpenPGP Message", systemImage: "exclamationmark.triangle.fill")
+                                                .padding()
+                                                .foregroundColor(.primary)
+                                                .background(Color.red.opacity(0.8))
+                                                .cornerRadius(15)
 
-                            Button {
-                                if let clipboard = UIPasteboard.general.string {
-                                    DispatchQueue.main.async {
-                                        viewModel.ciphertext = clipboard
+                                            Spacer()
+                                        }
                                     }
                                 }
-                            } label: {
-                                Text("Paste from Clipboard")
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 20.0)
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .controlSize(.large)
+                            } else {
+                                ZStack {
+                                    VStack(alignment: .center) {
+                                        Spacer()
 
-                            Button {
-                                presentingFileImporter = true
-                            } label: {
-                                VStack {
-                                    Image(systemName: "folder")
-                                        .padding(.vertical, 1)
-                                    Text("Open from File")
+                                        Button {
+                                            if let clipboard = UIPasteboard.general.string {
+                                                DispatchQueue.main.async {
+                                                    viewModel.ciphertext = clipboard
+                                                }
+                                            }
+                                        } label: {
+                                            Text("Paste from Clipboard")
+                                                .frame(maxWidth: .infinity)
+                                                .frame(height: 20.0)
+                                        }
+                                        .buttonStyle(.borderedProminent)
+                                        .controlSize(.large)
+
+                                        Button {
+                                            presentingFileImporter = true
+                                        } label: {
+                                            VStack {
+                                                Image(systemName: "folder")
+                                                    .padding(.vertical, 1)
+                                                Text("Open from File")
+                                            }
+                                            .frame(maxWidth: .infinity)
+                                            .frame(height: 30.0)
+                                        }
+                                        .buttonStyle(.borderedProminent)
+                                        .controlSize(.large)
+                                        .accentColor(Color.secondary)
+
+                                        Label("You can also use drag-and-drop or the share sheet to open an encrypted message.", systemImage: "info.circle")
+                                            .font(.footnote)
+                                            .foregroundColor(Color.secondary)
+
+                                        Spacer()
+                                    }
+                                    .padding()
                                 }
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 30.0)
                             }
-                            .buttonStyle(.borderedProminent)
-                            .controlSize(.large)
-                            .accentColor(Color.secondary)
-
-                            Label("You can also use drag-and-drop or the share sheet to open an encrypted message.", systemImage: "info.circle")
-                                .font(.footnote)
-                                .foregroundColor(Color.secondary)
-
-                            Spacer()
                         }
-                        .padding()
+                        .opacity(isTargetedForDrop ? 0.2 : 1.0)
                     }
                 }
                 .SPAlert(isPresent: $presentingError,
@@ -133,7 +145,7 @@ struct DecryptionView: View {
                         viewModel.ciphertext = fileContent
                     }
                 }
-                .onDrop(of: [UTType.asc], isTargeted: nil, perform: { providers in
+                .onDrop(of: [UTType.asc], isTargeted: $isTargetedForDrop, perform: { providers in
                     performOnDrop(providers: providers)
                 })
                 .fileImporter(isPresented: $presentingFileImporter, allowedContentTypes: [UTType.asc], allowsMultipleSelection: false) { result in
