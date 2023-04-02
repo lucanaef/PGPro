@@ -70,10 +70,16 @@ struct DecryptionView: View {
                                         Spacer()
 
                                         Button {
-                                            if let clipboard = UIPasteboard.general.string {
-                                                DispatchQueue.main.async {
-                                                    viewModel.ciphertext = clipboard
+                                            if UIPasteboard.general.hasStrings {
+                                                if let clipboard = UIPasteboard.general.string {
+                                                    TapticEngine.impact.feedback(.light)
+                                                    DispatchQueue.main.async {
+                                                        viewModel.ciphertext = clipboard
+                                                    }
                                                 }
+                                            } else {
+                                                errorMessage = "Clipboard is Empty!"
+                                                presentingError = true
                                             }
                                         } label: {
                                             Text("Paste from Clipboard")
@@ -84,6 +90,7 @@ struct DecryptionView: View {
                                         .controlSize(.large)
 
                                         Button {
+                                            TapticEngine.impact.feedback(.light)
                                             presentingFileImporter = true
                                         } label: {
                                             VStack {
