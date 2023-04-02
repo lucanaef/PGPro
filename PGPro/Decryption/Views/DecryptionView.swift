@@ -38,85 +38,7 @@ struct DecryptionView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     HeaderView(title: "Message")
 
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 5)
-                            .foregroundColor(isTargetedForDrop ? Color.accentColor.opacity(0.5) : Color(UIColor.systemBackground))
-
-                        Group {
-                            if let ciphertext = viewModel.ciphertext {
-                                ZStack {
-                                    ScrollView {
-                                        Text(ciphertext)
-                                            .font(.caption.monospaced())
-                                    }
-
-                                    if !ciphertext.isOpenPGPCiphertext {
-                                        HStack {
-                                            Spacer()
-
-                                            Label("Invalid OpenPGP Message", systemImage: "exclamationmark.triangle.fill")
-                                                .padding()
-                                                .foregroundColor(.primary)
-                                                .background(Color.red.opacity(0.8))
-                                                .cornerRadius(15)
-
-                                            Spacer()
-                                        }
-                                    }
-                                }
-                            } else {
-                                ZStack {
-                                    VStack(alignment: .center) {
-                                        Spacer()
-
-                                        Button {
-                                            if UIPasteboard.general.hasStrings {
-                                                if let clipboard = UIPasteboard.general.string {
-                                                    TapticEngine.impact.feedback(.light)
-                                                    DispatchQueue.main.async {
-                                                        viewModel.ciphertext = clipboard
-                                                    }
-                                                }
-                                            } else {
-                                                errorMessage = "Clipboard is Empty!"
-                                                presentingError = true
-                                            }
-                                        } label: {
-                                            Text("Paste from Clipboard")
-                                                .frame(maxWidth: .infinity)
-                                                .frame(height: 20.0)
-                                        }
-                                        .buttonStyle(.borderedProminent)
-                                        .controlSize(.large)
-
-                                        Button {
-                                            TapticEngine.impact.feedback(.light)
-                                            presentingFileImporter = true
-                                        } label: {
-                                            VStack {
-                                                Image(systemName: "folder")
-                                                    .padding(.vertical, 1)
-                                                Text("Open from File")
-                                            }
-                                            .frame(maxWidth: .infinity)
-                                            .frame(height: 30.0)
-                                        }
-                                        .buttonStyle(.borderedProminent)
-                                        .controlSize(.large)
-                                        .accentColor(Color.secondary)
-
-                                        Label("You can also use drag-and-drop or the share sheet to open an encrypted message.", systemImage: "info.circle")
-                                            .font(.footnote)
-                                            .foregroundColor(Color.secondary)
-
-                                        Spacer()
-                                    }
-                                    .padding()
-                                }
-                            }
-                        }
-                        .opacity(isTargetedForDrop ? 0.2 : 1.0)
-                    }
+                    messageFieldStack
                 }
                 .SPAlert(isPresent: $presentingError,
                          title: "Decryption failed!",
@@ -136,41 +58,7 @@ struct DecryptionView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     HeaderView(title: "Private Decryption Key")
 
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(Array(viewModel.decryptionKey)) { contact in
-                                ZStack {
-                                    RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
-                                        .fill(Color.accentColor)
-                                        .frame(maxHeight: 40.0)
-
-                                    VStack(alignment: .leading) {
-                                        Text(verbatim: contact.name)
-                                            .font(.caption)
-                                            .bold()
-                                            .foregroundColor(.white)
-                                        Text(verbatim: contact.email)
-                                            .font(.caption)
-                                            .foregroundColor(.white)
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-
-                            NavigationLink(value: RouterPath.DecryptionTabPath.keyPicker) {
-                                ZStack {
-                                    RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
-                                        .strokeBorder(Color.accentColor, lineWidth: 2)
-                                        .frame(width: 40.0, height: 40.0, alignment: .center)
-
-                                    Image(systemName: "plus")
-                                        .font(.system(.body, design: .rounded, weight: .bold))
-                                        .foregroundColor(Color.accentColor)
-                                }
-                            }
-                        }
-                    }
-                    .scrollIndicators(.hidden)
+                    keySelectionView
                 }
 
                 Divider()
@@ -236,6 +124,126 @@ struct DecryptionView: View {
                 }
             }
         }
+    }
+
+    private var messageFieldStack: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 5)
+                .foregroundColor(isTargetedForDrop ? Color.accentColor.opacity(0.5) : Color(UIColor.systemBackground))
+
+            Group {
+                if let ciphertext = viewModel.ciphertext {
+                    ZStack {
+                        ScrollView {
+                            Text(ciphertext)
+                                .font(.caption.monospaced())
+                        }
+
+                        if !ciphertext.isOpenPGPCiphertext {
+                            HStack {
+                                Spacer()
+
+                                Label("Invalid OpenPGP Message", systemImage: "exclamationmark.triangle.fill")
+                                    .padding()
+                                    .foregroundColor(.primary)
+                                    .background(Color.red.opacity(0.8))
+                                    .cornerRadius(15)
+
+                                Spacer()
+                            }
+                        }
+                    }
+                } else {
+                    ZStack {
+                        VStack(alignment: .center) {
+                            Spacer()
+
+                            Button {
+                                if UIPasteboard.general.hasStrings {
+                                    if let clipboard = UIPasteboard.general.string {
+                                        TapticEngine.impact.feedback(.light)
+                                        DispatchQueue.main.async {
+                                            viewModel.ciphertext = clipboard
+                                        }
+                                    }
+                                } else {
+                                    errorMessage = "Clipboard is Empty!"
+                                    presentingError = true
+                                }
+                            } label: {
+                                Text("Paste from Clipboard")
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 20.0)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
+
+                            Button {
+                                TapticEngine.impact.feedback(.light)
+                                presentingFileImporter = true
+                            } label: {
+                                VStack {
+                                    Image(systemName: "folder")
+                                        .padding(.vertical, 1)
+                                    Text("Open from File")
+                                }
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 30.0)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
+                            .accentColor(Color.secondary)
+
+                            Label("You can also use drag-and-drop or the share sheet to open an encrypted message.", systemImage: "info.circle")
+                                .font(.footnote)
+                                .foregroundColor(Color.secondary)
+
+                            Spacer()
+                        }
+                        .padding()
+                    }
+                }
+            }
+            .opacity(isTargetedForDrop ? 0.2 : 1.0)
+        }
+    }
+
+    private var keySelectionView: some View {
+        ScrollView(.horizontal) {
+            HStack {
+                ForEach(Array(viewModel.decryptionKey)) { contact in
+                    ZStack {
+                        RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
+                            .fill(Color.accentColor)
+                            .frame(maxHeight: 40.0)
+
+                        VStack(alignment: .leading) {
+                            Text(verbatim: contact.name)
+                                .font(.caption)
+                                .bold()
+                                .foregroundColor(.white)
+                            Text(verbatim: contact.email)
+                                .font(.caption)
+                                .foregroundColor(.white)
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+
+                NavigationLink(value: RouterPath.DecryptionTabPath.keyPicker) {
+                    ZStack {
+                        RoundedRectangle(cornerSize: CGSize(width: 8.0, height: 8.0))
+                            .strokeBorder(Color.accentColor, lineWidth: 2)
+                            .frame(width: 40.0, height: 40.0, alignment: .center)
+
+                        Image(systemName: "plus")
+                            .font(.system(.body, design: .rounded, weight: .bold))
+                            .foregroundColor(Color.accentColor)
+                    }
+                }
+            }
+        }
+        .scrollIndicators(.hidden)
     }
 
     // MARK: - Private Helper Functions
