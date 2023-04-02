@@ -18,6 +18,8 @@
 import SwiftUI
 
 struct MainView: View {
+    @Environment(\.scenePhase) var scenePhase
+    
     @EnvironmentObject private var routerPath: RouterPath
 
     @State var userIsNotAuthenticated: Bool = UserDefaults.standard.bool(forKey: UserDefaultsKeys.authenticationEnabled)
@@ -50,6 +52,25 @@ struct MainView: View {
         }
         .fullScreenCover(isPresented: $userIsNotAuthenticated) {
             LaunchAuthenticationView(userIsNotAuthenticated: $userIsNotAuthenticated)
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                Log.i("App became active")
+            } else if newPhase == .inactive {
+                /**
+                 Inactive scenes are running and might be visible to the user, but the user isn’t able to access them.
+                 For example, if you’re swiping down to partially reveal the control center then the app underneath is considered inactive.
+                 */
+                Log.i("App became inactive")
+            } else if newPhase == .background {
+                /**
+                 Background scenes are not visible to the user, which on iOS means they might be terminated at some point in the future.
+                 */
+                Log.i("App moved to background")
+                if UserDefaults.standard.bool(forKey: UserDefaultsKeys.authenticationEnabled) {
+                    userIsNotAuthenticated = true
+                }
+            }
         }
     }
 }

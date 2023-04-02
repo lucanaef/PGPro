@@ -33,6 +33,7 @@ struct LaunchAuthenticationView: View {
                 .padding()
 
             Button {
+                TapticEngine.impact.feedback(.light)
                 authenticate()
             } label: {
                 Label("Authenticate", systemImage: AuthenticationPreferenceViewModel.symbolName)
@@ -59,9 +60,11 @@ struct LaunchAuthenticationView: View {
         Authentication.requestAuthentication { result in
             switch result {
                 case .success:
+                    Log.i("User successfully authenticated.")
                     userIsNotAuthenticated = false
 
                 case .failure(let error):
+                    Log.e("User authentication failed.")
                     errorMessage = error.localizedDescription
                     presentingAlert = true
             }
