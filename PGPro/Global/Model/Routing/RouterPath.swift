@@ -27,7 +27,7 @@ class RouterPath: ObservableObject {
         case settings
     }
 
-    @Published var selectedTab: Tab = .encryption
+    @Published var selectedTab: Tab = .decryption
 
     // MARK: - Tab: Encryption
     @Published public var encryptionTab: [EncryptionTabPath] = []
