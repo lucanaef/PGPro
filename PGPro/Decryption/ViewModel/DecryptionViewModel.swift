@@ -27,8 +27,6 @@ class DecryptionViewModel: ObservableObject {
         }
     }
 
-    @Published var decryptionResult: OpenPGP.DecryptionResult?
-
     var readyForDecryptionOrPassphrases: Bool {
         !(ciphertext?.isEmpty ?? true) && (ciphertext?.isOpenPGPCiphertext ?? false) && !decryptionKey.isEmpty
     }
@@ -54,21 +52,38 @@ class DecryptionViewModel: ObservableObject {
 
     // MARK: - Decryption
 
-    func decrypt() {
+    enum DecryptionError: Error, CustomStringConvertible {
+        case emptyCiphertext
+        case keyError
+        case other(error: Error)
+
+        var description: String {
+            switch self {
+                case .emptyCiphertext:
+                    return "Ciphertext cannot be empty"
+                case .keyError:
+                    return "Failed to unwrap decryption key."
+                case .other(let error):
+                    return error.localizedDescription
+            }
+        }
+    }
+
+    func decrypt() -> Result<OpenPGP.DecryptionResult, DecryptionError> {
         guard let ciphertext else {
-            Log.e("Ciphertext cannot be empty!")
-            return
+            return .failure(.emptyCiphertext)
         }
 
         if let contact = decryptionKey.first, let key = contact.primaryKey {
             do {
-                self.decryptionResult = try OpenPGP.decrypt(message: ciphertext, for: contact, withPassphrase: passphrase(for: key))
+                let result = try OpenPGP.decrypt(message: ciphertext, for: contact, withPassphrase: passphrase(for: key))
+                return .success(result)
             } catch {
                 Log.e(error)
-                return
+                return .failure(.other(error: error))
             }
         } else {
-            Log.e("Failed to unwrap first (and only) decryption key.")
+            return .failure(.keyError)
         }
     }
 

@@ -32,7 +32,7 @@ class RouterPath: ObservableObject {
     // MARK: - Tab: Encryption
     @Published public var encryptionTab: [EncryptionTabPath] = []
 
-    enum EncryptionTabPath {
+    enum EncryptionTabPath: Hashable {
         case recipients
         case signatures
     }
@@ -41,8 +41,8 @@ class RouterPath: ObservableObject {
     @Published public var decryptionTab: [DecryptionTabPath] = []
 
     enum DecryptionTabPath: Hashable {
-        case decryption(ciphertext: String? = nil)
-        case result
+        case keyPicker
+        case result(result: OpenPGP.DecryptionResult)
     }
 
     // MARK: - Tab: Keychain

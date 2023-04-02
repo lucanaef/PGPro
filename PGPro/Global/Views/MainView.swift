@@ -30,7 +30,7 @@ struct MainView: View {
                 }
                 .tag(RouterPath.Tab.encryption)
 
-            DecryptionInputView()
+            DecryptionView()
                 .tabItem {
                     Label("Decryption", systemImage: "lock.open.fill")
                 }

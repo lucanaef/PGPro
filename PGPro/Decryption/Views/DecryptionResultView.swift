@@ -25,58 +25,56 @@ struct DecryptionResultView: View {
     var decryptionResult: OpenPGP.DecryptionResult
 
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 0) {
-                HeaderView(title: "Message")
+        VStack(alignment: .leading, spacing: 0) {
+            HeaderView(title: "Message")
 
-                ScrollView {
-                    switch decryptionResult.message {
-                        case .plain(value: let message):
+            ScrollView {
+                switch decryptionResult.message {
+                    case .plain(value: let message):
+                        Text(message)
+
+                    case .mime(value: let mime):
+                        if let message = try? mime.1.decodedContentString() {
                             Text(message)
+                        } else {
+                            Label("Failed to decode mime content.", systemImage: "exclamationmark.triangle.fill")
+                                .padding()
+                                .foregroundColor(.primary)
+                                .background(Color.red.opacity(0.8))
+                                .cornerRadius(15)
 
-                        case .mime(value: let mime):
-                            if let message = try? mime.1.decodedContentString() {
-                                Text(message)
-                            } else {
-                                Label("Failed to decode mime content.", systemImage: "exclamationmark.triangle.fill")
-                                    .padding()
-                                    .foregroundColor(.primary)
-                                    .background(Color.red.opacity(0.8))
-                                    .cornerRadius(15)
-
-                                Text(mime.0)
-                            }
-                    }
-                }
-
-                Spacer()
-
-                Divider()
-                    .padding(.bottom)
-
-                HStack {
-                    if let plaintext = decryptionResult.plaintext {
-                        ShareLink(item: plaintext) {
-                            Label("Share", systemImage: "square.and.arrow.up")
+                            Text(mime.0)
                         }
-                        .buttonStyle(.bordered)
-                        .controlSize(.large)
-                    }
-
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Done")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
                 }
             }
-            .padding()
-            .navigationTitle("Decryption")
-            .accentColor(Color(rawValue: accentColor))
+
+            Spacer()
+
+            Divider()
+                .padding(.bottom)
+
+            HStack {
+                if let plaintext = decryptionResult.plaintext {
+                    ShareLink(item: plaintext) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+                }
+
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Done")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+            }
         }
+        .padding()
+        .navigationTitle("Decryption")
+        .accentColor(Color(rawValue: accentColor))
     }
 }
 
@@ -97,7 +95,7 @@ struct DecryptionResultView_Previews: PreviewProvider {
     laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit
     qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum
     fugiat quo voluptas nulla pariatur?
-    """), signatures: "")
+    """))
 
     static var previews: some View {
         DecryptionResultView(decryptionResult: decryptionResultPlain)

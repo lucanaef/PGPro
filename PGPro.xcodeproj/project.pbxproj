@@ -33,7 +33,6 @@
 		8178B4A228FEF3880027AACF /* PGProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4A128FEF3880027AACF /* PGProApp.swift */; };
 		8178B4A628FEF3890027AACF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8178B4A528FEF3890027AACF /* Assets.xcassets */; };
 		8178B4B228FEF4510027AACF /* EncryptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B128FEF4510027AACF /* EncryptionView.swift */; };
-		8178B4B428FEF4680027AACF /* DecryptionInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B328FEF4680027AACF /* DecryptionInputView.swift */; };
 		8178B4B628FEF4710027AACF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B528FEF4710027AACF /* SettingsView.swift */; };
 		8178B4B828FEF47C0027AACF /* KeychainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4B728FEF47C0027AACF /* KeychainView.swift */; };
 		8178B4BE28FEF9F80027AACF /* UserAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178B4BD28FEF9F80027AACF /* UserAvatarView.swift */; };
@@ -57,7 +56,6 @@
 		81A016D829A287C700D83234 /* UTType+asc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A016D729A287C700D83234 /* UTType+asc.swift */; };
 		81A0F58E290D31F30091C3B9 /* KeychainCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A0F58D290D31F30091C3B9 /* KeychainCardView.swift */; };
 		81A3F7A8299686D500C9DBBC /* DecryptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A3F7A7299686D500C9DBBC /* DecryptionViewModel.swift */; };
-		81A5A5D629A3B97E005E5238 /* DecryptionShareSheetHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A5A5D529A3B97E005E5238 /* DecryptionShareSheetHelpView.swift */; };
 		81A60B4628FFE17500177647 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A60B4528FFE17500177647 /* MainView.swift */; };
 		81AEC9C929746C7800AC31C1 /* Contact+export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEC9C829746C7800AC31C1 /* Contact+export.swift */; };
 		81B2D10A29213DA800DB92D9 /* Contact+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B2D10929213DA800DB92D9 /* Contact+Equatable.swift */; };
@@ -111,7 +109,6 @@
 		8178B4A128FEF3880027AACF /* PGProApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProApp.swift; sourceTree = "<group>"; };
 		8178B4A528FEF3890027AACF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8178B4B128FEF4510027AACF /* EncryptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionView.swift; sourceTree = "<group>"; };
-		8178B4B328FEF4680027AACF /* DecryptionInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionInputView.swift; sourceTree = "<group>"; };
 		8178B4B528FEF4710027AACF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8178B4B728FEF47C0027AACF /* KeychainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainView.swift; sourceTree = "<group>"; };
 		8178B4BD28FEF9F80027AACF /* UserAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvatarView.swift; sourceTree = "<group>"; };
@@ -133,7 +130,6 @@
 		81A016D729A287C700D83234 /* UTType+asc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UTType+asc.swift"; sourceTree = "<group>"; };
 		81A0F58D290D31F30091C3B9 /* KeychainCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainCardView.swift; sourceTree = "<group>"; };
 		81A3F7A7299686D500C9DBBC /* DecryptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionViewModel.swift; sourceTree = "<group>"; };
-		81A5A5D529A3B97E005E5238 /* DecryptionShareSheetHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionShareSheetHelpView.swift; sourceTree = "<group>"; };
 		81A60B4528FFE17500177647 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		81AEC9C829746C7800AC31C1 /* Contact+export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+export.swift"; sourceTree = "<group>"; };
 		81B2D10929213DA800DB92D9 /* Contact+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Equatable.swift"; sourceTree = "<group>"; };
@@ -306,10 +302,8 @@
 		8161BF75299120B000766FC0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8178B4B328FEF4680027AACF /* DecryptionInputView.swift */,
 				8161BF7629914E3900766FC0 /* DecryptionView.swift */,
 				8161BF732990F5F900766FC0 /* DecryptionResultView.swift */,
-				81A5A5D529A3B97E005E5238 /* DecryptionShareSheetHelpView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -385,6 +379,7 @@
 		8193DA6929117EB500F103D5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8182031B29AB699200A5D74A /* Routing */,
 				81DC4F11292022E400C1AE11 /* Key Server Search */,
 				8193DA802911906300F103D5 /* OpenPGP */,
 				8193DA6F2911842500F103D5 /* Contact */,
@@ -457,7 +452,6 @@
 		81CF543F290D9387000ECBC3 /* Global */ = {
 			isa = PBXGroup;
 			children = (
-				8182031B29AB699200A5D74A /* Routing */,
 				8193DA6929117EB500F103D5 /* Model */,
 				819CD9FD290E9A99006B4804 /* Extensions */,
 				819CD9EE290E758E006B4804 /* Constants */,
@@ -707,7 +701,6 @@
 				816C2F0B2912FE85005A84B6 /* MockData.swift in Sources */,
 				81EC15902911B6E40060CDB2 /* GenerateKeyPairValidationError.swift in Sources */,
 				8178B4BE28FEF9F80027AACF /* UserAvatarView.swift in Sources */,
-				8178B4B428FEF4680027AACF /* DecryptionInputView.swift in Sources */,
 				812A07272996DAA000FA9DB9 /* CodeScannerView.swift in Sources */,
 				8182031D29AB69D000A5D74A /* RouterPath.swift in Sources */,
 				81BB3F52298FFD7B006C12EB /* KeychainEmptyView.swift in Sources */,
@@ -746,7 +739,6 @@
 				819CD9FB290E8959006B4804 /* LaunchAuthenticationView.swift in Sources */,
 				8161BF742990F5F900766FC0 /* DecryptionResultView.swift in Sources */,
 				81C9D70A292045FF00BCA788 /* Contact+add.swift in Sources */,
-				81A5A5D629A3B97E005E5238 /* DecryptionShareSheetHelpView.swift in Sources */,
 				8122A917290EDE5E0027F36D /* MailIntegration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

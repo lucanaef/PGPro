@@ -99,10 +99,9 @@ class OpenPGP {
 
     // MARK: Decryption
 
-    struct DecryptionResult: Identifiable {
+    struct DecryptionResult: Identifiable, Equatable, Hashable {
         var id = UUID()
         var message: DecryptionResultValue
-        var signatures: String
 
         var plaintext: String? {
             if case let .plain(plaintext) = self.message {
@@ -116,6 +115,16 @@ class OpenPGP {
             }
 
             return nil
+        }
+
+        // Equatable
+        static func == (lhs: OpenPGP.DecryptionResult, rhs: OpenPGP.DecryptionResult) -> Bool {
+            lhs.id == rhs.id
+        }
+
+        // Hashable
+        public func hash(into hasher: inout Hasher) {
+            return hasher.combine(id)
         }
     }
 
@@ -167,9 +176,9 @@ class OpenPGP {
 
             // Try to parse plaintext
             if let parsedMessage = try? MimeParser().parse(decryptedMessage) {
-                return DecryptionResult(message: .mime(value: (decryptedMessage, parsedMessage)), signatures: "")
+                return DecryptionResult(message: .mime(value: (decryptedMessage, parsedMessage)))
             } else {
-                return DecryptionResult(message: .plain(value: decryptedMessage), signatures: "")
+                return DecryptionResult(message: .plain(value: decryptedMessage))
             }
         } catch {
             throw OpenPGPError.frameworkError(error)
