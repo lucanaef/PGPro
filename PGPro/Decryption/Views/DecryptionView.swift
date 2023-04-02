@@ -32,11 +32,6 @@ struct DecryptionView: View {
     @State private var presentingError: Bool = false
     @State private var errorMessage: String?
 
-    @State private var initialCiphertext: String?
-    init(ciphertext: String? = nil) {
-        _initialCiphertext = State(initialValue: ciphertext)
-    }
-
     var body: some View {
         NavigationStack(path: $routerPath.decryptionTab) {
             VStack {
@@ -124,59 +119,10 @@ struct DecryptionView: View {
                          preset: .error,
                          haptic: .error)
                 .onOpenURL { url in
-                    guard url.pathExtension.lowercased() == "asc" else {
-                        let error = "Only `.asc` files can be opened."
-                        Log.e(error)
-                        errorMessage = error
-                        presentingError = true
-                        return
-                    }
-
-                    if let fileContent = try? String(contentsOf: url, encoding: .ascii) {
-                        #warning("TODO: Handle case where file contains a key")
-                        guard fileContent.isOpenPGPCiphertext else {
-                            let error = "File is not an OpenPGP message."
-                            Log.e(error)
-                            errorMessage = error
-                            presentingError = true
-                            return
-                        }
-
-                        viewModel.ciphertext = fileContent
-                    }
+                    performOnOpenURL(url: url)
                 }
-                .onDrop(of: [UTType.asc], isTargeted: $isTargetedForDrop, perform: { providers in
-                    performOnDrop(providers: providers)
-                })
-                .fileImporter(isPresented: $presentingFileImporter, allowedContentTypes: [UTType.asc], allowsMultipleSelection: false) { result in
-                    switch result {
-                        case .success(let urls):
-                            if let fileURL = urls.first {
-                                if fileURL.startAccessingSecurityScopedResource() {
-                                    do {
-                                        let fileContent = try String(contentsOf: fileURL, encoding: .ascii)
-                                        viewModel.ciphertext = fileContent
-                                    } catch {
-                                        Log.e(error)
-                                        errorMessage = error.localizedDescription
-                                        presentingError = true
-                                    }
-                                }
-
-                                fileURL.stopAccessingSecurityScopedResource()
-                            } else {
-                                let error = "Failed to get file URL from file importer"
-                                Log.e(error)
-                                errorMessage = error
-                                presentingError = true
-                            }
-
-                        case .failure(let error):
-                            Log.e(error)
-                            errorMessage = error.localizedDescription
-                            presentingError = true
-                    }
-                }
+                .onDrop(of: [UTType.asc], isTargeted: $isTargetedForDrop, perform: performOnDrop)
+                .fileImporter(isPresented: $presentingFileImporter, allowedContentTypes: [UTType.asc], allowsMultipleSelection: false, onCompletion: performOnFileImport)
 
                 Spacer()
 
@@ -231,8 +177,9 @@ struct DecryptionView: View {
                         let result = viewModel.decrypt()
                         switch result {
                             case .failure(let error):
-                                #warning("Present error message!")
                                 Log.e(error)
+                                errorMessage = error.description
+                                presentingError = true
 
                             case .success(let decryptionResult):
                                 routerPath.decryptionTab.append(.result(result: decryptionResult))
@@ -251,8 +198,9 @@ struct DecryptionView: View {
                         let result = viewModel.decrypt()
                         switch result {
                             case .failure(let error):
-                                #warning("Present error message!")
                                 Log.e(error)
+                                errorMessage = error.description
+                                presentingError = true
 
                             case .success(let decryptionResult):
                                 routerPath.decryptionTab.append(.result(result: decryptionResult))
@@ -275,17 +223,67 @@ struct DecryptionView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Clear") {
-                        initialCiphertext = nil
                         viewModel.clear()
                     }
                     .opacity(viewModel.isClear ? 0 : 1)
                 }
             }
-            .onAppear {
-                if let ciphertext = initialCiphertext {
-                    viewModel.ciphertext = ciphertext
+        }
+    }
+
+    // MARK: - Private Helper Functions
+
+    private func performOnFileImport(result: Result<[URL], Error>) {
+        switch result {
+            case .success(let urls):
+                if let fileURL = urls.first {
+                    if fileURL.startAccessingSecurityScopedResource() {
+                        do {
+                            let fileContent = try String(contentsOf: fileURL, encoding: .ascii)
+                            viewModel.ciphertext = fileContent
+                        } catch {
+                            Log.e(error)
+                            errorMessage = error.localizedDescription
+                            presentingError = true
+                        }
+                    }
+
+                    fileURL.stopAccessingSecurityScopedResource()
+                } else {
+                    let error = "Failed to get file URL from file importer"
+                    Log.e(error)
+                    errorMessage = error
+                    presentingError = true
                 }
+
+            case .failure(let error):
+                Log.e(error)
+                errorMessage = error.localizedDescription
+                presentingError = true
+        }
+    }
+
+    private func performOnOpenURL(url: URL) {
+        guard url.pathExtension.lowercased() == "asc" else {
+            let error = "Only `.asc` files can be opened."
+            Log.e(error)
+            errorMessage = error
+            presentingError = true
+            return
+        }
+
+        if let fileContent = try? String(contentsOf: url, encoding: .ascii) {
+            #warning("TODO: Handle case where file contains a key")
+            guard fileContent.isOpenPGPCiphertext else {
+                let error = "File is not an OpenPGP message."
+                Log.e(error)
+                errorMessage = error
+                presentingError = true
+                return
             }
+
+            routerPath.selectedTab = .decryption
+            viewModel.ciphertext = fileContent
         }
     }
 
