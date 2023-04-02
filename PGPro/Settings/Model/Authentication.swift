@@ -26,7 +26,7 @@ class Authentication {
     private static var context: LAContext {
         let context = LAContext()
         // https://stackoverflow.com/a/37295600
-        context.touchIDAuthenticationAllowableReuseDuration = 0.0
+        context.touchIDAuthenticationAllowableReuseDuration = 5
         return context
     }
 
