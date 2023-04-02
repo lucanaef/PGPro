@@ -871,7 +871,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PGPro/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "PGPro β";
+				INFOPLIST_KEY_CFBundleDisplayName = PGPro;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "PGPro uses the camera to scan QR codes.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "PGPro Biometric Authentication";
@@ -884,7 +884,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2023.1;
-				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro.ng;
+				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -906,7 +906,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PGPro/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "PGPro β";
+				INFOPLIST_KEY_CFBundleDisplayName = PGPro;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "PGPro uses the camera to scan QR codes.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "PGPro Biometric Authentication";
@@ -919,7 +919,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2023.1;
-				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro.ng;
+				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
