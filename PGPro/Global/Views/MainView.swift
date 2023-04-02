@@ -19,7 +19,7 @@ import SwiftUI
 
 struct MainView: View {
     @Environment(\.scenePhase) var scenePhase
-    
+
     @EnvironmentObject private var routerPath: RouterPath
 
     @State var userIsNotAuthenticated: Bool = UserDefaults.standard.bool(forKey: UserDefaultsKeys.authenticationEnabled)
