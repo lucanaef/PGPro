@@ -23,12 +23,7 @@ class Authentication {
 
     private init() {}
 
-    private static var context: LAContext {
-        let context = LAContext()
-        // https://stackoverflow.com/a/37295600
-        context.touchIDAuthenticationAllowableReuseDuration = 5
-        return context
-    }
+    private static var context = LAContext()
 
     private static var biometricAuthenticationAvailable: Bool {
         return Authentication.context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
