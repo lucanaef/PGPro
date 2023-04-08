@@ -140,7 +140,7 @@ struct SettingsView: View {
                         NavigationLink {
                             LicencesView()
                         } label: {
-                            Label("Licenes", systemImage: "scroll.fill")
+                            Label("Licences", systemImage: "scroll.fill")
                                 .labelStyle(ColorfulIconLabelStyle(color: .purple))
                         }
                     }
