@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G115" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Contact" representedClassName="Contact" syncable="YES">
-        <attribute name="email" attributeType="String" syncable="YES"/>
-        <attribute name="keyData" attributeType="Binary" valueTransformerName="KeyToData" allowsExternalBinaryDataStorage="YES" customClassName="Key" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="email" attributeType="String"/>
+        <attribute name="keyData" attributeType="Binary" valueTransformerName="KeyToData" allowsExternalBinaryDataStorage="YES" customClassName="Key"/>
+        <attribute name="name" attributeType="String"/>
     </entity>
-    <elements>
-        <element name="Contact" positionX="-63" positionY="-18" width="128" height="90"/>
-    </elements>
 </model>

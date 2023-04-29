@@ -24,43 +24,56 @@ enum MailIntegrationError: Error {
 }
 
 class MailIntegration {
-
     private init() {}
 
     typealias MailIntegrationClient = ThirdPartyMailClient
 
-    static var clients: [ThirdPartyMailClient] = {
+    static var clients: [MailIntegrationClient] {
         var mailClients = [ThirdPartyMailClient.systemDefault] + ThirdPartyMailClient.clients
-        mailClients.removeAll { ["Sparrow", "Dispatch"].contains($0.name) } // remove discontinued mail clients
-        return mailClients
-    }()
 
-    static var selectedClient: ThirdPartyMailClient? {
-        get {
-            if let clientName = Preferences.mailIntegrationClientName {
-                return clients.first(where: { $0.name == clientName })
+        // Remove discontinued mail clients
+        mailClients.removeAll { ["Sparrow", "Dispatch"].contains($0.name) }
+
+        /*
+         Overly complicated sort hierarchy:
+            - First is always 'System Default' (mailto:)
+            - Next, all the installed clients in lexicographical order
+            - Last all the remaining clients in lexicographical order
+        */
+        mailClients.sort { lhs, rhs in
+            if lhs == .systemDefault {
+                return true
+            } else if rhs == .systemDefault {
+                return false
+            } else if MailIntegration.isAvailable(lhs) && !MailIntegration.isAvailable(rhs) {
+                return true
+            } else if !MailIntegration.isAvailable(lhs) && MailIntegration.isAvailable(rhs) {
+                return false
             } else {
-                return nil
+                return lhs.name < rhs.name
             }
         }
-        set {
-            Preferences.mailIntegrationClientName = newValue?.name
-        }
+
+        return mailClients
     }
 
-    static var isEnabled: Bool {
-        get {
-            UserDefaults.standard.bool(forKey: Preferences.UserDefaultsKeys.mailIntegration)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: Preferences.UserDefaultsKeys.mailIntegration)
-            // Reset mail client choice if client is not available anymore
-            if let previouslySelectedClient = selectedClient, !ThirdPartyMailer.isMailClientAvailable(previouslySelectedClient) {
-                selectedClient = nil
-            }
-            // Pre-select system default if available and none other selected
-            if selectedClient == nil, ThirdPartyMailer.isMailClientAvailable(.systemDefault) {
-                selectedClient = .systemDefault
+    private static func client(for name: String) -> MailIntegrationClient? {
+        clients.first(where: { $0.name == name })
+    }
+
+    static func validateCurrentConfig() {
+        if let currentClientName = UserDefaults.standard.string(forKey: UserDefaultsKeys.mailIntegrationClient) {
+            if let currentClient = MailIntegration.client(for: currentClientName) {
+                // Reset mail client choice if client is not available anymore
+                if !ThirdPartyMailer.isMailClientAvailable(currentClient) {
+                    // Pre-select system default if available and none other selected
+                    if ThirdPartyMailer.isMailClientAvailable(.systemDefault) {
+                        UserDefaults.standard.set("System Default", forKey: UserDefaultsKeys.mailIntegrationClient)
+                    } else {
+                        UserDefaults.standard.set("", forKey: UserDefaultsKeys.mailIntegrationClient)
+                        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.mailIntegrationEnabled)
+                    }
+                }
             }
         }
     }
@@ -69,15 +82,25 @@ class MailIntegration {
         return ThirdPartyMailer.isMailClientAvailable(client)
     }
 
+    static var isEnabled: Bool {
+        UserDefaults.standard.bool(forKey: UserDefaultsKeys.mailIntegrationEnabled)
+    }
+
     static func compose(recipients: [String], subject: String? = nil, body: String, completionHandler completion: ((Bool) -> Void)? = nil) throws {
-        guard self.isEnabled else { throw MailIntegrationError.cannotComposeWhileDisabled }
-        if let client = self.selectedClient {
-            ThirdPartyMailer.openCompose(client, recipient: recipients.joined(separator: ","), subject: subject, body: body, completionHandler: completion)
+        guard self.isEnabled else {
+            throw MailIntegrationError.cannotComposeWhileDisabled
+        }
+
+        if let clientName = UserDefaults.standard.string(forKey: UserDefaultsKeys.mailIntegrationClient) {
+            if let client = MailIntegration.client(for: clientName) {
+                ThirdPartyMailer.openCompose(client, recipient: recipients.joined(separator: ","), subject: subject, body: body, completionHandler: completion)
+            } else {
+                throw MailIntegrationError.noSelectedClient
+            }
         } else {
             throw MailIntegrationError.noSelectedClient
         }
     }
-
 }
 
 extension ThirdPartyMailClient: Equatable {

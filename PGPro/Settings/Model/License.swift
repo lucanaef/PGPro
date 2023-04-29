@@ -16,62 +16,83 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import SwiftUI
 
 class License {
-
-    /// Name of the library / framework / ...
     var title: String
-    /// Description of the library / framework / ...
-    var subtitle: String?
-    /// Actual license of the library / framework / ...
+    var subtitle: String
     var licenseURL: URL
+    var licenseType: LicenseType?
 
-    init(for name: String, describedBy description: String? = nil, at url: URL) {
+    enum LicenseType: CustomStringConvertible {
+        case gpl3
+        case mit
+        case custom(label: String)
+
+        var description: String {
+            switch self {
+                case .gpl3: return "GPL-3.0"
+                case .mit: return "MIT"
+                case .custom(let label): return label
+            }
+        }
+
+        var color: Color {
+            switch self {
+                case .gpl3: return Color.green
+                case .mit: return Color.blue
+                case .custom: return Color.gray
+            }
+        }
+    }
+
+    init(for name: String, describedBy description: String, at url: URL, type: LicenseType? = nil) {
         title = name
         subtitle = description
         licenseURL = url
+        licenseType = type
     }
-
 }
 
 class Licenses {
-
     private init() {}
 
     static let allLicenses: [License] = [
         License(for: "PGPro",
                 describedBy: "OpenPGP en- & decryption app for iOS",
-                at: URL(string: "https://github.com/lucanaef/PGPro/blob/master/LICENSE")!),
+                at: URL(string: "https://github.com/lucanaef/PGPro/blob/main/LICENSE")!,
+                type: .gpl3),
         License(for: "ObjectivePGP",
                 describedBy: "OpenPGP library for iOS and macOS",
-                at: URL(string: "https://objectivepgp.com/LICENSE.txt")!),
-        License(for: "OpenSSL",
-                describedBy: "Cryptography and SSL/TLS Toolkit",
-                at: URL(string: "https://www.openssl.org/source/license-openssl-ssleay.txt")!),
-        License(for: "SwiftTryCatch",
-                describedBy: "Adds Objective-C try-catch support for Swift",
-                at: URL(string: "https://github.com/seanparsons/SwiftTryCatch/blob/master/LICENSE")!),
+                at: URL(string: "https://objectivepgp.com/LICENSE.txt")!,
+                type: .custom(label: "Dual License")),
         License(for: "Navajo-Swift",
                 describedBy: "Password Validator & Strength Evaluator",
-                at: URL(string: "https://github.com/jasonnam/Navajo-Swift/blob/master/LICENSE")!),
+                at: URL(string: "https://github.com/jasonnam/Navajo-Swift/blob/master/LICENSE")!,
+                type: .mit),
         License(for: "Swiftlogger",
                 describedBy: "Tiny Logger in Swift",
-                at: URL(string: "https://github.com/sauvikdolui/swiftlogger/blob/master/LICENSE")!),
-        License(for: "IsoCountryCodes",
-                describedBy: "Provides ISO codes, names and currencies for countries",
-                at: URL(string: "https://github.com/funky-monkey/IsoCountryCodes")!),
+                at: URL(string: "https://github.com/sauvikdolui/swiftlogger/blob/master/LICENSE")!,
+                type: .mit),
         License(for: "CodeScanner",
                 describedBy: "A SwiftUI view that is able to scan barcodes, QR codes, and more",
-                at: URL(string: "https://github.com/twostraws/CodeScanner/blob/main/LICENSE")!),
+                at: URL(string: "https://github.com/twostraws/CodeScanner/blob/main/LICENSE")!,
+                type: .mit),
         License(for: "MimeParser",
                 describedBy: "MimeParser is a simple MIME parsing library written in Swift",
-                at: URL(string: "https://github.com/miximka/MimeParser/blob/master/LICENSE")!),
-        License(for: "EmptyDataSet-Swift",
-                describedBy: "A drop-in UITableView/UICollectionView superclass category for showing empty datasets whenever the view has no content to display.",
-                at: URL(string: "https://github.com/Xiaoye220/EmptyDataSet-Swift/blob/master/LICENSE")!),
+                at: URL(string: "https://github.com/miximka/MimeParser/blob/master/LICENSE")!,
+                type: .mit),
         License(for: "SPAlert",
                 describedBy: "Native alert from Apple Music & Feedback. Contains Done, Heart & Message and other presets. Support SwiftUI.",
-                at: URL(string: "https://github.com/ivanvorobei/SPAlert/blob/main/LICENSE")!)
+                at: URL(string: "https://github.com/ivanvorobei/SPAlert/blob/main/LICENSE")!,
+                type: .mit),
+        License(for: "TapticEngine",
+                describedBy: "TapticEngine generates haptic feedback vibrations on iOS device.",
+                at: URL(string: "https://github.com/WorldDownTown/TapticEngine/blob/master/LICENSE")!,
+                type: .mit),
+        License(for: "ThirdPartyMailer",
+                describedBy: "Interact with third-party iOS mail clients, using custom URL schemes.",
+                at: URL(string: "https://github.com/vtourraine/ThirdPartyMailer/blob/main/LICENSE.txt")!,
+                type: .mit)
     ]
-
 }

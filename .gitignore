@@ -121,3 +121,4 @@ playground.xcworkspace
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.gitignore.io/api/git,osx,swift,xcode,macos,swiftpm,fastlane,swiftpackagemanager
+/TODO.md

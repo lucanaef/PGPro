@@ -1,21 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "emptydataset-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Xiaoye220/EmptyDataSet-Swift",
-      "state" : {
-        "branch" : "master",
-        "revision" : "ffaa10404b3c7582532887adc7a0f8558f656673"
-      }
-    },
-    {
       "identity" : "mimeparser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/miximka/MimeParser",
       "state" : {
-        "branch" : "master",
-        "revision" : "07eb0fc2f4386767ef8a8204963f8122a0889663"
+        "revision" : "07eb0fc2f4386767ef8a8204963f8122a0889663",
+        "version" : "0.2.5"
       }
     },
     {
@@ -23,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/ObjectivePGP.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "0dc7ca7ffe193095dc37456b0c75be167a2026f4"
+        "revision" : "0dc7ca7ffe193095dc37456b0c75be167a2026f4",
+        "version" : "0.99.2"
       }
     },
     {
@@ -37,21 +28,12 @@
       }
     },
     {
-      "identity" : "swifttrycatch",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/seanparsons/SwiftTryCatch.git",
-      "state" : {
-        "branch" : "master",
-        "revision" : "6a177252cfa2ef649b0aa7b2d16ab221386ca51c"
-      }
-    },
-    {
       "identity" : "thirdpartymailer",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vtourraine/ThirdPartyMailer",
       "state" : {
-        "branch" : "main",
-        "revision" : "0d9a82956105dd60a19caf5c8628669e9af91a05"
+        "revision" : "44c1cfaa6969963f22691aa67f88a69e3b6d651f",
+        "version" : "2.1.0"
       }
     }
   ],
