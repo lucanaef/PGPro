@@ -19,6 +19,10 @@ platform :ios do
   lane :screenshots do
     capture_screenshots(scheme: "FLSnapshotScheme")
   end
+
+  lane :tests do
+    run_tests(scheme: "PGPro")
+  end
   
   lane :beta do
     increment_build_number(build_number: number_of_commits)

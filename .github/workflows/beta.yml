@@ -1,0 +1,12 @@
+name: deploy-ios-app
+on:
+  push:
+    branches:
+      - 'develop'
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: screenshots
+      - run: fastlane beta
