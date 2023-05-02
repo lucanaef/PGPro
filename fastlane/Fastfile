@@ -25,12 +25,31 @@ platform :ios do
   end
   
   lane :beta do
+    asc_key_content = ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]
+    asc_issuer_id = ENV["APP_STORE_CONNECT_ISSUER_ID"]
+    asc_key_id = ENV["APP_STORE_CONNECT_API_KEY_ID"]
+
+    app_store_connect_api_key(
+      key_id: asc_key_id,
+      issuer_id: asc_issuer_id,
+      key_content: asc_key_content
+    )
+
     increment_build_number(build_number: number_of_commits)
     build_app(scheme: "PGPro")
     upload_to_testflight
   end 
   
   lane :release do
+    asc_key_content = ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]
+    asc_issuer_id = ENV["APP_STORE_CONNECT_ISSUER_ID"]
+    asc_key_id = ENV["APP_STORE_CONNECT_API_KEY_ID"]
+
+    app_store_connect_api_key(
+      key_id: asc_key_id,
+      issuer_id: asc_issuer_id,
+      key_content: asc_key_content
+    )
     increment_build_number(build_number: number_of_commits)
     build_app(scheme: "PGPro")
     upload_to_app_store

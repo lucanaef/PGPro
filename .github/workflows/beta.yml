@@ -2,7 +2,7 @@ name: deploy-ios-app
 on:
   push:
     branches:
-      - 'develop'
+      - "develop"
 jobs:
   build:
     runs-on: macos-latest
@@ -10,3 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: screenshots
       - run: fastlane beta
+        env:
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{Secrets.APP_STORE_CONNECT_API_KEY_CONTENT}}
+          APP_STORE_CONNECT_ISSUER_ID: ${{Secrets.APP_STORE_CONNECT_ISSUER_ID}}
+          APP_STORE_CONNECT_API_KEY_ID: ${{Secrets.APP_STORE_CONNECT_API_KEY_ID}}
