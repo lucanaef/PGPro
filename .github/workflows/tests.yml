@@ -1,0 +1,14 @@
+name: Swift Test and Build
+
+on:
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run tests
+        run: fastlane tests
