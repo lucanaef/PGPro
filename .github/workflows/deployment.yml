@@ -1,14 +1,13 @@
 name: deploy-ios-app
 on:
-  push:
-    branches:
-      - "master"
+  release:
+    types: [released]
+
 jobs:
   build:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - run: fastlane screenshots
       - run: fastlane release
         env:
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{Secrets.APP_STORE_CONNECT_API_KEY_CONTENT}}
