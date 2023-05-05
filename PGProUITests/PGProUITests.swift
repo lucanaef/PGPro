@@ -8,7 +8,6 @@
 import XCTest
 
 final class PGProUITests: XCTestCase {
-
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
@@ -25,9 +24,20 @@ final class PGProUITests: XCTestCase {
     func testExample() throws {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
+        setupSnapshot(app)
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let tabBar = XCUIApplication().tabBars["Tab Bar"]
+        let decryptionButton = tabBar.buttons["Decryption"]
+        decryptionButton.tap()
+        snapshot("2-DecryptionView")
+        tabBar.buttons["Encryption"].tap()
+        snapshot("4-EncryptionView")
+        tabBar.buttons["Keychain"].tap()
+        snapshot("3-KeychainView")
+        tabBar.buttons["Settings"].tap()
+        snapshot("5-SettingsView")
+        decryptionButton.tap()
     }
 
     func testLaunchPerformance() throws {

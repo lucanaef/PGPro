@@ -20,6 +20,20 @@
                ReferencedContainer = "container:PGPro.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2CB65F3E2A040A0700A29C37"
+               BuildableName = "PGProUITests.xctest"
+               BlueprintName = "PGProUITests"
+               ReferencedContainer = "container:PGPro.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -36,6 +50,17 @@
                BlueprintIdentifier = "2C582CBF2A005330007426BF"
                BuildableName = "PGProTests.xctest"
                BlueprintName = "PGProTests"
+               ReferencedContainer = "container:PGPro.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2CB65F3E2A040A0700A29C37"
+               BuildableName = "PGProUITests.xctest"
+               BlueprintName = "PGProUITests"
                ReferencedContainer = "container:PGPro.xcodeproj">
             </BuildableReference>
          </TestableReference>
