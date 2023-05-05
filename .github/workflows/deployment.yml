@@ -1,8 +1,8 @@
 name: deploy-ios-app
 on:
-  push:
-    branches:
-      - "master"
+  release:
+    types: [released]
+
 jobs:
   build:
     runs-on: macos-latest
