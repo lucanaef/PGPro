@@ -1,4 +1,4 @@
-name: deploy-ios-app
+name: deploy-ios-app testflight
 on:
   push:
     branches:

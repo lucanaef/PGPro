@@ -1,4 +1,4 @@
-name: deploy-ios-app
+name: deploy-ios-app app store
 on:
   release:
     types: [released]

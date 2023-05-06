@@ -58,7 +58,7 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2CB65F3E2A040A0700A29C37"
+               BlueprintIdentifier = "2CC98E6C2A06AA7E00C5A7C0"
                BuildableName = "PGProUITests.xctest"
                BlueprintName = "PGProUITests"
                ReferencedContainer = "container:PGPro.xcodeproj">
