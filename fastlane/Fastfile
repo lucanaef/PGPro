@@ -34,8 +34,22 @@ platform :ios do
       issuer_id: asc_issuer_id,
       key_content: asc_key_content
     )
-    get_certificates           # invokes cert
-    get_provisioning_profile
+    create_keychain(
+      name: "build",
+      password: "123456",
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: false
+    )
+    sync_code_signing(
+      readonly: true,
+      type: "appstore",
+      keychain_name: "build",
+      keychain_password: "123456",
+      shallow_clone: true
+    )
+    sh("security find-certificate -a")
     capture_screenshots()
     increment_build_number(build_number: number_of_commits)
     build_app(scheme: "PGPro")
