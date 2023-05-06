@@ -34,7 +34,7 @@ platform :ios do
       issuer_id: asc_issuer_id,
       key_content: asc_key_content
     )
-    get_certificates           # invokes cert
+    get_certificates
     get_provisioning_profile
     capture_screenshots()
     increment_build_number(build_number: number_of_commits)
