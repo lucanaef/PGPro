@@ -2,12 +2,14 @@
 //  PGProUITests.swift
 //  PGProUITests
 //
-//  Created by Harald Hobbelhagen on 04.05.23.
+//  Created by Harald Hobbelhagen on 06.05.23.
 //
 
 import XCTest
 
 final class PGProUITests: XCTestCase {
+    private var app: XCUIApplication!
+
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
@@ -15,6 +17,11 @@ final class PGProUITests: XCTestCase {
         continueAfterFailure = false
 
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        try super.setUpWithError()
+        continueAfterFailure = false
+        app = XCUIApplication()
+        setupSnapshot(app)
+        app.launch()
     }
 
     override func tearDownWithError() throws {
@@ -22,11 +29,6 @@ final class PGProUITests: XCTestCase {
     }
 
     func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        setupSnapshot(app)
-        app.launch()
-
         let tabBar = XCUIApplication().tabBars["Tab Bar"]
         let decryptionButton = tabBar.buttons["Decryption"]
         decryptionButton.tap()
@@ -38,6 +40,7 @@ final class PGProUITests: XCTestCase {
         tabBar.buttons["Settings"].tap()
         snapshot("5-SettingsView")
         decryptionButton.tap()
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
     func testLaunchPerformance() throws {
