@@ -24,6 +24,72 @@ platform :ios do
     run_tests(scheme: "PGPro")
   end
   
+  lane :prepare_signing do |options|
+    team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+    api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
+ 
+    keychain_name = "signing"
+    keychain_password = "temp"
+ 
+    delete_keychain(
+      name: keychain_name
+    ) if File.exist? File.expand_path("~/Library/Keychains/#{keychain_name}-db")
+ 
+    create_keychain(
+      name: keychain_name,
+      password: keychain_password,
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600
+    )
+ 
+    import_certificate(
+      certificate_path: ENV["SIGNING_KEY_FILE_PATH"],
+      certificate_password: ENV["SIGNING_KEY_PASSWORD"],
+      keychain_name: keychain_name,
+      keychain_password: keychain_password
+    )
+ 
+    # fetches and installs provisioning profiles from ASC
+    sigh(
+      adhoc: options[:adhoc],
+      api_key: api_key,
+      readonly: true
+    )
+  end
+
+  desc "Build the iOS app for release"
+  lane :build_release do |options|
+    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+
+    profile_name = "PGPro" # replace with the name of the profile to use for the build
+    output_name = "PGPro" # specify the name of the .ipa file to generate
+    export_method = "app-store" # specify the export method
+
+    # turn off automatic signing during build so correct code signing identity is guaranteed to be used
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      targets: ["main-target"], # specify which targets to update code signing settings for
+      code_sign_identity: "Apple Distribution", # replace with name of code signing identity if different
+      bundle_identifier: app_identifier,
+      profile_name: profile_name,
+      build_configurations: ["Release"] # only toggle code signing settings for Release configurations
+    )
+
+    # build the app
+    gym(
+      scheme: "PGPro",
+      output_name: output_name,
+      configuration: "Release",
+      export_options: {
+        method: export_method,
+        provisioningProfiles: {
+          app_identifier => profile_name
+        }
+      }
+    )
+  end
+
   lane :beta do
     asc_key_content = ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]
     asc_issuer_id = ENV["APP_STORE_CONNECT_ISSUER_ID"]
@@ -34,25 +100,10 @@ platform :ios do
       issuer_id: asc_issuer_id,
       key_content: asc_key_content
     )
-    create_keychain(
-      name: "build",
-      password: "123456",
-      default_keychain: true,
-      unlock: true,
-      timeout: 3600,
-      lock_when_sleeps: false
-    )
-    sync_code_signing(
-      readonly: true,
-      type: "appstore",
-      keychain_name: "build",
-      keychain_password: "123456",
-      shallow_clone: true
-    )
-    sh("security find-certificate -a")
+    prepare_signing
     capture_screenshots()
     increment_build_number(build_number: number_of_commits)
-    build_app(scheme: "PGPro")
+    build_release
     upload_to_testflight
   end 
   
@@ -66,9 +117,10 @@ platform :ios do
       issuer_id: asc_issuer_id,
       key_content: asc_key_content
     )
+    prepare_signing
     capture_screenshots()
     increment_build_number(build_number: number_of_commits)
-    build_app(scheme: "PGPro")
+    build_release
     upload_to_app_store
   end 
 end
