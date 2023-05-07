@@ -60,6 +60,7 @@ platform :ios do
 
   desc "Build the iOS app for release"
   lane :build_release do |options|
+    app_identifier = "app.pgpro"
 
     profile_name = "PGPro" # replace with the name of the profile to use for the build
     output_name = "PGPro" # specify the name of the .ipa file to generate
@@ -70,7 +71,7 @@ platform :ios do
       use_automatic_signing: false,
       targets: ["main-target"], # specify which targets to update code signing settings for
       code_sign_identity: "Apple Distribution", # replace with name of code signing identity if different
-      bundle_identifier: "app.pgpro",
+      bundle_identifier: app_identifier,
       profile_name: profile_name,
       build_configurations: ["Release"] # only toggle code signing settings for Release configurations
     )
