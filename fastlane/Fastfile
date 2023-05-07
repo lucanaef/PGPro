@@ -77,17 +77,7 @@ platform :ios do
     )
 
     # build the app
-    gym(
-      scheme: "PGPro",
-      output_name: output_name,
-      configuration: "Release",
-      export_options: {
-        method: export_method,
-        provisioningProfiles: {
-          app_identifier => profile_name
-        }
-      }
-    )
+    build_app(scheme="PGPro")
   end
 
   lane :beta do
