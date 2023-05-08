@@ -58,7 +58,7 @@ platform :ios do
     sigh(
       adhoc: false,
       api_key: api_key,
-      app_identifier: "com.haraldhobbelhagen.Conact"
+      app_identifier: "app.pgpro"
     )
   end
 
@@ -81,7 +81,7 @@ platform :ios do
     )
 
     # build the app
-    build_app(scheme="PGPro")
+    build_app(scheme: "PGPro")
   end
 
   lane :beta do
