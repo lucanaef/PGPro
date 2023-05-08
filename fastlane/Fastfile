@@ -50,11 +50,15 @@ platform :ios do
       keychain_password: keychain_password
     )
  
+    cert(
+      keychain_path: "~/Library/Keychains/#{keychain_name}-db",
+      keychain_password: keychain_password,
+    )
     # fetches and installs provisioning profiles from ASC
     sigh(
-      adhoc: options[:adhoc],
+      adhoc: false,
       api_key: api_key,
-      readonly: true
+      app_identifier: "com.haraldhobbelhagen.Conact"
     )
   end
 
