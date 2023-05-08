@@ -61,7 +61,7 @@ platform :ios do
       adhoc: false,
       api_key: api_key,
       app_identifier: "app.pgpro",
-      readonly: true
+      readonly: false
     )
   end
 
