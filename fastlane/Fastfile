@@ -31,7 +31,7 @@ platform :ios do
     certificate_password = ENV["SIGNING_KEY_PASSWORD"]
  
     keychain_name = "signing"
-    keychain_password = ENV["KEYCHAIN_PASSWORD"]
+    keychain_password = "temp"
  
     delete_keychain(
       name: keychain_name
@@ -44,6 +44,17 @@ platform :ios do
       unlock: true,
       timeout: 3600
     )
+
+    apple_intermediate_certificate_path = "/tmp/AppleWWDRCAG3.cer"
+    sh("curl", "https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer", "--output", apple_intermediate_certificate_path)
+
+    import_certificate(
+      certificate_path: apple_intermediate_certificate_path,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password,
+      log_output: true
+    )
+
  
     import_certificate(
       certificate_path: certificate_path,
@@ -52,15 +63,18 @@ platform :ios do
       keychain_password: keychain_password
     )
  
-    #cert(
-    #  keychain_path: "~/Library/Keychains/#{keychain_name}-db",
-    #  keychain_password: keychain_password,
-    #)
+    cert(
+    keychain_path: "~/Library/Keychains/#{keychain_name}-db",
+    keychain_password: keychain_password,
+    development: true,
+    generate_apple_certs: false,
+    )
     # fetches and installs provisioning profiles from ASC
     sigh(
-      adhoc: false,
+      adhoc: true,
       api_key: api_key,
-      app_identifier: "app.pgpro",
+      app_identifier: "com.haraldhobbelhagen.Conact",
+      skip_certificate_verification: true,
       readonly: false
     )
   end

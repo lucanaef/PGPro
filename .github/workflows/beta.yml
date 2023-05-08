@@ -2,7 +2,7 @@ name: deploy-ios-app testflight
 on:
   push:
     branches:
-      - "feature/cicd"
+      - "develop"
 jobs:
   build:
     runs-on: macos-latest
