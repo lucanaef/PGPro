@@ -29,7 +29,7 @@ platform :ios do
     api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
  
     keychain_name = "signing"
-    # keychain_password = ENV["KEYCHAIN_PASSWORD"]
+    keychain_password = "temp"
  
     delete_keychain(
       name: keychain_name
@@ -37,7 +37,7 @@ platform :ios do
  
     create_keychain(
       name: keychain_name,
-      # password: keychain_password,
+      password: keychain_password,
       default_keychain: true,
       unlock: true,
       timeout: 3600
@@ -47,18 +47,19 @@ platform :ios do
       certificate_path: ENV["SIGNING_KEY_FILE_PATH"],
       certificate_password: ENV["SIGNING_KEY_PASSWORD"],
       keychain_name: keychain_name,
-      # keychain_password: keychain_password
+      keychain_password: keychain_password
     )
  
     cert(
       keychain_path: "~/Library/Keychains/#{keychain_name}-db",
-      # keychain_password: keychain_password,
+      keychain_password: keychain_password,
     )
     # fetches and installs provisioning profiles from ASC
     sigh(
       adhoc: false,
       api_key: api_key,
-      app_identifier: "app.pgpro"
+      app_identifier: "app.pgpro",
+      readonly: true
     )
   end
 
