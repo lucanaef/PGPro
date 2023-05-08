@@ -31,7 +31,7 @@ platform :ios do
     certificate_password = ENV["SIGNING_KEY_PASSWORD"]
  
     keychain_name = "signing"
-    keychain_password = "temp"
+    keychain_password = ENV["KEYCHAIN_PASSWORD"]
  
     delete_keychain(
       name: keychain_name

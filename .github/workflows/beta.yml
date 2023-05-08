@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Decode signing certificate into a file
         env:
-         CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
+         CERTIFICATE_BASE64: ${{ Secrets.IOS_DIST_SIGNING_KEY }}
         run: |
          echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
       - run: fastlane beta
@@ -18,5 +18,6 @@ jobs:
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{Secrets.APP_STORE_CONNECT_API_KEY_CONTENT}}
           APP_STORE_CONNECT_ISSUER_ID: ${{Secrets.APP_STORE_CONNECT_ISSUER_ID}}
           APP_STORE_CONNECT_API_KEY_ID: ${{Secrets.APP_STORE_CONNECT_API_KEY_ID}}
-          SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
+          SIGNING_KEY_PASSWORD: ${{ Secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
+          KEYCHAIN_PASSWORD: ${{ Secrets.KEYCHAIN_PASSWORD }}
