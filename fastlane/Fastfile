@@ -29,7 +29,7 @@ platform :ios do
     api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
  
     keychain_name = "signing"
-    keychain_password = "temp"
+    keychain_password = ENV["KEYCHAIN_PASSWORD"]
  
     delete_keychain(
       name: keychain_name
