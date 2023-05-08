@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C582CC32A005330007426BF /* PGProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C582CC22A005330007426BF /* PGProTests.swift */; };
+		2C582CCA2A005499007426BF /* PGProTestsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C582CC92A005499007426BF /* PGProTestsHelper.swift */; };
+		2CC98E702A06AA7E00C5A7C0 /* PGProUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC98E6F2A06AA7E00C5A7C0 /* PGProUITests.swift */; };
+		2CC98E722A06AA7E00C5A7C0 /* PGProUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC98E712A06AA7E00C5A7C0 /* PGProUITestsLaunchTests.swift */; };
+		2CC98E792A06AADC00C5A7C0 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC98E782A06AADC00C5A7C0 /* SnapshotHelper.swift */; };
 		8122A912290ED8DD0027F36D /* String+isValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122A911290ED8DD0027F36D /* String+isValidEmail.swift */; };
 		8122A915290EDE4D0027F36D /* ThirdPartyMailer in Frameworks */ = {isa = PBXBuildFile; productRef = 8122A914290EDE4D0027F36D /* ThirdPartyMailer */; };
 		8122A917290EDE5E0027F36D /* MailIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122A916290EDE5E0027F36D /* MailIntegration.swift */; };
@@ -82,7 +87,31 @@
 		81ECDA6C290D6E5C00BD7640 /* InitialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ECDA6B290D6E5C00BD7640 /* InitialsView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		2C582CC42A005330007426BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8178B49628FEF3880027AACF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8178B49D28FEF3880027AACF;
+			remoteInfo = PGPro;
+		};
+		2CC98E732A06AA7E00C5A7C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8178B49628FEF3880027AACF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8178B49D28FEF3880027AACF;
+			remoteInfo = PGPro;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		2C582CC02A005330007426BF /* PGProTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PGProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C582CC22A005330007426BF /* PGProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTests.swift; sourceTree = "<group>"; };
+		2C582CC92A005499007426BF /* PGProTestsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProTestsHelper.swift; sourceTree = "<group>"; };
+		2CC98E6D2A06AA7E00C5A7C0 /* PGProUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PGProUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CC98E6F2A06AA7E00C5A7C0 /* PGProUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProUITests.swift; sourceTree = "<group>"; };
+		2CC98E712A06AA7E00C5A7C0 /* PGProUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGProUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2CC98E782A06AADC00C5A7C0 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		8122A911290ED8DD0027F36D /* String+isValidEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+isValidEmail.swift"; sourceTree = "<group>"; };
 		8122A916290EDE5E0027F36D /* MailIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailIntegration.swift; sourceTree = "<group>"; };
 		812A07242996CA1500FA9DB9 /* PlaceholderTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextEditor.swift; sourceTree = "<group>"; };
@@ -157,6 +186,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2C582CBD2A005330007426BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CC98E6A2A06AA7E00C5A7C0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8178B49B28FEF3880027AACF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -171,6 +214,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C582CC12A005330007426BF /* PGProTests */ = {
+			isa = PBXGroup;
+			children = (
+				2C582CC22A005330007426BF /* PGProTests.swift */,
+				2C582CC92A005499007426BF /* PGProTestsHelper.swift */,
+			);
+			path = PGProTests;
+			sourceTree = "<group>";
+		};
+		2CC98E6E2A06AA7E00C5A7C0 /* PGProUITests */ = {
+			isa = PBXGroup;
+			children = (
+				2CC98E6F2A06AA7E00C5A7C0 /* PGProUITests.swift */,
+				2CC98E782A06AADC00C5A7C0 /* SnapshotHelper.swift */,
+				2CC98E712A06AA7E00C5A7C0 /* PGProUITestsLaunchTests.swift */,
+			);
+			path = PGProUITests;
+			sourceTree = "<group>";
+		};
 		813F44C9290DCF1700A69C75 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -312,6 +374,8 @@
 			isa = PBXGroup;
 			children = (
 				8178B4A028FEF3880027AACF /* PGPro */,
+				2C582CC12A005330007426BF /* PGProTests */,
+				2CC98E6E2A06AA7E00C5A7C0 /* PGProUITests */,
 				8178B49F28FEF3880027AACF /* Products */,
 				8183609729903E73006F2B6E /* Frameworks */,
 			);
@@ -321,6 +385,8 @@
 			isa = PBXGroup;
 			children = (
 				8178B49E28FEF3880027AACF /* PGPro.app */,
+				2C582CC02A005330007426BF /* PGProTests.xctest */,
+				2CC98E6D2A06AA7E00C5A7C0 /* PGProUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -571,6 +637,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2C582CBF2A005330007426BF /* PGProTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C582CC82A005330007426BF /* Build configuration list for PBXNativeTarget "PGProTests" */;
+			buildPhases = (
+				2C582CBC2A005330007426BF /* Sources */,
+				2C582CBD2A005330007426BF /* Frameworks */,
+				2C582CBE2A005330007426BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2C582CC52A005330007426BF /* PBXTargetDependency */,
+			);
+			name = PGProTests;
+			productName = PGProTests;
+			productReference = 2C582CC02A005330007426BF /* PGProTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2CC98E6C2A06AA7E00C5A7C0 /* PGProUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2CC98E772A06AA7E00C5A7C0 /* Build configuration list for PBXNativeTarget "PGProUITests" */;
+			buildPhases = (
+				2CC98E692A06AA7E00C5A7C0 /* Sources */,
+				2CC98E6A2A06AA7E00C5A7C0 /* Frameworks */,
+				2CC98E6B2A06AA7E00C5A7C0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2CC98E742A06AA7E00C5A7C0 /* PBXTargetDependency */,
+			);
+			name = PGProUITests;
+			productName = PGProUITests;
+			productReference = 2CC98E6D2A06AA7E00C5A7C0 /* PGProUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		8178B49D28FEF3880027AACF /* PGPro */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8178B4AC28FEF3890027AACF /* Build configuration list for PBXNativeTarget "PGPro" */;
@@ -602,9 +704,17 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1400;
+				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1400;
 				TargetAttributes = {
+					2C582CBF2A005330007426BF = {
+						CreatedOnToolsVersion = 14.3;
+						TestTargetID = 8178B49D28FEF3880027AACF;
+					};
+					2CC98E6C2A06AA7E00C5A7C0 = {
+						CreatedOnToolsVersion = 14.3;
+						TestTargetID = 8178B49D28FEF3880027AACF;
+					};
 					8178B49D28FEF3880027AACF = {
 						CreatedOnToolsVersion = 14.0;
 					};
@@ -630,11 +740,27 @@
 			projectRoot = "";
 			targets = (
 				8178B49D28FEF3880027AACF /* PGPro */,
+				2C582CBF2A005330007426BF /* PGProTests */,
+				2CC98E6C2A06AA7E00C5A7C0 /* PGProUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2C582CBE2A005330007426BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CC98E6B2A06AA7E00C5A7C0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8178B49C28FEF3880027AACF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -668,6 +794,25 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2C582CBC2A005330007426BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C582CCA2A005499007426BF /* PGProTestsHelper.swift in Sources */,
+				2C582CC32A005330007426BF /* PGProTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CC98E692A06AA7E00C5A7C0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2CC98E702A06AA7E00C5A7C0 /* PGProUITests.swift in Sources */,
+				2CC98E722A06AA7E00C5A7C0 /* PGProUITestsLaunchTests.swift in Sources */,
+				2CC98E792A06AADC00C5A7C0 /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8178B49A28FEF3880027AACF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -745,7 +890,112 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		2C582CC52A005330007426BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8178B49D28FEF3880027AACF /* PGPro */;
+			targetProxy = 2C582CC42A005330007426BF /* PBXContainerItemProxy */;
+		};
+		2CC98E742A06AA7E00C5A7C0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8178B49D28FEF3880027AACF /* PGPro */;
+			targetProxy = 2CC98E732A06AA7E00C5A7C0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		2C582CC62A005330007426BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DZXVSK8MWP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = haraldhobbelhagen.PGProTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PGPro.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PGPro";
+			};
+			name = Debug;
+		};
+		2C582CC72A005330007426BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DZXVSK8MWP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = haraldhobbelhagen.PGProTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PGPro.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PGPro";
+			};
+			name = Release;
+		};
+		2CC98E752A06AA7E00C5A7C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro.PGProUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PGPro;
+			};
+			name = Debug;
+		};
+		2CC98E762A06AA7E00C5A7C0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.pgpro.PGProUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PGPro;
+			};
+			name = Release;
+		};
 		8178B4AA28FEF3890027AACF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -933,6 +1183,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2C582CC82A005330007426BF /* Build configuration list for PBXNativeTarget "PGProTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C582CC62A005330007426BF /* Debug */,
+				2C582CC72A005330007426BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2CC98E772A06AA7E00C5A7C0 /* Build configuration list for PBXNativeTarget "PGProUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2CC98E752A06AA7E00C5A7C0 /* Debug */,
+				2CC98E762A06AA7E00C5A7C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8178B49928FEF3880027AACF /* Build configuration list for PBXProject "PGPro" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

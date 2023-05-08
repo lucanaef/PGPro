@@ -1,0 +1,137 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  
+  lane :screenshots do
+    capture_screenshots()
+  end
+
+  lane :tests do
+    run_tests(scheme: "PGPro")
+  end
+  
+  lane :prepare_signing do |options|
+    team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+    api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
+    certificate_path = ENV["SIGNING_KEY_FILE_PATH"]
+    certificate_password = ENV["SIGNING_KEY_PASSWORD"]
+ 
+    keychain_name = "signing"
+    keychain_password = "temp"
+ 
+    delete_keychain(
+      name: keychain_name
+    ) if File.exist? File.expand_path("~/Library/Keychains/#{keychain_name}-db")
+ 
+    create_keychain(
+      name: keychain_name,
+      password: keychain_password,
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600
+    )
+
+    apple_intermediate_certificate_path = "/tmp/AppleWWDRCAG3.cer"
+    sh("curl", "https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer", "--output", apple_intermediate_certificate_path)
+
+    import_certificate(
+      certificate_path: apple_intermediate_certificate_path,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password,
+      log_output: true
+    )
+
+ 
+    import_certificate(
+      certificate_path: certificate_path,
+      certificate_password: certificate_password,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password
+    )
+ 
+    cert(
+    keychain_path: "~/Library/Keychains/#{keychain_name}-db",
+    keychain_password: keychain_password,
+    development: true,
+    generate_apple_certs: false,
+    )
+    # fetches and installs provisioning profiles from ASC
+    sigh(
+      adhoc: true,
+      api_key: api_key,
+      app_identifier: "com.haraldhobbelhagen.Conact",
+      skip_certificate_verification: true,
+      readonly: false
+    )
+  end
+
+  desc "Build the iOS app for release"
+  lane :build_release do |options|
+    app_identifier = "app.pgpro"
+
+    profile_name = "PGPro" # replace with the name of the profile to use for the build
+    output_name = "PGPro" # specify the name of the .ipa file to generate
+    export_method = "app-store" # specify the export method
+
+    # turn off automatic signing during build so correct code signing identity is guaranteed to be used
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      targets: ["main-target"], # specify which targets to update code signing settings for
+      code_sign_identity: "Apple Distribution", # replace with name of code signing identity if different
+      bundle_identifier: app_identifier,
+      profile_name: profile_name,
+      build_configurations: ["Release"] # only toggle code signing settings for Release configurations
+    )
+
+    # build the app
+    build_app(scheme: "PGPro")
+  end
+
+  lane :beta do
+    asc_key_content = ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]
+    asc_issuer_id = ENV["APP_STORE_CONNECT_ISSUER_ID"]
+    asc_key_id = ENV["APP_STORE_CONNECT_API_KEY_ID"]
+
+    app_store_connect_api_key(
+      key_id: asc_key_id,
+      issuer_id: asc_issuer_id,
+      key_content: asc_key_content
+    )
+    prepare_signing
+    capture_screenshots()
+    increment_build_number(build_number: number_of_commits)
+    build_release
+    upload_to_testflight
+  end 
+  
+  lane :release do
+    asc_key_content = ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]
+    asc_issuer_id = ENV["APP_STORE_CONNECT_ISSUER_ID"]
+    asc_key_id = ENV["APP_STORE_CONNECT_API_KEY_ID"]
+
+    app_store_connect_api_key(
+      key_id: asc_key_id,
+      issuer_id: asc_issuer_id,
+      key_content: asc_key_content
+    )
+    prepare_signing
+    capture_screenshots()
+    increment_build_number(build_number: number_of_commits)
+    build_release
+    upload_to_app_store
+  end 
+end
